@@ -1,0 +1,18 @@
+{
+  "usuarios": [
+    {
+      "id": "f2e6",
+      "nome": "Artur Guilherme Queiroz Matukiwa",
+      "cpf": "111.111.111-11",
+      "email": "artur@email.com",
+      "telefone": "(11) 23242-3423"
+    },
+    {
+      "id": "71ec",
+      "nome": "a",
+      "cpf": "111.111.111-11",
+      "email": "a@e.com",
+      "telefone": "(11) 11111-1111"
+    }
+  ]
+}
