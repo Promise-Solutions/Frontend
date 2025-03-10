@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Studio Zero - Cadastro</title>
     <link rel="stylesheet" href="../css/cadastro.css">
+    <link rel="icon" href="../assets/logo-aba-navegador.png">
 </head>
 <body>
     <main class="container">
@@ -12,9 +13,8 @@
             <img src="../assets/logo-branco-bg-sonoro.png" alt="logo-studio-zero-header">
             <h1>Registre um novo funcionário</h1>
         </section>
-        
         <form id="container-form">
-            <div class="container-fields">
+            <section class="container-fields">
                 <div class="field">
                     <span>Nome</span> 
                     <input  id="input_nome" type="text" autocomplete="off">
@@ -31,10 +31,9 @@
                     <span>Telefone</span>
                     <input id="input_telefone" type="text" maxlength="15" autocomplete="off">
                 </div>
-            </div>
+            </section>
             <button id="btn_confirm" disabled>Confirmar</button>
         </form>
-        <footer></footer>
     </main>
     
     <script src="../js/cadastro.js"></script>
