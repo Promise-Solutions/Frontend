@@ -1,0 +1,2 @@
+Vamos utilizar essa pasta para criar nossas Utils, funções comuns
+que vão ser utilizadas frequentemente, como cálculos, manipulação de dados e etc.

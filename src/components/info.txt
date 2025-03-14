@@ -1,0 +1,3 @@
+Vamos utilizar essa pasta para colocar todos os itens que serão reutilizados
+em diversas páginas da mesma forma, ou itens que sejam personalizáveis,
+como inputs dinâmicos, navbar, footer e etc.

@@ -1,0 +1,2 @@
+Vamos utilizar essa pasta, para criar funções que vão utilizar de requisições,
+podemos fazer sobrecargas para diversos tipos de requisições fetch, ou chamada de api.

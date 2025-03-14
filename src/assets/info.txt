@@ -1,0 +1,2 @@
+Vamos utilizar essa pasta para colocar todos os assets que serão utilizados
+no desenvolvimento, como imagens de background de telas, gifs de loading e etc.

@@ -1,0 +1,2 @@
+Vamos utilizar essa pasta para colocar elementos que serão
+utilizados globalmente no projeto, como favicon, css globais e etc.

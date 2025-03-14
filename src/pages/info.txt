@@ -1,0 +1,2 @@
+Vamos utilizar essa pasta, para criar nossas páginas, dentro de cada pasta designada
+irá contar o JSX da página e as estilizações e outros arquivos JS se necessário.
