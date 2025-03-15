@@ -1,25 +1,11 @@
 {
   "usuarios": [
     {
-      "id": "f2e6",
-      "nome": "Artur Guilherme Queiroz Matukiwa",
-      "cpf": "111.111.111-11",
-      "email": "artur@email.com",
-      "telefone": "(11) 23242-3423"
-    },
-    {
       "nome": "Teste",
-      "cpf": "312.321.312-31",
+      "cpf": "312.313.131-31",
       "email": "teste@teste.com",
-      "telefone": "(13) 23123-2131",
-      "id": "sk6oKsz"
-    },
-    {
-      "nome": "Teste",
-      "cpf": "312.321.312-31",
-      "email": "teste@teste.com",
-      "telefone": "(13) 23123-2131",
-      "id": "CV0_pc_"
+      "telefone": "(31) 32131-2313",
+      "id": 1
     }
   ]
 }

@@ -1,9 +1,9 @@
 export function setupRegisterEvents() {
-  const iptNome = document.querySelector("#input_nome");
-  const iptEmail = document.querySelector("#input_email");
-  const iptCpf = document.querySelector("#input_cpf");
-  const iptTelefone = document.querySelector("#input_telefone");
-  const btnConfirm = document.querySelector("#btn_confirm");
+  const iptNome = document.querySelector("#nome");
+  const iptEmail = document.querySelector("#email");
+  const iptCpf = document.querySelector("#cpf");
+  const iptTelefone = document.querySelector("#telefone");
+  const btnConfirm = document.querySelector("button");
 
   if (!iptNome || !iptEmail || !iptCpf || !iptTelefone || !btnConfirm) {
     console.error("Elementos do formulário não encontrados.");
@@ -24,14 +24,16 @@ export function setupRegisterEvents() {
       .replace(/\D/g, "")
       .replace(/(\d{3})(\d)/, "$1.$2")
       .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d)/, "$1-$2");
+      .replace(/(\d{3})(\d)/, "$1-$2")
+      .slice(0, 14);
   };
 
   const formatarTelefone = () => {
     iptTelefone.value = iptTelefone.value
       .replace(/\D/g, "")
       .replace(/(\d{2})(\d)/, "($1) $2")
-      .replace(/(\d{5})(\d+)/, "$1-$2");
+      .replace(/(\d{5})(\d+)/, "$1-$2")
+      .slice(0, 15);
   };
 
   const validarEmail = () => {
@@ -81,27 +83,33 @@ export function setupRegisterEvents() {
       .catch((error) => console.log("Erro:", error));
   };
 
-  iptNome.addEventListener("input", verificarPreenchimento);
-  iptCpf.addEventListener("input", () => {
+  const handleCpfInput = () => {
     formatarCpf();
     verificarPreenchimento();
-  });
-  iptEmail.addEventListener("input", verificarPreenchimento);
-  iptTelefone.addEventListener("input", () => {
+  };
+
+  const handleTelefoneInput = () => {
     formatarTelefone();
     verificarPreenchimento();
-  });
-  btnConfirm.addEventListener("click", (event) => {
+  };
+
+  const handleConfirmClick = (event) => {
     event.preventDefault();
     registrarFuncionario();
-  });
+  };
+
+  iptNome.addEventListener("input", verificarPreenchimento);
+  iptCpf.addEventListener("input", handleCpfInput);
+  iptEmail.addEventListener("input", verificarPreenchimento);
+  iptTelefone.addEventListener("input", handleTelefoneInput);
+  btnConfirm.addEventListener("click", handleConfirmClick);
 
   return () => {
     iptNome.removeEventListener("input", verificarPreenchimento);
-    iptCpf.removeEventListener("input", formatarCpf);
+    iptCpf.removeEventListener("input", handleCpfInput);
     iptEmail.removeEventListener("input", verificarPreenchimento);
-    iptTelefone.removeEventListener("input", formatarTelefone);
-    btnConfirm.removeEventListener("click", registrarFuncionario);
+    iptTelefone.removeEventListener("input", handleTelefoneInput);
+    btnConfirm.removeEventListener("click", handleConfirmClick);
   };
 }
 
