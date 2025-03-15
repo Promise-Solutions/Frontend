@@ -1,11 +1,17 @@
 module.exports = {
-  purge: [],
-  darkMode: false, // or 'media' or 'class'
+  content: [
+    "./src/**/*.{html,js,jsx,ts,tsx}",
+  ],
+
+  darkMode: "media",
+
   theme: {
     extend: {},
   },
+
   variants: {
     extend: {},
   },
-  plugins: [require("tailwindcss"), require("autoprefixer")],
+
+  plugins: [],
 };
