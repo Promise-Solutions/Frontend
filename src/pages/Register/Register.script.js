@@ -3,7 +3,8 @@ export function setupRegisterEvents() {
   const iptEmail = document.querySelector("#email");
   const iptCpf = document.querySelector("#cpf");
   const iptTelefone = document.querySelector("#telefone");
-  const btnConfirm = document.querySelector("button");
+  const iptSenha = document.querySelector("#senha");
+  const btnConfirm = document.getElementById("btn_form");
 
   if (!iptNome || !iptEmail || !iptCpf || !iptTelefone || !btnConfirm) {
     console.error("Elementos do formulário não encontrados.");
@@ -45,6 +46,7 @@ export function setupRegisterEvents() {
     if (
       iptCpf.value.length !== 14 ||
       iptTelefone.value.length !== 15 ||
+      iptSenha.value.length < 8 ||
       !validarEmail()
     ) {
       alert("Campos inválidos!");
@@ -61,6 +63,7 @@ export function setupRegisterEvents() {
       cpf: iptCpf.value,
       email: iptEmail.value,
       telefone: iptTelefone.value,
+      senha: iptSenha.value,
     };
 
     fetch("http://localhost:5000/usuarios", {
@@ -75,6 +78,7 @@ export function setupRegisterEvents() {
           iptCpf.value = "";
           iptEmail.value = "";
           iptTelefone.value = "";
+          iptSenha.value = "";
           verificarPreenchimento();
         } else {
           alert("Erro ao cadastrar funcionário.");
@@ -102,6 +106,7 @@ export function setupRegisterEvents() {
   iptCpf.addEventListener("input", handleCpfInput);
   iptEmail.addEventListener("input", verificarPreenchimento);
   iptTelefone.addEventListener("input", handleTelefoneInput);
+  iptSenha.addEventListener("input", verificarPreenchimento);
   btnConfirm.addEventListener("click", handleConfirmClick);
 
   return () => {
@@ -109,6 +114,7 @@ export function setupRegisterEvents() {
     iptCpf.removeEventListener("input", handleCpfInput);
     iptEmail.removeEventListener("input", verificarPreenchimento);
     iptTelefone.removeEventListener("input", handleTelefoneInput);
+    iptSenha.removeEventListener("input", verificarPreenchimento);
     btnConfirm.removeEventListener("click", handleConfirmClick);
   };
 }

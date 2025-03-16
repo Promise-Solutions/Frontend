@@ -2,9 +2,14 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{html,js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      colors: {
+      textColors: {
         white: "#FFFFFF",
         black: "#000000",
+        cyan: "#00EFFF",
+        pink: "#9A3379",
+        green: "#00FF0D",
+        orange: "#DDBB0F",
+        red: "#CB6263",
       },
       fontFamily: {
         sans: ["Roboto", "sans-serif"],
