@@ -55,8 +55,29 @@ export function setupRegisterEvents() {
     return true;
   };
 
-  const registrarFuncionario = () => {
+  const generateToken = () => {
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let token = "";
+    for (let i = 0; i < 16; i++) {
+      token += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return token;
+  };
+
+  const isTokenUnique = async (token) => {
+    const response = await fetch("http://localhost:5000/usuarios");
+    const users = await response.json();
+    return !users.some((user) => user.token === token);
+  };
+
+  const registrarFuncionario = async () => {
     if (!validarCampos()) return;
+
+    let token;
+    do {
+      token = generateToken();
+    } while (!(await isTokenUnique(token)));
 
     const novoUsuario = {
       nome: iptNome.value,
@@ -64,6 +85,7 @@ export function setupRegisterEvents() {
       email: iptEmail.value,
       telefone: iptTelefone.value,
       senha: iptSenha.value,
+      token: token,
     };
 
     fetch("http://localhost:5000/usuarios", {

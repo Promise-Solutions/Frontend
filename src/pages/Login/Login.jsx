@@ -8,10 +8,9 @@ const Login = () => {
 
   useEffect(() => {
     const nav = document.querySelector(".navbar");
-    if (window.location.pathname === "/login") {
-      nav.style.display = "none";
-    } else {
-      nav.style.display = "flex";
+    if (nav) {
+      nav.style.display =
+        window.location.pathname === "/login" ? "none" : "flex";
     }
   }, []);
 
@@ -22,24 +21,28 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:5000/authenticate", {
-      method: "POST",
+    fetch("http://localhost:5000/usuarios", {
+      method: "GET",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
     })
       .then((res) => res.json())
-      .then((data) => {
-        if (data.token) {
-          sessionStorage.setItem("token", data.token);
+      .then((usuarios) => {
+        console.log("Usuários encontrados:", usuarios);
+
+        const usuarioEncontrado = usuarios.find(
+          (usuario) =>
+            usuario.email === formData.email && usuario.senha === formData.senha
+        );
+
+        if (usuarioEncontrado) {
+          sessionStorage.setItem("token", usuarioEncontrado.token);
+          alert("Usuário autenticado com sucesso!");
           window.location.href = "/home";
         } else {
-          // ! Remover depois para funcionar corretamente
-          sessionStorage.setItem("token", data.token);
-          window.location.href = "/home";
-          // alert("Erro ao autenticar.");
+          alert("Erro ao autenticar. Verifique suas credenciais.");
         }
       })
-      .catch((error) => console.log("Erro:", error));
+      .catch((error) => console.error("Erro ao buscar usuários:", error));
   };
 
   return (
