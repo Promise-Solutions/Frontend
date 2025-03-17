@@ -10,44 +10,6 @@ export function setupRegisterEvents() {
     console.error("Elementos do formulário não encontrados.");
     return;
   }
-  const verificarPreenchimento = () => {
-    btnConfirm.disabled = !(
-      iptNome.value.trim() &&
-      iptCpf.value.length === 14 &&
-      iptEmail.value &&
-      iptTelefone.value.length === 15
-    );
-  };
-
-  // Desativando botão até que esteja tudo preenchido
-  verificarPreenchimento();
-
-  const formatarCpf = (inputValue) => {
-    return inputValue
-      .replace(/\D/g, "")
-      .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d{1,2})$/, "$1-$2")
-      .slice(0, 14);
-  };
-
-  const formatarTelefone = (inputValue) => {
-    return inputValue
-      .replace(/\D/g, "")
-      .replace(/(\d{2})(\d)/, "($1) $2")
-      .replace(/(\d{5})(\d{1,4})$/, "$1-$2")
-      .slice(0, 15);
-  };
-
-  const handleCpfInput = () => {
-    iptCpf.value = formatarCpf(iptCpf.value);
-    verificarPreenchimento();
-  };
-
-  const handleTelefoneInput = () => {
-    iptTelefone.value = formatarTelefone(iptTelefone.value);
-    verificarPreenchimento();
-  };
 
   const validarEmail = () => {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/;
@@ -56,15 +18,17 @@ export function setupRegisterEvents() {
 
   const validarCampos = () => {
     if (
-      iptCpf.value.length !== 14 ||
-      iptTelefone.value.length !== 15 ||
-      iptSenha.value.length < 8 ||
-      !validarEmail()
+      iptNome.value.trim() &&
+      iptCpf.value.length === 14 &&
+      iptEmail.value &&
+      iptTelefone.value.length === 15 &&
+      iptSenha.value >= 8 &&
+      validarEmail()
     ) {
-      alert("Campos inválidos!");
-      return false;
+      return true;
     }
-    return true;
+    alert("Campos inválidos!");
+    return false;
   };
 
   const generateToken = () => {
@@ -113,7 +77,6 @@ export function setupRegisterEvents() {
           iptEmail.value = "";
           iptTelefone.value = "";
           iptSenha.value = "";
-          verificarPreenchimento();
         } else {
           alert("Erro ao cadastrar funcionário.");
         }
@@ -126,17 +89,47 @@ export function setupRegisterEvents() {
     registrarFuncionario();
   };
 
-  iptNome.addEventListener("input", verificarPreenchimento);
-  iptCpf.addEventListener("input", handleCpfInput);
-  iptEmail.addEventListener("input", verificarPreenchimento);
-  iptTelefone.addEventListener("input", handleTelefoneInput);
-  iptSenha.addEventListener("input", verificarPreenchimento);
   btnConfirm.addEventListener("click", handleConfirmClick);
 
+  //Tratatmento do campo de CPF
+  iptCpf.addEventListener("keydown", (event) => {
+    let value = iptCpf.value.replace(/\D/g, "");
+    if (value.length >= 11 && event.key !== "Backspace") {
+      event.preventDefault();
+      return;
+    }
+    if (value.length > 3) {
+      value = value.slice(0, 3) + "." + value.slice(3);
+    }
+    if (value.length > 7) {
+      value = value.slice(0, 7) + "." + value.slice(7);
+    }
+    if (value.length > 11) {
+      value = value.slice(0, 11) + "-" + value.slice(11);
+    }
+    iptCpf.value = value;
+  });
+
+  //Tratamento do campo de telefone
+  iptTelefone.addEventListener("keydown", (event) => {
+    let value = iptTelefone.value.replace(/\D/g, "");
+    if (value.length >= 11 && event.key !== "Backspace") {
+      event.preventDefault();
+      return;
+    }
+    if (value.length > 0) {
+      value = "(" + value;
+    }
+    if (value.length > 3) {
+      value = value.slice(0, 3) + ") " + value.slice(3);
+    }
+    if (value.length > 10) {
+      value = value.slice(0, 10) + "-" + value.slice(10);
+    }
+    iptTelefone.value = value;
+  });
+
   return () => {
-    iptNome.removeEventListener("input", verificarPreenchimento);
-    iptEmail.removeEventListener("input", verificarPreenchimento);
-    iptSenha.removeEventListener("input", verificarPreenchimento);
     btnConfirm.removeEventListener("click", handleConfirmClick);
   };
 }

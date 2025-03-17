@@ -1,31 +1,4 @@
 {
   "usuarios": [
-    {
-      "nome": "Teste",
-      "cpf": "312.313.131-31",
-      "email": "teste@teste.com",
-      "senha": "123456",
-      "telefone": "(31) 32131-2313",
-      "id": 1,
-      "token": "teste"
-    },
-    {
-      "nome": "Naomi",
-      "cpf": "312.313.131-31",
-      "email": "naomi@naomi.com",
-      "telefone": "(31) 32131-3131",
-      "senha": "12345678",
-      "token": "ubf8HfDJeAvYIw9D",
-      "id": 2
-    },
-    {
-      "nome": "teste",
-      "cpf": "213.123.123-12",
-      "email": "teste@gmail.com",
-      "telefone": "(31) 23123-1312",
-      "senha": "31231231",
-      "token": "eD08CtdRELUN9IBg",
-      "id": 3
-    }
   ]
 }

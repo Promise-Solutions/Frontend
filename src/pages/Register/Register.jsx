@@ -35,7 +35,10 @@ function Register() {
           Registre um novo usuário
         </h1>
       </section>
-      <form className="flex flex-col items-center gap-10 w-full px-4 py-8">
+      <form
+        autoComplete="off"
+        className="flex flex-col items-center gap-10 w-full px-4 py-8"
+      >
         <section className="flex flex-wrap items-center justify-between w-full gap-4">
           <Input
             type="text"
@@ -56,14 +59,6 @@ function Register() {
             maxLength="50"
           />
           <Input
-            type="password"
-            text="Senha"
-            name="senha"
-            placeholder="Digite sua senha"
-            handleOnChange={handleInputChange}
-            value={formData.senha}
-          />
-          <Input
             type="text"
             text="CPF"
             name="cpf"
@@ -80,6 +75,14 @@ function Register() {
             handleOnChange={handleInputChange}
             value={formData.telefone}
             maxLength="15"
+          />
+          <Input
+            type="password"
+            text="Senha"
+            name="senha"
+            placeholder="Digite sua senha"
+            handleOnChange={handleInputChange}
+            value={formData.senha}
           />
         </section>
         <SubmitButton text="Confirmar" />
