@@ -1,4 +1,22 @@
 {
   "usuarios": [
+    {
+      "nome": "Teste",
+      "cpf": "123.123.123-12",
+      "email": "teste@teste.com",
+      "telefone": "(12) 31231-2312",
+      "senha": "12345678",
+      "token": "gRJxmVn7bVCGLXGn",
+      "id": 1
+    },
+    {
+      "nome": "Gustavo",
+      "cpf": "123.123.123-12",
+      "email": "gustavo@gmail.com",
+      "telefone": "(12) 31231-2312",
+      "senha": "12345678",
+      "token": "RbNEmYK2snnCGQTh",
+      "id": 2
+    }
   ]
 }

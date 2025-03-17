@@ -1,4 +1,6 @@
 export function setupRegisterEvents() {
+
+  // Pegando os elementos do formulário
   const iptNome = document.querySelector("#nome");
   const iptEmail = document.querySelector("#email");
   const iptCpf = document.querySelector("#cpf");
@@ -6,16 +8,19 @@ export function setupRegisterEvents() {
   const iptSenha = document.querySelector("#senha");
   const btnConfirm = document.getElementById("btn_form");
 
+  // Verificando se os campos existem, tava dando um bug q n tava sendo renderizado
   if (!iptNome || !iptEmail || !iptCpf || !iptTelefone || !btnConfirm) {
     console.error("Elementos do formulário não encontrados.");
     return;
   }
 
+  // Validação de email
   const validarEmail = () => {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/;
     return regex.test(iptEmail.value);
   };
 
+  // Validação de campos
   const validarCampos = () => {
     if (
       iptNome.value.trim() &&
@@ -31,6 +36,7 @@ export function setupRegisterEvents() {
     return false;
   };
 
+  // Gerando Token, isso vai ser passado pro backend dps
   const generateToken = () => {
     const chars =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -41,15 +47,16 @@ export function setupRegisterEvents() {
     return token;
   };
 
+  // Verificando se o token é único
   const isTokenUnique = async (token) => {
     const response = await fetch("http://localhost:5000/usuarios");
     const users = await response.json();
     return !users.some((user) => user.token === token);
   };
 
+  // Função de registrar funcionário
   const registrarFuncionario = async () => {
     if (!validarCampos()) return;
-
     let token;
     do {
       token = generateToken();
@@ -78,20 +85,20 @@ export function setupRegisterEvents() {
           iptTelefone.value = "";
           iptSenha.value = "";
         } else {
-          alert("Erro ao cadastrar funcionário.");
+          alert("Erro ao cadastrar usuários.");
         }
       })
       .catch((error) => console.log("Erro:", error));
   };
 
+  // Lógica de evento de clique no botão de confirmação, removemos a ação no return la embaixo
   const handleConfirmClick = (event) => {
     event.preventDefault();
     registrarFuncionario();
   };
-
   btnConfirm.addEventListener("click", handleConfirmClick);
 
-  //Tratatmento do campo de CPF
+  // Tratamento do campo de CPF
   iptCpf.addEventListener("keydown", (event) => {
     let value = iptCpf.value.replace(/\D/g, "");
     if (value.length >= 11 && event.key !== "Backspace") {
@@ -110,7 +117,7 @@ export function setupRegisterEvents() {
     iptCpf.value = value;
   });
 
-  //Tratamento do campo de telefone
+  // Tratamento do campo de telefone
   iptTelefone.addEventListener("keydown", (event) => {
     let value = iptTelefone.value.replace(/\D/g, "");
     if (value.length >= 11 && event.key !== "Backspace") {
@@ -129,6 +136,7 @@ export function setupRegisterEvents() {
     iptTelefone.value = value;
   });
 
+  // Removendo o evento de clique no botão de confirmação para evitar duplicação
   return () => {
     btnConfirm.removeEventListener("click", handleConfirmClick);
   };
