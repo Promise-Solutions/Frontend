@@ -20,21 +20,31 @@ export function setupRegisterEvents() {
     );
   };
 
-  const formatarCpf = () => {
-    iptCpf.value = iptCpf.value
+  const formatarCpf = (inputValue) => {
+    return inputValue
       .replace(/\D/g, "")
       .replace(/(\d{3})(\d)/, "$1.$2")
       .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d)/, "$1-$2")
+      .replace(/(\d{3})(\d{1,2})$/, "$1-$2")
       .slice(0, 14);
   };
 
-  const formatarTelefone = () => {
-    iptTelefone.value = iptTelefone.value
+  const formatarTelefone = (inputValue) => {
+    return inputValue
       .replace(/\D/g, "")
       .replace(/(\d{2})(\d)/, "($1) $2")
-      .replace(/(\d{5})(\d+)/, "$1-$2")
+      .replace(/(\d{5})(\d{1,4})$/, "$1-$2")
       .slice(0, 15);
+  };
+
+  const handleCpfInput = () => {
+    iptCpf.value = formatarCpf(iptCpf.value);
+    verificarPreenchimento();
+  };
+
+  const handleTelefoneInput = () => {
+    iptTelefone.value = formatarTelefone(iptTelefone.value);
+    verificarPreenchimento();
   };
 
   const validarEmail = () => {
@@ -107,16 +117,6 @@ export function setupRegisterEvents() {
         }
       })
       .catch((error) => console.log("Erro:", error));
-  };
-
-  const handleCpfInput = () => {
-    formatarCpf();
-    verificarPreenchimento();
-  };
-
-  const handleTelefoneInput = () => {
-    formatarTelefone();
-    verificarPreenchimento();
   };
 
   const handleConfirmClick = (event) => {

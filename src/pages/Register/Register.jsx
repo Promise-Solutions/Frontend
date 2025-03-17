@@ -25,7 +25,10 @@ function Register() {
   };
 
   return (
-    <main className="flex items-center justify-center min-h-screen w-full" style={{ background: `url(${Background}) no-repeat center center/cover` }}>
+    <main
+      className="flex items-center justify-center min-h-screen w-full"
+      style={{ background: `url(${Background}) no-repeat center center/cover` }}
+    >
       <section className="flex flex-col items-center justify-start gap-6 w-full px-4 py-8">
         <img src={logo} alt="logo-studio-zero-header" className="h-[250px]" />
         <h1 className="font-medium text-4xl tracking-widest text-[#9A3379] text-center">
@@ -44,15 +47,6 @@ function Register() {
             maxLength="50"
           />
           <Input
-            type="text"
-            text="CPF"
-            name="cpf"
-            placeholder="Digite o CPF"
-            handleOnChange={handleInputChange}
-            value={formData.cpf}
-            maxLength="14"
-          />
-          <Input
             type="email"
             text="Email"
             name="email"
@@ -62,6 +56,23 @@ function Register() {
             maxLength="50"
           />
           <Input
+            type="password"
+            text="Senha"
+            name="senha"
+            placeholder="Digite sua senha"
+            handleOnChange={handleInputChange}
+            value={formData.senha}
+          />
+          <Input
+            type="text"
+            text="CPF"
+            name="cpf"
+            placeholder="Digite o CPF"
+            handleOnChange={handleInputChange}
+            value={formData.cpf}
+            maxLength="14"
+          />
+          <Input
             type="text"
             text="Telefone"
             name="telefone"
@@ -69,14 +80,6 @@ function Register() {
             handleOnChange={handleInputChange}
             value={formData.telefone}
             maxLength="15"
-          />
-          <Input
-            type="password"
-            text="Senha"
-            name="senha"
-            placeholder="Digite sua senha"
-            handleOnChange={handleInputChange}
-            value={formData.senha}
           />
         </section>
         <SubmitButton text="Confirmar" />
