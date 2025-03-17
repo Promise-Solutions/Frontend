@@ -10,7 +10,6 @@ export function setupRegisterEvents() {
     console.error("Elementos do formulário não encontrados.");
     return;
   }
-
   const verificarPreenchimento = () => {
     btnConfirm.disabled = !(
       iptNome.value.trim() &&
@@ -19,6 +18,9 @@ export function setupRegisterEvents() {
       iptTelefone.value.length === 15
     );
   };
+
+  // Desativando botão até que esteja tudo preenchido
+  verificarPreenchimento();
 
   const formatarCpf = (inputValue) => {
     return inputValue
@@ -133,9 +135,7 @@ export function setupRegisterEvents() {
 
   return () => {
     iptNome.removeEventListener("input", verificarPreenchimento);
-    iptCpf.removeEventListener("input", handleCpfInput);
     iptEmail.removeEventListener("input", verificarPreenchimento);
-    iptTelefone.removeEventListener("input", handleTelefoneInput);
     iptSenha.removeEventListener("input", verificarPreenchimento);
     btnConfirm.removeEventListener("click", handleConfirmClick);
   };
