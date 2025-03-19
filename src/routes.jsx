@@ -6,11 +6,11 @@ import {
 } from "react-router-dom";
 
 import Register from "./pages/Register/Register";
-import Home from "./pages/Home/Home";
+import Users from "./pages/Users/Users";
 import Login from "./pages/Login/Login";
 
 function AppRoutes() {
-  const isAuthenticated = !!sessionStorage.getItem("token"); // Example check for authentication
+  const isAuthenticated = !!sessionStorage.getItem("token");
 
   return (
     <Router>
@@ -18,11 +18,11 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route
           path="/"
-          element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <Users /> : <Navigate to="/login" />}
         />
         <Route
-          path="/home"
-          element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
+          path="/users"
+          element={isAuthenticated ? <Users /> : <Navigate to="/login" />}
         />
         <Route
           path="/register"
