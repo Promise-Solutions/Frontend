@@ -28,6 +28,26 @@ function AppRoutes() {
           path="/register"
           element={isAuthenticated ? <Register /> : <Navigate to="/login" />}
         />
+        <Route
+          path="/bar"
+          element={isAuthenticated ? <Register /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/dashboard"
+          element={isAuthenticated ? <Register /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/reports"
+          element={isAuthenticated ? <Register /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/projects"
+          element={isAuthenticated ? <Register /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/jobs"
+          element={isAuthenticated ? <Register /> : <Navigate to="/login" />}
+        />
       </Routes>
     </Router>
   );

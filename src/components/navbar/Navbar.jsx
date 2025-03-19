@@ -1,40 +1,37 @@
-import { useEffect } from "react";
-import logo from "../../assets/logo-branco-bg-sonoro.png";
+import { useNavbarLogic, generateTabItems } from "./Navbar.script.js"; // Importa lógica e gerador de abas
+import logo from "../../assets/logo-branco-bg-sonoro.png"; // Importa o logo
 
+// Componente funcional Navbar
 const Navbar = () => {
-  useEffect(() => {
-    const button = document.querySelector(".navBarBtn");
-    button.addEventListener("click", () => {
-      window.location.href = "/login";
-    });
-  }, []);
+  // Usa o hook personalizado para obter estados e funções
+  const { activeTab, handleTabClick, handleLogout } = useNavbarLogic();
 
   return (
     <div className="navbar bg-black border-b-white border-1 flex justify-between items-center">
-      <img
+            <img
         src={logo}
         alt="Studio Zero"
         className="w-[156px] h-[79px] ml-[64px]"
       />
+      {/* Lista de abas do Navbar */}
       <ul className="flex justify-between gap-6 w-[350px] items-center h-full text-white font-medium">
-        <li className="cursor-pointer px-3 py-2 hover:text-[#9A3379] border-b-1 border-b-[#9A3379] transition duration-100">
-          Usuários
-        </li>
-        <li className="cursor-pointer hover:text-[#9A3379] transition duration-100">
-          Bar
-        </li>
-        <li className="cursor-pointer hover:text-[#9A3379] transition duration-100">
-          Dashboard
-        </li>
-        <li className="cursor-pointer hover:text-[#9A3379] transition duration-100">
-          Relatórios
-        </li>
+        {generateTabItems(activeTab, handleTabClick)} 
+        {/* 
+          Gera os itens dinamicamente:
+          - `activeTab`: Determina qual aba está ativa para aplicar estilos.
+          - `handleTabClick`: Callback para tratar cliques nas abas.
+        */}
       </ul>
-      <button className="navBarBtn text-[cyan] font-medium bd-[cyan] border-2 cursor-pointer mx-4 mr-[64px] py-4 px-7 inline-block transition duration-500">
-        Sair do Usuário
+      {/* Botão de logout */}
+      <button
+        id="logout_button_id"
+        className="navBarBtn text-[cyan] font-medium bd-[cyan] border-2 cursor-pointer mx-4 mr-[64px] py-4 px-7 inline-block transition duration-500"
+        onClick={handleLogout}
+      >
+        Sair do Usuário {/* Texto exibido no botão */}
       </button>
     </div>
   );
 };
 
-export default Navbar;
+export default Navbar; // Exporta o componente para uso em outros lugares
