@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import Input from "../../components/form/Input";
 import SubmitButton from "../../components/form/SubmitButton";
 import Background from "../../assets/background-login.png";
@@ -21,12 +22,10 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:5000/usuarios", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((usuarios) => {
+    axios
+      .get("http://localhost:5000/usuarios")
+      .then((response) => {
+        const usuarios = response.data;
         console.log("Usuários encontrados:", usuarios);
 
         const usuarioEncontrado = usuarios.find(

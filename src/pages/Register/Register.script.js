@@ -1,5 +1,6 @@
-export function setupRegisterEvents() {
+import axios from "axios";
 
+export function setupRegisterEvents() {
   // Pegando os elementos do formulário
   const iptNome = document.querySelector("#nome");
   const iptEmail = document.querySelector("#email");
@@ -49,8 +50,8 @@ export function setupRegisterEvents() {
 
   // Verificando se o token é único
   const isTokenUnique = async (token) => {
-    const response = await fetch("http://localhost:5000/usuarios");
-    const users = await response.json();
+    const response = await axios.get("http://localhost:5000/usuarios");
+    const users = response.data;
     return !users.some((user) => user.token === token);
   };
 
@@ -71,24 +72,24 @@ export function setupRegisterEvents() {
       token: token,
     };
 
-    fetch("http://localhost:5000/usuarios", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(novoUsuario),
-    })
-      .then((res) => {
-        if (res.ok) {
-          alert("Cadastro realizado com sucesso!");
-          iptNome.value = "";
-          iptCpf.value = "";
-          iptEmail.value = "";
-          iptTelefone.value = "";
-          iptSenha.value = "";
-        } else {
-          alert("Erro ao cadastrar usuários.");
-        }
-      })
-      .catch((error) => console.log("Erro:", error));
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/usuarios",
+        novoUsuario
+      );
+      if (res.status === 201) {
+        alert("Cadastro realizado com sucesso!");
+        iptNome.value = "";
+        iptCpf.value = "";
+        iptEmail.value = "";
+        iptTelefone.value = "";
+        iptSenha.value = "";
+      } else {
+        alert("Erro ao cadastrar usuários.");
+      }
+    } catch (error) {
+      console.log("Erro:", error);
+    }
   };
 
   // Lógica de evento de clique no botão de confirmação, removemos a ação no return la embaixo

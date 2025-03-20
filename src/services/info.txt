@@ -1,2 +1,0 @@
-Vamos utilizar essa pasta, para criar elementos que utilizam de apis externas,
-como por exemplo mapas, IA, buscacep e pagamentos.

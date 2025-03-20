@@ -54,9 +54,9 @@ export const generateTabItems = (activeTab, handleTabClick) =>
       {
         key: id, // Chave única para cada item (necessário para listas no React)
         id: `${id}_id`, // Define um ID único para o elemento
-        className: `cursor-pointer hover:text-[#9A3379] transition duration-100 py-2 px-3 ${
-          activeTab === `/${id}` ? "border-b border-[#9A3379] pb-2" : ""
-        }`, // Aplica estilos dinâmicos com base na aba ativa
+        className: `cursor-pointer hover:text-[#9A3379] hover:pb-[20px] transition-all duration-100 ease-in-out py-2 px-3 ${
+          activeTab === `/${id}` ? "border-b border-[#9A3379]" : ""
+        }`, // Remove manipulação direta de transição e confia no CSS
         onClick: () => handleTabClick(id), // Define o evento de clique para a aba
       },
       name // Conteúdo do <li> é o nome da aba

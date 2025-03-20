@@ -8,6 +8,11 @@ import {
 import Register from "./pages/Register/Register";
 import Users from "./pages/Users/Users";
 import Login from "./pages/Login/Login";
+import Bar from "./pages/Bar/Bar";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Reports from "./pages/Reports/Reports";
+import Projects from "./pages/Projects/Projects";
+import Jobs from "./pages/Jobs/Jobs";
 
 function AppRoutes() {
   const isAuthenticated = !!sessionStorage.getItem("token");
@@ -30,23 +35,23 @@ function AppRoutes() {
         />
         <Route
           path="/bar"
-          element={isAuthenticated ? <Register /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <Bar /> : <Navigate to="/login" />}
         />
         <Route
           path="/dashboard"
-          element={isAuthenticated ? <Register /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
         />
         <Route
           path="/reports"
-          element={isAuthenticated ? <Register /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <Reports /> : <Navigate to="/login" />}
         />
         <Route
           path="/projects"
-          element={isAuthenticated ? <Register /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <Projects /> : <Navigate to="/login" />}
         />
         <Route
           path="/jobs"
-          element={isAuthenticated ? <Register /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <Jobs /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>
