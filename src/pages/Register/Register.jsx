@@ -3,7 +3,6 @@ import { setupRegisterEvents } from "./Register.script.js";
 import Input from "../../components/form/Input";
 import SubmitButton from "../../components/form/SubmitButton";
 import logo from "../../assets/logo-branco-bg-sonoro.png";
-import Background from "../../assets/background-login.png";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -27,7 +26,6 @@ function Register() {
   return (
     <main
       className="flex items-center justify-center min-h-screen w-full"
-      style={{ background: `url(${Background}) no-repeat center center/cover` }}
     >
       <section className="flex flex-col items-center justify-start gap-6 w-full px-4 py-8">
         <img src={logo} alt="logo-studio-zero-header" className="h-[250px]" />

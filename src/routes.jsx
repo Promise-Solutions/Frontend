@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Reports from "./pages/Reports/Reports";
 import Projects from "./pages/Projects/Projects";
 import Jobs from "./pages/Jobs/Jobs";
+import Home from "./pages/Home/Home";
 
 function AppRoutes() {
   const isAuthenticated = !!sessionStorage.getItem("token");
@@ -20,11 +21,15 @@ function AppRoutes() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
         <Route
           path="/"
-          element={isAuthenticated ? <Users /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
         />
+        <Route
+          path="/home"
+          element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
+        />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/users"
           element={isAuthenticated ? <Users /> : <Navigate to="/login" />}

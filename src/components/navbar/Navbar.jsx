@@ -7,8 +7,9 @@ const Navbar = () => {
   const { activeTab, handleTabClick, handleLogout } = useNavbarLogic();
 
   return (
-    <div className="navbar bg-black bg-gradient-to-r from-[#9A337933] via-[#00000033] to-[#00EFFF33] border-b-white border border-solid flex justify-between items-center">
+    <div className="navbar bg-[transparent] border-b-white border border-solid flex justify-between items-center cursor-pointer">
       <img
+        id="logo_id"
         src={logo}
         alt="Studio Zero"
         className="w-[156px] h-[79px] ml-[64px]"

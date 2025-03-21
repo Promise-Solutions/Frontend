@@ -64,3 +64,12 @@ export const generateTabItems = (activeTab, handleTabClick) =>
       name // Conteúdo do <li> é o nome da aba
     )
   );
+
+const waitForLogo = () => {
+  const logo = document.getElementById("logo_id");
+  logo.addEventListener("click", () => {
+    window.location.href = "/";
+  });
+};
+
+setTimeout(waitForLogo, 200); // Retry after 100ms

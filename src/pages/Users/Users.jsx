@@ -1,5 +1,4 @@
 // import BackgroundVideo from "../../assets/users_background.mp4";
-import Background from "../../assets/background-login.png";
 
 const Users = () => {
   return (
@@ -11,7 +10,7 @@ const Users = () => {
         loop
         muted
       /> */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen bg-black" style={{ background: `url(${Background}) no-repeat center center/cover` }}>
+      <div className="relative z-10 flex items-center justify-center">
         <h1 className="text-blue-500">Welcome to the Users page!</h1>
       </div>
     </div>
