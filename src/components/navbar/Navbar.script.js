@@ -54,9 +54,11 @@ export const generateTabItems = (activeTab, handleTabClick) =>
       {
         key: id, // Chave única para cada item (necessário para listas no React)
         id: `${id}_id`, // Define um ID único para o elemento
-        className: `cursor-pointer hover:text-[#9A3379] hover:pb-[20px] transition-all duration-100 ease-in-out py-2 px-3 ${
-          activeTab === `/${id}` ? "border-b border-[#9A3379]" : ""
-        }`, // Remove manipulação direta de transição e confia no CSS
+        className: `cursor-pointer hover:text-[#9A3379] hover:pb-[20px] transition-all duration-100 ease-in-out py-2 px-3 relative ${
+          activeTab === `/${id}`
+            ? "after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#9A3379] after:transition-all after:duration-100 after:ease-in-out after:w-full"
+            : "hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-0 hover:after:h-[2px] hover:after:bg-[#9A3379] hover:after:transition-all hover:after:duration-100 hover:after:ease-in-out hover:after:w-full"
+        }`, // Corrige a animação para width 0% -> 100%
         onClick: () => handleTabClick(id), // Define o evento de clique para a aba
       },
       name // Conteúdo do <li> é o nome da aba

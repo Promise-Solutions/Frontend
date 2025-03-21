@@ -13,6 +13,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Roboto", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"], // Adiciona a fonte Poppins
       },
       screens: {
         xs: "480px",
@@ -25,4 +26,9 @@ module.exports = {
     },
   },
   plugins: [],
+  variants: {
+    extend: {
+      after: ["hover", "focus"], // Habilita pseudo-elementos como `after` para hover e focus
+    },
+  },
 };

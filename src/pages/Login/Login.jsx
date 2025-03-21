@@ -50,7 +50,7 @@ const Login = () => {
       style={{ background: `url(${Background}) no-repeat center center/cover` }}
     >
       <div
-        className="box border-1 border-[#9A3379] flex justify-center items-center flex-col pb-32 pt-4 px-28"
+        className="box border border-solid border-[#9A3379] flex justify-center items-center flex-col pb-32 pt-4 px-28"
         style={{ boxShadow: "4px 4px 10px rgba(154, 51, 121, 0.3)" }}
       >
         <h1
