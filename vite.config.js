@@ -1,12 +1,15 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
-import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "vite"; // Importa a função para definir a configuração do Vite
+import react from "@vitejs/plugin-react-swc"; // Plugin para suporte ao React com SWC
+import tailwindcss from "@tailwindcss/vite"; // Plugin para integração com Tailwind CSS
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(), // Adiciona suporte ao React
+    tailwindcss(), // Adiciona suporte ao Tailwind CSS
+  ],
   server: {
-    open: true,
-    port: 3000
-  }
+    open: true, // Abre o navegador automaticamente ao iniciar o servidor
+    port: 3000, // Define a porta do servidor de desenvolvimento
+  },
 });

@@ -1,26 +1,27 @@
 import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
+  BrowserRouter as Router, // Componente para gerenciar rotas
+  Routes, // Contêiner para as rotas
+  Route, // Define uma rota específica
+  Navigate, // Redireciona para outra rota
 } from "react-router-dom";
 
-import Register from "./pages/Register/Register";
-import Users from "./pages/Users/Users";
-import Login from "./pages/Login/Login";
-import Bar from "./pages/Bar/Bar";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import Reports from "./pages/Reports/Reports";
-import Projects from "./pages/Projects/Projects";
-import Jobs from "./pages/Jobs/Jobs";
-import Home from "./pages/Home/Home";
+import Register from "./pages/Register/Register"; // Página de registro
+import Users from "./pages/Users/Users"; // Página de usuários
+import Login from "./pages/Login/Login"; // Página de login
+import Bar from "./pages/Bar/Bar"; // Página do bar
+import Dashboard from "./pages/Dashboard/Dashboard"; // Página do dashboard
+import Reports from "./pages/Reports/Reports"; // Página de relatórios
+import Projects from "./pages/Projects/Projects"; // Página de projetos
+import Jobs from "./pages/Jobs/Jobs"; // Página de trabalhos
+import Home from "./pages/Home/Home"; // Página inicial
 
 function AppRoutes() {
-  const isAuthenticated = !!sessionStorage.getItem("token");
+  const isAuthenticated = !!sessionStorage.getItem("token"); // Verifica se o usuário está autenticado
 
   return (
     <Router>
       <Routes>
+        {/* Rotas protegidas redirecionam para login se o usuário não estiver autenticado */}
         <Route
           path="/"
           element={isAuthenticated ? <Home /> : <Navigate to="/login" />}

@@ -1,3 +1,5 @@
+// Importando fontes do Google para tipografia consistente em toda a aplicação
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
+// Importando TailwindCSS para estilização baseada em utilitários
 @import "tailwindcss";
