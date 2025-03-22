@@ -101,6 +101,7 @@ export function setupRegisterEvents() {
 
   // Tratamento do campo de CPF
   iptCpf.addEventListener("keydown", (event) => {
+    if (event.key === "Tab") return; // Allow Tab key for navigation
     let value = iptCpf.value.replace(/\D/g, "");
     if (value.length >= 11 && event.key !== "Backspace") {
       event.preventDefault();
@@ -120,6 +121,7 @@ export function setupRegisterEvents() {
 
   // Tratamento do campo de telefone
   iptTelefone.addEventListener("keydown", (event) => {
+    if (event.key === "Tab") return; // Allow Tab key for navigation
     let value = iptTelefone.value.replace(/\D/g, "");
     if (value.length >= 11 && event.key !== "Backspace") {
       event.preventDefault();

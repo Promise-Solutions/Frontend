@@ -7,31 +7,75 @@
       "email": "teste@teste.com",
       "telefone": "(12) 31231-2312",
       "senha": "12345678",
-      "tipo": "socio",
       "categoria": "podcast",
+      "tipo": "cliente",
       "token": "gRJxmVn7bVCGLXGn"
     },
     {
-      "id": 2,
-      "nome": "Gustavo",
-      "cpf": "123.123.123-12",
-      "email": "gustavo@gmail.com",
+      "nome": "Rodolfo",
+      "cpf": "123.123.213-13",
+      "email": "rodolfo@rodolfo.com",
       "telefone": "(12) 31231-2312",
       "senha": "12345678",
-      "cargo": "cliente",
-      "categoria": "ensaio musical",
-      "token": "RbNEmYK2snnCGQTh"
+      "categoria": "podcast",
+      "tipo": "interno",
+      "token": "10Ra3HW4u7ZaFUOW",
+      "id": 2
     },
     {
-      "id": 3,
-      "nome": "Gustavo",
-      "cpf": "123.123.123-12",
-      "email": "gustavo@gmail.com",
+      "nome": "Artur",
+      "cpf": "123.123.131-23",
+      "email": "artur@artur.com",
       "telefone": "(12) 31231-2312",
       "senha": "12345678",
-      "cargo": "cliente",
-      "categoria": "audiovisual",
-      "token": "RbNEmYK2snnCGQTh"
+      "categoria": "podcast",
+      "tipo": "interno",
+      "token": "nTrLmmQdVN5xc6X2",
+      "id": 3
+    },
+    {
+      "nome": "Iago",
+      "cpf": "123.123.123-13",
+      "email": "iago@iago.com",
+      "telefone": "(23) 12312-3213",
+      "senha": "12345678",
+      "categoria": "podcast",
+      "tipo": "interno",
+      "token": "ogaMD0dS7pViKyXP",
+      "id": 4
+    },
+    {
+      "nome": "Cindy",
+      "cpf": "121.312.312-31",
+      "email": "cindy@cindy.com",
+      "telefone": "(21) 31231-2321",
+      "senha": "12345678",
+      "categoria": "podcast",
+      "tipo": "interno",
+      "token": "GkITzSMvuPySthY4",
+      "id": 5
+    },
+    {
+      "nome": "Gustavo",
+      "cpf": "111.321.312-31",
+      "email": "gustavo@gustavo.com",
+      "telefone": "(21) 31231-2321",
+      "senha": "12345678",
+      "categoria": "podcast",
+      "tipo": "interno",
+      "token": "GkITzSMvuPySthY4",
+      "id": 6
+    },
+    {
+      "nome": "Testando",
+      "cpf": "121.312.312-31",
+      "email": "testando@testando.com",
+      "telefone": "(21) 31231-2321",
+      "senha": "12345678",
+      "categoria": "podcast",
+      "tipo": "cliente",
+      "token": "GkITzSMvuPySthY4",
+      "id": 7
     }
   ]
 }

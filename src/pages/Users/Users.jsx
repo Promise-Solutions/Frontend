@@ -1,11 +1,34 @@
 // Importa os componentes necessários
-import UserFilter from "../../components/userFilter/userFilter";
-import UserTypeFilter from "../../components/userTypeFilter/userTypeFilter";
+import UserFilter from "../../components/userFilter/UserFilter";
+import UserTypeFilter from "../../components/userTypeFilter/UserTypeFilter";
 import PrimaryButton from "../../components/primaryButton/primaryButton";
-import CardUser from "../../components/cardUser/CardUser";
+import { registerRedirect, renderUsers } from "./Users.script";
+import { useEffect, useRef, useState } from "react";
 
 // Componente funcional para a página de gerenciamento de usuários
 const Users = () => {
+  const [userElements, setUserElements] = useState([]); // Estado para armazenar os elementos renderizados
+  const [filterType, setFilterType] = useState("cliente"); // Estado para o tipo de filtro
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
+
+  useEffect(() => {
+    const fetchAndRenderUsers = async () => {
+      const elements = await renderUsers(filterType); // Renderiza usuários com base no tipo
+      setUserElements(elements); // Atualiza o estado com os elementos renderizados
+    };
+
+    fetchAndRenderUsers();
+  }, [filterType]); // Atualiza ao mudar o filtro
+
+  const handleSearch = (term) => {
+    setSearchTerm(term.toUpperCase()); // Atualiza o termo de busca
+  };
+
+  const filteredUserElements = userElements.filter((element) => {
+    const name = element.props.name.toUpperCase(); // Garante que o nome seja comparado em maiúsculas
+    return name.includes(searchTerm); // Filtra os elementos com base no termo de busca
+  });
+
   return (
     <div className="min-w-full min-h-full text-white pb-40">
       {/* Seção de cabeçalho com título e botão */}
@@ -17,130 +40,38 @@ const Users = () => {
           </p>
         </div>
         {/* Botão para cadastrar um novo usuário */}
-        <PrimaryButton text="Cadastrar Usuário" />
+        <PrimaryButton
+          id="register_button"
+          text="Cadastrar Usuário"
+          onClick={registerRedirect}
+        />
       </section>
 
       {/* Seção principal com filtros e cards */}
       <section className="px-16 mt-16">
         {/* Filtro de busca de usuários */}
         <div className="flex">
-          <UserFilter placeholder="Busque um Usuário" />
+          <UserFilter
+            id="input_search_user"
+            placeholder="Busque um Usuário"
+            onSearch={handleSearch} // Passa a função de busca
+          />
         </div>
 
         {/* Filtros por tipo de usuário e exibição de cards */}
         <div className="flex justify-center flex-col mt-4">
           {/* Filtro por tipo de usuário (Clientes ou Internos) */}
-          <UserTypeFilter />
+          <UserTypeFilter onFilterChange={setFilterType} />{" "}
+          {/* Atualiza o filtro */}
           {/* Espaço reservado para os cards de usuários */}
-          <div className="gap-6 flex flex-wrap justify-center mt-12 h-[600px] overflow-y-auto">
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
-            <CardUser
-              name="Teste"
-              category="Podcast"
-              telefone="(12) 31231-2312"
-              email="teste@teste.com"
-            />
+          <div className="gap-6 flex flex-wrap justify-center mt-12 max-h-[600px] overflow-y-auto w-full h-auto">
+            {filteredUserElements.length > 0 ? (
+              filteredUserElements
+            ) : (
+              <p className="text-center text-gray-400">
+                Nenhum usuário encontrado.
+              </p>
+            )}
           </div>
         </div>
       </section>

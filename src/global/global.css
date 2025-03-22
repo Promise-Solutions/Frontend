@@ -10,6 +10,7 @@
 * {
   scrollbar-width: thin; /* Aplica estilização personalizada */
   scrollbar-color: var(--pink) black; /* Fundo transparente */
+  scroll-behavior: smooth; /* Adiciona suavidade ao scroll */
 }
 
 *::-webkit-scrollbar {
