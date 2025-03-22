@@ -2,11 +2,12 @@
 import UserFilter from "../../components/userFilter/userFilter";
 import UserTypeFilter from "../../components/userTypeFilter/userTypeFilter";
 import PrimaryButton from "../../components/primaryButton/primaryButton";
+import CardUser from "../../components/cardUser/CardUser";
 
 // Componente funcional para a página de gerenciamento de usuários
 const Users = () => {
   return (
-    <div className="min-w-full min-h-full text-white">
+    <div className="min-w-full min-h-full text-white pb-40">
       {/* Seção de cabeçalho com título e botão */}
       <section className="flex justify-center items-center mt-28">
         <div className="mr-10">
@@ -31,7 +32,116 @@ const Users = () => {
           {/* Filtro por tipo de usuário (Clientes ou Internos) */}
           <UserTypeFilter />
           {/* Espaço reservado para os cards de usuários */}
-          <div className="flex flex-wrap justify-center gap-4">Cards</div>
+          <div className="gap-6 flex flex-wrap justify-center mt-12 h-[600px] overflow-y-auto">
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+            <CardUser
+              name="Teste"
+              category="Podcast"
+              telefone="(12) 31231-2312"
+              email="teste@teste.com"
+            />
+          </div>
         </div>
       </section>
     </div>

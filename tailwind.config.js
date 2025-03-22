@@ -28,10 +28,11 @@ module.exports = {
       },
     },
   },
-  plugins: [], // Plugins adicionais podem ser adicionados aqui
+  plugins: [require("tailwind-scrollbar")],
   variants: {
     extend: {
       after: ["hover", "focus"], // Habilita pseudo-elementos como `after` para hover e focus
+      scrollbar: ["rounded"], // Permite bordas arredondadas no scroll
     },
   },
 };

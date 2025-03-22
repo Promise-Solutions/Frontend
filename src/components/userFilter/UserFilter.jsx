@@ -3,6 +3,17 @@ import icon from "../../assets/icone-busca.png";
 
 const userFilter = ({ placeholder }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const [value, setValue] = useState(""); // Estado para o valor do input
+
+  const handleInputChange = (e) => {
+    setValue(e.target.value); // Atualiza o estado com o valor do input
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Backspace" || e.key === "Delete") {
+      setValue((prev) => prev.slice(0, -1)); // Remove o último caractere
+    }
+  };
 
   return (
     <div
@@ -16,6 +27,9 @@ const userFilter = ({ placeholder }) => {
         type="text"
         placeholder={placeholder}
         className="outline-none"
+        value={value} // Vincula o valor do input ao estado
+        onChange={handleInputChange} // Atualiza o valor ao digitar
+        onKeyDown={handleKeyDown} // Garante que backspace funcione
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />

@@ -1,22 +1,37 @@
 {
   "usuarios": [
     {
+      "id": 1,
       "nome": "Teste",
       "cpf": "123.123.123-12",
       "email": "teste@teste.com",
       "telefone": "(12) 31231-2312",
       "senha": "12345678",
-      "token": "gRJxmVn7bVCGLXGn",
-      "id": 1
+      "tipo": "socio",
+      "categoria": "podcast",
+      "token": "gRJxmVn7bVCGLXGn"
     },
     {
+      "id": 2,
       "nome": "Gustavo",
       "cpf": "123.123.123-12",
       "email": "gustavo@gmail.com",
       "telefone": "(12) 31231-2312",
       "senha": "12345678",
-      "token": "RbNEmYK2snnCGQTh",
-      "id": 2
+      "cargo": "cliente",
+      "categoria": "ensaio musical",
+      "token": "RbNEmYK2snnCGQTh"
+    },
+    {
+      "id": 3,
+      "nome": "Gustavo",
+      "cpf": "123.123.123-12",
+      "email": "gustavo@gmail.com",
+      "telefone": "(12) 31231-2312",
+      "senha": "12345678",
+      "cargo": "cliente",
+      "categoria": "audiovisual",
+      "token": "RbNEmYK2snnCGQTh"
     }
   ]
 }
