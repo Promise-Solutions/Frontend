@@ -37,7 +37,7 @@ function AppRoutes() {
           element={isAuthenticated ? <Users /> : <Navigate to="/login" />}
         />
         <Route
-          path="/user"
+          path="/user/:user"
           element={isAuthenticated ? <User /> : <Navigate to="/login" />}
         />
         <Route

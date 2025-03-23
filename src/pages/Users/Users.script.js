@@ -3,7 +3,6 @@ import React from "react";
 import CardUser from "../../components/cardUser/CardUser.jsx";
 import { startFetching, stopFetching } from "../../hooks/isFetching";
 
-
 export const registerRedirect = () => {
   window.location.href = "/register";
 };
@@ -39,7 +38,7 @@ export const renderUsers = async (filterType) => {
       telefone: user.telefone,
       email: user.email,
       onClick: () => {
-        window.location.href = `/user?user=${user.token}`; // Redirect to the new path
+        window.location.href = `/user/${user.token}`; // Atualiza o redirecionamento para o novo formato
       },
     })
   );

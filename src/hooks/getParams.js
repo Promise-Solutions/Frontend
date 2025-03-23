@@ -7,7 +7,11 @@ const getQueryParams = (queryString) => {
   return result;
 };
 
+export const getDynamicParams = () => {
+  const pathSegments = window.location.pathname.split("/").filter(Boolean); // Divide o caminho e remove segmentos vazios
+  return { user: pathSegments[1] }; // Assume que o token está no segundo segmento
+};
+
 export const getParams = () => {
-  const param = getQueryParams(window.location.search);
-  return param;
+  return getQueryParams(window.location.search); // Retorna parâmetros de chave
 };
