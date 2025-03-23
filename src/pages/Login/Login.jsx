@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Input from "../../components/form/Input";
-import SubmitButton from "../../components/form/SubmitButton";
+import SubmitButton from "../../components/Form/SubmitButton";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", senha: "" });

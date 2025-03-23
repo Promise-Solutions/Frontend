@@ -3,7 +3,7 @@ import UserFilter from "../../components/userFilter/UserFilter";
 import UserTypeFilter from "../../components/userTypeFilter/UserTypeFilter";
 import PrimaryButton from "../../components/primaryButton/primaryButton";
 import { registerRedirect, renderUsers } from "./Users.script";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Componente funcional para a página de gerenciamento de usuários
 const Users = () => {
@@ -11,9 +11,13 @@ const Users = () => {
   const [filterType, setFilterType] = useState("cliente"); // Estado para o tipo de filtro
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
 
+  const handleCardClick = (key) => {
+    console.log("Card clicked with key:", key); // Log the key or handle it as needed
+  };
+
   useEffect(() => {
     const fetchAndRenderUsers = async () => {
-      const elements = await renderUsers(filterType); // Renderiza usuários com base no tipo
+      const elements = await renderUsers(filterType, handleCardClick); // Pass the callback
       setUserElements(elements); // Atualiza o estado com os elementos renderizados
     };
 

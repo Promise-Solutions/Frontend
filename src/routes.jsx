@@ -14,6 +14,7 @@ import Reports from "./pages/Reports/Reports"; // Página de relatórios
 import Projects from "./pages/Projects/Projects"; // Página de projetos
 import Jobs from "./pages/Jobs/Jobs"; // Página de trabalhos
 import Home from "./pages/Home/Home"; // Página inicial
+import User from "./pages/User/User"; // Página de usuário
 
 function AppRoutes() {
   const isAuthenticated = !!sessionStorage.getItem("token"); // Verifica se o usuário está autenticado
@@ -34,6 +35,10 @@ function AppRoutes() {
         <Route
           path="/users"
           element={isAuthenticated ? <Users /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/user"
+          element={isAuthenticated ? <User /> : <Navigate to="/login" />}
         />
         <Route
           path="/register"

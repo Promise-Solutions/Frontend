@@ -1,5 +1,5 @@
 import AppRoutes from "./routes";
-import Navbar from "./components/navbar/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 import Background from "./assets/background.png";
 
 function App() {
