@@ -37,7 +37,7 @@ const Login = () => {
           sessionStorage.setItem("token", usuarioEncontrado.token);
           toast.success("Usuário autenticado com sucesso!");
 
-          //N é o ideal, mas como a tela precisa ser atualizada, pro toast aparecer tem q ter um tempin
+          //N é o ideal, mas como a tela precisa ser atualizada, pro toast aparecer tem q ter um tempo
           setTimeout(() => {
             window.location.href = "/home";
           }, 1500);
