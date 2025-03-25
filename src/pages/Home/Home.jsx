@@ -29,7 +29,7 @@ const Home = () => {
         Sair do Usuário
       </button>
       <img src={Logo} className="h-[170px]" />
-      <section className="flex w-[95vw] h-[65%] flex items-center justify-between">
+      <section className="flex w-[95vw] h-[65%] items-center justify-between">
         <CardHomePage title="Gerencie seus usuários" text="Gerencie seus usuários, atendimentos e tarefas" url={UserIcon} idButton="users" />
         <CardHomePage title="Bar" text="Visualize e gerencie as comandas e pedidos dos seus clientes" url={BarIcon} idButton="bar" />
         <CardHomePage  title="Dashboard" text="Acompanhe dados, métricas e tendências em tempo real" url={DashIcon} idButton="dashboard" />

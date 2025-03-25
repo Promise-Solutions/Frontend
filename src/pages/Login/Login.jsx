@@ -3,7 +3,6 @@ import axios from "axios";
 import Input from "../../components/form/Input";
 import SubmitButton from "../../components/Form/SubmitButton";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", senha: "" });
