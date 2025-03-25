@@ -4,6 +4,9 @@ import UserTypeFilter from "../../components/userTypeFilter/UserTypeFilter";
 import PrimaryButton from "../../components/primaryButton/primaryButton";
 import { registerRedirect, renderUsers } from "./Users.script";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useUserContext } from "../../context/UserContext";
 
 // Componente funcional para a página de gerenciamento de usuários
 const Users = () => {
@@ -11,18 +14,35 @@ const Users = () => {
   const [filterType, setFilterType] = useState("cliente"); // Estado para o tipo de filtro
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
 
-  const handleCardClick = (key) => {
-    console.log("Card clicked with key:", key); // Log the key or handle it as needed
-  };
+  const { findUsers, setUserToken } = useUserContext(); // Exportação do contexto
+  const navigate = useNavigate(); //Navigate para navegatação, ele não atualiza a página
 
+  // const handleCardClick = (key) => {
+  //   console.log("Card clicked with key:", key); // Log the key or handle it as needed
+  // };
+
+  // useEffect(() => {
+  //   const fetchAndRenderUsers = async () => {
+  //     const elements = await renderUsers(filterType, handleCardClick); // Pass the callback
+  //     setUserElements(elements);
+  //   };
+
+  //   fetchAndRenderUsers();
+  // }, [filterType]);
+
+  // A diferença desse useEffect é q eu passo a função de findUsers invés de handleCardClick
   useEffect(() => {
-    const fetchAndRenderUsers = async () => {
-      const elements = await renderUsers(filterType, handleCardClick); // Pass the callback
-      setUserElements(elements); // Atualiza o estado com os elementos renderizados
+    const fetchAndRender = async () => {
+      const elements = await renderUsers(
+        filterType,
+        findUsers,
+        setUserToken,
+        navigate
+      );
+      setUserElements(elements);
     };
-
-    fetchAndRenderUsers();
-  }, [filterType]); // Atualiza ao mudar o filtro
+    fetchAndRender();
+  }, [filterType]);
 
   const handleSearch = (term) => {
     setSearchTerm(term.toUpperCase()); // Atualiza o termo de busca
@@ -54,7 +74,7 @@ const Users = () => {
       {/* Seção principal com filtros e cards */}
       <section className="px-16 mt-16">
         {/* Filtro de busca de usuários */}
-        <div className="flex">
+        <div className="flex text-gray-400">
           <UserFilter
             id="input_search_user"
             placeholder="Busque um Usuário"

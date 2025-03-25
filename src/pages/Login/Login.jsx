@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Input from "../../components/form/Input";
 import SubmitButton from "../../components/Form/SubmitButton";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", senha: "" });
@@ -34,8 +36,12 @@ const Login = () => {
 
         if (usuarioEncontrado) {
           sessionStorage.setItem("token", usuarioEncontrado.token);
-          alert("Usuário autenticado com sucesso!");
-          window.location.href = "/home";
+          toast.success("Usuário autenticado com sucesso!");
+
+          //N é o ideal, mas como a tela precisa ser atualizada, pro toast aparecer tem q ter um tempin
+          setTimeout(() => {
+            window.location.href = "/home";
+          }, 1500);
         } else {
           alert("Erro ao autenticar. Verifique suas credenciais.");
         }
@@ -44,9 +50,7 @@ const Login = () => {
   };
 
   return (
-    <div
-      className="container text-white min-w-screen min-h-screen flex items-center justify-center"
-    >
+    <div className="container text-white min-w-screen min-h-screen flex items-center justify-center">
       <div
         className="box border border-solid border-[#9A3379] flex justify-center items-center flex-col pb-32 pt-4 px-28"
         style={{ boxShadow: "4px 4px 10px rgba(154, 51, 121, 0.3)" }}

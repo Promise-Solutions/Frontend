@@ -28,7 +28,7 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwind-scrollbar")],
+  plugins: [require("tailwind-scrollbar")], // Plugin para estilizar scrollbars
   variants: {
     extend: {
       after: ["hover", "focus"], // Habilita pseudo-elementos como `after` para hover e focus
