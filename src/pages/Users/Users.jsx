@@ -103,7 +103,7 @@ const Users = () => {
           <UserTypeFilter onFilterChange={setFilterType} />{" "}
           {/* Atualiza o filtro */}
           {/* Espaço reservado para os cards de usuários */}
-          <div className="gap-4 flex flex-wrap justify-center mt-12 max-h-[600px] overflow-y-auto w-full h-auto bg-amber-300">
+          <div className="gap-4 flex flex-wrap justify-center mt-12 max-h-[600px] overflow-y-auto w-full h-auto">
             {filteredUserElements.length > 0 ? (
               filteredUserElements
             ) : (
