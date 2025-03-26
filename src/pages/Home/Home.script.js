@@ -1,4 +1,4 @@
 export const handleLogout = () => {
-    sessionStorage.removeItem("token");
+  localStorage.clear();
     window.location.href = "/login";
   };

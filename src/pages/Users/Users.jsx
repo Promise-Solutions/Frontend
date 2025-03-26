@@ -5,44 +5,59 @@ import PrimaryButton from "../../components/primaryButton/primaryButton";
 import { registerRedirect, renderUsers } from "./Users.script";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import { useUserContext } from "../../context/UserContext";
 
 // Componente funcional para a página de gerenciamento de usuários
 const Users = () => {
   const [userElements, setUserElements] = useState([]); // Estado para armazenar os elementos renderizados
-  const [filterType, setFilterType] = useState("cliente"); // Estado para o tipo de filtro
+  const [filterType, setFilterType] = useState("1"); // Estado para o tipo de filtro
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
+  const [categories, setCategories] = useState([]); // Estado para categorias
 
   const { findUsers, setUserToken } = useUserContext(); // Exportação do contexto
   const navigate = useNavigate(); //Navigate para navegatação, ele não atualiza a página
 
-  // const handleCardClick = (key) => {
-  //   console.log("Card clicked with key:", key); // Log the key or handle it as needed
-  // };
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/categories"); // Use a URL completa se necessário
+        setCategories(response.data);
+      } catch (error) {
+        console.error(
+          "Erro ao buscar categorias:",
+          error.response?.status,
+          error.response?.statusText || error.message
+        );
+      }
+    };
 
-  // useEffect(() => {
-  //   const fetchAndRenderUsers = async () => {
-  //     const elements = await renderUsers(filterType, handleCardClick); // Pass the callback
-  //     setUserElements(elements);
-  //   };
+    fetchCategories();
+  }, []); // Carrega as categorias apenas uma vez
 
-  //   fetchAndRenderUsers();
-  // }, [filterType]);
-
-  // A diferença desse useEffect é q eu passo a função de findUsers invés de handleCardClick
   useEffect(() => {
     const fetchAndRender = async () => {
-      const elements = await renderUsers(
-        filterType,
-        findUsers,
-        setUserToken,
-        navigate
-      );
-      setUserElements(elements);
+      try {
+        const elements = await renderUsers(
+          filterType,
+          findUsers,
+          setUserToken,
+          navigate,
+          categories
+        );
+        setUserElements(elements);
+      } catch (error) {
+        console.error("Erro ao renderizar usuários:", error);
+      }
     };
-    fetchAndRender();
-  }, [filterType]);
+
+    if (categories.length > 0) {
+      fetchAndRender();
+    } else {
+      console.log("Categorias ainda não carregadas."); // Log para depuração
+    }
+  }, [filterType, categories]); // Atualiza quando filterType ou categorias mudam
 
   const handleSearch = (term) => {
     setSearchTerm(term.toUpperCase()); // Atualiza o termo de busca

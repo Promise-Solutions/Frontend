@@ -17,7 +17,7 @@ import Home from "./pages/Home/Home"; // Página inicial
 import User from "./pages/User/User"; // Página de usuário
 
 function AppRoutes() {
-  const isAuthenticated = !!sessionStorage.getItem("token"); // Verifica se o usuário está autenticado
+  const isAuthenticated = !!localStorage.getItem("token"); // Verifica se o usuário está autenticado
 
   return (
     <Router>

@@ -6,9 +6,8 @@ import {
 const UserTypeFilter = ({ onFilterChange }) => {
   const { activeFilter, handleFilterClick, filters } = useUserTypeFilterLogic(); // Usa a lógica importada
 
-  const handleClick = (filter) => {
-    handleFilterClick(filter); // Atualiza o filtro ativo
-    onFilterChange(filter); // Notifica a mudança de filtro
+  const handleClick = (filterValue) => {
+    handleFilterClick(filterValue, onFilterChange); // Pass callback to notify parent
   };
 
   return (

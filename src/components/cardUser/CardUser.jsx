@@ -2,7 +2,7 @@ const CardUser = ({ id, name, category, email, telefone, onClick }) => {
   return (
     <div
       id={`user_${id}`}
-      className="card_user border-2 border-[#9A3379] w-3xs h-auto bg-[#1E1E1E] cursor-pointer hover:border-[cyan] transition duration-100 ease-in-out"
+      className="card_user border-2 border-[#9A3379] w-[18rem] h-auto bg-[#1E1E1E] cursor-pointer hover:border-[cyan] transition duration-100 ease-in-out"
       onClick={onClick} // Trigger the onClick callback
     >
       <div className="pl-4 py-6 text-2xl font-bold">
@@ -11,7 +11,7 @@ const CardUser = ({ id, name, category, email, telefone, onClick }) => {
       <div>
         {/* Divisão */}
         <div className="border-1 border-white"></div>
-        <ul className="pl-8 py-6 text-[16px] list-disc">
+        <ul className="pl-8 pr-4 py-6 text-[16px] list-disc">
           <li>
             <b>Categoria:</b> {category}
           </li>

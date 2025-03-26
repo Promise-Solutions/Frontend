@@ -7,6 +7,8 @@ export function setupRegisterEvents() {
   const iptCpf = document.querySelector("#cpf");
   const iptTelefone = document.querySelector("#telefone");
   const iptSenha = document.querySelector("#senha");
+  const iptCategoria = document.querySelector("#categoria");
+  const iptType = document.querySelector("#tipo");
   const btnConfirm = document.getElementById("btn_form");
 
   // Verificando se os campos existem, tava dando um bug q n tava sendo renderizado
@@ -24,12 +26,15 @@ export function setupRegisterEvents() {
   // Validação de campos
   const validarCampos = () => {
     if (
-      iptNome.value.trim() &&
-      iptCpf.value.length === 14 &&
-      iptEmail.value &&
-      iptTelefone.value.length === 15 &&
-      iptSenha.value >= 8 &&
-      validarEmail()
+      (iptNome.value.trim() &&
+        iptCpf.value.length === 14 &&
+        iptEmail.value &&
+        iptTelefone.value.length === 15 &&
+        iptSenha.value >= 8 &&
+        iptCategoria.value.trim() &&
+        (iptType.value != null ||
+        iptType.value != "") &&
+        validarEmail())
     ) {
       return true;
     }
@@ -68,6 +73,8 @@ export function setupRegisterEvents() {
       cpf: iptCpf.value,
       email: iptEmail.value,
       telefone: iptTelefone.value,
+      categoria: iptCategoria.value,
+      tipo: iptType.value,
       senha: iptSenha.value,
       token: token,
     };
@@ -83,6 +90,8 @@ export function setupRegisterEvents() {
         iptCpf.value = "";
         iptEmail.value = "";
         iptTelefone.value = "";
+        iptCategoria.value = "";
+        iptType.value = "";
         iptSenha.value = "";
       } else {
         alert("Erro ao cadastrar usuários.");

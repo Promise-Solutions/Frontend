@@ -3,7 +3,8 @@ function SubmitButton({ text }) {
     <div className="flex flex-col justify-between w-full sm:w-[48%] md:w-full">
       <button
         id="btn_form"
-        className="text-[cyan] font-medium border border-solid border-[cyan] cursor-pointer py-4 px-7 inline-block transition duration-500"
+        className="secondary-button bg-transparent border-1 border-[cyan] text-[cyan] font-bold py-4 px-8 cursor-pointer relative overflow-hidden transition-all duration-100 
+                 hover:border-[#9A3379] hover:text-[#9A3379]"
       >
         {text}
       </button>

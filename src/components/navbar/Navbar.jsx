@@ -1,5 +1,6 @@
 import { useNavbarLogic, generateTabItems } from "./Navbar.script.js"; // Importa lógica e gerador de abas
 import logo from "../../assets/logo-branco-bg-sonoro.png"; // Importa o logo
+import SecondaryButton from "../SecondaryButton/SecondaryButton.jsx";
 
 // Componente funcional Navbar
 const Navbar = () => {
@@ -24,13 +25,13 @@ const Navbar = () => {
         */}
       </ul>
       {/* Botão de logout */}
-      <button
-        id="logout_button_id"
-        className="navBarBtn text-[cyan] font-medium border border-solid border-[cyan] cursor-pointer mx-4 mr-[64px] py-4 px-7 inline-block hover:text-[#9A3379] hover:border-[#9A3379] transition duration-100"
-        onClick={handleLogout}
-      >
-        Sair do Usuário {/* Texto exibido no botão */}
-      </button>
+      <div className="pr-[64px] py-4">
+        <SecondaryButton
+          id="logout_button_id"
+          text="Sair do Usuário"
+          onClick={handleLogout}
+        />
+      </div>
     </div>
   );
 };
