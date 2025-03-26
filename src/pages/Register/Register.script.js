@@ -69,7 +69,7 @@ export function setupRegisterEvents() {
     } while (!(await isTokenUnique(token)));
 
     const novoUsuario = {
-      nome: iptNome.value,
+      nome: iptNome.value.toUpperCase(),
       cpf: iptCpf.value,
       email: iptEmail.value,
       telefone: iptTelefone.value,

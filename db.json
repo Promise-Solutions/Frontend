@@ -2,7 +2,7 @@
   "usuarios": [
     {
       "id": 1,
-      "nome": "Teste",
+      "nome": "TESTE",
       "cpf": "123.123.123-12",
       "email": "teste@teste.com",
       "telefone": "(12) 31231-2312",
@@ -12,7 +12,7 @@
       "token": "gRJxmVn7bVCGLXGn"
     },
     {
-      "nome": "Rodolfo",
+      "nome": "RODOLFO",
       "cpf": "123.123.213-13",
       "email": "rodolfo@rodolfo.com",
       "telefone": "(12) 31231-2312",
@@ -23,7 +23,7 @@
       "id": 2
     },
     {
-      "nome": "Artur",
+      "nome": "ARTUR",
       "cpf": "123.123.131-23",
       "email": "artur@artur.com",
       "telefone": "(12) 31231-2312",
@@ -34,7 +34,7 @@
       "id": 3
     },
     {
-      "nome": "Iago",
+      "nome": "IAGO",
       "cpf": "123.123.123-13",
       "email": "iago@iago.com",
       "telefone": "(23) 12312-3213",
@@ -45,7 +45,7 @@
       "id": 4
     },
     {
-      "nome": "Cindy",
+      "nome": "CINDY",
       "cpf": "121.312.312-31",
       "email": "cindy@cindy.com",
       "telefone": "(21) 31231-2321",
@@ -56,37 +56,26 @@
       "id": 5
     },
     {
-      "nome": "Gustavo",
-      "cpf": "111.321.312-31",
+      "nome": "GUSTAVO",
+      "cpf": "123.123.123-12",
       "email": "gustavo@gustavo.com",
-      "telefone": "(21) 31231-2321",
-      "senha": "12345678",
-      "categoria": "2",
+      "telefone": "(12) 31231-2321",
+      "categoria": "1",
       "tipo": "2",
-      "token": "GkITzSMvuPySthT5",
+      "senha": "12345678",
+      "token": "HzUQZUCFVPlGEK8l",
       "id": 6
     },
     {
-      "nome": "Testando",
-      "cpf": "121.312.312-31",
-      "email": "testando@testando.com",
-      "telefone": "(21) 31231-2321",
-      "senha": "12345678",
-      "categoria": "1",
+      "nome": "PAULA",
+      "cpf": "123.123.232-13",
+      "email": "paula@paula.com",
+      "telefone": "(31) 23131-3123",
+      "categoria": "2",
       "tipo": "1",
-      "token": "GkITzSMvuPySthT7",
+      "senha": "12345678",
+      "token": "iIUq3rdROzSymYho",
       "id": 7
-    },
-    {
-      "nome": "Teste com tipos",
-      "cpf": "123.123.123-13",
-      "email": "testecomtipo@gmail.com",
-      "telefone": "(12) 31232-1321",
-      "categoria": "3",
-      "tipo": "1",
-      "senha": "12345678",
-      "token": "MRNbuVWCBOMrLppt",
-      "id": 8
     }
   ],
   "categories": [
@@ -95,12 +84,12 @@
       "name": "Podcast"
     },
     {
-      "name": "Ensaio musical ",
-      "id": 2
+      "id": 2,
+      "name": "Ensaio musical"
     },
     {
-      "name": "Estúdio de foto e vídeo ",
-      "id": 3
+      "id": 3,
+      "name": "Estúdio de foto e vídeo"
     }
   ],
   "type": [
@@ -109,8 +98,8 @@
       "name": "Cliente"
     },
     {
-      "name": "Interno",
-      "id": 2
+      "id": 2,
+      "name": "Interno"
     }
   ]
 }

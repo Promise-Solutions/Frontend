@@ -1,5 +1,5 @@
 import React from "react";
-import CardUser from "../../components/cardUser/CardUser.jsx";
+import CardUser from "../../components/CardUser/CardUser.jsx";
 
 export const registerRedirect = () => {
   window.location.href = "/register";

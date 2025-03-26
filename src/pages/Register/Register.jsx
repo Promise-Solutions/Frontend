@@ -14,6 +14,7 @@ function Register() {
     email: "",
     telefone: "",
     categoria: "",
+    tipo: "",
     senha: "",
   });
 
