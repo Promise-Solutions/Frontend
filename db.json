@@ -87,17 +87,6 @@
       "senha": "12345678",
       "token": "MRNbuVWCBOMrLppt",
       "id": 8
-    },
-    {
-      "nome": "Paula",
-      "cpf": "123.131.231-23",
-      "email": "paula@gmail.com",
-      "telefone": "(12) 31231-2313",
-      "categoria": "1",
-      "tipo": "2",
-      "senha": "12345678",
-      "token": "jYPIpOYIIKdQML1o",
-      "id": 9
     }
   ],
   "categories": [
