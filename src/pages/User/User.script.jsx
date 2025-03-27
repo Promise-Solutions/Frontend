@@ -1,14 +1,12 @@
 import axios from "axios";
 import CardUser from "../../components/CardUser/CardUser.jsx";
 import React, { useEffect } from "react";
-import { startFetching, stopFetching } from "../../hooks/isFetching.js";
 import { useUserContext } from "../../context/UserContext.jsx";
 
 export const Teste = () => {
   const { user, setUser, userToken } = useUserContext(); // Agora também usando userToken
 
   useEffect(() => {
-    if (!startFetching()) return;
     if (!userToken) return; // Se não tiver token no contexto, não faz a requisição
 
     axios
@@ -33,9 +31,6 @@ export const Teste = () => {
       })
       .catch((error) => {
         console.log("Erro ao buscar usuário:", error);
-      })
-      .finally(() => {
-        stopFetching();
       });
   }, [userToken]); // Dispara quando o token for setado
 

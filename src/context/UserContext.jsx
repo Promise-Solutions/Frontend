@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
 import axios from "axios";
-import { startFetching, stopFetching } from "../hooks/isFetching";
 
 const UserContext = createContext({});
 
@@ -10,8 +9,6 @@ export function UserProvider({ children }) {
 
   // Função declarada
   async function findUsers(filterType) {
-    if (!startFetching()) return [];
-
     try {
       const response = await axios.get("http://localhost:5000/usuarios");
       const users = response.data;
@@ -24,8 +21,6 @@ export function UserProvider({ children }) {
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
       return [];
-    } finally {
-      stopFetching();
     }
   }
 
