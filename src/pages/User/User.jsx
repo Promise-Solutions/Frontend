@@ -1,4 +1,4 @@
-import { Teste } from "./User.script.jsx";
+import { RenderInfos } from "./User.script.jsx";
 import { useUserContext } from "../../context/UserContext.jsx";
 
 const User = () => {
@@ -8,8 +8,8 @@ const User = () => {
   console.log("User na renderização do cardUser...... ", user);
 
   return (
-    <div className="text-white flex justify-center">
-      <Teste />
+    <div className="text-white flex mx-16">
+      <RenderInfos />
     </div>
   );
 };

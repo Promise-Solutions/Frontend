@@ -1,10 +1,19 @@
 import axios from "axios";
-import CardUser from "../../components/CardUser/CardUser.jsx";
-import React, { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext.jsx";
+import PrimaryButton from "../../components/PrimaryButton/PrimaryButton.jsx";
 
-export const Teste = () => {
+export const RenderInfos = () => {
   const { user, setUser, userToken } = useUserContext(); // Agora também usando userToken
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    // Restaurar currentUser do sessionStorage ao carregar a página
+    const storedUser = sessionStorage.getItem("currentUser");
+    if (storedUser) {
+      setCurrentUser(JSON.parse(storedUser));
+    }
+  }, []); // Executa apenas uma vez ao montar o componente
 
   useEffect(() => {
     if (!userToken) return; // Se não tiver token no contexto, não faz a requisição
@@ -22,10 +31,18 @@ export const Teste = () => {
             const categoryName =
               categories.find((cat) => cat.id === parseInt(userData.categoria))
                 ?.name || "Desconhecida";
-            setUser({ ...userData, categoria: categoryName }); // Salva o nome da categoria no contexto
+            const updatedUser = { ...userData, categoria: categoryName };
+            setUser(updatedUser); // Salva o nome da categoria no contexto
+
+            // Salva as informações no sessionStorage
+            sessionStorage.setItem("currentUser", JSON.stringify(updatedUser));
+            setCurrentUser(updatedUser);
           } catch (error) {
             console.error("Erro ao buscar categorias:", error);
-            setUser({ ...userData, categoria: "Desconhecida" }); // Define como "Desconhecida" em caso de erro
+            const fallbackUser = { ...userData, categoria: "Desconhecida" };
+            setUser(fallbackUser);
+            sessionStorage.setItem("currentUser", JSON.stringify(fallbackUser));
+            setCurrentUser(fallbackUser);
           }
         }
       })
@@ -34,18 +51,36 @@ export const Teste = () => {
       });
   }, [userToken]); // Dispara quando o token for setado
 
-  return user ? (
-    (console.log(user),
-    (
-      <CardUser
-        key={user.token}
-        id={user.id}
-        name={user.nome}
-        category={user.categoria} // Exibe o nome da categoria
-        telefone={user.telefone}
-        email={user.email}
-      />
-    ))
+  return user || currentUser ? (
+    <>
+      <section className="mt-12 flex w-full justify-between">
+        <div className="flex flex-col">
+          <h1 className="text-[42px]">
+            <b>Cliente: </b> {(user || currentUser).nome}
+          </h1>
+          <span className="text-[18px]">Altere as informações</span>
+          <ul className="flex flex-col mt-6 gap-2">
+            <li>
+              <b>Categoria: </b> {(user || currentUser).categoria}
+            </li>
+            <li>
+              <b>Email: </b> {(user || currentUser).email}
+            </li>
+            <li>
+              <b>CPF: </b> {(user || currentUser).cpf}
+            </li>
+            <li>
+              <b>Telefone: </b> {(user || currentUser).telefone}
+            </li>
+            <li>
+              <b>Último Atendimento: </b> data
+            </li>
+          </ul>
+        </div>
+        <PrimaryButton text="Editar Usuário" />
+      </section>
+      <section></section>
+    </>
   ) : (
     <div>Carregando...</div>
   );

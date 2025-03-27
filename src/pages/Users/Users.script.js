@@ -1,5 +1,6 @@
 import React from "react";
 import CardUser from "../../components/CardUser/CardUser.jsx";
+import toast from "react-hot-toast";
 
 export const registerRedirect = () => {
   window.location.href = "/register";
@@ -28,8 +29,28 @@ export const renderUsers = async (
         telefone: user.telefone,
         email: user.email,
         onClick: () => {
-          setUserToken(user.token);
-          navigate(`/user/${user.token}`); // redireciona sem recarregar a página
+          toast.promise(
+            new Promise((resolve) => {
+              setTimeout(() => {
+                setUserToken(user.token);
+                navigate(`/user/${user.token}`);
+                resolve(); // Ensure the promise resolves
+              }, 1000);
+            }),
+            {
+              loading: "Buscando informações.",
+              success: "Informações encontradas.",
+              error: "Erro ao buscar informações.",
+            },
+            {
+              style: {
+                borderRadius: "10px",
+                background: "#333",
+                color: "#fff",
+                border: "solid 1px #9A3379",
+              },
+            }
+          );
         },
       });
     });
