@@ -65,14 +65,65 @@ function Register() {
         autoComplete="off"
         className="flex flex-col items-center gap-10 w-full px-4 py-8"
       >
-        <section className="flex flex-wrap items-center justify-between w-full gap-4">
-          <SelectTypeUser
-            text="Tipo de usuário"
-            name="tipo"
-            options={type}
-            handleOnChange={(e) => handleInputChange(e)}
-            value={formData.tipo}
+        <SelectTypeUser
+          text="Tipo de usuário"
+          name="tipo"
+          options={type}
+          handleOnChange={(e) => handleInputChange(e)}
+          value={formData.tipo}
+        />
+        <section
+          id="form_cliente"
+          className="flex flex-wrap items-center justify-between w-full gap-4"
+        >
+          <Input
+            type="text"
+            text="Nome"
+            name="nome"
+            placeholder="Digite o nome"
+            handleOnChange={handleInputChange}
+            value={formData.nome}
+            maxLength="50"
           />
+          <Input
+            type="email"
+            text="Email"
+            name="email"
+            placeholder="Digite o email"
+            handleOnChange={handleInputChange}
+            value={formData.email}
+            maxLength="50"
+          />
+          <Input
+            type="text"
+            text="CPF"
+            name="cpf"
+            placeholder="Digite o CPF"
+            handleOnChange={handleInputChange}
+            value={formData.cpf}
+            maxLength="14"
+          />
+          <Input
+            type="text"
+            text="Telefone"
+            name="telefone"
+            placeholder="Digite o telefone"
+            handleOnChange={handleInputChange}
+            value={formData.telefone}
+            maxLength="15"
+          />
+          <Select
+            text="Categoria"
+            name="categoria"
+            options={categories}
+            handleOnChange={handleInputChange}
+            value={formData.categoria}
+          />
+        </section>
+        <section
+          id="form_funcionario"
+          className="hidden flex-wrap items-center justify-between w-full gap-4"
+        >
           <Input
             type="text"
             text="Nome"
@@ -116,13 +167,6 @@ function Register() {
             placeholder="Digite sua senha"
             handleOnChange={handleInputChange}
             value={formData.senha}
-          />
-          <Select
-            text="Categoria"
-            name="categoria"
-            options={categories}
-            handleOnChange={handleInputChange}
-            value={formData.categoria}
           />
         </section>
         <SubmitButton text="Confirmar" />

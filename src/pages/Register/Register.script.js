@@ -11,6 +11,19 @@ export function setupRegisterEvents() {
   const iptType = document.querySelector("#tipo");
   const btnConfirm = document.getElementById("btn_form");
 
+  const formCliente = document.getElementById("form_cliente");
+  const formFuncionario = document.getElementById("form_funcionario");
+
+  iptType.addEventListener("change", (event) => {
+    if (iptType.value == "1") {
+      formCliente.style.display = "flex";
+      formFuncionario.style.display = "none";
+    } else if (iptType.value == "2") {
+      formFuncionario.style.display = "flex";
+      formCliente.style.display = "none";
+    }
+  });
+
   // Verificando se os campos existem, tava dando um bug q n tava sendo renderizado
   if (!iptNome || !iptEmail || !iptCpf || !iptTelefone || !btnConfirm) {
     console.error("Elementos do formulário não encontrados.");
