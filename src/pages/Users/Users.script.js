@@ -11,21 +11,23 @@ export const renderUsers = async (
   findUsers,
   setUserToken,
   navigate,
-  categories // Adicionado parâmetro para categorias
+  categories
 ) => {
   try {
     const users = await findUsers(filterType);
 
     return users.map((user) => {
       const categoryName =
-        categories.find((cat) => cat.id === parseInt(user.categoria))?.name ||
-        "Desconhecida";
+        filterType === "1"
+          ? categories.find((cat) => cat.id === parseInt(user.categoria))
+              ?.name || "Desconhecida"
+          : null;
 
       return React.createElement(CardUser, {
         key: user.token,
         id: user.id,
         name: user.nome,
-        category: categoryName, // Usa o nome da categoria
+        category: filterType === "1" ? categoryName : null, // Exclude category for "Funcionário"
         telefone: user.telefone,
         email: user.email,
         onClick: () => {
@@ -34,7 +36,7 @@ export const renderUsers = async (
               setTimeout(() => {
                 setUserToken(user.token);
                 navigate(`/user/${user.token}`);
-                resolve(); // Ensure the promise resolves
+                resolve();
               }, 1000);
             }),
             {

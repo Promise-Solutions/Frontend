@@ -12,9 +12,11 @@ const CardUser = ({ id, name, category, email, telefone, onClick }) => {
         {/* Divisão */}
         <div className="border-1 border-white"></div>
         <ul className="px-8 py-6 text-[16px] list-disc">
-          <li>
-            <b>Categoria:</b> <span>{category}</span>
-          </li>
+          {category && (
+            <li>
+              <b>Categoria:</b> <span>{category}</span>
+            </li>
+          )}
           <li>
             <b>Email:</b> <span>{email}</span>
           </li>

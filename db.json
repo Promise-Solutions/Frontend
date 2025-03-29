@@ -1,95 +1,70 @@
 {
-  "usuarios": [
+  "clientes": [
+  ],
+  "funcionarios": [
     {
-      "id": 1,
-      "nome": "TESTE",
-      "cpf": "123.123.123-12",
-      "email": "teste@teste.com",
-      "telefone": "(12) 31231-2312",
-      "senha": "12345678",
-      "categoria": "3",
-      "tipo": "1",
-      "token": "gRJxmVn7bVCGLXGn"
-    },
-    {
+      "id": 2,
       "nome": "RODOLFO",
       "cpf": "123.123.213-13",
       "email": "rodolfo@rodolfo.com",
       "telefone": "(12) 31231-2312",
       "senha": "12345678",
-      "categoria": "2",
-      "tipo": "2",
-      "token": "10Ra3HW4u7ZaFUOW",
-      "id": 2
+      "token": "10Ra3HW4u7ZaFUOW"
     },
     {
+      "id": 3,
       "nome": "ARTUR",
       "cpf": "123.123.131-23",
       "email": "artur@artur.com",
       "telefone": "(12) 31231-2312",
       "senha": "12345678",
-      "categoria": "1",
-      "tipo": "2",
-      "token": "nTrLmmQdVN5xc6X2",
-      "id": 3
+      "token": "nTrLmmQdVN5xc6X2"
     },
     {
+      "id": 4,
       "nome": "IAGO",
       "cpf": "123.123.123-13",
       "email": "iago@iago.com",
       "telefone": "(23) 12312-3213",
       "senha": "12345678",
-      "categoria": "2",
-      "tipo": "2",
-      "token": "ogaMD0dS7pViKyXP",
-      "id": 4
+      "token": "ogaMD0dS7pViKyXP"
     },
     {
+      "id": 5,
       "nome": "CINDY",
       "cpf": "121.312.312-31",
       "email": "cindy@cindy.com",
       "telefone": "(21) 31231-2321",
       "senha": "12345678",
-      "categoria": "3",
-      "tipo": "2",
-      "token": "GkITzSMvuPySthY4",
-      "id": 5
+      "token": "GkITzSMvuPySthY4"
     },
     {
+      "id": 6,
       "nome": "GUSTAVO",
       "cpf": "123.123.123-12",
       "email": "gustavo@gustavo.com",
       "telefone": "(12) 31231-2321",
-      "categoria": "1",
-      "tipo": "2",
       "senha": "12345678",
-      "token": "HzUQZUCFVPlGEK8l",
-      "id": 6
+      "token": "HzUQZUCFVPlGEK8l"
     },
     {
-      "nome": "PAULA",
-      "cpf": "123.123.232-13",
-      "email": "paula@paula.com",
-      "telefone": "(31) 23131-3123",
-      "categoria": "2",
-      "tipo": "1",
+      "id": 10,
+      "nome": "INTERNO",
+      "cpf": "123.132.313-13",
+      "email": "interno@interno.com",
+      "telefone": "(31) 31313-1313",
       "senha": "12345678",
-      "token": "iIUq3rdROzSymYho",
-      "id": 7
+      "token": "2veVDIHYd6n011K9"
     }
   ],
   "categories": [
     {
       "id": 1,
-      "name": "Podcast"
+      "name": "Avulso"
     },
     {
       "id": 2,
-      "name": "Ensaio musical"
-    },
-    {
-      "id": 3,
-      "name": "Estúdio de foto e vídeo"
+      "name": "Mensal"
     }
   ],
   "type": [
@@ -99,7 +74,7 @@
     },
     {
       "id": 2,
-      "name": "Interno"
+      "name": "Funcionário"
     }
   ]
 }

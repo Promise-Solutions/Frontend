@@ -7,6 +7,15 @@ import toast from "react-hot-toast";
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", senha: "" });
 
+  const toastStyle = {
+    style: {
+      borderRadius: "10px",
+      background: "#333",
+      color: "#fff",
+      border: "solid 1px #9A3379",
+    },
+  };
+
   useEffect(() => {
     const nav = document.querySelector(".navbar");
     if (nav) {
@@ -22,12 +31,20 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .get("http://localhost:5000/usuarios")
-      .then((response) => {
-        const usuarios = response.data;
-        console.log("Usuários encontrados:", usuarios);
 
+    if (!formData.email.trim()) {
+      toast.error("O campo de email está vazio.", toastStyle);
+      return;
+    }
+
+    if (!formData.senha.trim()) {
+      toast.error("O campo de senha está vazio.", toastStyle);
+      return;
+    }
+
+    toast.promise(
+      axios.get("http://localhost:5000/funcionarios").then((response) => {
+        const usuarios = response.data;
         const usuarioEncontrado = usuarios.find(
           (usuario) =>
             usuario.email === formData.email && usuario.senha === formData.senha
@@ -35,17 +52,18 @@ const Login = () => {
 
         if (usuarioEncontrado) {
           localStorage.setItem("token", usuarioEncontrado.token);
-          toast.success("Usuário autenticado com sucesso!");
-
-          //N é o ideal, mas como a tela precisa ser atualizada, pro toast aparecer tem q ter um tempo
-          setTimeout(() => {
-            window.location.href = "/home";
-          }, 1500);
+          window.location.href = "/home";
         } else {
-          alert("Erro ao autenticar. Verifique suas credenciais.");
+          throw new Error("Credenciais inválidas.");
         }
-      })
-      .catch((error) => console.error("Erro ao buscar usuários:", error));
+      }),
+      {
+        loading: "Autenticando...",
+        success: "Usuário autenticado com sucesso!",
+        error: "Erro ao autenticar. Verifique suas credenciais.",
+      },
+      toastStyle
+    );
   };
 
   return (

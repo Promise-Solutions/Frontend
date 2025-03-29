@@ -10,14 +10,19 @@ export function UserProvider({ children }) {
   // Função declarada
   async function findUsers(filterType) {
     try {
-      const response = await axios.get("http://localhost:5000/usuarios");
+      const endpoint =
+        filterType === "1"
+          ? "http://localhost:5000/clientes"
+          : "http://localhost:5000/funcionarios";
+      const response = await axios.get(endpoint);
       const users = response.data;
 
-      return filterType
-        ? users.filter(
-            (user) => user.tipo?.toLowerCase() === filterType.toLowerCase()
-          )
-        : users;
+      return filterType === "1"
+        ? users.map((user) => ({
+            ...user,
+            categoria: user.categoria, // Keep category for "Cliente"
+          }))
+        : users; // No category for "Funcionário"
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
       return [];

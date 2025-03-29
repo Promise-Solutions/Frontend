@@ -21,6 +21,8 @@ function Register() {
   const [categories, setCategories] = useState([]);
   const [type, setType] = useState([]);
 
+  const [selectedType, setSelectedType] = useState("1"); // Default to "cliente" form
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/categories", {
@@ -48,9 +50,14 @@ function Register() {
     return cleanup;
   }, []);
 
+  useEffect(() => {
+    setupRegisterEvents(); // Reaplicar eventos e máscaras após alteração do formulário
+  }, [selectedType]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    if (name === "tipo") setSelectedType(value); // Update selectedType when user type changes
   };
 
   return (
@@ -72,103 +79,107 @@ function Register() {
           handleOnChange={(e) => handleInputChange(e)}
           value={formData.tipo}
         />
-        <section
-          id="form_cliente"
-          className="flex flex-wrap items-center justify-between w-full gap-4"
-        >
-          <Input
-            type="text"
-            text="Nome"
-            name="nome"
-            placeholder="Digite o nome"
-            handleOnChange={handleInputChange}
-            value={formData.nome}
-            maxLength="50"
-          />
-          <Input
-            type="email"
-            text="Email"
-            name="email"
-            placeholder="Digite o email"
-            handleOnChange={handleInputChange}
-            value={formData.email}
-            maxLength="50"
-          />
-          <Input
-            type="text"
-            text="CPF"
-            name="cpf"
-            placeholder="Digite o CPF"
-            handleOnChange={handleInputChange}
-            value={formData.cpf}
-            maxLength="14"
-          />
-          <Input
-            type="text"
-            text="Telefone"
-            name="telefone"
-            placeholder="Digite o telefone"
-            handleOnChange={handleInputChange}
-            value={formData.telefone}
-            maxLength="15"
-          />
-          <Select
-            text="Categoria"
-            name="categoria"
-            options={categories}
-            handleOnChange={handleInputChange}
-            value={formData.categoria}
-          />
-        </section>
-        <section
-          id="form_funcionario"
-          className="hidden flex-wrap items-center justify-between w-full gap-4"
-        >
-          <Input
-            type="text"
-            text="Nome"
-            name="nome"
-            placeholder="Digite o nome"
-            handleOnChange={handleInputChange}
-            value={formData.nome}
-            maxLength="50"
-          />
-          <Input
-            type="email"
-            text="Email"
-            name="email"
-            placeholder="Digite o email"
-            handleOnChange={handleInputChange}
-            value={formData.email}
-            maxLength="50"
-          />
-          <Input
-            type="text"
-            text="CPF"
-            name="cpf"
-            placeholder="Digite o CPF"
-            handleOnChange={handleInputChange}
-            value={formData.cpf}
-            maxLength="14"
-          />
-          <Input
-            type="text"
-            text="Telefone"
-            name="telefone"
-            placeholder="Digite o telefone"
-            handleOnChange={handleInputChange}
-            value={formData.telefone}
-            maxLength="15"
-          />
-          <Input
-            type="password"
-            text="Senha"
-            name="senha"
-            placeholder="Digite sua senha"
-            handleOnChange={handleInputChange}
-            value={formData.senha}
-          />
-        </section>
+        {selectedType === "1" && (
+          <section
+            id="form_cliente"
+            className="flex flex-wrap items-center justify-between w-full gap-4"
+          >
+            <Input
+              type="text"
+              text="Nome"
+              name="nome"
+              placeholder="Digite o nome"
+              handleOnChange={handleInputChange}
+              value={formData.nome}
+              maxLength="50"
+            />
+            <Input
+              type="email"
+              text="Email"
+              name="email"
+              placeholder="Digite o email"
+              handleOnChange={handleInputChange}
+              value={formData.email}
+              maxLength="50"
+            />
+            <Input
+              type="text"
+              text="CPF"
+              name="cpf"
+              placeholder="Digite o CPF"
+              handleOnChange={handleInputChange}
+              value={formData.cpf}
+              maxLength="14"
+            />
+            <Input
+              type="text"
+              text="Telefone"
+              name="telefone"
+              placeholder="Digite o telefone"
+              handleOnChange={handleInputChange}
+              value={formData.telefone}
+              maxLength="15"
+            />
+            <Select
+              text="Categoria"
+              name="categoria"
+              options={categories}
+              handleOnChange={handleInputChange}
+              value={formData.categoria}
+            />
+          </section>
+        )}
+        {selectedType === "2" && (
+          <section
+            id="form_funcionario"
+            className="flex flex-wrap items-center justify-between w-full gap-4"
+          >
+            <Input
+              type="text"
+              text="Nome"
+              name="nome"
+              placeholder="Digite o nome"
+              handleOnChange={handleInputChange}
+              value={formData.nome}
+              maxLength="50"
+            />
+            <Input
+              type="email"
+              text="Email"
+              name="email"
+              placeholder="Digite o email"
+              handleOnChange={handleInputChange}
+              value={formData.email}
+              maxLength="50"
+            />
+            <Input
+              type="text"
+              text="CPF"
+              name="cpf"
+              placeholder="Digite o CPF"
+              handleOnChange={handleInputChange}
+              value={formData.cpf}
+              maxLength="14"
+            />
+            <Input
+              type="text"
+              text="Telefone"
+              name="telefone"
+              placeholder="Digite o telefone"
+              handleOnChange={handleInputChange}
+              value={formData.telefone}
+              maxLength="15"
+            />
+            <Input
+              type="password"
+              text="Senha"
+              name="senha"
+              placeholder="Digite sua senha"
+              handleOnChange={handleInputChange}
+              value={formData.senha}
+            />
+          </section>
+        )}
         <SubmitButton text="Confirmar" />
       </form>
     </main>
