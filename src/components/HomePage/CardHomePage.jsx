@@ -3,13 +3,13 @@ import { handleButtonClick } from "./CardHome.script";
 function CardHomePage({ title, text, url, idButton }) {
     return (
             <article className="flex flex-col justify-between align-center
-                                text-[#dedede] p-5 w-95 h-95 bg-[#00000095] border-r-3
+                                text-[#dedede] p-5 w-95 h-75 bg-[#00000095] border-r-3
                                 border-0 border-[#01585E55] hover:border-[#02AEBA88] duration-600">
              
             <h1 className="text-[30px] tracking-widest text-[#9A3379] font-semibold w-[80%] h-[30%] mt-5 flex items-center">{title}</h1 >
              <div className="flex justify-between items-center">
-                <p className="w-[60%] text-[#bbb] tracking-wide font-medium">{text}</p>
-                <img src={url} className="mr-2 w-[20%] h-[4rem]" />
+                <p className="w-[70%] text-[#bbb] tracking-wide font-medium">{text}</p>
+                <img src={url} className="mr-2 w-[25%] h-[4rem]" />
              </div>
                 <button 
                     onClick={() => handleButtonClick(idButton)}

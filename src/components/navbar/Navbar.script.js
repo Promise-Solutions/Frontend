@@ -26,20 +26,15 @@ export const useNavbarLogic = () => {
     window.location.href = `/${id}`; // Atualiza a URL com base no ID da aba clicada
   };
 
-  // Função para tratar o logout
-  // Redireciona o usuário para a página de login
-  const handleLogout = () => {
-    window.location.href = "/login";
-  };
-
   // Retorna os estados e funções para serem usados no componente Navbar
-  return { activeTab, handleTabClick, handleLogout };
+  return { activeTab, handleTabClick};
 };
 
 // Vetor que define as abas do Navbar
 // Cada aba tem um ID (usado para navegação) e um nome (exibido no Navbar)
 export const tabs = [
   { id: "users", name: "Usuários" },
+  { id: "jobs", name: "Atendimentos" },
   { id: "bar", name: "Bar" },
   { id: "dashboard", name: "Dashboard" },
   { id: "reports", name: "Relatórios" },
