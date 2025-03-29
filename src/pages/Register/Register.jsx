@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { setupRegisterEvents } from "./Register.script.js";
 import Input from "../../components/form/Input";
 import SubmitButton from "../../components/Form/SubmitButton";
 import logo from "../../assets/logo-branco-bg-sonoro.png";
-import Select from "../../components/Form/Select.jsx";
 import SelectTypeUser from "../../components/Form/SelectTypeUser.jsx";
+import Select from "../../components/Form/Select.jsx";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -13,37 +12,22 @@ function Register() {
     cpf: "",
     email: "",
     telefone: "",
-    categoria: "",
+    tipoCliente: "",
     tipo: "",
     senha: "",
   });
 
-  const [categories, setCategories] = useState([]);
-  const [type, setType] = useState([]);
+  const type = [
+    { id: "CLIENTE", name: "Cliente" },
+    { id: "FUNCIONARIO", name: "Funcionário" },
+  ];
 
-  const [selectedType, setSelectedType] = useState("1"); // Default to "cliente" form
+  const clienteOptions = [
+    { id: "AVULSO", name: "Avulso" },
+    { id: "MENSAL", name: "Mensal" },
+  ];
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/categories", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => setCategories(res.data))
-      .catch((error) => console.log(error));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/type", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => setType(res.data))
-      .catch((error) => console.log(error));
-  }, []);
+  const [selectedType, setSelectedType] = useState("CLIENTE"); // Default to "Cliente"
 
   useEffect(() => {
     const cleanup = setupRegisterEvents();
@@ -79,7 +63,7 @@ function Register() {
           handleOnChange={(e) => handleInputChange(e)}
           value={formData.tipo}
         />
-        {selectedType === "1" && (
+        {selectedType === "CLIENTE" && (
           <section
             id="form_cliente"
             className="flex flex-wrap items-center justify-between w-full gap-4"
@@ -121,15 +105,15 @@ function Register() {
               maxLength="15"
             />
             <Select
-              text="Categoria"
-              name="categoria"
-              options={categories}
+              text="Tipo de Cliente"
+              name="tipoCliente"
+              options={clienteOptions}
               handleOnChange={handleInputChange}
-              value={formData.categoria}
+              value={formData.tipoCliente}
             />
           </section>
         )}
-        {selectedType === "2" && (
+        {selectedType === "FUNCIONARIO" && (
           <section
             id="form_funcionario"
             className="flex flex-wrap items-center justify-between w-full gap-4"

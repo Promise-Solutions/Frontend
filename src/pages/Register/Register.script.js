@@ -10,8 +10,8 @@ export function setupRegisterEvents() {
   const iptCpf = document.querySelector("#cpf");
   const iptTelefone = document.querySelector("#telefone");
   const iptSenha = document.querySelector("#senha");
-  const iptCategoria = document.querySelector("#categoria");
   const iptType = document.querySelector("#tipo");
+  const iptTipoCliente = document.querySelector("#tipoCliente");
   const btnConfirm = document.getElementById("btn_form");
 
   let cpfMaskListener = null;
@@ -130,9 +130,9 @@ export function setupRegisterEvents() {
     const iptCpf = document.querySelector("#cpf");
     const iptEmail = document.querySelector("#email");
     const iptTelefone = document.querySelector("#telefone");
-    const iptCategoria = document.querySelector("#categoria");
     const iptSenha = document.querySelector("#senha");
     const iptType = document.querySelector("#tipo");
+    const iptTipoCliente = document.querySelector("#tipoCliente");
 
     if (!iptNome || !iptNome.value.trim()) {
       toast.error("O campo de nome está vazio.");
@@ -153,17 +153,16 @@ export function setupRegisterEvents() {
       return false;
     }
 
-    if (iptType.value === "1") {
+    if (iptType.value === "CLIENTE") {
       // Validação para cliente
-      if (!iptCategoria || !iptCategoria.value.trim()) {
-        toast.error("O campo de categoria está vazio.");
+      if (!iptTipoCliente || !iptTipoCliente.value.trim()) {
+        toast.error("O campo de tipo de cliente está vazio.");
         return false;
       }
-    } else if (iptType.value === "2") {
+    } else if (iptType.value === "FUNCIONARIO") {
       // Validação para funcionário
       if (!iptSenha || iptSenha.value.length < 8) {
         toast.error("A senha deve ter pelo menos 8 caracteres.");
-        return false;
       }
     } else {
       toast.error("Tipo de usuário inválido.");
@@ -191,9 +190,9 @@ export function setupRegisterEvents() {
     const iptEmail = document.querySelector("#email");
     const iptCpf = document.querySelector("#cpf");
     const iptTelefone = document.querySelector("#telefone");
-    const iptCategoria = document.querySelector("#categoria");
     const iptSenha = document.querySelector("#senha");
     const iptType = document.querySelector("#tipo");
+    const iptTipoCliente = document.querySelector("#tipoCliente");
 
     if (!validarCampos()) return;
 
@@ -202,27 +201,25 @@ export function setupRegisterEvents() {
     let novoUsuario;
     let endpoint;
 
-    if (iptType.value === "1") {
-      // Criar objeto para cliente
+    if (iptType.value === "CLIENTE") {
       novoUsuario = {
         nome: iptNome.value.toUpperCase(),
         cpf: iptCpf.value,
         email: iptEmail.value,
         telefone: iptTelefone.value,
-        categoria: iptCategoria?.value || "",
-        tipo: iptType.value,
+        tipoCliente: iptTipoCliente?.value || "AVULSO", // Correctly assign tipoCliente
+        ativo: true, // Default to active
         token: token,
       };
       endpoint = "clientes";
-    } else if (iptType.value === "2") {
-      // Criar objeto para funcionário
+    } else if (iptType.value === "FUNCIONARIO") {
       novoUsuario = {
         nome: iptNome.value.toUpperCase(),
         cpf: iptCpf.value,
         email: iptEmail.value,
         telefone: iptTelefone.value,
-        tipo: iptType.value,
         senha: iptSenha?.value || "",
+        ativo: true, // Default to active
         token: token,
       };
       endpoint = "funcionarios";
@@ -239,9 +236,9 @@ export function setupRegisterEvents() {
         iptCpf.value = "";
         iptEmail.value = "";
         iptTelefone.value = "";
-        if (iptCategoria) iptCategoria.value = "";
         iptType.value = "";
         if (iptSenha) iptSenha.value = "";
+        if (iptTipoCliente) iptTipoCliente.value = "";
       } else {
         toast.error("Erro ao cadastrar usuário.");
       }

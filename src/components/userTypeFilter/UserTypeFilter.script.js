@@ -15,9 +15,9 @@ export const useUserTypeFilterLogic = () => {
 
   // Função para atualizar o filtro ativo ao clicar em um botão
   const handleFilterClick = (filterValue, onFilterChange) => {
-    setActiveFilter(filterValue); // Atualiza o estado do filtro ativo
+    setActiveFilter(filterValue); // Update the active filter state
     if (onFilterChange) {
-      onFilterChange(filterValue); // Notifica o componente pai sobre a mudança de filtro
+      onFilterChange(filterValue); // Notify parent of filter change
     }
   };
 

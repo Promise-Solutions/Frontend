@@ -10,24 +10,18 @@ export const renderUsers = async (
   filterType,
   findUsers,
   setUserToken,
-  navigate,
-  categories
+  navigate
 ) => {
   try {
     const users = await findUsers(filterType);
 
     return users.map((user) => {
-      const categoryName =
-        filterType === "1"
-          ? categories.find((cat) => cat.id === parseInt(user.categoria))
-              ?.name || "Desconhecida"
-          : null;
-
       return React.createElement(CardUser, {
         key: user.token,
         id: user.id,
         name: user.nome,
-        category: filterType === "1" ? categoryName : null, // Exclude category for "Funcionário"
+        tipoCliente: filterType === "CLIENTE" ? user.tipoCliente : null, // Only pass tipoCliente for clients
+        ativo: user.ativo, // Pass ativo status
         telefone: user.telefone,
         email: user.email,
         onClick: () => {

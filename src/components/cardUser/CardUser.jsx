@@ -1,4 +1,12 @@
-const CardUser = ({ id, name, category, email, telefone, onClick }) => {
+const CardUser = ({
+  id,
+  name,
+  tipoCliente,
+  ativo,
+  email,
+  telefone,
+  onClick,
+}) => {
   return (
     <div
       id={`user_${id}`}
@@ -12,9 +20,9 @@ const CardUser = ({ id, name, category, email, telefone, onClick }) => {
         {/* Divisão */}
         <div className="border-1 border-white"></div>
         <ul className="px-8 py-6 text-[16px] list-disc">
-          {category && (
+          {tipoCliente && ( // Only render if tipoCliente exists
             <li>
-              <b>Categoria:</b> <span>{category}</span>
+              <b>Tipo de Cliente:</b> <span>{tipoCliente}</span>
             </li>
           )}
           <li>
@@ -22,6 +30,9 @@ const CardUser = ({ id, name, category, email, telefone, onClick }) => {
           </li>
           <li>
             <b>Telefone:</b> <span>{telefone}</span>
+          </li>
+          <li>
+            <b>Status:</b> <span>{ativo ? "Ativo" : "Inativo"}</span>
           </li>
         </ul>
       </div>

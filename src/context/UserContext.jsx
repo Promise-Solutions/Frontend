@@ -7,22 +7,20 @@ export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
   const [userToken, setUserToken] = useState(null);
 
-  // Função declarada
   async function findUsers(filterType) {
     try {
       const endpoint =
-        filterType === "1"
+        filterType === "CLIENTE"
           ? "http://localhost:5000/clientes"
           : "http://localhost:5000/funcionarios";
       const response = await axios.get(endpoint);
       const users = response.data;
 
-      return filterType === "1"
-        ? users.map((user) => ({
-            ...user,
-            categoria: user.categoria, // Keep category for "Cliente"
-          }))
-        : users; // No category for "Funcionário"
+      return users.map((user) => ({
+        ...user,
+        ativo: user.ativo !== false, // Default to true for both clients and employees
+        tipoCliente: filterType === "CLIENTE" ? user.tipoCliente : null, // Fetch tipoCliente only for clients
+      }));
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
       return [];
@@ -36,7 +34,7 @@ export function UserProvider({ children }) {
         setUser,
         userToken,
         setUserToken,
-        findUsers, // Exporta a função
+        findUsers,
       }}
     >
       {children}

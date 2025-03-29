@@ -5,36 +5,17 @@ import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
 import { registerRedirect, renderUsers } from "./Users.script";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 import { useUserContext } from "../../context/UserContext";
 
 // Componente funcional para a página de gerenciamento de usuários
 const Users = () => {
   const [userElements, setUserElements] = useState([]); // Estado para armazenar os elementos renderizados
-  const [filterType, setFilterType] = useState("1"); // Estado para o tipo de filtro
+  const [filterType, setFilterType] = useState("CLIENTE"); // Default to "Cliente"
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
-  const [categories, setCategories] = useState([]); // Estado para categorias
 
   const { findUsers, setUserToken } = useUserContext(); // Exportação do contexto
   const navigate = useNavigate(); //Navigate para navegatação, ele não atualiza a página
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/categories"); // Use a URL completa se necessário
-        setCategories(response.data);
-      } catch (error) {
-        console.error(
-          "Erro ao buscar categorias:",
-          error.response?.status,
-          error.response?.statusText || error.message
-        );
-      }
-    };
-
-    fetchCategories();
-  }, []); // Carrega as categorias apenas uma vez
 
   useEffect(() => {
     const fetchAndRender = async () => {
@@ -43,8 +24,7 @@ const Users = () => {
           filterType,
           findUsers,
           setUserToken,
-          navigate,
-          categories
+          navigate
         );
         setUserElements(elements);
       } catch (error) {
@@ -52,15 +32,15 @@ const Users = () => {
       }
     };
 
-    if (categories.length > 0) {
-      fetchAndRender();
-    } else {
-      console.log("Categorias ainda não carregadas."); // Log para depuração
-    }
-  }, [filterType, categories]); // Atualiza quando filterType ou categorias mudam
+    fetchAndRender();
+  }, [filterType]); // Atualiza quando filterType muda
 
   const handleSearch = (term) => {
     setSearchTerm(term.toUpperCase()); // Atualiza o termo de busca
+  };
+
+  const handleFilterChange = (newFilter) => {
+    setFilterType(newFilter === "1" ? "CLIENTE" : "FUNCIONARIO"); // Map filter value to type
   };
 
   const filteredUserElements = userElements.filter((element) => {
@@ -100,8 +80,9 @@ const Users = () => {
         {/* Filtros por tipo de usuário e exibição de cards */}
         <div className="flex justify-center flex-col mt-4">
           {/* Filtro por tipo de usuário (Clientes ou Internos) */}
-          <UserTypeFilter onFilterChange={setFilterType} />{" "}
-          {/* Atualiza o filtro */}
+          <UserTypeFilter
+            onFilterChange={handleFilterChange} // Pass updated callback
+          />
           {/* Espaço reservado para os cards de usuários */}
           <div className="gap-4 flex flex-wrap justify-center mt-12 max-h-[600px] overflow-y-auto w-full h-auto">
             {filteredUserElements.length > 0 ? (
