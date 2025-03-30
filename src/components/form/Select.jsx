@@ -2,7 +2,7 @@ const Select = ({ text, name, options, handleOnChange, value }) => {
   return (
     <div className="flex flex-col justify-between w-full sm:w-[48%] md:w-full">
       <label htmlFor={name} className="text-[20px] text-white">
-        {text}:
+        <b>{text}:</b>
       </label>
       <select
         name={name}

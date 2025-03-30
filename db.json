@@ -1,24 +1,25 @@
 {
   "clientes": [
     {
-      "nome": "AVULSO",
+      "nome": "AVULSO ",
       "cpf": "214.312.312-31",
       "email": "avulso@avulso.com",
       "telefone": "(13) 21312-3131",
       "tipoCliente": "AVULSO",
-      "ativo": true,
-      "token": "8WcrY5DTrfeRPmlW",
-      "id": 1
+      "ativo": "true",
+      "token": "10Ra3HW4u7ZaFUR3",
+      "id": 1,
+      "senha": ""
     },
     {
       "nome": "MENSAL",
-      "cpf": "123.123.131-31",
-      "email": "menasl@mensal.com",
-      "telefone": "(23) 12312-3131",
+      "cpf": "321.312.331-31",
+      "email": "mensal@mensal.com",
+      "telefone": "(12) 31231-3123",
       "tipoCliente": "MENSAL",
       "ativo": true,
-      "token": "bbhOLS8FgonIcBDS",
-      "id": 2
+      "id": 2,
+      "token": "10Ra3HW4u7ZaFU32"
     }
   ],
   "funcionarios": [
@@ -34,7 +35,7 @@
     },
     {
       "id": 3,
-      "nome": "ARTUR",
+      "nome": "ARTUR ",
       "cpf": "123.123.131-23",
       "email": "artur@artur.com",
       "telefone": "(12) 31231-2312",
@@ -54,7 +55,7 @@
     },
     {
       "id": 5,
-      "nome": "CINDY",
+      "nome": "CINDY BARBOSA",
       "cpf": "121.312.312-31",
       "email": "cindy@cindy.com",
       "telefone": "(21) 31231-2321",
