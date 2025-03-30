@@ -8,7 +8,7 @@ module.exports = {
       textColors: {
         white: "#FFFFFF", // Cor branca
         black: "#000000", // Cor preta
-        cyan: "#00EFFF", // Cor ciano
+        cyan: "#02AEBAF", // Cor ciano
         pink: "#9A3379", // Cor rosa
         green: "#00FF0D", // Cor verde
         orange: "#DDBB0F", // Cor laranja
