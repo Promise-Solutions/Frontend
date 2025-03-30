@@ -1,7 +1,6 @@
 import AppRoutes from "./routes";
-import Navbar from "./components/navbar/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 import Background from "./assets/background.png";
-import { UserProvider } from "./context/UserContext"; // <-- importa o provider
 import { Toaster } from "react-hot-toast"; // <-- lib de notificação bunitinha :3
 import GlobalProvider from "./context/GlobalProvider"; // <-- importa o provider
 
