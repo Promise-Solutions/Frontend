@@ -5,7 +5,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-      textColors: {
+      colors: {
         white: "#FFFFFF", // Cor branca
         black: "#000000", // Cor preta
         cyanzero: "#02AEBAF", // Cor ciano
