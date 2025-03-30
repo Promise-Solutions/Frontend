@@ -34,7 +34,7 @@ const CardUser = ({
             <b>Telefone:</b> <span>{telefone}</span>
           </li>
           <li>
-            <b>Status:</b> <span>{ativo ? "Ativo" : "Inativo"}</span>
+            <b>Status:</b> <span>{ativo == true ? "Ativo" : "Inativo"}</span>
           </li>
         </ul>
       </div>

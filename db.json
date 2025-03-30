@@ -1,5 +1,16 @@
 {
-  "clientes": [],
+  "clientes": [
+    {
+      "nome": "AVULSO",
+      "cpf": "131.231.232-13",
+      "email": "avulso@avulso.com",
+      "telefone": "(13) 12313-2131",
+      "tipoCliente": "AVULSO",
+      "ativo": true,
+      "token": "3JJrchDGJY23VOEG",
+      "id": 1
+    }
+  ],
   "funcionarios": [
     {
       "id": 2,
@@ -13,7 +24,7 @@
     },
     {
       "id": 3,
-      "nome": "ARTUR ",
+      "nome": "ARTUR",
       "cpf": "123.123.131-23",
       "email": "artur@artur.com",
       "telefone": "(12) 31231-2312",

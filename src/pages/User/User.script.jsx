@@ -35,8 +35,8 @@ export const RenderInfos = () => {
       cpf: user?.cpf || "",
       email: user?.email || "",
       telefone: user?.telefone || "",
-      tipoCliente: user?.tipoCliente || "",
-      ativo: user?.ativo || false,
+      tipoCliente: user?.tipoCliente || "", // Garantir que o valor inicial seja do banco
+      ativo: user?.ativo !== undefined ? user.ativo : false, // Garantir que o valor inicial seja booleano
       senha: "",
     });
 
@@ -45,9 +45,15 @@ export const RenderInfos = () => {
       { id: "MENSAL", name: "Mensal" },
     ];
 
+    const statusOptions = [
+      { id: "true", name: "Ativo" }, // Use strings "true" and "false" for consistency
+      { id: "false", name: "Inativo" },
+    ];
+
     const handleInputChange = (e) => {
       const { name, value } = e.target;
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
+      const parsedValue = name === "ativo" ? value === "true" : value; // Convert "ativo" to boolean
+      setFormData((prevData) => ({ ...prevData, [name]: parsedValue }));
     };
 
     const applyCpfMask = (value) => {
@@ -127,7 +133,7 @@ export const RenderInfos = () => {
                     name="tipoCliente"
                     options={clienteOptions}
                     handleOnChange={handleInputChange}
-                    value={formData.tipoCliente}
+                    value={formData.tipoCliente} // Certificar-se de que o valor está correto
                   />
                 </li>
               </>
@@ -183,12 +189,9 @@ export const RenderInfos = () => {
               <Select
                 text="Status"
                 name="ativo"
-                options={[
-                  { id: true, name: "Ativo" },
-                  { id: false, name: "Inativo" },
-                ]}
+                options={statusOptions}
                 handleOnChange={handleInputChange}
-                value={formData.ativo}
+                value={formData.ativo.toString()} // Convert boolean to string for proper matching
               />
             </li>
           </ul>
@@ -230,7 +233,7 @@ export const RenderInfos = () => {
                 <b>Telefone: </b> {user?.telefone}
               </li>
               <li>
-                <b>Status: </b> {user?.ativo ? "Ativo" : "Inativo"}
+                <b>Status: </b> {user?.ativo == true ? "Ativo" : "Inativo"}
               </li>
             </ul>
           </div>
