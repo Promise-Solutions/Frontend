@@ -5,7 +5,7 @@ import SecondaryButton from "../SecondaryButton/SecondaryButton.jsx";
 // Componente funcional Navbar
 const Navbar = () => {
   // Usa o hook personalizado para obter estados e funções
-  const { activeTab, handleTabClick, handleLogout } = useNavbarLogic();
+  const { activeTab, handleTabClick } = useNavbarLogic();
 
   return (
     <div className="navbar bg-[transparent] w-full border-b-white border border-solid flex justify-between items-center cursor-pointer">
@@ -16,7 +16,7 @@ const Navbar = () => {
         className="w-[156px] h-[79px] ml-[64px]"
       />
       {/* Lista de abas do Navbar */}
-      <ul className="flex justify-between gap-6 w-[350px] items-center h-full text-white font-medium">
+      <ul className="flex justify-between gap-6 w-[40%] items-center h-full text-white font-medium">
         {generateTabItems(activeTab, handleTabClick)}
         {/* 
           Gera os itens dinamicamente:

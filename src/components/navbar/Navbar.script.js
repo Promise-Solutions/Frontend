@@ -34,13 +34,14 @@ export const useNavbarLogic = () => {
   };
 
   // Retorna os estados e funções para serem usados no componente Navbar
-  return { activeTab, handleTabClick, handleLogout };
+  return { activeTab, handleTabClick};
 };
 
 // Vetor que define as abas do Navbar
 // Cada aba tem um ID (usado para navegação) e um nome (exibido no Navbar)
 export const tabs = [
   { id: "users", name: "Usuários" },
+  { id: "jobs", name: "Atendimentos" },
   { id: "bar", name: "Bar" },
   { id: "dashboard", name: "Dashboard" },
   { id: "reports", name: "Relatórios" },

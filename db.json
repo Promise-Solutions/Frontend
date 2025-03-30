@@ -103,5 +103,42 @@
       "token": "Z2R5oIrvfGDhCkjz",
       "id": 11
     }
+  ],
+  "atendimentos": [
+    {
+      "id": 1,
+      "titulo": "Atendimento1",
+      "categoria": "Ensaio Musical",
+      "horario": "20:00",
+      "concluido": false
+    },
+    {
+      "id": 2,
+      "titulo": "Atendimento2",
+      "categoria": "Ensaio Musical",
+      "horario": "20:00",
+      "concluido": false
+    },
+    {
+      "id": 3,
+      "titulo": "Atendimento3",
+      "categoria": "Podcast",
+      "horario": "14:00",
+      "concluido": false
+    },
+    {
+      "id": 4,
+      "titulo": "Atendimento4",
+      "categoria": "Podcast",
+      "horario": "14:00",
+      "concluido": false
+    },
+    {
+      "id": 5,
+      "titulo": "Atendimento5",
+      "categoria": "Podcast",
+      "horario": "14:00",
+      "concluido": false
+    }
   ]
 }
