@@ -1,5 +1,5 @@
 import React from "react";
-import CardJobs from "../../components/cardJob/CardJob.jsx";
+import CardJobs from "../../components/CardJob/CardJob.jsx";
 
 export const registerRedirect = () => {
   window.location.href = "/jobs/register";

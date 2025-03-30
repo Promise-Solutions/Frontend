@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../components/primaryButton/primaryButton";
-import JobsFilter from "../../components/jobFilter/JobFilter"
+import JobsFilter from "../../components/JobFilter/JobFilter"
 import { registerRedirect, renderJobs } from "./Jobs.script";
 import { useJobContext } from "../../context/JobContext";
 
