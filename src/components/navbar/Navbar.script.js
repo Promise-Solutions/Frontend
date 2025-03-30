@@ -30,6 +30,7 @@ export const useNavbarLogic = () => {
   // Redireciona o usuário para a página de login
   const handleLogout = () => {
     localStorage.clear();
+    sessionStorage.clear();
     window.location.href = "/login";
   };
 

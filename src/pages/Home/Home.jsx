@@ -7,7 +7,7 @@ import DashIcon from '../../assets/icon-dashboard.png'
 import RelatIcon from '../../assets/icon-report.png'
 import Logo from '../../assets/logo-branco-bg-sonoro.png'
 import { handleLogout } from "./Home.script.js";
-import SecondaryButton from "../../components/SecondaryButton/SecondaryButton.jsx";
+import LogoutButton from "../../components/LogoutButton/LogoutButton.jsx";
 
 // Componente funcional para a página Home
 // Representa a estrutura da página inicial
@@ -22,8 +22,8 @@ const Home = () => {
 
   return (
     <main className="flex flex-col justify-center items-center h-[100vh] w-[100vw] relative">
-      <div className="flex w-full justify-end mx-4 mr-[64px] py-4 px-7">
-        <SecondaryButton
+      <div className="flex w-full justify-end mx-4 mr-[64px] py-4 px-12">
+        <LogoutButton
           id="logout_button_id"
           text="Sair do Usuário"
           onClick={handleLogout}
@@ -32,13 +32,13 @@ const Home = () => {
       <img src={Logo} className="h-[170px]" />
       <section className="flex w-[95vw] h-[65%] gap-4 items-center justify-between mx-4">
         <CardHomePage
-          title="Gerencie seus usuários"
+          title="Usuários"
           text="Gerencie seus usuários, atendimentos e tarefas"
           url={UserIcon}
           idButton="users"
         />
         <CardHomePage
-          title="Gerencie seus serviços"
+          title="Serviços"
           text="Gerencie seus serviços e Sub-serviços"
           url={JobIcon}
           idButton="jobs"

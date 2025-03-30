@@ -5,14 +5,14 @@ function CardHomePage({ title, text, url, idButton }) {
   return (
     <article
       className="flex flex-col justify-between align-center
-                                text-[#d9d9d9] p-5 w-95 h-95 bg-[#1E1E1E88]
+                                text-white p-5 w-95 h-95 bg-[#1E1E1E90]
                                 border-1 border-[#9A3379] hover:border-[#02AEBA] duration-100"
     >
       <h1 className="text-[30px] tracking-widest text-[#9A3379] font-semibold w-[80%] h-[30%] mt-5 flex items-center">
         {title}
       </h1>
       <div className="flex justify-between items-center">
-        <p className="w-[60%] text-[#bbb] tracking-wide font-medium">{text}</p>
+        <p className="w-[60%] text-white tracking-wide font-medium">{text}</p>
         <img src={url} className="mr-2 w-[20%] h-[4rem]" />
       </div>
       <PrimaryButton

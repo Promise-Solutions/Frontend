@@ -6,10 +6,27 @@ import Select from "../../components/Form/Select.jsx";
 import Input from "../../components/Form/Input.jsx";
 import axios from "axios";
 import DeleteButton from "../../components/DeleteButton/DeleteButton.jsx";
+import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete.jsx";
 
 export const RenderInfos = () => {
   const { user, setUser, userId, isClient } = useUserContext();
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const handleDeleteUser = async () => {
+    try {
+      const endpoint = isClient
+        ? `http://localhost:5000/clientes/${userId}`
+        : `http://localhost:5000/funcionarios/${userId}`;
+      await axios.delete(endpoint);
+      toast.success("Usuário deletado com sucesso!");
+      window.location.href = "/users";
+    } catch (error) {
+      toast.error("Erro ao deletar usuário. Tente novamente.");
+    } finally {
+      setIsDeleteModalOpen(false);
+    }
+  };
 
   function Edit() {
     const [formData, setFormData] = useState({
@@ -231,8 +248,17 @@ export const RenderInfos = () => {
         <Edit />
       )}
       <div className="flex justify-end">
-        <DeleteButton id="delete_button" text= "Deletar Usuário"/>
+        <DeleteButton
+          id="delete_button"
+          text="Deletar Usuário"
+          onClick={() => setIsDeleteModalOpen(true)}
+        />
       </div>
+      <ModalConfirmDelete
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDeleteUser}
+      />
     </div>
   );
 };

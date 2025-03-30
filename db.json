@@ -1,37 +1,5 @@
 {
-  "clientes": [
-    {
-      "nome": "AVULSO ",
-      "cpf": "214.312.312-31",
-      "email": "avulso@avulso.com",
-      "telefone": "(13) 21312-3131",
-      "tipoCliente": "AVULSO",
-      "ativo": "true",
-      "token": "10Ra3HW4u7ZaFUR3",
-      "id": 1,
-      "senha": ""
-    },
-    {
-      "nome": "MENSAL",
-      "cpf": "321.312.331-31",
-      "email": "mensal@mensal.com",
-      "telefone": "(12) 31231-3123",
-      "tipoCliente": "MENSAL",
-      "ativo": true,
-      "id": 2,
-      "token": "10Ra3HW4u7ZaFU32"
-    },
-    {
-      "nome": "TESTE2",
-      "cpf": "123.123.123-13",
-      "email": "teste@teste.com",
-      "telefone": "(12) 31312-3131",
-      "tipoCliente": "MENSAL",
-      "ativo": "true",
-      "token": "OqJM1XtPqUdqtBDJ",
-      "id": 3
-    }
-  ],
+  "clientes": [],
   "funcionarios": [
     {
       "id": 2,
@@ -92,16 +60,6 @@
       "senha": "12345678",
       "ativo": true,
       "token": "2veVDIHYd6n011K9"
-    },
-    {
-      "nome": "FUNC1",
-      "cpf": "231.313.131-31",
-      "email": "func@func.com",
-      "telefone": "(31) 23131-3131",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "Z2R5oIrvfGDhCkjz",
-      "id": 11
     }
   ],
   "atendimentos": [
@@ -138,7 +96,7 @@
       "titulo": "Atendimento5",
       "categoria": "Podcast",
       "horario": "14:00",
-      "concluido": true
+      "concluido": false
     }
   ]
 }

@@ -17,7 +17,7 @@ const CardJob = React.memo(({ id, title, category, time, isDone, onClick }) => {
   return (
     <div
       id={`job_${id}`}
-      className={`card_job border-1 text-[#d9d9d9] w-3xs rounded-[5px] duration-100 pb-2 h-auto bg-[#1E1E1E88] ${
+      className={`card_job border-1 text-[#d9d9d9] w-3xs rounded-[5px] duration-100 pb-2 h-auto bg-[#1E1E1E90] ${
         done ? "border-[#02AEBA]" : "border-[#9A3379]"
       }`}
     >

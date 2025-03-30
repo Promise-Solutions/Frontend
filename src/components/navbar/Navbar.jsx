@@ -1,6 +1,6 @@
 import { useNavbarLogic, generateTabItems } from "./Navbar.script.js"; // Importa lógica e gerador de abas
 import logo from "../../assets/logo-branco-bg-sonoro.png"; // Importa o logo
-import SecondaryButton from "../SecondaryButton/SecondaryButton.jsx";
+import LogoutButton from "../LogoutButton/LogoutButton.jsx";
 
 // Componente funcional Navbar
 const Navbar = () => {
@@ -25,8 +25,8 @@ const Navbar = () => {
         */}
       </ul>
       {/* Botão de logout */}
-      <div className="pr-[64px] py-4">
-        <SecondaryButton
+      <div className="pr-[64px]">
+        <LogoutButton
           id="logout_button_id"
           text="Sair do Usuário"
           onClick={handleLogout}
