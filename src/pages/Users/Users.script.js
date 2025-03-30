@@ -8,7 +8,8 @@ export const registerRedirect = () => {
 export const renderUsers = async (
   filterType,
   findUsers,
-  setUserToken,
+  setUserId,
+  setIsClient,
   navigate
 ) => {
   try {
@@ -16,7 +17,7 @@ export const renderUsers = async (
 
     return users.map((user) => {
       return React.createElement(CardUser, {
-        key: user.token,
+        key: user.id,
         id: user.id,
         name: user.nome,
         tipoCliente: user.tipoCliente, // Passa o tipoCliente diretamente
@@ -24,8 +25,12 @@ export const renderUsers = async (
         telefone: user.telefone,
         email: user.email,
         onClick: () => {
-          setUserToken(user.token);
-          navigate(`/user/${user.token}`);
+          setUserId(user.id);
+          const isClient = filterType === "CLIENTE";
+          setIsClient(isClient);
+          sessionStorage.setItem("userId", user.id);
+          sessionStorage.setItem("isClient", isClient);
+          navigate(`/user/${user.id}`);
         },
       });
     });

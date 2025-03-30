@@ -14,7 +14,7 @@ const Users = () => {
   const [filterType, setFilterType] = useState("CLIENTE"); // Default to "Cliente"
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
 
-  const { findUsers, setUserToken } = useUserContext(); // Exportação do contexto
+  const { findUsers, setUserId, setIsClient } = useUserContext(); // Adicionado setIsClient
   const navigate = useNavigate(); //Navigate para navegatação, ele não atualiza a página
 
   useEffect(() => {
@@ -23,7 +23,8 @@ const Users = () => {
         const elements = await renderUsers(
           filterType,
           findUsers,
-          setUserToken,
+          setUserId,
+          setIsClient, // Passa setIsClient
           navigate
         );
         setUserElements(elements);

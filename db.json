@@ -1,7 +1,7 @@
 {
   "clientes": [
     {
-      "nome": "AVULSO ",
+      "nome": "CLIENTE AVULSO ",
       "cpf": "214.312.312-31",
       "email": "avulso@avulso.com",
       "telefone": "(13) 21312-3131",
@@ -20,6 +20,16 @@
       "ativo": true,
       "id": 2,
       "token": "10Ra3HW4u7ZaFU32"
+    },
+    {
+      "nome": "TESTE2",
+      "cpf": "123.123.123-13",
+      "email": "teste@teste.com",
+      "telefone": "(12) 31312-3131",
+      "tipoCliente": "MENSAL",
+      "ativo": "true",
+      "token": "OqJM1XtPqUdqtBDJ",
+      "id": 3
     }
   ],
   "funcionarios": [
@@ -45,7 +55,7 @@
     },
     {
       "id": 4,
-      "nome": "IAGO",
+      "nome": "IAGO GOTO",
       "cpf": "123.123.123-13",
       "email": "iago@iago.com",
       "telefone": "(23) 12312-3213",

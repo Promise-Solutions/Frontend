@@ -1,125 +1,25 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useUserContext } from "../../context/UserContext.jsx";
 import PrimaryButton from "../../components/PrimaryButton/PrimaryButton.jsx";
-import toast from "react-hot-toast"; // Importa o toast para exibir mensagens
+import toast from "react-hot-toast";
 import Select from "../../components/Form/Select.jsx";
 import Input from "../../components/Form/Input.jsx";
+import axios from "axios";
+import DeleteButton from "../../components/DeleteButton/DeleteButton.jsx";
 
 export const RenderInfos = () => {
-  const { user, setUser, userToken } = useUserContext();
-  const [currentUser, setCurrentUser] = useState({});
-  const [isClient, setIsClient] = useState(true);
-  const [isEditing, setIsEditing] = useState(false); // State to control edit section visibility
-
-  useEffect(() => {
-    if (!userToken) {
-      // Verifica se há dados salvos no sessionStorage
-      const savedUser = sessionStorage.getItem("lastUserData");
-      if (savedUser) {
-        const parsedUser = JSON.parse(savedUser);
-        setCurrentUser(parsedUser);
-        setIsClient(parsedUser.isClient); // Usa a flag isClient salva no sessionStorage
-        toast("Últimos dados obtidos foram carregados.", {
-          icon: "ℹ️", // Ícone de informação
-          style: {
-            borderRadius: "10px",
-            background: "#333",
-            color: "#fff",
-            border: "solid 1px #9A3379",
-          },
-        });
-      }
-      return;
-    }
-
-    const fetchUserData = async () => {
-      toast.promise(
-        (async () => {
-          try {
-            let response = await axios.get(
-              `http://localhost:5000/clientes?token=${userToken}`
-            );
-            let userData = response.data[0];
-
-            if (!userData) {
-              response = await axios.get(
-                `http://localhost:5000/funcionarios?token=${userToken}`
-              );
-              userData = response.data[0];
-              if (userData) {
-                setIsClient(false); // Set isClient to false for funcionarios
-              }
-            } else {
-              setIsClient(true); // Set isClient to true for clientes
-            }
-
-            if (!userData) {
-              throw new Error("Usuário não encontrado no banco de dados.");
-            }
-
-            const updatedUser = { ...userData, isClient }; // Inclui a flag isClient no objeto do usuário
-            setUser(updatedUser);
-            setCurrentUser(updatedUser);
-
-            // Salva os dados no sessionStorage com a flag isClient
-            sessionStorage.setItem("lastUserData", JSON.stringify(updatedUser));
-          } catch (error) {
-            console.error("Erro ao buscar usuário:", error);
-
-            // Carrega os últimos dados salvos no sessionStorage
-            const savedUser = sessionStorage.getItem("lastUserData");
-            if (savedUser) {
-              const parsedUser = JSON.parse(savedUser);
-              setCurrentUser(parsedUser);
-              setIsClient(parsedUser.isClient); // Usa a flag isClient salva no sessionStorage
-              toast(
-                "Erro ao acessar o servidor. Últimos dados obtidos foram carregados.",
-                {
-                  icon: "⚠️", // Ícone de aviso
-                  style: {
-                    borderRadius: "10px",
-                    background: "#333",
-                    color: "#fff",
-                    border: "solid 1px #9A3379",
-                  },
-                }
-              );
-            } else {
-              throw new Error(
-                "Erro ao acessar o servidor e nenhum dado local encontrado."
-              );
-            }
-          }
-        })(),
-        {
-          loading: "Buscando informações do usuário...",
-          success: "Informações carregadas com sucesso.",
-          error: "Erro ao buscar informações do usuário.",
-        },
-        {
-          style: {
-            borderRadius: "10px",
-            background: "#333",
-            color: "#fff",
-            border: "solid 1px #9A3379",
-          },
-        }
-      );
-    };
-
-    fetchUserData();
-  }, [userToken]);
+  const { user, setUser, userId, isClient } = useUserContext();
+  const [isEditing, setIsEditing] = useState(false);
 
   function Edit() {
     const [formData, setFormData] = useState({
-      nome: currentUser.nome || "",
-      cpf: currentUser.cpf || "",
-      email: currentUser.email || "",
-      telefone: currentUser.telefone || "",
-      tipoCliente: currentUser.tipoCliente || "",
-      ativo: currentUser.ativo || false,
-      senha: "", // Campo adicional para funcionários
+      nome: user?.nome || "",
+      cpf: user?.cpf || "",
+      email: user?.email || "",
+      telefone: user?.telefone || "",
+      tipoCliente: user?.tipoCliente || "",
+      ativo: user?.ativo || false,
+      senha: "",
     });
 
     const clienteOptions = [
@@ -159,54 +59,43 @@ export const RenderInfos = () => {
     };
 
     const handleSaveChanges = async () => {
-      try {
-        const updatedFormData = {
-          ...formData,
-          nome: formData.nome.toUpperCase(), // Convert nome to uppercase
-        };
+      await toast.promise(
+        (async () => {
+          try {
+            const updatedFormData = {
+              ...formData,
+              nome: formData.nome.toUpperCase(),
+            };
 
-        // Remove senha if empty
-        if (!formData.senha) {
-          delete updatedFormData.senha;
-        }
+            if (!formData.senha) delete updatedFormData.senha;
+            if (!isClient) delete updatedFormData.tipoCliente;
 
-        // Remove tipoCliente if not a client
-        if (!isClient) {
-          delete updatedFormData.tipoCliente;
-        }
+            const endpoint = isClient
+              ? `http://localhost:5000/clientes/${userId}`
+              : `http://localhost:5000/funcionarios/${userId}`;
+            await axios.patch(endpoint, updatedFormData);
 
-        const endpoint = isClient
-          ? `http://localhost:5000/clientes/${currentUser.id}`
-          : `http://localhost:5000/funcionarios/${currentUser.id}`;
-        await axios.patch(endpoint, updatedFormData);
-        toast.success("Informações atualizadas com sucesso!", {
+            setUser({ ...user, ...updatedFormData });
+            setIsEditing(false);
+          } catch (error) {
+            console.error("Erro ao salvar alterações:", error);
+            throw new Error("Erro ao salvar alterações. Tente novamente.");
+          }
+        })(),
+        {
+          loading: "Salvando alterações...",
+          success: "Informações atualizadas com sucesso!",
+          error: "Erro ao salvar alterações.",
+        },
+        {
           style: {
             borderRadius: "10px",
             background: "#333",
             color: "#fff",
             border: "solid 1px #9A3379",
           },
-        });
-
-        const updatedUser = { ...currentUser, ...updatedFormData };
-        setCurrentUser(updatedUser);
-        setUser(updatedUser);
-
-        // Save updated user to sessionStorage
-        sessionStorage.setItem("lastUserData", JSON.stringify(updatedUser));
-
-        setIsEditing(false); // Hide edit section
-      } catch (error) {
-        console.error("Erro ao salvar alterações:", error);
-        toast.error("Erro ao salvar alterações. Tente novamente.", {
-          style: {
-            borderRadius: "10px",
-            background: "#333",
-            color: "#fff",
-            border: "solid 1px #9A3379",
-          },
-        });
-      }
+        }
+      );
     };
 
     return (
@@ -302,54 +191,48 @@ export const RenderInfos = () => {
 
   return (
     <div className="w-full">
-      {" "}
-      {/* Adicionado w-full para garantir largura total */}
       {!isEditing ? (
         <section
           id="info_section"
-          className="mt-12 flex w-full justify-between" // Garantir w-full aqui também
+          className="mt-12 flex w-full justify-between"
         >
           <div className="flex flex-col">
             <h1 className="text-[42px]">
-              <b>{isClient ? "Cliente: " : "Funcionário: "}</b>{" "}
-              {(user || currentUser).nome}
+              <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.nome}
             </h1>
             <span className="text-[18px]">Altere as informações</span>
             <ul className="flex flex-col mt-6 gap-2">
               {!isClient ? null : (
                 <li>
-                  <b>Tipo de Cliente: </b> {(user || currentUser).tipoCliente}
+                  <b>Tipo de Cliente: </b> {user?.tipoCliente}
                 </li>
               )}
               <li>
-                <b>Email: </b> {(user || currentUser).email}
+                <b>Email: </b> {user?.email}
               </li>
               <li>
-                <b>CPF: </b> {(user || currentUser).cpf}
+                <b>CPF: </b> {user?.cpf}
               </li>
               <li>
-                <b>Telefone: </b> {(user || currentUser).telefone}
+                <b>Telefone: </b> {user?.telefone}
               </li>
               <li>
-                <b>Status: </b>{" "}
-                {(user || currentUser).ativo ? "Ativo" : "Inativo"}
+                <b>Status: </b> {user?.ativo ? "Ativo" : "Inativo"}
               </li>
             </ul>
           </div>
           <PrimaryButton
             id="button_edit"
             text="Editar Usuário"
-            onClick={() => setIsEditing(true)} // Show edit section on button click
+            onClick={() => setIsEditing(true)}
           />
         </section>
       ) : (
-        <section
-          id="edit_section"
-          className="mt-12 flex w-full justify-between" // Garantir w-full aqui também
-        >
-          <Edit />
-        </section>
+        <Edit />
       )}
+      <div className="flex justify-end">
+        <DeleteButton id="delete_button" text= "Deletar Usuário"/>
+      </div>
     </div>
   );
 };
