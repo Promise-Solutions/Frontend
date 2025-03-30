@@ -36,3 +36,7 @@
   height: 0;
   display: none; /* Garante que as setas sejam ocultadas */
 }
+
+body {
+  overflow-x: hidden; /* Impede o scroll horizontal */
+}
