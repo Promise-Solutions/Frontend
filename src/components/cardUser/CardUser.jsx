@@ -18,7 +18,7 @@ const CardUser = ({
       </div>
       <div>
         {/* Divisão */}
-        <div className={`border-1 transition duration-100`}></div>
+        <div className={`border-1 border-pink-zero transition duration-100`}></div>
         <ul
           className={`px-8 py-6 text-[16px] list-disc marker:text-cyan-zero ease-in-out`}
         >
