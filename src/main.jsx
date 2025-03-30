@@ -1,5 +1,5 @@
 // Importando estilos globais
-import "./global/global.css";
+import "./styles/global.css";
 
 // Importando StrictMode do React para destacar possíveis problemas na aplicação
 import { StrictMode } from "react";

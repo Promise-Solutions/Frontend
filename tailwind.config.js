@@ -5,18 +5,13 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        white: "#FFFFFF", // Cor branca
-        black: "#000000", // Cor preta
-        cyanzero: "#02AEBAF", // Cor ciano
-        pinkzero: "#9A3379", // Cor rosa
-        green: "#00FF0D", // Cor verde
-        orange: "#DDBB0F", // Cor laranja
-        red: "#CB6263", // Cor vermelha
-      },
       fontFamily: {
         sans: ["Roboto", "sans-serif"], // Fonte padrão Roboto
         poppins: ["Poppins", "sans-serif"], // Fonte adicional Poppins
+      },
+      colors: {
+        cyanzero: '#02AEBAF', // Cor ciano
+        pinkzero: '#9A3379' // Cor rosa
       },
       screens: {
         xs: "480px", // Breakpoint extra pequeno
