@@ -4,9 +4,9 @@ import { UserProvider } from "./UserContext";
 function GlobalProvider({ children }) {
     return (
         <UserProvider>
-            <JobProvider>
-                    {children}
-            </JobProvider>
+        <JobProvider>
+            {children}
+        </JobProvider>
         </UserProvider>
         
     );

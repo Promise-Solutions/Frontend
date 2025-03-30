@@ -138,7 +138,7 @@
       "titulo": "Atendimento5",
       "categoria": "Podcast",
       "horario": "14:00",
-      "concluido": false
+      "concluido": true
     }
   ]
 }
