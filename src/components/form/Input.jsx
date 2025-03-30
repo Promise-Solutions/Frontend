@@ -11,7 +11,7 @@ function Input({ type, text, name, placeholder, handleOnChange, value }) {
         placeholder={placeholder}
         onChange={handleOnChange}
         value={value}
-        className="h-8 bg-transparent border-b border-[#5f6176] text-white text-lg focus:outline-none transition-all duration-150 ease-in-out focus:border-[#9A3379]"
+        className="h-8 bg-transparent border-b border-[#5f6176] text-white text-lg focus:outline-none transition-all duration-150 ease-in-out focus:border-pink-zero"
       />
     </div>
   );

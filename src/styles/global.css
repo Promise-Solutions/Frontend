@@ -2,15 +2,19 @@
 @import "tailwindcss";
 @tailwind utilities;
 
-:root {
-  --pink: #9a3379; /* Cor primária padrão */
-  --bg-white: #ffffff; /* Cor de fundo padrão */
+@theme {
+  --color-cyan-zero: #02AEBAFF;
+  --color-pink-zero: #9a3379; /* Cor primária padrão */
+  --color-green-zero: #00FF0D;
+  --color-yellow-zero: #DDBB0F;
+  --color-red-zero: #C73E40;
+  --bg-white: white; /* Cor de fundo padrão */
 }
 
 /* Global scrollbar styling */
 * {
   scrollbar-width: thin; /* Aplica estilização personalizada */
-  scrollbar-color: var(--pink) black; /* Fundo transparente */
+  scrollbar-color: var(--color-pink-zero) black; /* Fundo transparente */
   scroll-behavior: smooth; /* Adiciona suavidade ao scroll */
 }
 
@@ -19,7 +23,7 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--pink);
+  background-color: var(--color-pink-zero);
   border-radius: 10px;
 }
 

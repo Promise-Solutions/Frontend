@@ -52,7 +52,7 @@ const userFilter = ({ id, placeholder, onSearch }) => {
   return (
     <div
       className={`flex flex-row border-1 h-10 w-60 items-center transition-colors ease-in-out duration-100 ${
-        isFocused ? "border-[#9A3379]" : "border-white" // Altera a cor da borda com base no foco
+        isFocused ? "border-pink-zero" : "border-white" // Altera a cor da borda com base no foco
       }`}
     >
       <img src={icon} alt="Buscar" className="mx-2 w-[24px] h-[24px]" />{" "}

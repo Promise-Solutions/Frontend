@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import CardHomePage from "../../components/homePage/CardHomePage.jsx";
-import UserIcon from '../../assets/icon-empresa.png'
-import JobIcon from '../../assets/icon-atendimentos.png';
-import BarIcon from '../../assets/icon-bar.png'
-import DashIcon from '../../assets/icon-dashboard.png'
-import RelatIcon from '../../assets/icon-report.png'
-import Logo from '../../assets/logo-branco-bg-sonoro.png'
+import UserIcon from "../../assets/icon-empresa.png";
+import JobIcon from "../../assets/icon-atendimentos.png";
+import BarIcon from "../../assets/icon-bar.png";
+import DashIcon from "../../assets/icon-dashboard.png";
+import RelatIcon from "../../assets/icon-report.png";
+import Logo from "../../assets/logo-branco-bg-sonoro.png";
 import { handleLogout } from "./Home.script.js";
 import LogoutButton from "../../components/LogoutButton/LogoutButton.jsx";
 
@@ -36,30 +36,40 @@ const Home = () => {
           text="Gerencie seus usuários, atendimentos e tarefas"
           url={UserIcon}
           idButton="users"
+          className="text-[42px] text-transparent font-bold"
+          style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
         />
         <CardHomePage
           title="Serviços"
           text="Gerencie seus serviços e Sub-serviços"
           url={JobIcon}
           idButton="jobs"
+          className="text-[42px] text-transparent font-bold"
+          style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
         />
         <CardHomePage
           title="Bar"
           text="Visualize e gerencie as comandas e pedidos dos seus clientes"
           url={BarIcon}
           idButton="bar"
+          className="text-[42px] text-transparent font-bold"
+          style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
         />
         <CardHomePage
           title="Dashboard"
           text="Acompanhe dados, métricas e tendências em tempo real"
           url={DashIcon}
           idButton="dashboard"
+          className="text-[42px] text-transparent font-bold"
+          style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
         />
         <CardHomePage
           title="Relatórios"
           text="Visualize seus relatórios mensais ou gere um novo quando quiser"
           url={RelatIcon}
           idButton="reports"
+          className="text-[42px] text-transparent font-bold"
+          style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
         />
       </section>
     </main>

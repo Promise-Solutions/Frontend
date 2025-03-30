@@ -18,7 +18,7 @@ const CardJob = React.memo(({ id, title, category, time, isDone, onClick }) => {
     <div
       id={`job_${id}`}
       className={`card_job border-1 text-[#d9d9d9] w-3xs rounded-[5px] duration-100 pb-2 h-auto bg-[#1E1E1E90] ${
-        done ? "border-[#02AEBA]" : "border-[#9A3379]"
+        done ? "border-cyan-zero" : "border-pink-zero"
       }`}
     >
       <div className="flex pl-5 py-6 text-2xl font-bold items-center gap-[4px]">
@@ -27,13 +27,13 @@ const CardJob = React.memo(({ id, title, category, time, isDone, onClick }) => {
       <div>
         <div
           className={`border-1 transition duration-100 ${
-            done ? "border-[#02AEBA]" : "border-[#9A3379]"
+            done ? "border-cyan-zero" : "border-pink-zero"
           }`}
         ></div>
         <ul
           className={`pl-8 py-6 text-[16px] list-disc 
                 ${
-                  done ? "marker:text-[#9A3379]" : "marker:text-[#02AEBA]"
+                  done ? "marker:text-pink-zero" : "marker:text-cyan-zero"
                 } marker:duration-100 ease-in-out`}
         >
           <li>
@@ -57,8 +57,8 @@ const CardJob = React.memo(({ id, title, category, time, isDone, onClick }) => {
             className={`h-[38px] w-[50%] text-[14px] py-2 text-[#d9d9d9]
                  ${
                    done
-                     ? "border-[#02AEBA] hover:text-[#02AEBA]"
-                     : "border-[#9A3379] hover:text-[#9A3379]"
+                     ? "border-cyan-zero hover:text-cyan-zero"
+                     : "border-pink-zero hover:text-pink-zero"
                  } 
                  font-bold cursor-pointer border-r-1 duration-100`}
           >
@@ -67,8 +67,8 @@ const CardJob = React.memo(({ id, title, category, time, isDone, onClick }) => {
           <button
             onClick={onClick}
             className={`h-[38px] w-[50%] text-[14px] border-0 px-5 py-2 text-[#D9D9D9]
-                 ${done ? "hover:text-[#02AEBA]" : "hover:text-[#9A3379]"} 
-                 font-bold cursor-pointer hover:text-[#02AEBA] duration-100 ease-in-out`}
+                 ${done ? "hover:text-cyan-zero" : "hover:text-pink-zero"} 
+                 font-bold cursor-pointer hover:text-cyan-zero duration-100 ease-in-out`}
           >
             Acessar
           </button>

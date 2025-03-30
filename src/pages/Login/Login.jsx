@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Input from "../../components/form/Input";
+import Input from "../../components/Form/Input";
 import SubmitButton from "../../components/Form/SubmitButton";
 import toast from "react-hot-toast";
 

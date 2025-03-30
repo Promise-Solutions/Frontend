@@ -1,7 +1,7 @@
 // Componente funcional para a página Jobs
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PrimaryButton from "../../components/primaryButton/primaryButton";
+import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
 import JobsFilter from "../../components/JobFilter/JobFilter"
 import { registerRedirect, renderJobs } from "./Jobs.script";
 import { useJobContext } from "../../context/JobContext";
