@@ -48,7 +48,7 @@ function Register() {
     <main className="flex items-center justify-center min-h-screen w-full">
       <section className="flex flex-col items-center justify-start gap-6 w-full px-4 py-8">
         <img src={logo} alt="logo-studio-zero-header" className="h-[250px]" />
-        <h1 className="font-medium text-4xl tracking-widest text-[#9A3379] text-center">
+        <h1 className="font-light text-4xl tracking-widest text-[#9A3379] text-center">
           Registre um novo usuário
         </h1>
       </section>
