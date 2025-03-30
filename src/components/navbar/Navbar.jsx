@@ -5,7 +5,7 @@ import SecondaryButton from "../SecondaryButton/SecondaryButton.jsx";
 // Componente funcional Navbar
 const Navbar = () => {
   // Usa o hook personalizado para obter estados e funções
-  const { activeTab, handleTabClick } = useNavbarLogic();
+  const { activeTab, handleTabClick, handleLogout } = useNavbarLogic();
 
   return (
     <div className="navbar bg-[transparent] w-full border-b-white border border-solid flex justify-between items-center cursor-pointer">

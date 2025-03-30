@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
 import axios from "axios";
-import { startFetching, stopFetching } from "../hooks/isFetching";
 
 const JobContext = createContext({});
 
@@ -9,8 +8,6 @@ export function JobProvider({ children }) {
 
   // Função declarada
   async function findJobs() {
-    if (!startFetching()) return [];
-
     try {
       const response = await axios.get("http://localhost:5000/atendimentos");
       const jobs = response.data;
@@ -20,12 +17,10 @@ export function JobProvider({ children }) {
       console.error("Erro ao buscar atendimentos:", error);
       return [];
     } finally {
-      stopFetching();
     }
   }
 
   async function updateStatus(id, isDone) {
-    if (!startFetching()) return [];
 
     try {
         const response = await axios.patch(`http://localhost:5000/atendimentos/${id}`, { concluido: isDone });
@@ -36,7 +31,6 @@ export function JobProvider({ children }) {
     } catch(error) {
         console.error("Erro ao atualizar o status do atendimento:", error);
     } finally {
-        stopFetching();
     }
   }
 

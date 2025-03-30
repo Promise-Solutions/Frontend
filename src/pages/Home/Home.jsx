@@ -6,6 +6,7 @@ import BarIcon from '../../assets/icon-bar.png'
 import DashIcon from '../../assets/icon-dashboard.png'
 import RelatIcon from '../../assets/icon-report.png'
 import Logo from '../../assets/logo-branco-bg-sonoro.png'
+import { handleLogout } from "./Home.script.js";
 import SecondaryButton from "../../components/SecondaryButton/SecondaryButton.jsx";
 
 // Componente funcional para a página Home
@@ -35,6 +36,12 @@ const Home = () => {
           text="Gerencie seus usuários, atendimentos e tarefas"
           url={UserIcon}
           idButton="users"
+        />
+        <CardHomePage
+          title="Gerencie seus serviços"
+          text="Gerencie seus serviços e Sub-serviços"
+          url={JobIcon}
+          idButton="jobs"
         />
         <CardHomePage
           title="Bar"
