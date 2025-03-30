@@ -7,6 +7,7 @@ import Input from "../../components/Form/Input.jsx";
 import axios from "axios";
 import DeleteButton from "../../components/DeleteButton/DeleteButton.jsx";
 import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete.jsx";
+import { ToastStyle } from "../../components/ToastStyle/ToastStyle.jsx";
 
 export const RenderInfos = () => {
   const { user, setUser, userId, isClient } = useUserContext();
@@ -105,12 +106,7 @@ export const RenderInfos = () => {
           error: "Erro ao salvar alterações.",
         },
         {
-          style: {
-            borderRadius: "10px",
-            background: "#333",
-            color: "#fff",
-            border: "solid 1px #9A3379",
-          },
+          style: ToastStyle,
         }
       );
     };
