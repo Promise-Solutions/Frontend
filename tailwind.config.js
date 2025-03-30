@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   content: [
     "./index.html", // Arquivo HTML principal
     "./src/**/*.{html,js,jsx,ts,tsx}", // Todos os arquivos dentro de src com extensões suportadas
@@ -10,8 +10,8 @@ module.exports = {
         poppins: ["Poppins", "sans-serif"], // Fonte adicional Poppins
       },
       colors: {
-        cyanzero: '#02AEBAF', // Cor ciano
-        pinkzero: '#9A3379' // Cor rosa
+        'cyan-zero': '#02AEBAF', // Cor ciano
+        'pink-zero': '#9A3379' // Cor rosa
       },
       screens: {
         xs: "480px", // Breakpoint extra pequeno
