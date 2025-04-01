@@ -6,6 +6,7 @@ import Select from "../../components/Form/Select.jsx";
 import Input from "../../components/Form/Input.jsx";
 import axios from "axios";
 import DeleteButton from "../../components/DeleteButton/DeleteButton.jsx";
+import Dropdown from "../../components/Dropdown/Dropdown.jsx";
 import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete.jsx";
 import { ToastStyle } from "../../components/ToastStyle/ToastStyle.jsx";
 
@@ -246,6 +247,10 @@ export const RenderInfos = () => {
       ) : (
         <Edit />
       )}
+      <section className="dropdown_section">
+        <Dropdown title="Dashboard" content="BATATA" />
+        <Dropdown title="Serviços" content="CENOURA" />
+      </section>
       <div className="flex justify-end">
         <DeleteButton
           id="delete_button"

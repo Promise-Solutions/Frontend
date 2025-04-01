@@ -37,6 +37,10 @@
   display: none; /* Garante que as setas sejam ocultadas */
 }
 
+*::selection {
+  background: var(--color-gray-400);
+}
+
 body {
   overflow-x: hidden; /* Impede o scroll horizontal */
 }
