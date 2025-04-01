@@ -13,14 +13,6 @@ export default {
         'cyan-zero': '#02AEBAF', // Cor ciano
         'pink-zero': '#9A3379' // Cor rosa
       },
-      screens: {
-        xs: "480px", // Breakpoint extra pequeno
-        sm: "640px", // Breakpoint pequeno
-        md: "768px", // Breakpoint médio
-        lg: "1024px", // Breakpoint grande
-        xl: "1280px", // Breakpoint extra grande
-        "2xl": "1536px", // Breakpoint duplo extra grande
-      },
     },
   },
   plugins: [require("tailwind-scrollbar")], // Plugin para estilizar scrollbars
