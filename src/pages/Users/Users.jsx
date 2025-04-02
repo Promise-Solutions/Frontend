@@ -51,21 +51,24 @@ const Users = () => {
 
   return (
     <div className="min-w-full min-h-full text-white overflow-y-hidden">
-      {/* Seção de cabeçalho com título e botão */}
-      <section className="flex text-center mt-7">
-        <div className="mx-10">
+      {/* Seção de cabeçalho com título e botão
+      <section className="flex text-center mt-6">
+        <div className="mx-16">
           <h1 className="text-2xl font-thin">Gerencie seus usuários</h1>
         </div>
-      </section>
+      </section> */}
 
       {/* Seção principal com filtros e cards */}
-      <section className="mx-16">
+      <section className="mx-16 my-6">
         {/* Filtro de busca de usuários */}
         {/* Filtros por tipo de usuário e exibição de cards */}
         <div className="flex justify-center flex-col">
           {/* Filtro por tipo de usuário (Clientes ou Internos) */}
           <div className="flex w-full justify-between">
-            <div className="flex pl-70 justify-center w-full">
+            <div className="">
+              <h1 className="text-2xl font-thin">Gerencie seus usuários</h1>
+            </div>
+            <div className="flex pl-14 justify-center w-[50%]">
               <UserTypeFilter
                 onFilterChange={handleFilterChange} // Pass updated callback
               />
@@ -85,12 +88,16 @@ const Users = () => {
             </div>
           </div>
           {/* Espaço reservado para os cards de usuários */}
-          <div className="gap-4 flex flex-wrap justify-center mt-5 max-h-[500px] overflow-y-auto w-full h-auto">
+          <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
             {filteredUserElements.length > 0 ? (
               filteredUserElements
+            ) : filterType === "CLIENTE" ? (
+              <p className="text-center text-gray-400">
+                Nenhum cliente encontrado.
+              </p>
             ) : (
               <p className="text-center text-gray-400">
-                Nenhum usuário encontrado.
+                Nenhum interno encontrado.
               </p>
             )}
           </div>

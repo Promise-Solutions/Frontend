@@ -9,12 +9,15 @@ import DeleteButton from "../../components/DeleteButton/DeleteButton.jsx";
 import Dropdown from "../../components/Dropdown/Dropdown.jsx";
 import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete.jsx";
 import { ToastStyle } from "../../components/ToastStyle/ToastStyle.jsx";
+import ScreenFilter from "../../components/ScreenFilter/ScreenFilter.jsx";
 
 export const RenderInfos = () => {
-  const { user, setUser, userId, isClient } = useUserContext();
-  const [isEditing, setIsEditing] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { user, setUser, userId, isClient } = useUserContext(); // Contexto do usuário
+  const [isEditing, setIsEditing] = useState(false); // Controla o modo de edição
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla o modal de exclusão
+  const [filterScreen, setFilterScreen] = useState("1"); // Controla o filtro de tela
 
+  // Função para deletar usuário
   const handleDeleteUser = async () => {
     try {
       const endpoint = isClient
@@ -119,7 +122,7 @@ export const RenderInfos = () => {
     };
 
     return (
-      <section id="edit_section" className="mt-12 flex w-full justify-between">
+      <section id="edit_section" className="flex w-full justify-between">
         <div className="flex flex-col">
           <h1 className="text-[42px]">
             <b>Editar Informações</b>
@@ -205,64 +208,101 @@ export const RenderInfos = () => {
       </section>
     );
   }
+  //Fim da função edit
+
+  // Função para renderizar o conteúdo baseado no filtro selecionado
+  const renderContent = () => {
+    switch (filterScreen) {
+      case "1":
+        return isEditing ? ( // Modo edição ativo
+          <Edit setIsEditing={setIsEditing} />
+        ) : (
+          <>
+            <section id="info_section" className="flex w-full justify-between">
+              <div className="flex flex-col">
+                <h1 className="text-[42px]">
+                  <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.nome}
+                </h1>
+                <span className="text-[18px]">Altere as informações</span>
+                <ul className="flex flex-col mt-6 gap-2">
+                  {isClient && (
+                    <li>
+                      <b>Tipo de Cliente: </b> {user?.tipoCliente}
+                    </li>
+                  )}
+                  <li>
+                    <b>Email: </b> {user?.email}
+                  </li>
+                  <li>
+                    <b>CPF: </b> {user?.cpf}
+                  </li>
+                  <li>
+                    <b>Telefone: </b> {user?.telefone}
+                  </li>
+                  <li>
+                    <b>Status: </b> {user?.ativo ? "Ativo" : "Inativo"}
+                  </li>
+                </ul>
+              </div>
+
+              <div className="flex justify-between flex-col">
+                {/* Botão de editar */}
+                <PrimaryButton
+                  id="button_edit"
+                  text="Editar Usuário"
+                  onClick={() => setIsEditing(true)}
+                />
+                {/* Botão de deletar só aparece se NÃO estiver no modo de edição */}
+                {!isEditing && (
+                  <div className="flex justify-end mt-4">
+                    <DeleteButton
+                      id="delete_button"
+                      text="Deletar Usuário"
+                      onClick={() => setIsDeleteModalOpen(true)}
+                    />
+                  </div>
+                )}
+
+                {/* Modal de confirmação de exclusão */}
+                <ModalConfirmDelete
+                  isOpen={isDeleteModalOpen}
+                  onClose={() => setIsDeleteModalOpen(false)}
+                  onConfirm={handleDeleteUser}
+                />
+              </div>
+            </section>
+          </>
+        );
+
+      case "2":
+        return (
+          <Dropdown
+            title="Serviços"
+            content="Aqui ficam os serviços do usuário."
+          />
+        );
+
+      case "3":
+        return (
+          <Dropdown
+            title="Dashboard"
+            content="Aqui fica a dashboard do usuário."
+          />
+        );
+
+      default:
+        return (
+          <p className="text-center text-gray-400">
+            Selecione um filtro válido.
+          </p>
+        );
+    }
+  };
 
   return (
-    <div className="w-full">
-      {!isEditing ? (
-        <section
-          id="info_section"
-          className="mt-12 flex w-full justify-between"
-        >
-          <div className="flex flex-col">
-            <h1 className="text-[42px]">
-              <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.nome}
-            </h1>
-            <span className="text-[18px]">Altere as informações</span>
-            <ul className="flex flex-col mt-6 gap-2">
-              {!isClient ? null : (
-                <li>
-                  <b>Tipo de Cliente: </b> {user?.tipoCliente}
-                </li>
-              )}
-              <li>
-                <b>Email: </b> {user?.email}
-              </li>
-              <li>
-                <b>CPF: </b> {user?.cpf}
-              </li>
-              <li>
-                <b>Telefone: </b> {user?.telefone}
-              </li>
-              <li>
-                <b>Status: </b> {user?.ativo == true ? "Ativo" : "Inativo"}
-              </li>
-            </ul>
-          </div>
-          <PrimaryButton
-            id="button_edit"
-            text="Editar Usuário"
-            onClick={() => setIsEditing(true)}
-          />
-        </section>
-      ) : (
-        <Edit />
-      )}
-      <section className="dropdown_section">
-        <Dropdown title="Dashboard" content="BATATA" />
-        <Dropdown title="Serviços" content="CENOURA" />
-      </section>
-      <div className="flex justify-end">
-        <DeleteButton
-          id="delete_button"
-          text="Deletar Usuário"
-          onClick={() => setIsDeleteModalOpen(true)}
-        />
-      </div>
-      <ModalConfirmDelete
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={handleDeleteUser}
-      />
+    <div className="w-full mt-3">
+      <ScreenFilter onFilterChange={setFilterScreen} />
+      {renderContent()}
     </div>
   );
 };

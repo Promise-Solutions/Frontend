@@ -8,12 +8,12 @@ const Navbar = () => {
   const { activeTab, handleTabClick, handleLogout } = useNavbarLogic();
 
   return (
-    <div className="navbar bg-[transparent] w-full flex justify-between items-center cursor-pointer">
+    <div className="navbar bg-[transparent] px-16 w-full flex justify-between items-center cursor-pointer shadow-md shadow-white/5">
       <img
         id="logo_id"
         src={logo}
         alt="Studio Zero"
-        className="w-[156px] h-[79px] ml-[64px]"
+        className="w-[156px] h-[79px]"
       />
       {/* Lista de abas do Navbar */}
       <ul className="flex justify-between gap-6 w-[40%] items-center h-full text-white font-medium">
@@ -25,7 +25,7 @@ const Navbar = () => {
         */}
       </ul>
       {/* Botão de logout */}
-      <div className="pr-[64px]">
+      <div className="">
         <LogoutButton
           id="logout_button_id"
           text="Sair do Usuário"

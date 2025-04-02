@@ -244,6 +244,7 @@ export function setupRegisterEvents() {
         iptType.value = "";
         if (iptSenha) iptSenha.value = "";
         if (iptTipoCliente) iptTipoCliente.value = "";
+        window.location.href = "/users";
       } else {
         toast.error("Erro ao cadastrar usuário.", { style: ToastStyle });
       }

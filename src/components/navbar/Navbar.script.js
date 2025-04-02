@@ -42,7 +42,7 @@ export const useNavbarLogic = () => {
 // Cada aba tem um ID (usado para navegação) e um nome (exibido no Navbar)
 export const tabs = [
   { id: "users", name: "Usuários" },
-  { id: "jobs", name: "Atendimentos" },
+  { id: "jobs", name: "Serviços" },
   { id: "bar", name: "Bar" },
   { id: "dashboard", name: "Dashboard" },
   { id: "reports", name: "Relatórios" },
@@ -74,5 +74,4 @@ const waitForLogo = () => {
     window.location.href = "/";
   });
 };
-
 setTimeout(waitForLogo, 200); // Retry after 100ms
