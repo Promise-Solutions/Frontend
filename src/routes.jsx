@@ -2,7 +2,8 @@ import {
   BrowserRouter as Router, // Componente para gerenciar rotas
   Routes, // Contêiner para as rotas
   Route, // Define uma rota específica
-  Navigate, // Redireciona para outra rota
+  Navigate,
+  useNavigate// Redireciona para outra rota
 } from "react-router-dom";
 
 import Register from "./pages/Register/Register"; // Página de registro

@@ -1,7 +1,7 @@
 // Importa os componentes necessários
 import UserFilter from "../../components/userFilter/UserFilter";
 import UserTypeFilter from "../../components/userTypeFilter/UserTypeFilter";
-import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
+import RegisterUserButton from "../../components/RegisterUserButton/RegisterUserButton";
 import { registerRedirect, renderUsers } from "./Users.script";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -50,42 +50,42 @@ const Users = () => {
   });
 
   return (
-    <div className="min-w-full min-h-full text-white pb-40">
+    <div className="min-w-full min-h-full text-white overflow-y-hidden">
       {/* Seção de cabeçalho com título e botão */}
-      <section className="flex justify-center items-center mt-28">
-        <div className="mr-10">
-          <h1 className="text-[42px] font-bold">Gerencie seus usuários</h1>
-          <p className="text-[18px] mb-4">
-            Tenha uma visão geral de todos seus clientes cadastrados
-          </p>
+      <section className="flex text-center mt-7">
+        <div className="mx-10">
+          <h1 className="text-2xl font-thin">Gerencie seus usuários</h1>
         </div>
-        {/* Botão para cadastrar um novo usuário */}
-        <PrimaryButton
-          id="register_button"
-          text="Cadastrar Usuário"
-          onClick={registerRedirect}
-        />
       </section>
 
       {/* Seção principal com filtros e cards */}
-      <section className="px-16 mt-16">
+      <section className="mx-16">
         {/* Filtro de busca de usuários */}
-        <div className="flex text-gray-400">
-          <UserFilter
-            id="input_search_user"
-            placeholder="Busque um Usuário"
-            onSearch={handleSearch} // Passa a função de busca
-          />
-        </div>
-
         {/* Filtros por tipo de usuário e exibição de cards */}
-        <div className="flex justify-center flex-col mt-4">
+        <div className="flex justify-center flex-col">
           {/* Filtro por tipo de usuário (Clientes ou Internos) */}
-          <UserTypeFilter
-            onFilterChange={handleFilterChange} // Pass updated callback
-          />
+          <div className="flex w-full justify-between">
+            <div className="flex pl-70 justify-center w-full">
+              <UserTypeFilter
+                onFilterChange={handleFilterChange} // Pass updated callback
+              />
+            </div>
+            <div className="flex gap-2 justify-end text-gray-400">
+              <UserFilter
+                id="input_search_user"
+                placeholder="Busque um Usuário"
+                onSearch={handleSearch} // Passa a função de busca
+              />
+              {/* Botão para cadastrar um novo usuário */}
+              <RegisterUserButton
+                id="register_button"
+                text="+"
+                onClick={registerRedirect}
+              />
+            </div>
+          </div>
           {/* Espaço reservado para os cards de usuários */}
-          <div className="gap-4 flex flex-wrap justify-center mt-12 max-h-[600px] overflow-y-auto w-full h-auto">
+          <div className="gap-4 flex flex-wrap justify-center mt-5 max-h-[500px] overflow-y-auto w-full h-auto">
             {filteredUserElements.length > 0 ? (
               filteredUserElements
             ) : (

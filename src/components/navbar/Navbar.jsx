@@ -8,7 +8,7 @@ const Navbar = () => {
   const { activeTab, handleTabClick, handleLogout } = useNavbarLogic();
 
   return (
-    <div className="navbar bg-[transparent] w-full border-b-white border border-solid flex justify-between items-center cursor-pointer">
+    <div className="navbar bg-[transparent] w-full flex justify-between items-center cursor-pointer">
       <img
         id="logo_id"
         src={logo}
