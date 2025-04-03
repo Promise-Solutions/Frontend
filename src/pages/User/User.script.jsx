@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { useUserContext } from "../../context/UserContext.jsx";
-import PrimaryButton from "../../components/PrimaryButton/PrimaryButton.jsx";
+import PrimaryButton from "../../components/primaryButton/PrimaryButton.jsx";
 import toast from "react-hot-toast";
-import Select from "../../components/Form/Select.jsx";
-import Input from "../../components/Form/Input.jsx";
+import Select from "../../components/form/Select.jsx";
+import Input from "../../components/form/Input.jsx";
 import axios from "axios";
-import DeleteButton from "../../components/DeleteButton/DeleteButton.jsx";
-import Dropdown from "../../components/Dropdown/Dropdown.jsx";
-import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete.jsx";
-import { ToastStyle } from "../../components/ToastStyle/ToastStyle.jsx";
-import ScreenFilter from "../../components/ScreenFilter/ScreenFilter.jsx";
+import DeleteButton from "../../components/deleteButton/DeleteButton.jsx";
+import Dropdown from "../../components/dropdown/Dropdown.jsx";
+import ModalConfirmDelete from "../../components/modalConfirmDelete/ModalConfirmDelete.jsx";
+import { ToastStyle } from "../../components/toastStyle/ToastStyle.jsx";
+import ScreenFilter from "../../components/screenFilter/ScreenFilter.jsx";
+import LineGrafic from "../../components/grafics/LineGrafic.jsx";
 
 export const RenderInfos = () => {
   const { user, setUser, userId, isClient } = useUserContext(); // Contexto do usuário
@@ -284,10 +285,9 @@ export const RenderInfos = () => {
 
       case "3":
         return (
-          <Dropdown
-            title="Dashboard"
-            content="Aqui fica a dashboard do usuário."
-          />
+          <div className="mt-6 bg-[#1E1E1E90] p-4">
+            <LineGrafic />
+          </div>
         );
 
       default:

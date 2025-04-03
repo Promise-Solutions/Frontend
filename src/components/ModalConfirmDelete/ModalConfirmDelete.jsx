@@ -1,5 +1,5 @@
-import ConfirmButton from "../ConfirmButton/ConfirmButton";
-import DeleteButton from "../DeleteButton/DeleteButton";
+import ConfirmButton from "../confirmButton/ConfirmButton";
+import DeleteButton from "../deleteButton/DeleteButton";
 
 const ModalConfirmDelete = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;

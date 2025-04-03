@@ -1,6 +1,6 @@
 import { useState } from "react";
-import ArrowUp from "../Arrows/ArrowUp";
-import ArrowDown from "../Arrows/ArrowDown";
+import ArrowUp from "../arrows/ArrowUp";
+import ArrowDown from "../arrows/ArrowDown";
 
 const Dropdown = ({ title, content }) => {
   const [isOpen, setIsOpen] = useState(false);
