@@ -179,6 +179,42 @@
       "nomeProduto": "Coca-Cola",
       "qtdProduto": 10,
       "valorUnitario": "6.00"
+    },
+    {
+      "nomeProduto": "Guaraná",
+      "qtdProduto": 7,
+      "valorUnitario": "7.00",
+      "id": 2
+    },
+    {
+      "nomeProduto": "Sprite",
+      "qtdProduto": 20,
+      "valorUnitario": "6.00",
+      "id": 3
+    },
+    {
+      "nomeProduto": "Fandangos",
+      "qtdProduto": 13,
+      "valorUnitario": "4.00",
+      "id": 4
+    },
+    {
+      "nomeProduto": "Ruffles",
+      "qtdProduto": 10,
+      "valorUnitario": "6.50",
+      "id": 5
+    },
+    {
+      "nomeProduto": "Chocolate",
+      "qtdProduto": 10,
+      "valorUnitario": "5.60",
+      "id": 6
+    },
+    {
+      "nomeProduto": "Buraquinho do Artur",
+      "qtdProduto": 1,
+      "valorUnitario": "NaN",
+      "id": 7
     }
   ]
 }
