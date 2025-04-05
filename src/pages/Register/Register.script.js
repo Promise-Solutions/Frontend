@@ -1,6 +1,5 @@
 import axios from "axios";
-import toast from "react-hot-toast";
-import { ToastStyle } from "../../components/toastStyle/ToastStyle.jsx";
+import { toast } from "react-hot-toast";
 
 let isEventRegistered = false; // Variável de controle para evitar múltiplos registros
 
@@ -106,7 +105,6 @@ export function setupRegisterEvents() {
 
   // Verificando se os campos existem, tava dando um bug q n tava sendo renderizado
   if (!iptNome || !iptEmail || !iptCpf || !iptTelefone || !btnConfirm) {
-    console.error("Elementos do formulário não encontrados.");
     return;
   }
 
@@ -115,11 +113,11 @@ export function setupRegisterEvents() {
     const iptEmail = document.querySelector("#email"); // Buscar elemento atualizado
     const regex = /^[^\s]+@[^\s]+\.[^\s]+$/;
     if (!iptEmail || !iptEmail.value.trim()) {
-      toast.error("O campo de email está vazio.", { style: ToastStyle });
+      toast.error("O campo de email está vazio.");
       return false;
     }
     if (!regex.test(iptEmail.value)) {
-      toast.error("O email inserido é inválido.", { style: ToastStyle });
+      toast.error("O email inserido é inválido.");
       return false;
     }
     return true;
@@ -136,12 +134,12 @@ export function setupRegisterEvents() {
     const iptTipoCliente = document.querySelector("#tipoCliente");
 
     if (!iptNome || !iptNome.value.trim()) {
-      toast.error("O campo de nome está vazio.", { style: ToastStyle });
+      toast.error("O campo de nome está vazio.");
       return false;
     }
 
     if (!iptCpf || iptCpf.value.length !== 14) {
-      toast.error("O CPF deve ter 14 caracteres.", { style: ToastStyle });
+      toast.error("O CPF deve ter 14 caracteres.");
       return false;
     }
 
@@ -150,27 +148,23 @@ export function setupRegisterEvents() {
     }
 
     if (!iptTelefone || iptTelefone.value.length !== 15) {
-      toast.error("O telefone deve ter 15 caracteres.", { style: ToastStyle });
+      toast.error("O telefone deve ter 15 caracteres.");
       return false;
     }
 
     if (iptType.value === "CLIENTE") {
       // Validação para cliente
       if (!iptTipoCliente || !iptTipoCliente.value.trim()) {
-        toast.error("O campo de tipo de cliente está vazio.", {
-          style: ToastStyle,
-        });
+        toast.error("O campo de tipo de cliente está vazio.");
         return false;
       }
     } else if (iptType.value === "FUNCIONARIO") {
       // Validação para funcionário
       if (!iptSenha || iptSenha.value.length < 8) {
-        toast.error("A senha deve ter pelo menos 8 caracteres.", {
-          style: ToastStyle,
-        });
+        toast.error("A senha deve ter pelo menos 8 caracteres.");
       }
     } else {
-      toast.error("Tipo de usuário inválido.", { style: ToastStyle });
+      toast.error("Tipo de usuário inválido.");
       return false;
     }
 
@@ -236,7 +230,7 @@ export function setupRegisterEvents() {
         novoUsuario
       );
       if (res.status === 201) {
-        toast.success("Cadastro realizado com sucesso!", { style: ToastStyle });
+        toast.success("Cadastro realizado com sucesso!");
         iptNome.value = "";
         iptCpf.value = "";
         iptEmail.value = "";
@@ -246,10 +240,10 @@ export function setupRegisterEvents() {
         if (iptTipoCliente) iptTipoCliente.value = "";
         window.location.href = "/users";
       } else {
-        toast.error("Erro ao cadastrar usuário.", { style: ToastStyle });
+        toast.error("Erro ao cadastrar usuário.");
       }
     } catch (error) {
-      toast.error("Erro ao cadastrar usuário.", { style: ToastStyle });
+      toast.error("Erro ao cadastrar usuário.");
       console.error("Erro:", error);
     }
   };

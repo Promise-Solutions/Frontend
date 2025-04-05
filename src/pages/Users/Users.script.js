@@ -1,8 +1,9 @@
 import React from "react";
-import CardUser from "../../components/CardUser/CardUser.jsx";
+import CardUser from "../../components/cardUser/CardUser.jsx";
+import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 
-export const registerRedirect = () => {
-  window.location.href = "/register";
+export const registerRedirect = (navigate) => {
+  navigate("/register"); // Use navigate passed as an argument
 };
 
 export const renderUsers = async (

@@ -10,6 +10,16 @@ function calcInputOutput(valorEntrada, valorSaida) {
   return valorEntrada - valorSaida;
 }
 
+// Function to calculate total value after applying a discount
+export function calcTotalWithDiscount(total, discount) {
+  return calcDiscount(total, discount / 100); // Reutiliza a lógica de calcDiscount
+}
+
+// Function to calculate the difference between two values
+function calcDifference(value1, value2) {
+  return parseFloat((value1 - value2).toFixed(2));
+}
+
 // Exportando as funções para uso em outras partes da aplicação
 // Permite que outras partes do código importem e utilizem essas funções
-export { calcDiscount, calcInputOutput };
+export { calcDiscount, calcInputOutput, calcDifference };

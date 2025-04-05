@@ -1,14 +1,14 @@
 import { JobProvider } from "./JobContext";
 import { UserProvider } from "./UserContext";
-import { BarProvider } from "./BarContext";
+import { CommandProvider } from "./CommandContext";
 
 function GlobalProvider({ children }) {
   return (
     <UserProvider>
     <JobProvider>
-    <BarProvider>
+    <CommandProvider>
         {children}
-    </BarProvider>
+    </CommandProvider>
     </JobProvider>
     </UserProvider>
   );

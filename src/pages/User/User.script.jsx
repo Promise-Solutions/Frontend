@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useUserContext } from "../../context/UserContext.jsx";
 import PrimaryButton from "../../components/primaryButton/PrimaryButton.jsx";
-import toast from "react-hot-toast";
+import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import Select from "../../components/form/Select.jsx";
 import Input from "../../components/form/Input.jsx";
 import axios from "axios";
 import DeleteButton from "../../components/deleteButton/DeleteButton.jsx";
 import Dropdown from "../../components/dropdown/Dropdown.jsx";
 import ModalConfirmDelete from "../../components/modalConfirmDelete/ModalConfirmDelete.jsx";
-import { ToastStyle } from "../../components/toastStyle/ToastStyle.jsx";
 import ScreenFilter from "../../components/screenFilter/ScreenFilter.jsx";
 import LineGrafic from "../../components/graphic/FreqPagGraphic.jsx";
 
@@ -25,10 +24,10 @@ export const RenderInfos = () => {
         ? `http://localhost:5000/clientes/${userId}`
         : `http://localhost:5000/funcionarios/${userId}`;
       await axios.delete(endpoint);
-      toast.success("Usuário deletado com sucesso!");
+      showToast.success("Usuário deletado com sucesso!");
       window.location.href = "/users";
     } catch (error) {
-      toast.error("Erro ao deletar usuário. Tente novamente.");
+      showToast.error("Erro ao deletar usuário. Tente novamente.");
     } finally {
       setIsDeleteModalOpen(false);
     }
@@ -106,6 +105,7 @@ export const RenderInfos = () => {
 
             setUser({ ...user, ...updatedFormData });
             setIsEditing(false);
+            showToast.success("Informações atualizadas com sucesso!");
           } catch (error) {
             console.error("Erro ao salvar alterações:", error);
             throw new Error("Erro ao salvar alterações. Tente novamente.");

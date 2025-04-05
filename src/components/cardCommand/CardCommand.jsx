@@ -7,6 +7,7 @@ const CardCommand = ({
   dateHourOpen,
   dateHourClose,
   discount,
+  employeeName,
   onClick,
 }) => {
   const isClosed = !!dateHourClose; // Verifica se a comanda está fechada
@@ -54,13 +55,16 @@ const CardCommand = ({
             <b>Cliente:</b> <span>{name}</span>
           </li>
           <li>
+            <b>Funcionário:</b> <span>{employeeName}</span>
+          </li>
+          <li>
             <b>Valor Total:</b> <span>{totalValue}</span>
           </li>
           <li>
             <b>Desconto:</b> <span>{discount}</span>
           </li>
           <li>
-            <b>Data Abertura:</b> <span>{dateHourOpen}</span>
+            <b>Data Abertura:</b><br></br> <span>{dateHourOpen}</span>
           </li>
           {dateHourClose && (
             <li>

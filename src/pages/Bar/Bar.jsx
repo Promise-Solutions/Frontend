@@ -3,21 +3,21 @@ import UserFilter from "../../components/userFilter/UserFilter";
 import BarTypeFilter from "../../components/barTypeFilter/BarTypeFilter";
 import RegisterUserButton from "../../components/RegisterUserButton/RegisterUserButton";
 import PrimaryButton from "../../components/primaryButton/PrimaryButton";
+import ModalOpenCommand from "../../components/modalOpenCommand/ModalOpenCommand"; // Import the new modal
 import { registerRedirect, renderCommands, stockRedirect } from "./Bar.script";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserContext } from "../../context/UserContext";
-import { useBarContext } from "../../context/BarContext"; // Importa o BarContext
+import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
 
 // Componente funcional para a página Bar
 // Representa a estrutura da página "Bar", atualmente sem conteúdo
 const Bar = () => {
-  const { setCommandId } = useBarContext(); // Obtém o setCommandId do contexto
+  const { setCommandId, findCommands } = useCommandContext(); // Obtém o setCommandId do contexto
   const [userElements, setUserElements] = useState([]); // Estado para armazenar os elementos renderizados
   const [filterType, setFilterType] = useState("ABERTAS"); // Default to "ABERTAS"
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
+  const [isOpenCommandModalOpen, setIsOpenCommandModalOpen] = useState(false); // State to control the modal
 
-  const { findUsers, setUserId, setIsClient } = useUserContext(); // Adicionado setIsClient
   const navigate = useNavigate(); //Navigate para navegatação, ele não atualiza a página
 
   useEffect(() => {
@@ -25,8 +25,9 @@ const Bar = () => {
       try {
         const elements = await renderCommands(
           filterType,
-          navigate,
-          setCommandId // Passa setCommandId para atualizar o contexto
+          findCommands,
+          setCommandId,
+          navigate
         );
         setUserElements(elements);
       } catch (error) {
@@ -66,7 +67,7 @@ const Bar = () => {
               <PrimaryButton
                 id="stock_button"
                 text="Gerenciar Estoque"
-                onClick={stockRedirect} // Função de redirecionamento para cadastro
+                onClick={() => stockRedirect(navigate)} // Pass navigate to stockRedirect
               />
             </div>
             <div className="flex justify-center w-full pr-30 flex-1">
@@ -80,11 +81,11 @@ const Bar = () => {
                 placeholder="Busque uma Comanda"
                 onSearch={handleSearch} // Passa a função de busca
               />
-              {/* Botão para cadastrar um novo usuário */}
+              {/* Botão para abrir o modal de nova comanda */}
               <RegisterUserButton
                 id="register_button"
                 text="+"
-                onClick={registerRedirect}
+                onClick={() => setIsOpenCommandModalOpen(true)} // Open the modal
               />
             </div>
           </div>
@@ -104,6 +105,11 @@ const Bar = () => {
           </div>
         </div>
       </section>
+      {/* Modal for opening a new command */}
+      <ModalOpenCommand
+        isOpen={isOpenCommandModalOpen}
+        onClose={() => setIsOpenCommandModalOpen(false)}
+      />
     </div>
   );
 };

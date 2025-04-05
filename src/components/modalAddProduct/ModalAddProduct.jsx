@@ -26,7 +26,7 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-10">
+    <div className="fixed inset-0 bg-black/90 flex justify-center items-center z-10">
       <div className="bg-[#1E1E1E98] border-1 border-pink-zero text-white p-6 shadow-lg w-[400px]">
         <h2 className="text-xl font-bold mb-4">Adicionar Produto</h2>
         <form onSubmit={handleSubmit}>

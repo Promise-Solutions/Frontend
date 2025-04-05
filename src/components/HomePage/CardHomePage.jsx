@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { handleButtonClick } from "./CardHome.script";
-import PrimaryButton from "../PrimaryButton/PrimaryButton";
+import PrimaryButton from "../primaryButton/PrimaryButton";
 
 function CardHomePage({ title, text, url, idButton }) {
+  const navigate = useNavigate();
+
   return (
     <article
       className="flex flex-col justify-between align-center
@@ -17,7 +20,7 @@ function CardHomePage({ title, text, url, idButton }) {
       </div>
       <PrimaryButton
         text="Acessar"
-        onClick={() => handleButtonClick(idButton)}
+        onClick={() => handleButtonClick(idButton, navigate)}
         id={`${idButton}_id`}
         className="h-[42px] ml-auto border-1 px-5 py-2 border-[#9A3379] text-[#9A3379] 
                     font-bold cursor-pointer hover:border-[#02AEBA] hover:text-[#02AEBA] duration-300"

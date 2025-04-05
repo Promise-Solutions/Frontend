@@ -5,6 +5,7 @@ import ModalConfirmDelete from "../../components/modalConfirmDelete/ModalConfirm
 import StockTable from "../../components/tables/stockTable";
 import ModalAddProduct from "../../components/modalAddProduct/ModalAddProduct";
 import ModalEditProduct from "../../components/modalEditProduct/ModalEditProduct";
+import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 
 const Stock = () => {
   const [products, setProducts] = useState([]);
@@ -94,8 +95,10 @@ const Stock = () => {
       );
       setIsDeleteModalOpen(false);
       setProductToDelete(null);
+      showToast.success("Produto deletado com sucesso!");
     } catch (error) {
       console.error("Erro ao excluir produto:", error);
+      showToast.error("Erro ao excluir produto.");
     }
   };
 

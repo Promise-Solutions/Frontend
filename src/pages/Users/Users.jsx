@@ -76,7 +76,7 @@ const Users = () => {
               <RegisterUserButton
                 id="register_button"
                 text="+"
-                onClick={registerRedirect}
+                onClick={() => registerRedirect(navigate)} // Pass navigate to registerRedirect
               />
             </div>
           </div>

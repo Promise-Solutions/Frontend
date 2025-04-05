@@ -1,4 +1,5 @@
-export const handleLogout = () => {
+export const handleLogout = (navigate) => {
   localStorage.clear();
-  window.location.href = "/login";
+  sessionStorage.clear();
+  navigate("/login"); // Use navigate passed as an argument
 };

@@ -1,5 +1,4 @@
 import {
-  BrowserRouter as Router, // Componente para gerenciar rotas
   Routes, // Contêiner para as rotas
   Route, // Define uma rota específica
   Navigate,
@@ -25,44 +24,42 @@ function ProtectedRoute({ element }) {
 
 function AppRoutes() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<ProtectedRoute element={<Home />} />} />
-        <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
-        <Route
-          path="/user/:user"
-          element={<ProtectedRoute element={<User />} />}
-        />
-        <Route
-          path="/register"
-          element={<ProtectedRoute element={<Register />} />}
-        />
-        <Route path="/bar" element={<ProtectedRoute element={<Bar />} />} />
-        <Route
-          path="/bar/stock"
-          element={<ProtectedRoute element={<Stock />} />}
-        />
-        <Route
-          path="/bar/command/:idCommand"
-          element={<ProtectedRoute element={<Command />} />}
-        />
-        <Route
-          path="/dashboard"
-          element={<ProtectedRoute element={<Dashboard />} />}
-        />
-        <Route
-          path="/reports"
-          element={<ProtectedRoute element={<Reports />} />}
-        />
-        <Route
-          path="/projects"
-          element={<ProtectedRoute element={<Projects />} />}
-        />
-        <Route path="/jobs" element={<ProtectedRoute element={<Jobs />} />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/" element={<ProtectedRoute element={<Home />} />} />
+      <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
+      <Route
+        path="/user/:user"
+        element={<ProtectedRoute element={<User />} />}
+      />
+      <Route
+        path="/register"
+        element={<ProtectedRoute element={<Register />} />}
+      />
+      <Route path="/bar" element={<ProtectedRoute element={<Bar />} />} />
+      <Route
+        path="/bar/stock"
+        element={<ProtectedRoute element={<Stock />} />}
+      />
+      <Route
+        path="/command/:command"
+        element={<ProtectedRoute element={<Command />} />}
+      />
+      <Route
+        path="/dashboard"
+        element={<ProtectedRoute element={<Dashboard />} />}
+      />
+      <Route
+        path="/reports"
+        element={<ProtectedRoute element={<Reports />} />}
+      />
+      <Route
+        path="/projects"
+        element={<ProtectedRoute element={<Projects />} />}
+      />
+      <Route path="/jobs" element={<ProtectedRoute element={<Jobs />} />} />
+    </Routes>
   );
 }
 

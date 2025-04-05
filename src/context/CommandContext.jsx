@@ -1,22 +1,23 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+// context/CommandContext.jsx
+import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 
-const BarContext = createContext({});
+const CommandContext = createContext();
 
-export function BarProvider({ children }) {
+export const CommandProvider = ({ children }) => {
   const [command, setCommand] = useState(null);
-  const [commandId, setCommandId] = useState(() => sessionStorage.getItem("id"));
+  const [commandId, setCommandId] = useState(() => sessionStorage.getItem("commandId")
+  );
 
+  // Sempre que commandId mudar, salvar na sessionStorage
   useEffect(() => {
     sessionStorage.setItem("commandId", commandId || "");
   }, [commandId]);
 
+  // Buscar comanda com base no ID armazenado
   useEffect(() => {
     const fetchCommandData = async () => {
-      if (!commandId || commandId.trim() === "") {
-        setCommand(null); // Garante que o estado seja limpo se o ID for inválido
-        return;
-      }
+      if (!commandId) return;
 
       try {
         const endpoint = `http://localhost:5000/commands?id=${commandId}`;
@@ -26,43 +27,43 @@ export function BarProvider({ children }) {
         if (commandData) {
           setCommand(commandData);
         } else {
-          console.warn("Comanda não encontrada para o id:", commandId);
-          setCommand(null); // Garante que o estado seja limpo se a comanda não for encontrada
+          throw new Error("Comanda não encontrada.");
         }
       } catch (error) {
         console.error("Erro ao buscar dados da comanda:", error);
-        setCommand(null); // Garante que o estado seja limpo em caso de erro
       }
     };
-
     fetchCommandData();
   }, [commandId]);
 
-  async function findCommands(filterType) {
+  // Busca comandas filtradas por status
+  const findCommands = async (filterType) => {
     try {
       const endpoint =
         filterType === "ABERTAS"
           ? "http://localhost:5000/commands?status=Aberta"
-          : "http://localhost:5000/commands?status=Fechado";
+          : "http://localhost:5000/commands?status=Fechada";
       const response = await axios.get(endpoint);
       return response.data;
     } catch (error) {
       console.error("Erro ao buscar comandas:", error);
       return [];
     }
-  }
+  };
 
   return (
-    <BarContext.Provider
+    <CommandContext.Provider
       value={{
         command,
+        setCommand,
+        commandId,
         setCommandId,
         findCommands,
       }}
     >
       {children}
-    </BarContext.Provider>
+    </CommandContext.Provider>
   );
-}
+};
 
-export const useBarContext = () => useContext(BarContext);
+export const useCommandContext = () => useContext(CommandContext);

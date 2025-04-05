@@ -24,7 +24,10 @@ const Table = ({ headers, data }) => {
                   key={cellIndex}
                   className="border border-gray-700 px-4 py-2"
                 >
-                  {row[header.key]}
+                  {typeof row[header.key] === "string" ||
+                  typeof row[header.key] === "number"
+                    ? row[header.key]
+                    : row[header.key]}
                 </td>
               ))}
             </tr>
