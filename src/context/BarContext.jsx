@@ -5,35 +5,38 @@ const BarContext = createContext({});
 
 export function BarProvider({ children }) {
   const [command, setCommand] = useState(null);
-  const [id, setId] = useState(() => sessionStorage.getItem("id"));
+  const [commandId, setCommandId] = useState(() => sessionStorage.getItem("id"));
 
   useEffect(() => {
-    sessionStorage.setItem("id", id || "");
-  }, [id]);
+    sessionStorage.setItem("commandId", commandId || "");
+  }, [commandId]);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (!id || id.trim() === "") {
+    const fetchCommandData = async () => {
+      if (!commandId || commandId.trim() === "") {
+        setCommand(null); // Garante que o estado seja limpo se o ID for inválido
         return;
       }
 
       try {
-        const endpoint = `http://localhost:5000/commands?id=${id}`;
+        const endpoint = `http://localhost:5000/commands?id=${commandId}`;
         const response = await axios.get(endpoint);
         const commandData = response.data[0] || null;
 
         if (commandData) {
           setCommand(commandData);
         } else {
-          console.warn("Comanda não encontrada para o id:", id);
+          console.warn("Comanda não encontrada para o id:", commandId);
+          setCommand(null); // Garante que o estado seja limpo se a comanda não for encontrada
         }
       } catch (error) {
         console.error("Erro ao buscar dados da comanda:", error);
+        setCommand(null); // Garante que o estado seja limpo em caso de erro
       }
     };
 
-    fetchUserData();
-  }, [id]);
+    fetchCommandData();
+  }, [commandId]);
 
   async function findCommands(filterType) {
     try {
@@ -53,7 +56,7 @@ export function BarProvider({ children }) {
     <BarContext.Provider
       value={{
         command,
-        setId,
+        setCommandId,
         findCommands,
       }}
     >

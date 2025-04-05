@@ -11,8 +11,8 @@ export const stockRedirect = () => {
 
 export const renderCommands = async (
   filterType,
-  navigate
-
+  navigate,
+  setCommandId // Adicionado setCommandId para atualizar o contexto
 ) => {
   try {
     // Buscar todas as comandas da rota commands
@@ -43,7 +43,7 @@ export const renderCommands = async (
 
       // Calcular o valor total da comanda
       const totalValue = commandProducts
-        .filter((product) => product.fkComanda === command.id)
+        .filter((product) => product.fkComanda === command.id) // Corrigido para usar command.id
         .reduce(
           (sum, product) =>
             sum + parseFloat(product.valorUnitario) * product.qtdProduto,
@@ -68,15 +68,17 @@ export const renderCommands = async (
       const dateHourClose = formatDateTime(command.dataHoraFechamento);
 
       return React.createElement(CardCommand, {
-        key: command.id,
-        id: command.id,
+        key: command.id, // Corrigido para usar command.id
+        id: command.id, // Corrigido para usar command.id
         name: client ? client.nome : "Cliente não encontrado", // Nome do cliente
         totalValue: `R$ ${totalValue}`, // Valor total formatado
         dateHourOpen,
         dateHourClose: command.status === "Fechada" ? dateHourClose : null, // Exibir apenas se fechada
         discount: command.desconto,
         onClick: () => {
-          navigate(`/bar/command/${command.id}`);
+          setCommandId(command.id); // Atualiza o ID no contexto
+          sessionStorage.setItem("commandId", command.id); // Armazena o ID da comanda na sessão
+          navigate(`/bar/command/${command.id}`); // Redireciona para a tela de detalhes da comanda
         },
       });
     });

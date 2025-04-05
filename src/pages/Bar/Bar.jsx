@@ -7,10 +7,12 @@ import { registerRedirect, renderCommands, stockRedirect } from "./Bar.script";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/UserContext";
+import { useBarContext } from "../../context/BarContext"; // Importa o BarContext
 
 // Componente funcional para a página Bar
 // Representa a estrutura da página "Bar", atualmente sem conteúdo
 const Bar = () => {
+  const { setCommandId } = useBarContext(); // Obtém o setCommandId do contexto
   const [userElements, setUserElements] = useState([]); // Estado para armazenar os elementos renderizados
   const [filterType, setFilterType] = useState("ABERTAS"); // Default to "ABERTAS"
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
@@ -23,7 +25,9 @@ const Bar = () => {
       try {
         const elements = await renderCommands(
           filterType,
-          navigate); // Alterado para renderCommands
+          navigate,
+          setCommandId // Passa setCommandId para atualizar o contexto
+        );
         setUserElements(elements);
       } catch (error) {
         console.error("Erro ao renderizar comandas:", error);
@@ -31,7 +35,7 @@ const Bar = () => {
     };
 
     fetchAndRender();
-  }, [filterType]); // Atualiza quando filterType muda
+  }, [filterType, setCommandId]); // Atualiza quando filterType ou setCommandId muda
 
   const handleSearch = (term) => {
     setSearchTerm(term.toUpperCase()); // Atualiza o termo de busca

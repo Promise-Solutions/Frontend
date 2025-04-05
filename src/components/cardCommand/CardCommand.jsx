@@ -20,7 +20,7 @@ const CardCommand = ({
         isClosed ? "bg-[#1E1E1E90]" : "bg-[#1E1E1E90]"
       } cursor-pointer hover:${
         isClosed ? "border-pink-zero" : "border-cyan-zero"
-        } transition duration-100 ease-in-out `}
+      } transition duration-100 ease-in-out `}
       onClick={onClick}
     >
       <div
