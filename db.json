@@ -16,7 +16,7 @@
       "email": "avulso@avulso.com",
       "telefone": "(31) 31313-1313",
       "tipoCliente": "AVULSO",
-      "ativo": true,
+      "ativo": false,
       "token": "byKxDWdCOz8Yi5tq",
       "id": 2
     }
@@ -209,6 +209,24 @@
       "qtdProduto": 10,
       "valorUnitario": "5.60",
       "id": 6
+    },
+    {
+      "nomeProduto": "Buraquinho do Artur",
+      "qtdProduto": 1,
+      "valorUnitario": "NaN",
+      "id": 7
+    },
+    {
+      "nomeProduto": "Buraquinho do Iago",
+      "qtdProduto": 1,
+      "valorUnitario": "5.00",
+      "id": 8
+    },
+    {
+      "nomeProduto": "Buraquinho do Rodolfo",
+      "qtdProduto": 1,
+      "valorUnitario": "1.00",
+      "id": 9
     }
   ]
 }

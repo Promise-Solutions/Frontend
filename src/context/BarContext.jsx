@@ -14,7 +14,6 @@ export function BarProvider({ children }) {
   useEffect(() => {
     const fetchUserData = async () => {
       if (!id || id.trim() === "") {
-        console.warn("Nenhum id fornecido.");
         return;
       }
 

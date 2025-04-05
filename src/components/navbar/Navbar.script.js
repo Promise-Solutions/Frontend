@@ -69,15 +69,10 @@ export const generateTabItems = (activeTab, handleTabClick) =>
   );
 
 const waitForLogo = () => {
-  const logo = document.querySelector(".logo");
-  if (!logo) {
-    console.warn("Elemento '.logo' não encontrado.");
-    return;
-  }
-
+  const logo = document.getElementById("logo_id");
   logo.addEventListener("click", () => {
-    console.log("Logo clicado!");
+    window.location.href = "/";
   });
 };
 
-waitForLogo();
+setTimeout(waitForLogo, 200); // Retry after 100ms
