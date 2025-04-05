@@ -9,7 +9,7 @@ export function JobProvider({ children }) {
   // Função declarada
   async function findJobs() {
     try {
-      const response = await axios.get("http://localhost:5000/atendimentos");
+      const response = await axios.get("http://localhost:5000/jobs");
       const jobs = response.data;
       console.log(jobs)
       return jobs;

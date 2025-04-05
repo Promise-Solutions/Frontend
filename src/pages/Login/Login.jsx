@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Input from "../../components/Form/Input";
+import Input from "../../components/form/Input";
 import SubmitButton from "../../components/Form/SubmitButton";
 import toast from "react-hot-toast";
 
@@ -81,9 +81,9 @@ const Login = () => {
         <form className="flex flex-col gap-6 mt-20" onSubmit={handleSubmit}>
           <Input
             type="email"
-            text="Email"
+            text="E-mail"
             name="email"
-            placeholder="Digite o email"
+            placeholder="Digite o e-mail"
             maxLength="50"
             handleOnChange={handleInputChange}
             value={formData.email}

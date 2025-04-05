@@ -3,7 +3,6 @@ import {
   Routes, // Contêiner para as rotas
   Route, // Define uma rota específica
   Navigate,
-  useNavigate// Redireciona para outra rota
 } from "react-router-dom";
 
 import Register from "./pages/Register/Register"; // Página de registro
@@ -16,55 +15,52 @@ import Projects from "./pages/Projects/Projects"; // Página de projetos
 import Jobs from "./pages/Jobs/Jobs"; // Página de trabalhos
 import Home from "./pages/Home/Home"; // Página inicial
 import User from "./pages/User/User"; // Página de usuário
+import Stock from "./pages/Stock/Stock";
+import Command from "./pages/Command/Command"; // Página de comanda
+
+function ProtectedRoute({ element }) {
+  const isAuthenticated = !!localStorage.getItem("token"); // Verifica se o usuário está autenticado
+  return isAuthenticated ? element : <Navigate to="/login" />;
+}
 
 function AppRoutes() {
-  const isAuthenticated = !!localStorage.getItem("token"); // Verifica se o usuário está autenticado
-
   return (
     <Router>
       <Routes>
-        {/* Rotas protegidas redirecionam para login se o usuário não estiver autenticado */}
-        <Route
-          path="/"
-          element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/home"
-          element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
-        />
+        <Route path="/" element={<ProtectedRoute element={<Home />} />} />
+        <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/users"
-          element={isAuthenticated ? <Users /> : <Navigate to="/login" />}
-        />
+        <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
         <Route
           path="/user/:user"
-          element={isAuthenticated ? <User /> : <Navigate to="/login" />}
+          element={<ProtectedRoute element={<User />} />}
         />
         <Route
           path="/register"
-          element={isAuthenticated ? <Register /> : <Navigate to="/login" />}
+          element={<ProtectedRoute element={<Register />} />}
+        />
+        <Route path="/bar" element={<ProtectedRoute element={<Bar />} />} />
+        <Route
+          path="/bar/stock"
+          element={<ProtectedRoute element={<Stock />} />}
         />
         <Route
-          path="/bar"
-          element={isAuthenticated ? <Bar /> : <Navigate to="/login" />}
+          path="/bar/command/:idCommand"
+          element={<ProtectedRoute element={<Command />} />}
         />
         <Route
           path="/dashboard"
-          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
+          element={<ProtectedRoute element={<Dashboard />} />}
         />
         <Route
           path="/reports"
-          element={isAuthenticated ? <Reports /> : <Navigate to="/login" />}
+          element={<ProtectedRoute element={<Reports />} />}
         />
         <Route
           path="/projects"
-          element={isAuthenticated ? <Projects /> : <Navigate to="/login" />}
+          element={<ProtectedRoute element={<Projects />} />}
         />
-        <Route
-          path="/jobs"
-          element={isAuthenticated ? <Jobs /> : <Navigate to="/login" />}
-        />
+        <Route path="/jobs" element={<ProtectedRoute element={<Jobs />} />} />
       </Routes>
     </Router>
   );

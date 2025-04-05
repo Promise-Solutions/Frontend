@@ -81,114 +81,17 @@
       "senha": "12345678",
       "ativo": true,
       "token": "2veVDIHYd6n011K9"
-    },
-    {
-      "nome": "TESTE1",
-      "cpf": "131.231.321-31",
-      "email": "teste1@teste1.com",
-      "telefone": "(12) 31313-1231",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "KCIeX9NlAjjrAemt",
-      "id": 11
-    },
-    {
-      "nome": "TESTE2",
-      "cpf": "123.123.213-12",
-      "email": "teste2@teste2.com",
-      "telefone": "(33) 12313-1313",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "KBXEKQyAKUGv7oBi",
-      "id": 12
-    },
-    {
-      "nome": "TESTE3",
-      "cpf": "123.123.128-31",
-      "email": "teste3@teste3.com",
-      "telefone": "(12) 89378-1293",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "Erat1beSxoUgHvpo",
-      "id": 13
-    },
-    {
-      "nome": "TESTE5",
-      "cpf": "312.313.123-13",
-      "email": "teste5@teste5.com",
-      "telefone": "(31) 31231-2313",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "zItUQzvDJW0I4GOS",
-      "id": 14
-    },
-    {
-      "nome": "TESTE4",
-      "cpf": "123.123.333-21",
-      "email": "teste4@teste4.com",
-      "telefone": "(21) 31333-2323",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "Ol14K8nllGQbTrIL",
-      "id": 15
-    },
-    {
-      "nome": "TESTE6",
-      "cpf": "123.313.133-31",
-      "email": "teste6@teste6.com",
-      "telefone": "(13) 12323-1231",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "Q2BJVVA3rAOOngUc",
-      "id": 16
-    },
-    {
-      "nome": "TESTE7",
-      "cpf": "123.123.123-31",
-      "email": "teste7@teste7.com",
-      "telefone": "(12) 32313-1313",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "IeT73GOD6hryo0Gb",
-      "id": 17
-    },
-    {
-      "nome": "TESTE8",
-      "cpf": "123.131.313-13",
-      "email": "teste8@teste8.com",
-      "telefone": "(13) 23131-3131",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "CfVjC7PCMMnoPybb",
-      "id": 18
-    },
-    {
-      "nome": "TESTE9",
-      "cpf": "123.131.313-13",
-      "email": "teste9@teste9.com",
-      "telefone": "(13) 12312-3123",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "c1s3GKJ1GOj6DuWN",
-      "id": 19
-    },
-    {
-      "nome": "TESTE9",
-      "cpf": "123.131.312-31",
-      "email": "teste9@teste9.com",
-      "telefone": "(13) 13123-1231",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "hOX0yc14qTesJxMn",
-      "id": 20
     }
   ],
-  "atendimentos": [
+  "jobs": [
     {
       "id": 1,
       "titulo": "Atendimento1",
       "categoria": "Ensaio Musical",
       "horario": "20:00",
+      "dataRegistro": "2023-10-01",
+      "dataFinalizacao": "2023-10-02",
+      "fkCliente": 1,
       "concluido": false
     },
     {
@@ -196,28 +99,86 @@
       "titulo": "Atendimento2",
       "categoria": "Ensaio Musical",
       "horario": "20:00",
+      "dataRegistro": "2023-10-01",
+      "dataFinalizacao": "2023-10-02",
+      "fkCliente": 1,
       "concluido": false
     },
     {
       "id": 3,
       "titulo": "Atendimento3",
-      "categoria": "Podcast",
-      "horario": "14:00",
+      "categoria": "Ensaio Musical",
+      "horario": "20:00",
+      "dataRegistro": "2023-10-01",
+      "dataFinalizacao": "2023-10-02",
+      "fkCliente": 1,
       "concluido": false
     },
     {
       "id": 4,
       "titulo": "Atendimento4",
-      "categoria": "Podcast",
-      "horario": "14:00",
+      "categoria": "Ensaio Musical",
+      "horario": "20:00",
+      "dataRegistro": "2023-10-01",
+      "dataFinalizacao": "2023-10-02",
+      "fkCliente": 1,
       "concluido": false
     },
     {
       "id": 5,
       "titulo": "Atendimento5",
-      "categoria": "Podcast",
-      "horario": "14:00",
+      "categoria": "Ensaio Musical",
+      "horario": "20:00",
+      "dataRegistro": "2023-10-01",
+      "dataFinalizacao": "2023-10-02",
+      "fkCliente": 1,
       "concluido": false
+    }
+  ],
+  "commands": [
+    {
+      "id": 1,
+      "dataHoraAbertura": "2025-04-04T15:36:00",
+      "dataHoraFechamento": null,
+      "desconto": "00.00",
+      "valorTotal": "00.00",
+      "fkCliente": 1,
+      "fkFuncionario": 1,
+      "status": "Aberta"
+    },
+    {
+      "id": 2,
+      "dataHoraAbertura": "2025-04-04T15:36:00",
+      "dataHoraFechamento": "2025-04-04T19:36:00",
+      "desconto": "00.00",
+      "valorTotal": "00.00",
+      "fkCliente": 2,
+      "fkFuncionario": 1,
+      "status": "Fechada"
+    }
+  ],
+  "commandProduct": [
+    {
+      "idComandaProduto": 1,
+      "fkProduto": 1,
+      "fkComanda": 1,
+      "qtdProduto": 6,
+      "valorUnitario": "06.00"
+    },
+    {
+      "idComandaProduto": 2,
+      "fkProduto": 1,
+      "fkComanda": 2,
+      "qtdProduto": 5,
+      "valorUnitario": "06.00"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "nomeProduto": "Coca-Cola",
+      "qtdProduto": 10,
+      "valorUnitario": "6.00"
     }
   ]
 }

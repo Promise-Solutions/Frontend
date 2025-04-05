@@ -51,13 +51,6 @@ const Users = () => {
 
   return (
     <div className="min-w-full min-h-full text-white overflow-y-hidden">
-      {/* Seção de cabeçalho com título e botão
-      <section className="flex text-center mt-6">
-        <div className="mx-16">
-          <h1 className="text-2xl font-thin">Gerencie seus usuários</h1>
-        </div>
-      </section> */}
-
       {/* Seção principal com filtros e cards */}
       <section className="mx-16 my-6">
         {/* Filtro de busca de usuários */}
@@ -65,7 +58,7 @@ const Users = () => {
         <div className="flex justify-center flex-col">
           {/* Filtro por tipo de usuário (Clientes ou Internos) */}
           <div className="flex w-full justify-between">
-            <div className="">
+            <div className="flex items-center">
               <h1 className="text-2xl font-thin">Gerencie seus usuários</h1>
             </div>
             <div className="flex pl-14 justify-center w-[50%]">

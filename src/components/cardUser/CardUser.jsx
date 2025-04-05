@@ -34,19 +34,19 @@ const CardUser = ({
         >
           {tipoCliente && ( // Only render if tipoCliente exists
             <li>
-              <b>Tipo de Cliente:</b> <span>{tipoCliente}</span>{" "}
+              <b>Tipo:</b> <span>{tipoCliente}</span>{" "}
             </li>
           )}
           <li className="list-disc marker:text-cyan-zero">
             <div className="flex items-center gap-1">
-              <b>Email:</b>{" "}
-              <span className="inline-block max-w-[10rem] overflow-hidden text-ellipsis whitespace-nowrap">
+              <b>E-mail:</b>{" "}
+              <span className="card_user_email inline-block max-w-[9rem] overflow-hidden text-ellipsis whitespace-nowrap">
                 {email}
               </span>
             </div>
           </li>
           <li>
-            <b>Telefone:</b> <span>{telefone}</span>
+            <b>Contato:</b> <span className="card_user_contact">{telefone}</span>
           </li>
         </ul>
       </div>

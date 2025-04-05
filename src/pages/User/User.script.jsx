@@ -10,7 +10,7 @@ import Dropdown from "../../components/dropdown/Dropdown.jsx";
 import ModalConfirmDelete from "../../components/modalConfirmDelete/ModalConfirmDelete.jsx";
 import { ToastStyle } from "../../components/toastStyle/ToastStyle.jsx";
 import ScreenFilter from "../../components/screenFilter/ScreenFilter.jsx";
-import LineGrafic from "../../components/grafics/LineGrafic.jsx";
+import LineGrafic from "../../components/graphic/FreqPagGraphic.jsx";
 
 export const RenderInfos = () => {
   const { user, setUser, userId, isClient } = useUserContext(); // Contexto do usuário
@@ -154,7 +154,7 @@ export const RenderInfos = () => {
             </li>
             <li>
               <Input
-                text="Email"
+                text="E-mail"
                 type="email"
                 name="email"
                 value={formData.email}
@@ -200,11 +200,26 @@ export const RenderInfos = () => {
               />
             </li>
           </ul>
+          <div className="flex mt-6">
+            <PrimaryButton
+              id="button_confirm_edit"
+              text="Salvar Alterações"
+              onClick={handleSaveChanges}
+            />
+          </div>
         </div>
-        <PrimaryButton
-          id="button_confirm_edit"
-          text="Salvar Alterações"
-          onClick={handleSaveChanges}
+        <DeleteButton
+          id="delete_button"
+          text="Deletar Usuário"
+          onClick={() => setIsDeleteModalOpen(true)}
+        />
+
+        <ModalConfirmDelete
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={handleDeleteUser}
+          title={"Deletar Usuário"}
+          description={"Tem certeza de que deseja deletar este usuário?"}
         />
       </section>
     );
@@ -232,7 +247,7 @@ export const RenderInfos = () => {
                     </li>
                   )}
                   <li>
-                    <b>Email: </b> {user?.email}
+                    <b>E-mail: </b> {user?.email}
                   </li>
                   <li>
                     <b>CPF: </b> {user?.cpf}
@@ -253,23 +268,6 @@ export const RenderInfos = () => {
                   text="Editar Usuário"
                   onClick={() => setIsEditing(true)}
                 />
-                {/* Botão de deletar só aparece se NÃO estiver no modo de edição */}
-                {!isEditing && (
-                  <div className="flex justify-end mt-4">
-                    <DeleteButton
-                      id="delete_button"
-                      text="Deletar Usuário"
-                      onClick={() => setIsDeleteModalOpen(true)}
-                    />
-                  </div>
-                )}
-
-                {/* Modal de confirmação de exclusão */}
-                <ModalConfirmDelete
-                  isOpen={isDeleteModalOpen}
-                  onClose={() => setIsDeleteModalOpen(false)}
-                  onConfirm={handleDeleteUser}
-                />
               </div>
             </section>
           </>
@@ -277,15 +275,44 @@ export const RenderInfos = () => {
 
       case "2":
         return (
-          <Dropdown
-            title="Serviços"
-            content="Aqui ficam os serviços do usuário."
-          />
+          <div>
+            <h1 className="text-[42px]">
+              <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.nome}
+            </h1>
+            <Dropdown
+              title="Serviços"
+              content="Aqui ficam os serviços do usuário."
+            />
+          </div>
         );
 
       case "3":
         return (
-          <div className="mt-6 bg-[#1E1E1E90] p-4">
+          <div className="flex justify-center mt-6 bg-[#1E1E1E90] p-4">
+            <div className="flex flex-col">
+              <h1 className="text-[42px]">
+                <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.nome}
+              </h1>
+              <ul className="flex flex-col mt-6 gap-2">
+                {isClient && (
+                  <li>
+                    <b>Tipo de Cliente: </b> {user?.tipoCliente}
+                  </li>
+                )}
+                <li>
+                  <b>E-mail: </b> {user?.email}
+                </li>
+                <li>
+                  <b>CPF: </b> {user?.cpf}
+                </li>
+                <li>
+                  <b>Telefone: </b> {user?.telefone}
+                </li>
+                <li>
+                  <b>Status: </b> {user?.ativo ? "Ativo" : "Inativo"}
+                </li>
+              </ul>
+            </div>
             <LineGrafic />
           </div>
         );

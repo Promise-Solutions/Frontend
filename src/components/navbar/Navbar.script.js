@@ -35,7 +35,7 @@ export const useNavbarLogic = () => {
   };
 
   // Retorna os estados e funções para serem usados no componente Navbar
-  return { activeTab, handleTabClick};
+  return { activeTab, handleTabClick };
 };
 
 // Vetor que define as abas do Navbar
@@ -69,9 +69,15 @@ export const generateTabItems = (activeTab, handleTabClick) =>
   );
 
 const waitForLogo = () => {
-  const logo = document.getElementById("logo_id");
+  const logo = document.querySelector(".logo");
+  if (!logo) {
+    console.warn("Elemento '.logo' não encontrado.");
+    return;
+  }
+
   logo.addEventListener("click", () => {
-    window.location.href = "/";
+    console.log("Logo clicado!");
   });
 };
-setTimeout(waitForLogo, 200); // Retry after 100ms
+
+waitForLogo();

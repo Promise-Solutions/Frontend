@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import icon from "../../assets/icone-busca.png";
 
 // Componente funcional para o filtro de busca de usuários
-const userFilter = ({ id, placeholder, onSearch }) => {
+const CommandFilter = ({ id, placeholder, onSearch }) => {
   // Estado para controlar se o input está focado
   const [isFocused, setIsFocused] = useState(false);
   // Estado para armazenar o valor do input
@@ -97,4 +97,4 @@ const userFilter = ({ id, placeholder, onSearch }) => {
 };
 
 // Exporta o componente para ser usado em outras partes do projeto
-export default userFilter;
+export default CommandFilter;

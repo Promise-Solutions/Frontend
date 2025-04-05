@@ -1,6 +1,6 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-import { ToastStyle } from "../../components/ToastStyle/ToastStyle.jsx";
+import { ToastStyle } from "../../components/toastStyle/ToastStyle.jsx";
 
 let isEventRegistered = false; // Variável de controle para evitar múltiplos registros
 
