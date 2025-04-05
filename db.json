@@ -73,41 +73,252 @@
       "token": "2veVDIHYd6n011K9"
     }
   ],
-  "atendimentos": [
+  "servicos": [
     {
       "id": 1,
       "titulo": "Atendimento1",
       "categoria": "Ensaio Musical",
       "horario": "20:00",
-      "concluido": false
+      "concluido": false,
+      "idCliente": 1
     },
     {
       "id": 2,
       "titulo": "Atendimento2",
       "categoria": "Ensaio Musical",
       "horario": "20:00",
-      "concluido": false
+      "concluido": false,
+      "idCliente": 1
     },
     {
       "id": 3,
       "titulo": "Atendimento3",
       "categoria": "Podcast",
       "horario": "14:00",
-      "concluido": false
+      "concluido": false,
+      "idCliente": 3
     },
     {
       "id": 4,
       "titulo": "Atendimento4",
       "categoria": "Podcast",
       "horario": "14:00",
-      "concluido": false
+      "concluido": false,
+      "idCliente": 4
     },
     {
       "id": 5,
       "titulo": "Atendimento5",
       "categoria": "Podcast",
       "horario": "14:00",
-      "concluido": false
+      "concluido": true,
+      "idCliente": 1
+    }
+  ],
+  "subservicos": [
+    {
+      "id": 1,
+      "titulo": "Subserviço1",
+      "descricao": "Descricao1",
+      "quantidade": 2,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 1
+    },
+    {
+      "id": 2,
+      "titulo": "Subserviço2",
+      "descricao": "Descricao2",
+      "quantidade": 2,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 1
+    },
+    {
+      "id": 3,
+      "titulo": "Subserviço3",
+      "descricao": "Descricao3",
+      "quantidade": 2,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 2
+    },
+    {
+      "id": 4,
+      "titulo": "Subserviço4",
+      "descricao": "Descricao4",
+      "quantidade": 2,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 3
+    },
+    {
+      "id": 5,
+      "titulo": "Subserviço5",
+      "descricao": "Descricao5",
+      "quantidade": 2,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 4
+    },
+    {
+      "id": 6,
+      "titulo": "Subserviço6",
+      "descricao": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto",
+      "quantidade": 2,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 4
+    },
+    {
+      "id": 7,
+      "titulo": "Subserviço7",
+      "descricao": "Descricao",
+      "quantidade": 2,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 4
+    },
+    {
+      "id": 8,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 4
+    },
+    {
+      "id": 9,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 4
+    },
+    {
+      "id": 10,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 4
+    },
+    {
+      "id": 11,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 4
+    },
+    {
+      "id": 13,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 4
+    },
+    {
+      "id": 14,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 4
+    },
+    {
+      "id": 15,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 4
+    },
+    {
+      "id": 16,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 4
+    },
+    {
+      "id": 17,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 4
+    },
+    {
+      "id": 19,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "data": "12/02/2025",
+      "horarioInicio": "10:00",
+      "horarioConclusao": null,
+      "concluido": false,
+      "idServico": 5
     }
   ]
 }

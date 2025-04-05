@@ -15,6 +15,7 @@ import Projects from "./pages/Projects/Projects"; // Página de projetos
 import Jobs from "./pages/Jobs/Jobs"; // Página de trabalhos
 import Home from "./pages/Home/Home"; // Página inicial
 import User from "./pages/User/User"; // Página de usuário
+import JobManagement from "./pages/JobManagement/JobManagement.jsx"
 
 function AppRoutes() {
   const isAuthenticated = !!localStorage.getItem("token"); // Verifica se o usuário está autenticado
@@ -63,6 +64,10 @@ function AppRoutes() {
         <Route
           path="/jobs"
           element={isAuthenticated ? <Jobs /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/jobs/:job"
+          element={isAuthenticated ? <JobManagement /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>

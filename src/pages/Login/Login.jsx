@@ -52,6 +52,7 @@ const Login = () => {
 
         if (usuarioEncontrado) {
           localStorage.setItem("token", usuarioEncontrado.token);
+          localStorage.setItem("id", usuarioEncontrado.id)
           window.location.href = "/home";
         } else {
           throw new Error("Credenciais inválidas.");

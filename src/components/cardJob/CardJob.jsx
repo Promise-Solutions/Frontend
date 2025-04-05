@@ -53,7 +53,7 @@ const CardJob = React.memo(({ id, title, category, time, isDone, onClick }) => {
         />
         <div className="flex justify-center w-[75%]">
           <button
-            onClick={handleChangeStatus}
+            // onClick={handleChangeStatus}
             className={`h-[38px] w-[50%] text-[14px] py-2 text-[#d9d9d9]
                  ${
                    done

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import CardHomePage from "../../components/homePage/CardHomePage.jsx";
+import CardHomePage from "../../components/CardHomePage/CardHomePage.jsx";
 import UserIcon from "../../assets/icon-empresa.png";
 import JobIcon from "../../assets/icon-atendimentos.png";
 import BarIcon from "../../assets/icon-bar.png";

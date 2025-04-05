@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext.jsx";
+import { useJobContext } from "../../context/JobContext.jsx";
 import PrimaryButton from "../../components/PrimaryButton/PrimaryButton.jsx";
 import toast from "react-hot-toast";
 import Select from "../../components/Form/Select.jsx";
@@ -9,11 +10,16 @@ import DeleteButton from "../../components/DeleteButton/DeleteButton.jsx";
 import Dropdown from "../../components/Dropdown/Dropdown.jsx";
 import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete.jsx";
 import { ToastStyle } from "../../components/ToastStyle/ToastStyle.jsx";
+import Jobs from "../Jobs/Jobs.jsx";
+import React from "react";
+import CardJob from "../../components/CardJob/CardJob.jsx";
 
 export const RenderInfos = () => {
   const { user, setUser, userId, isClient } = useUserContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { findJobs } = useJobContext();
+  const [filteredJobs, setFilteredJobs] = useState();
 
   const handleDeleteUser = async () => {
     try {
@@ -29,6 +35,49 @@ export const RenderInfos = () => {
       setIsDeleteModalOpen(false);
     }
   };
+
+  const renderJobs = () => {
+    const jobsRendered = createFilteredJobs(findJobs)
+
+    setFilteredJobs(jobsRendered);
+  }
+
+  const createFilteredJobs = async (
+    findJobs,
+  ) => {
+    const jobs = await findJobs();
+    console.log("jobs", jobs)
+  
+    return jobs.map((job) => {
+      console.log("Renderizando atendimentos:", {
+        title: job.titulo,
+        category: job.categoria,
+      });
+
+      console.log("job id: " + job.idCliente)
+      console.log("user id: " + userId)
+
+      console.log("condição: " + job.idCliente == userId)
+  
+      return job.idCliente == userId ? React.createElement(CardJob, {
+        key: job.id,
+        id: job.id,
+        title: job.titulo,
+        category: job.categoria,
+        time: job.horario,
+        isDone: job.concluido,
+        userId: job.idCliente,
+        onClick: () => {
+          sessionStorage.setItem("jobId", job.id);
+          navigate(`/jobs/${job.id}`); // redireciona sem recarregar a página
+      },
+      }): null;
+    });
+  };
+
+  useEffect(() => {
+    renderJobs();
+  },[])
 
   function Edit() {
     const [formData, setFormData] = useState({
@@ -249,7 +298,12 @@ export const RenderInfos = () => {
       )}
       <section className="dropdown_section">
         <Dropdown title="Dashboard" content="BATATA" />
-        <Dropdown title="Serviços" content="CENOURA" />
+        <Dropdown title="Serviços" content={
+          <div className="gap-6 flex justify-center mt-12 max-h-[600px] overflow-y-auto w-full h-auto ">
+            {filteredJobs != null ? filteredJobs : <p className="text-center text-gray-400">Nenhum atendimento encontrado para esse cliente</p>}
+          </div>
+        }
+        />
       </section>
       <div className="flex justify-end">
         <DeleteButton
