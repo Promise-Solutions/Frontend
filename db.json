@@ -159,14 +159,14 @@
   ],
   "commandProduct": [
     {
-      "idComandaProduto": 1,
+      "id": 1,
       "fkProduto": 1,
       "fkComanda": 1,
       "qtdProduto": 6,
       "valorUnitario": "06.00"
     },
     {
-      "idComandaProduto": 2,
+      "id": 2,
       "fkProduto": 1,
       "fkComanda": 2,
       "qtdProduto": 5,
@@ -209,12 +209,6 @@
       "qtdProduto": 10,
       "valorUnitario": "5.60",
       "id": 6
-    },
-    {
-      "nomeProduto": "Buraquinho do Artur",
-      "qtdProduto": 1,
-      "valorUnitario": "NaN",
-      "id": 7
     }
   ]
 }
