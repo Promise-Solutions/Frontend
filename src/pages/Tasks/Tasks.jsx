@@ -72,11 +72,11 @@ const Tasks = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center text-white overflow-x-hidden mx-16 py-4">
+    <div className="min-h-screen flex flex-col items-center text-white overflow-x-hidden mx-16 my-4">
       {!isAddModalOpen && !isEditModalOpen ? (
         <>
           <div className="flex justify-between items-center w-full mb-4">
-            <h1 className="text-2xl font-thin mt-4">Tarefas</h1>
+            <h1 className="text-2xl font-thin">Tarefas</h1>
             <PrimaryButton
               className="border border-pink-zero text-pink-zero px-4 py-2 rounded-md hover:bg-pink-zero hover:text-white transition"
               onClick={() => setIsAddModalOpen(true)}
