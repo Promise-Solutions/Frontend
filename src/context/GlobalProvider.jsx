@@ -13,15 +13,5 @@ function GlobalProvider({ children }) {
     </JobProvider>
     </UserProvider>
   );
-    return (
-        <UserProvider>
-        <JobProvider>
-        <SubJobProvider>
-            {children}
-        </SubJobProvider>
-        </JobProvider>
-        </UserProvider>
-        
-    );
 }
 export default GlobalProvider;
