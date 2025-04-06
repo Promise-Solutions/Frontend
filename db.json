@@ -162,5 +162,34 @@
       "valorUnitario": "5.60",
       "id": 6
     }
+  ],
+  "tasks": [
+    {
+      "title": "teste1",
+      "description": "teste2",
+      "deadline": "",
+      "responsible": "5",
+      "id": "1743946666265",
+      "status": "concluido",
+      "start_date": "2025-04-06T13:37:46.265Z"
+    },
+    {
+      "title": "",
+      "description": "",
+      "deadline": "",
+      "responsible": "",
+      "id": "1743948850158",
+      "status": "pendente",
+      "start_date": "2025-04-06T14:14:10.158Z"
+    },
+    {
+      "title": "",
+      "description": "",
+      "deadline": "",
+      "responsible": "",
+      "id": "1743948855462",
+      "status": "fazendo",
+      "start_date": "2025-04-06T14:14:15.462Z"
+    }
   ]
 }

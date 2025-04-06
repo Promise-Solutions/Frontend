@@ -18,7 +18,7 @@ const FreqPagGraphic = ({ idUsuario }) => {
   ];
 
   return (
-    <div className="bg-white/5 border  border-white/10 rounded-2xl p-6 shadow-md w-full h-[450px]">
+    <div className="bg-white/5 border-1 border-pink-zero p-6 shadow-md w-full h-[450px]">
       <h2 className="text-white text-xl font-semibold mb-4">
         Frequência x Pagamento
       </h2>
@@ -33,7 +33,7 @@ const FreqPagGraphic = ({ idUsuario }) => {
               border: "none",
               color: "#fff",
             }}
-            labelStyle={{ color: "#9a3379" }}
+            labelStyle={{ color: "#fff" }}
           />
           <Legend
             verticalAlign="top"
