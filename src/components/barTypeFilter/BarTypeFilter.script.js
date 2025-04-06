@@ -9,8 +9,8 @@ export const useBarTypeFilterLogic = () => {
   const [activeFilter, setActiveFilter] = useState("1");
   // Define os filtros disponíveis como "Cliente" e "Interno"
   const filters = [
-    { label: "Abertas", value: "1" },
-    { label: "Fechadas", value: "2" },
+    { label: "Aberta", value: "1" },
+    { label: "Fechada", value: "2" },
   ];
 
   // Função para atualizar o filtro ativo ao clicar em um botão
