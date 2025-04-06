@@ -11,7 +11,7 @@ function Register() {
     nome: "",
     cpf: "",
     email: "",
-    telefone: "",
+    contato: "",
     tipoCliente: "",
     tipo: "",
     senha: "",
@@ -97,11 +97,11 @@ function Register() {
             />
             <Input
               type="text"
-              text="Telefone"
-              name="telefone"
-              placeholder="Digite o telefone"
+              text="Contato"
+              name="contato"
+              placeholder="Digite o contato"
               handleOnChange={handleInputChange}
-              value={formData.telefone}
+              value={formData.contato}
               maxLength="15"
             />
             <Select
@@ -147,11 +147,11 @@ function Register() {
             />
             <Input
               type="text"
-              text="Telefone"
-              name="telefone"
-              placeholder="Digite o telefone"
+              text="Contato"
+              name="contato"
+              placeholder="Digite o contato"
               handleOnChange={handleInputChange}
-              value={formData.telefone}
+              value={formData.contato}
               maxLength="15"
             />
             <Input

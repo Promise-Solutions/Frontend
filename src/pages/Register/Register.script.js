@@ -8,14 +8,14 @@ export function setupRegisterEvents() {
   const iptNome = document.querySelector("#nome");
   const iptEmail = document.querySelector("#email");
   const iptCpf = document.querySelector("#cpf");
-  const iptTelefone = document.querySelector("#telefone");
+  const iptContato = document.querySelector("#contato");
   const iptSenha = document.querySelector("#senha");
   const iptType = document.querySelector("#tipo");
   const iptTipoCliente = document.querySelector("#tipoCliente");
   const btnConfirm = document.getElementById("btn_form");
 
   let cpfMaskListener = null;
-  let telefoneMaskListener = null;
+  let contatoMaskListener = null;
 
   const applyCpfMask = () => {
     cpfMaskListener = (event) => {
@@ -46,10 +46,10 @@ export function setupRegisterEvents() {
     }
   };
 
-  const applyTelefoneMask = () => {
-    telefoneMaskListener = (event) => {
+  const applyContatoMask = () => {
+    contatoMaskListener = (event) => {
       if (event.key === "Tab") return; // Allow Tab key for navigation
-      let value = iptTelefone.value.replace(/\D/g, "");
+      let value = iptContato.value.replace(/\D/g, "");
       if (value.length >= 11 && event.key !== "Backspace") {
         event.preventDefault();
         return;
@@ -63,33 +63,33 @@ export function setupRegisterEvents() {
       if (value.length > 10) {
         value = value.slice(0, 10) + "-" + value.slice(10);
       }
-      iptTelefone.value = value;
+      iptContato.value = value;
     };
-    iptTelefone.addEventListener("keydown", telefoneMaskListener);
+    iptContato.addEventListener("keydown", contatoMaskListener);
   };
 
-  const removeTelefoneMask = () => {
-    if (telefoneMaskListener) {
-      iptTelefone.removeEventListener("keydown", telefoneMaskListener);
-      telefoneMaskListener = null;
+  const removeContatoMask = () => {
+    if (contatoMaskListener) {
+      iptContato.removeEventListener("keydown", contatoMaskListener);
+      contatoMaskListener = null;
     }
   };
 
   const setupMasks = () => {
     // Rebuscar os elementos do DOM
     const iptCpf = document.querySelector("#cpf");
-    const iptTelefone = document.querySelector("#telefone");
+    const iptContato = document.querySelector("#contato");
 
     // Remover máscaras antigas
     removeCpfMask();
-    removeTelefoneMask();
+    removeContatoMask();
 
     // Aplicar máscaras novamente
     if (iptCpf) {
       applyCpfMask();
     }
-    if (iptTelefone) {
-      applyTelefoneMask();
+    if (iptContato) {
+      applyContatoMask();
     }
   };
 
@@ -104,7 +104,7 @@ export function setupRegisterEvents() {
   setupMasks();
 
   // Verificando se os campos existem, tava dando um bug q n tava sendo renderizado
-  if (!iptNome || !iptEmail || !iptCpf || !iptTelefone || !btnConfirm) {
+  if (!iptNome || !iptEmail || !iptCpf || !iptContato || !btnConfirm) {
     return;
   }
 
@@ -128,7 +128,7 @@ export function setupRegisterEvents() {
     const iptNome = document.querySelector("#nome"); // Buscar elementos atualizados
     const iptCpf = document.querySelector("#cpf");
     const iptEmail = document.querySelector("#email");
-    const iptTelefone = document.querySelector("#telefone");
+    const iptContato = document.querySelector("#contato");
     const iptSenha = document.querySelector("#senha");
     const iptType = document.querySelector("#tipo");
     const iptTipoCliente = document.querySelector("#tipoCliente");
@@ -147,8 +147,8 @@ export function setupRegisterEvents() {
       return false;
     }
 
-    if (!iptTelefone || iptTelefone.value.length !== 15) {
-      toast.error("O telefone deve ter 15 caracteres.");
+    if (!iptContato || iptContato.value.length !== 15) {
+      toast.error("O contato deve ter 15 caracteres.");
       return false;
     }
 
@@ -188,7 +188,7 @@ export function setupRegisterEvents() {
     const iptNome = document.querySelector("#nome");
     const iptEmail = document.querySelector("#email");
     const iptCpf = document.querySelector("#cpf");
-    const iptTelefone = document.querySelector("#telefone");
+    const iptContato = document.querySelector("#contato");
     const iptSenha = document.querySelector("#senha");
     const iptType = document.querySelector("#tipo");
     const iptTipoCliente = document.querySelector("#tipoCliente");
@@ -205,7 +205,7 @@ export function setupRegisterEvents() {
         nome: iptNome.value.toUpperCase(),
         cpf: iptCpf.value,
         email: iptEmail.value,
-        telefone: iptTelefone.value,
+        contato: iptContato.value,
         tipoCliente: iptTipoCliente?.value || "AVULSO", // Correctly assign tipoCliente
         ativo: true, // Default to active
         token: token,
@@ -216,7 +216,7 @@ export function setupRegisterEvents() {
         nome: iptNome.value.toUpperCase(),
         cpf: iptCpf.value,
         email: iptEmail.value,
-        telefone: iptTelefone.value,
+        contato: iptContato.value,
         senha: iptSenha?.value || "",
         ativo: true, // Default to active
         token: token,
@@ -234,7 +234,7 @@ export function setupRegisterEvents() {
         iptNome.value = "";
         iptCpf.value = "";
         iptEmail.value = "";
-        iptTelefone.value = "";
+        iptContato.value = "";
         iptType.value = "";
         if (iptSenha) iptSenha.value = "";
         if (iptTipoCliente) iptTipoCliente.value = "";

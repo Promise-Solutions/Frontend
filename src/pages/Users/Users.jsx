@@ -37,7 +37,7 @@ const Users = () => {
   }, [filterType]); // Atualiza quando filterType muda
 
   const handleSearch = (term) => {
-    setSearchTerm(term.toUpperCase()); // Atualiza o termo de busca
+    setSearchTerm(term.toUpperCase().trim());
   };
 
   const handleFilterChange = (newFilter) => {
@@ -45,9 +45,22 @@ const Users = () => {
   };
 
   const filteredUserElements = userElements.filter((element) => {
-    const name = element.props.name.toUpperCase(); // Garante que o nome seja comparado em maiúsculas
-    return name.includes(searchTerm); // Filtra os elementos com base no termo de busca
+    const name = (element.props.name || "").toUpperCase().trim();
+    const email = (element.props.email || "").toUpperCase().trim();
+    const contact = (element.props.contact || "").toUpperCase().trim();
+    const term = searchTerm.toUpperCase().trim();
+
+    return (
+      name.includes(term) || email.includes(term) || contact.includes(term)
+    );
   });
+
+  const noResultsMessage =
+    searchTerm && filteredUserElements.length === 0 ? (
+      <p className="text-center text-gray-400">
+        Nenhum resultado encontrado para "{searchTerm}".
+      </p>
+    ) : null;
 
   return (
     <div className="min-w-full min-h-full text-white overflow-y-hidden">
@@ -82,17 +95,18 @@ const Users = () => {
           </div>
           {/* Espaço reservado para os cards de usuários */}
           <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
-            {filteredUserElements.length > 0 ? (
-              filteredUserElements
-            ) : filterType === "CLIENTE" ? (
-              <p className="text-center text-gray-400">
-                Nenhum cliente encontrado.
-              </p>
-            ) : (
-              <p className="text-center text-gray-400">
-                Nenhum interno encontrado.
-              </p>
-            )}
+            {filteredUserElements.length > 0
+              ? filteredUserElements // Ensure filtered elements are rendered
+              : noResultsMessage ||
+                (filterType === "CLIENTE" ? (
+                  <p className="text-center text-gray-400">
+                    Nenhum cliente encontrado.
+                  </p>
+                ) : (
+                  <p className="text-center text-gray-400">
+                    Nenhum interno encontrado.
+                  </p>
+                ))}
           </div>
         </div>
       </section>

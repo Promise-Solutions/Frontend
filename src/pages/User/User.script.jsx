@@ -57,7 +57,7 @@ export const RenderInfos = () => {
       nome: user?.nome || "",
       cpf: user?.cpf || "",
       email: user?.email || "",
-      telefone: user?.telefone || "",
+      contato: user?.contato || "",
       tipoCliente: user?.tipoCliente || "", // Garantir que o valor inicial seja do banco
       ativo: user?.ativo !== undefined ? user.ativo : false, // Garantir que o valor inicial seja booleano
       senha: "",
@@ -87,7 +87,7 @@ export const RenderInfos = () => {
       return value;
     };
 
-    const applyTelefoneMask = (value) => {
+    const applyContatoMask = (value) => {
       value = value.replace(/\D/g, "").slice(0, 11); // Limit to 11 digits
       if (value.length > 0) value = "(" + value;
       if (value.length > 3) value = value.slice(0, 3) + ") " + value.slice(3);
@@ -100,7 +100,7 @@ export const RenderInfos = () => {
       let maskedValue = value;
 
       if (name === "cpf") maskedValue = applyCpfMask(value);
-      if (name === "telefone") maskedValue = applyTelefoneMask(value);
+      if (name === "contato") maskedValue = applyContatoMask(value);
 
       setFormData((prevData) => ({ ...prevData, [name]: maskedValue }));
     };
@@ -191,10 +191,10 @@ export const RenderInfos = () => {
             </li>
             <li>
               <Input
-                text="Telefone"
+                text="Contato"
                 type="text"
-                name="telefone"
-                value={formData.telefone}
+                name="contato"
+                value={formData.contato}
                 handleOnChange={handleMaskedInputChange}
               />
             </li>
@@ -272,7 +272,7 @@ export const RenderInfos = () => {
                     <b>CPF: </b> {user?.cpf}
                   </li>
                   <li>
-                    <b>Telefone: </b> {user?.telefone}
+                    <b>Contato: </b> {user?.contato}
                   </li>
                   <li>
                     <b>Status: </b> {user?.ativo ? "Ativo" : "Inativo"}
@@ -325,7 +325,7 @@ export const RenderInfos = () => {
                   <b>CPF: </b> {user?.cpf}
                 </li>
                 <li>
-                  <b>Telefone: </b> {user?.telefone}
+                  <b>Contato: </b> {user?.contato}
                 </li>
                 <li>
                   <b>Status: </b> {user?.ativo ? "Ativo" : "Inativo"}
