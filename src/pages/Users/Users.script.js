@@ -1,8 +1,8 @@
 import React from "react";
-import CardUser from "../../components/CardUser/CardUser.jsx";
+import CardUser from "../../components/cardUser/CardUser.jsx";
 
-export const registerRedirect = () => {
-  window.location.href = "/register";
+export const registerRedirect = (navigate) => {
+  navigate("/register"); // Use navigate passed as an argument
 };
 
 export const renderUsers = async (
@@ -22,7 +22,7 @@ export const renderUsers = async (
         name: user.nome,
         tipoCliente: user.tipoCliente, // Passa o tipoCliente diretamente
         ativo: user.ativo, // Pass ativo status
-        telefone: user.telefone,
+        contact: user.contato,
         email: user.email,
         onClick: () => {
           setUserId(user.id);

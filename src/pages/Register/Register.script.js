@@ -1,6 +1,5 @@
 import axios from "axios";
-import toast from "react-hot-toast";
-import { ToastStyle } from "../../components/ToastStyle/ToastStyle.jsx";
+import { toast } from "react-hot-toast";
 
 let isEventRegistered = false; // Variável de controle para evitar múltiplos registros
 
@@ -9,14 +8,14 @@ export function setupRegisterEvents() {
   const iptNome = document.querySelector("#nome");
   const iptEmail = document.querySelector("#email");
   const iptCpf = document.querySelector("#cpf");
-  const iptTelefone = document.querySelector("#telefone");
+  const iptContato = document.querySelector("#contato");
   const iptSenha = document.querySelector("#senha");
   const iptType = document.querySelector("#tipo");
   const iptTipoCliente = document.querySelector("#tipoCliente");
   const btnConfirm = document.getElementById("btn_form");
 
   let cpfMaskListener = null;
-  let telefoneMaskListener = null;
+  let contatoMaskListener = null;
 
   const applyCpfMask = () => {
     cpfMaskListener = (event) => {
@@ -47,10 +46,10 @@ export function setupRegisterEvents() {
     }
   };
 
-  const applyTelefoneMask = () => {
-    telefoneMaskListener = (event) => {
+  const applyContatoMask = () => {
+    contatoMaskListener = (event) => {
       if (event.key === "Tab") return; // Allow Tab key for navigation
-      let value = iptTelefone.value.replace(/\D/g, "");
+      let value = iptContato.value.replace(/\D/g, "");
       if (value.length >= 11 && event.key !== "Backspace") {
         event.preventDefault();
         return;
@@ -64,33 +63,33 @@ export function setupRegisterEvents() {
       if (value.length > 10) {
         value = value.slice(0, 10) + "-" + value.slice(10);
       }
-      iptTelefone.value = value;
+      iptContato.value = value;
     };
-    iptTelefone.addEventListener("keydown", telefoneMaskListener);
+    iptContato.addEventListener("keydown", contatoMaskListener);
   };
 
-  const removeTelefoneMask = () => {
-    if (telefoneMaskListener) {
-      iptTelefone.removeEventListener("keydown", telefoneMaskListener);
-      telefoneMaskListener = null;
+  const removeContatoMask = () => {
+    if (contatoMaskListener) {
+      iptContato.removeEventListener("keydown", contatoMaskListener);
+      contatoMaskListener = null;
     }
   };
 
   const setupMasks = () => {
     // Rebuscar os elementos do DOM
     const iptCpf = document.querySelector("#cpf");
-    const iptTelefone = document.querySelector("#telefone");
+    const iptContato = document.querySelector("#contato");
 
     // Remover máscaras antigas
     removeCpfMask();
-    removeTelefoneMask();
+    removeContatoMask();
 
     // Aplicar máscaras novamente
     if (iptCpf) {
       applyCpfMask();
     }
-    if (iptTelefone) {
-      applyTelefoneMask();
+    if (iptContato) {
+      applyContatoMask();
     }
   };
 
@@ -105,8 +104,7 @@ export function setupRegisterEvents() {
   setupMasks();
 
   // Verificando se os campos existem, tava dando um bug q n tava sendo renderizado
-  if (!iptNome || !iptEmail || !iptCpf || !iptTelefone || !btnConfirm) {
-    console.error("Elementos do formulário não encontrados.");
+  if (!iptNome || !iptEmail || !iptCpf || !iptContato || !btnConfirm) {
     return;
   }
 
@@ -115,11 +113,11 @@ export function setupRegisterEvents() {
     const iptEmail = document.querySelector("#email"); // Buscar elemento atualizado
     const regex = /^[^\s]+@[^\s]+\.[^\s]+$/;
     if (!iptEmail || !iptEmail.value.trim()) {
-      toast.error("O campo de email está vazio.", { style: ToastStyle });
+      toast.error("O campo de email está vazio.");
       return false;
     }
     if (!regex.test(iptEmail.value)) {
-      toast.error("O email inserido é inválido.", { style: ToastStyle });
+      toast.error("O email inserido é inválido.");
       return false;
     }
     return true;
@@ -130,18 +128,18 @@ export function setupRegisterEvents() {
     const iptNome = document.querySelector("#nome"); // Buscar elementos atualizados
     const iptCpf = document.querySelector("#cpf");
     const iptEmail = document.querySelector("#email");
-    const iptTelefone = document.querySelector("#telefone");
+    const iptContato = document.querySelector("#contato");
     const iptSenha = document.querySelector("#senha");
     const iptType = document.querySelector("#tipo");
     const iptTipoCliente = document.querySelector("#tipoCliente");
 
     if (!iptNome || !iptNome.value.trim()) {
-      toast.error("O campo de nome está vazio.", { style: ToastStyle });
+      toast.error("O campo de nome está vazio.");
       return false;
     }
 
     if (!iptCpf || iptCpf.value.length !== 14) {
-      toast.error("O CPF deve ter 14 caracteres.", { style: ToastStyle });
+      toast.error("O CPF deve ter 14 caracteres.");
       return false;
     }
 
@@ -149,28 +147,24 @@ export function setupRegisterEvents() {
       return false;
     }
 
-    if (!iptTelefone || iptTelefone.value.length !== 15) {
-      toast.error("O telefone deve ter 15 caracteres.", { style: ToastStyle });
+    if (!iptContato || iptContato.value.length !== 15) {
+      toast.error("O contato deve ter 15 caracteres.");
       return false;
     }
 
     if (iptType.value === "CLIENTE") {
       // Validação para cliente
       if (!iptTipoCliente || !iptTipoCliente.value.trim()) {
-        toast.error("O campo de tipo de cliente está vazio.", {
-          style: ToastStyle,
-        });
+        toast.error("O campo de tipo de cliente está vazio.");
         return false;
       }
     } else if (iptType.value === "FUNCIONARIO") {
       // Validação para funcionário
       if (!iptSenha || iptSenha.value.length < 8) {
-        toast.error("A senha deve ter pelo menos 8 caracteres.", {
-          style: ToastStyle,
-        });
+        toast.error("A senha deve ter pelo menos 8 caracteres.");
       }
     } else {
-      toast.error("Tipo de usuário inválido.", { style: ToastStyle });
+      toast.error("Tipo de usuário inválido.");
       return false;
     }
 
@@ -194,7 +188,7 @@ export function setupRegisterEvents() {
     const iptNome = document.querySelector("#nome");
     const iptEmail = document.querySelector("#email");
     const iptCpf = document.querySelector("#cpf");
-    const iptTelefone = document.querySelector("#telefone");
+    const iptContato = document.querySelector("#contato");
     const iptSenha = document.querySelector("#senha");
     const iptType = document.querySelector("#tipo");
     const iptTipoCliente = document.querySelector("#tipoCliente");
@@ -211,7 +205,7 @@ export function setupRegisterEvents() {
         nome: iptNome.value.toUpperCase(),
         cpf: iptCpf.value,
         email: iptEmail.value,
-        telefone: iptTelefone.value,
+        contato: iptContato.value,
         tipoCliente: iptTipoCliente?.value || "AVULSO", // Correctly assign tipoCliente
         ativo: true, // Default to active
         token: token,
@@ -222,7 +216,7 @@ export function setupRegisterEvents() {
         nome: iptNome.value.toUpperCase(),
         cpf: iptCpf.value,
         email: iptEmail.value,
-        telefone: iptTelefone.value,
+        contato: iptContato.value,
         senha: iptSenha?.value || "",
         ativo: true, // Default to active
         token: token,
@@ -236,19 +230,20 @@ export function setupRegisterEvents() {
         novoUsuario
       );
       if (res.status === 201) {
-        toast.success("Cadastro realizado com sucesso!", { style: ToastStyle });
+        toast.success("Cadastro realizado com sucesso!");
         iptNome.value = "";
         iptCpf.value = "";
         iptEmail.value = "";
-        iptTelefone.value = "";
+        iptContato.value = "";
         iptType.value = "";
         if (iptSenha) iptSenha.value = "";
         if (iptTipoCliente) iptTipoCliente.value = "";
+        window.location.href = "/users";
       } else {
-        toast.error("Erro ao cadastrar usuário.", { style: ToastStyle });
+        toast.error("Erro ao cadastrar usuário.");
       }
     } catch (error) {
-      toast.error("Erro ao cadastrar usuário.", { style: ToastStyle });
+      toast.error("Erro ao cadastrar usuário.");
       console.error("Erro:", error);
     }
   };

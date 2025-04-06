@@ -1,31 +1,73 @@
+import { useRef, useState } from "react";
+import { BrowserRouter as Router, useLocation } from "react-router-dom"; // Import Router and useLocation
 import AppRoutes from "./routes";
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import Background from "./assets/background_backoffice_studiozero.mp4";
-import { Toaster } from "react-hot-toast"; // <-- lib de notificação bunitinha :3
-import GlobalProvider from "./context/GlobalProvider"; // <-- importa o provider
+import { Toaster } from "react-hot-toast";
+import GlobalProvider from "./context/GlobalProvider";
+import Play from "./assets/play.png";
+import Pause from "./assets/pause.png";
 
 function App() {
+  const videoRef = useRef(null); // Referência para o vídeo
+  const [isPlaying, setIsPlaying] = useState(true); // Estado para controlar play/pause
+
+  // Função para pausar/reproduzir o vídeo
+  const toggleVideo = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
   return (
-    //UserProvider tbm vem do contexto, precisamos envolver ele na aplicação para o contexto funcionar em toda a aplicação
     <GlobalProvider>
-      <div className="min-h-screen min-w-screen bg-black relative">
-        <video
-          className="absolute top-0 left-0 w-full h-full object-cover"
-          src={Background}
-          autoPlay
-          loop
-          muted
-        />
-        <div className="relative z-10">
-          <Navbar />
-          <AppRoutes />
-          {/* //Toaster é só pra n usar o alert, ai fica mais bonitinho e n perde
-          tempo estilizando o alert */}
-          <Toaster position="top-center" reverseOrder={false} />
+      <Router>
+        <div className="flex min-h-screen min-w-screen flex-col overflow-y-hidden">
+          {/* Vídeo de fundo */}
+          <video
+            ref={videoRef}
+            className="fixed inset-0 w-full h-full object-cover"
+            src={Background}
+            autoPlay
+            loop
+            muted
+            disablePictureInPicture
+          />
+
+          {/* Botão de controle do vídeo */}
+          <button
+            onClick={toggleVideo}
+            className="fixed bottom-4 cursor-pointer right-4 z-20 bg-black/50 text-white px-4 py-2 border-1 border-pink-zero hover:bg-black/70 transition"
+          >
+            <img
+              src={isPlaying ? Pause : Play} // Alterna entre os ícones
+              alt={isPlaying ? "Pause" : "Play"}
+              className="w-6 h-6" // Ajuste o tamanho conforme necessário
+            />
+          </button>
+
+          {/* Render Navbar and Routes */}
+          <div className="relative z-10">
+            <NavbarWrapper />
+            <AppRoutes />
+            <Toaster position="top-center" reverseOrder={false} />
+          </div>
         </div>
-      </div>
+      </Router>
     </GlobalProvider>
   );
 }
+
+const NavbarWrapper = () => {
+  const { pathname } = useLocation(); // Move useLocation here
+  return pathname !== "/login" && pathname !== "/home" && pathname !== "/" ? (
+    <Navbar />
+  ) : null; // Conditionally render Navbar
+};
 
 export default App;

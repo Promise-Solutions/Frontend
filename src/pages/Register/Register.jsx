@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { setupRegisterEvents } from "./Register.script.js";
-import Input from "../../components/Form/Input";
+import Input from "../../components/form/Input";
 import SubmitButton from "../../components/Form/SubmitButton";
 import logo from "../../assets/logo-branco-bg-sonoro.png";
 import SelectTypeUser from "../../components/Form/SelectTypeUser.jsx";
-import Select from "../../components/Form/Select.jsx";
+import Select from "../../components/form/Select.jsx";
 
 function Register() {
   const [formData, setFormData] = useState({
     nome: "",
     cpf: "",
     email: "",
-    telefone: "",
+    contato: "",
     tipoCliente: "",
     tipo: "",
     senha: "",
@@ -45,8 +45,8 @@ function Register() {
   };
 
   return (
-    <main className="flex items-center justify-center min-h-screen w-full">
-      <section className="flex flex-col items-center justify-start gap-6 w-full px-4 py-8">
+    <main className="flex items-center justify-center h-[600px] my-6 w-full px-16">
+      <section className="flex flex-col items-center justify-start gap-6 w-full px-4">
         <img src={logo} alt="logo-studio-zero-header" className="h-[250px]" />
         <h1 className="font-light text-4xl tracking-widest text-[#9A3379] text-center">
           Registre um novo usuário
@@ -54,7 +54,7 @@ function Register() {
       </section>
       <form
         autoComplete="off"
-        className="flex flex-col items-center gap-10 w-full px-4 py-8"
+        className="flex flex-col items-center gap-10 w-full h-full px-4"
       >
         <SelectTypeUser
           text="Tipo de usuário"
@@ -79,9 +79,9 @@ function Register() {
             />
             <Input
               type="email"
-              text="Email"
+              text="E-mail"
               name="email"
-              placeholder="Digite o email"
+              placeholder="Digite o e-mail"
               handleOnChange={handleInputChange}
               value={formData.email}
               maxLength="50"
@@ -97,11 +97,11 @@ function Register() {
             />
             <Input
               type="text"
-              text="Telefone"
-              name="telefone"
-              placeholder="Digite o telefone"
+              text="Contato"
+              name="contato"
+              placeholder="Digite o contato"
               handleOnChange={handleInputChange}
-              value={formData.telefone}
+              value={formData.contato}
               maxLength="15"
             />
             <Select
@@ -129,9 +129,9 @@ function Register() {
             />
             <Input
               type="email"
-              text="Email"
+              text="E-mail"
               name="email"
-              placeholder="Digite o email"
+              placeholder="Digite o e-mail"
               handleOnChange={handleInputChange}
               value={formData.email}
               maxLength="50"
@@ -147,11 +147,11 @@ function Register() {
             />
             <Input
               type="text"
-              text="Telefone"
-              name="telefone"
-              placeholder="Digite o telefone"
+              text="Contato"
+              name="contato"
+              placeholder="Digite o contato"
               handleOnChange={handleInputChange}
-              value={formData.telefone}
+              value={formData.contato}
               maxLength="15"
             />
             <Input

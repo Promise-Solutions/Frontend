@@ -1,5 +1,8 @@
 import { useEffect } from "react";
 import CardHomePage from "../../components/CardHomePage/CardHomePage.jsx";
+import { useNavigate } from "react-router-dom";
+import CardHomePage from "../../components/homePage/CardHomePage.jsx";
+import { handleButtonClick } from "../../components/homePage/CardHome.script";
 import UserIcon from "../../assets/icon-empresa.png";
 import JobIcon from "../../assets/icon-servicos.png";
 import BarIcon from "../../assets/icon-bar.png";
@@ -12,21 +15,15 @@ import LogoutButton from "../../components/LogoutButton/LogoutButton.jsx";
 // Componente funcional para a página Home
 // Representa a estrutura da página inicial
 const Home = () => {
-  useEffect(() => {
-    const nav = document.querySelector(".navbar");
-    if (nav) {
-      nav.style.display =
-        window.location.pathname === "/home" || "/" ? "none" : "flex";
-    }
-  }, []);
+  const navigate = useNavigate();
 
   return (
     <main className="flex flex-col justify-center items-center h-[100vh] w-[100vw] relative">
-      <div className="flex w-full justify-end mx-4 mr-[64px] py-4 px-12">
+      <div className="flex w-full justify-end mx-4 pr-[64px] py-4 px-12">
         <LogoutButton
           id="logout_button_id"
           text="Sair do Usuário"
-          onClick={handleLogout}
+          onClick={() => handleLogout(navigate)}
         />
       </div>
       <img src={Logo} className="h-[170px]" />
@@ -38,6 +35,7 @@ const Home = () => {
           idButton="users"
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+          onClick={() => handleButtonClick("users", navigate)}
         />
         <CardHomePage
           title="Serviços"
@@ -46,6 +44,7 @@ const Home = () => {
           idButton="jobs"
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+          onClick={() => handleButtonClick("jobs", navigate)}
         />
         <CardHomePage
           title="Bar"
@@ -54,6 +53,7 @@ const Home = () => {
           idButton="bar"
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+          onClick={() => handleButtonClick("bar", navigate)}
         />
         <CardHomePage
           title="Dashboard"
@@ -62,6 +62,7 @@ const Home = () => {
           idButton="dashboard"
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+          onClick={() => handleButtonClick("dashboard", navigate)}
         />
         <CardHomePage
           title="Relatórios"
@@ -70,6 +71,7 @@ const Home = () => {
           idButton="reports"
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+          onClick={() => handleButtonClick("reports", navigate)}
         />
       </section>
     </main>

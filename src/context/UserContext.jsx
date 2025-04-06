@@ -24,7 +24,10 @@ export function UserProvider({ children }) {
           ? `http://localhost:5000/clientes?id=${userId}`
           : `http://localhost:5000/funcionarios?id=${userId}`;
         const response = await axios.get(endpoint);
-        const userData = response.data[0] || null;
+        const userData = {
+          ...response.data[0],
+          contato: response.data[0]?.contato || "",
+        };
 
         if (userData) {
           setUser(userData);

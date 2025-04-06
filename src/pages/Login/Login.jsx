@@ -1,28 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import Input from "../../components/Form/Input";
+import { toast } from "react-hot-toast";
+import Input from "../../components/form/Input";
 import SubmitButton from "../../components/Form/SubmitButton";
-import toast from "react-hot-toast";
+import { ToastStyle } from "../../components/toastStyle/ToastStyle";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", senha: "" });
-
-  const toastStyle = {
-    style: {
-      borderRadius: "10px",
-      background: "#333",
-      color: "#fff",
-      border: "solid 1px #9A3379",
-    },
-  };
-
-  useEffect(() => {
-    const nav = document.querySelector(".navbar");
-    if (nav) {
-      nav.style.display =
-        window.location.pathname === "/login" ? "none" : "flex";
-    }
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,12 +17,12 @@ const Login = () => {
     e.preventDefault();
 
     if (!formData.email.trim()) {
-      toast.error("O campo de email está vazio.", toastStyle);
+      toast.error("O campo de email está vazio.", { style: ToastStyle });
       return;
     }
 
     if (!formData.senha.trim()) {
-      toast.error("O campo de senha está vazio.", toastStyle);
+      toast.error("O campo de senha está vazio.", { style: ToastStyle });
       return;
     }
 
@@ -63,7 +47,7 @@ const Login = () => {
         success: "Usuário autenticado com sucesso!",
         error: "Erro ao autenticar. Verifique suas credenciais.",
       },
-      toastStyle
+      { style: ToastStyle }
     );
   };
 
@@ -82,9 +66,9 @@ const Login = () => {
         <form className="flex flex-col gap-6 mt-20" onSubmit={handleSubmit}>
           <Input
             type="email"
-            text="Email"
+            text="E-mail"
             name="email"
-            placeholder="Digite o email"
+            placeholder="Digite o e-mail"
             maxLength="50"
             handleOnChange={handleInputChange}
             value={formData.email}

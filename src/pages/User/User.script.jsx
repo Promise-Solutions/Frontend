@@ -1,35 +1,52 @@
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext.jsx";
-import { useJobContext } from "../../context/JobContext.jsx";
-import PrimaryButton from "../../components/PrimaryButton/PrimaryButton.jsx";
-import toast from "react-hot-toast";
-import Select from "../../components/Form/Select.jsx";
-import Input from "../../components/Form/Input.jsx";
+import PrimaryButton from "../../components/primaryButton/PrimaryButton.jsx";
+import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
+import Select from "../../components/form/Select.jsx";
+import Input from "../../components/form/Input.jsx";
 import axios from "axios";
-import DeleteButton from "../../components/DeleteButton/DeleteButton.jsx";
-import Dropdown from "../../components/Dropdown/Dropdown.jsx";
-import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete.jsx";
-import { ToastStyle } from "../../components/ToastStyle/ToastStyle.jsx";
-import React from "react";
-import CardJob from "../../components/CardJob/CardJob.jsx";
+import DeleteButton from "../../components/deleteButton/DeleteButton.jsx";
+import Dropdown from "../../components/dropdown/Dropdown.jsx";
+import ModalConfirmDelete from "../../components/modalConfirmDelete/ModalConfirmDelete.jsx";
+import ScreenFilter from "../../components/screenFilter/ScreenFilter.jsx";
+import LineGrafic from "../../components/graphic/FreqPagGraphic.jsx";
+import toast from "react-hot-toast"; // Add this import
 
 export const RenderInfos = () => {
-  const { user, setUser, userId, isClient } = useUserContext();
-  const [isEditing, setIsEditing] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const { findJobs } = useJobContext();
-  const [filteredJobs, setFilteredJobs] = useState();
+  const { user, setUser, userId, isClient } = useUserContext(); // Contexto do usuário
+  const [isEditing, setIsEditing] = useState(false); // Controla o modo de edição
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla o modal de exclusão
+  const [filterScreen, setFilterScreen] = useState("1"); // Controla o filtro de tela
 
+  // Função para deletar usuário
   const handleDeleteUser = async () => {
     try {
+      // Check for open commands
+      const commandsEndpoint = `http://localhost:5000/commands`;
+      const { data: commands } = await axios.get(commandsEndpoint);
+      const hasOpenCommand = commands.some(
+        (command) =>
+          (isClient
+            ? command.fkCliente === userId
+            : command.fkFuncionario === userId) && command.status === "Aberta"
+      );
+
+      if (hasOpenCommand) {
+        showToast.error(
+          "Não é possível deletar o usuário com uma comanda aberta."
+        );
+        return;
+      }
+
+      // Proceed with deletion
       const endpoint = isClient
         ? `http://localhost:5000/clientes/${userId}`
         : `http://localhost:5000/funcionarios/${userId}`;
       await axios.delete(endpoint);
-      toast.success("Usuário deletado com sucesso!");
+      showToast.success("Usuário deletado com sucesso!");
       window.location.href = "/users";
     } catch (error) {
-      toast.error("Erro ao deletar usuário. Tente novamente.");
+      showToast.error("Erro ao deletar usuário. Tente novamente.");
     } finally {
       setIsDeleteModalOpen(false);
     }
@@ -83,7 +100,7 @@ export const RenderInfos = () => {
       nome: user?.nome || "",
       cpf: user?.cpf || "",
       email: user?.email || "",
-      telefone: user?.telefone || "",
+      contato: user?.contato || "",
       tipoCliente: user?.tipoCliente || "", // Garantir que o valor inicial seja do banco
       ativo: user?.ativo !== undefined ? user.ativo : false, // Garantir que o valor inicial seja booleano
       senha: "",
@@ -113,7 +130,7 @@ export const RenderInfos = () => {
       return value;
     };
 
-    const applyTelefoneMask = (value) => {
+    const applyContatoMask = (value) => {
       value = value.replace(/\D/g, "").slice(0, 11); // Limit to 11 digits
       if (value.length > 0) value = "(" + value;
       if (value.length > 3) value = value.slice(0, 3) + ") " + value.slice(3);
@@ -126,7 +143,7 @@ export const RenderInfos = () => {
       let maskedValue = value;
 
       if (name === "cpf") maskedValue = applyCpfMask(value);
-      if (name === "telefone") maskedValue = applyTelefoneMask(value);
+      if (name === "contato") maskedValue = applyContatoMask(value);
 
       setFormData((prevData) => ({ ...prevData, [name]: maskedValue }));
     };
@@ -150,6 +167,7 @@ export const RenderInfos = () => {
 
             setUser({ ...user, ...updatedFormData });
             setIsEditing(false);
+            showToast.success("Informações atualizadas com sucesso!");
           } catch (error) {
             t.error("Erro ao salvar alterações:", error);
             throw new Error("Erro ao salvar alterações. Tente novamente.");
@@ -167,7 +185,7 @@ export const RenderInfos = () => {
     };
 
     return (
-      <section id="edit_section" className="mt-12 flex w-full justify-between">
+      <section id="edit_section" className="flex w-full justify-between">
         <div className="flex flex-col">
           <h1 className="text-[42px]">
             <b>Editar Informações</b>
@@ -198,7 +216,7 @@ export const RenderInfos = () => {
             </li>
             <li>
               <Input
-                text="Email"
+                text="E-mail"
                 type="email"
                 name="email"
                 value={formData.email}
@@ -216,10 +234,10 @@ export const RenderInfos = () => {
             </li>
             <li>
               <Input
-                text="Telefone"
+                text="Contato"
                 type="text"
-                name="telefone"
-                value={formData.telefone}
+                name="contato"
+                value={formData.contato}
                 handleOnChange={handleMaskedInputChange}
               />
             </li>
@@ -244,78 +262,136 @@ export const RenderInfos = () => {
               />
             </li>
           </ul>
+          <div className="flex mt-6">
+            <PrimaryButton
+              id="button_confirm_edit"
+              text="Salvar Alterações"
+              onClick={handleSaveChanges}
+            />
+          </div>
         </div>
-        <PrimaryButton
-          id="button_confirm_edit"
-          text="Salvar Alterações"
-          onClick={handleSaveChanges}
-        />
-      </section>
-    );
-  }
-
-  return (
-    <div className="w-full">
-      {!isEditing ? (
-        <section
-          id="info_section"
-          className="mt-12 flex w-full justify-between"
-        >
-          <div className="flex flex-col">
-            <h1 className="text-[42px]">
-              <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.nome}
-            </h1>
-            <span className="text-[18px]">Altere as informações</span>
-            <ul className="flex flex-col mt-6 gap-2">
-              {!isClient ? null : (
-                <li>
-                  <b>Tipo de Cliente: </b> {user?.tipoCliente}
-                </li>
-              )}
-              <li>
-                <b>Email: </b> {user?.email}
-              </li>
-              <li>
-                <b>CPF: </b> {user?.cpf}
-              </li>
-              <li>
-                <b>Telefone: </b> {user?.telefone}
-              </li>
-              <li>
-                <b>Status: </b> {user?.ativo == true ? "Ativo" : "Inativo"}
-              </li>
-            </ul>
-          </div>
-          <PrimaryButton
-            id="button_edit"
-            text="Editar Usuário"
-            onClick={() => setIsEditing(true)}
-          />
-        </section>
-      ) : (
-        <Edit />
-      )}
-      <section className="dropdown_section">
-        <Dropdown title="Dashboard" content="BATATA" />
-        <Dropdown title="Serviços" content={
-          <div className="gap-6 flex justify-center mt-12 max-h-[600px] overflow-y-auto w-full h-auto ">
-            {filteredJobs != null ? filteredJobs : <p className="text-center text-gray-400">Nenhum serviço encontrado para esse cliente</p>}
-          </div>
-        }
-        />
-      </section>
-      <div className="flex justify-end">
         <DeleteButton
           id="delete_button"
           text="Deletar Usuário"
           onClick={() => setIsDeleteModalOpen(true)}
         />
-      </div>
-      <ModalConfirmDelete
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={handleDeleteUser}
-      />
+
+        <ModalConfirmDelete
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={handleDeleteUser}
+          title={"Deletar Usuário"}
+          description={"Tem certeza de que deseja deletar este usuário?"}
+        />
+      </section>
+    );
+  }
+  //Fim da função edit
+
+  // Função para renderizar o conteúdo baseado no filtro selecionado
+  const renderContent = () => {
+    switch (filterScreen) {
+      case "1":
+        return isEditing ? ( // Modo edição ativo
+          <Edit setIsEditing={setIsEditing} />
+        ) : (
+          <>
+            <section id="info_section" className="flex w-full justify-between">
+              <div className="flex flex-col">
+                <h1 className="text-[42px]">
+                  <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.nome}
+                </h1>
+                <span className="text-[18px]">Altere as informações</span>
+                <ul className="flex flex-col mt-6 gap-2">
+                  {isClient && (
+                    <li>
+                      <b>Tipo de Cliente: </b> {user?.tipoCliente}
+                    </li>
+                  )}
+                  <li>
+                    <b>E-mail: </b> {user?.email}
+                  </li>
+                  <li>
+                    <b>CPF: </b> {user?.cpf}
+                  </li>
+                  <li>
+                    <b>Contato: </b> {user?.contato}
+                  </li>
+                  <li>
+                    <b>Status: </b> {user?.ativo ? "Ativo" : "Inativo"}
+                  </li>
+                </ul>
+              </div>
+
+              <div className="flex justify-between flex-col">
+                {/* Botão de editar */}
+                <PrimaryButton
+                  id="button_edit"
+                  text="Editar Usuário"
+                  onClick={() => setIsEditing(true)}
+                />
+              </div>
+            </section>
+          </>
+        );
+
+      case "2":
+        return (
+          <div>
+            <h1 className="text-[42px]">
+              <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.nome}
+            </h1>
+            <Dropdown
+              title="Serviços"
+              content="Aqui ficam os serviços do usuário."
+            />
+          </div>
+        );
+
+      case "3":
+        return (
+          <div className="flex justify-center mt-6 bg-[#1E1E1E90] p-4">
+            <div className="flex flex-col">
+              <h1 className="text-[42px]">
+                <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.nome}
+              </h1>
+              <ul className="flex flex-col mt-6 gap-2">
+                {isClient && (
+                  <li>
+                    <b>Tipo de Cliente: </b> {user?.tipoCliente}
+                  </li>
+                )}
+                <li>
+                  <b>E-mail: </b> {user?.email}
+                </li>
+                <li>
+                  <b>CPF: </b> {user?.cpf}
+                </li>
+                <li>
+                  <b>Contato: </b> {user?.contato}
+                </li>
+                <li>
+                  <b>Status: </b> {user?.ativo ? "Ativo" : "Inativo"}
+                </li>
+              </ul>
+            </div>
+            <LineGrafic />
+          </div>
+        );
+
+      default:
+        return (
+          <p className="text-center text-gray-400">
+            Selecione um filtro válido.
+          </p>
+        );
+    }
+  };
+
+  return (
+    <div className="w-full mt-3">
+      <ScreenFilter onFilterChange={setFilterScreen} />
+      {renderContent()}
     </div>
   );
 };

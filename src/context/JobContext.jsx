@@ -28,7 +28,7 @@ export function JobProvider({ children }) {
 
   const findJobs = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/servicos");
+      const response = await axios.get("http://localhost:5000/jobs");
       const jobs = response.data;
       console.log(jobs)
       return jobs;

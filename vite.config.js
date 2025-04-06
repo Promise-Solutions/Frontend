@@ -10,6 +10,6 @@ export default defineConfig({
   ],
   server: {
     open: true, // Abre o navegador automaticamente ao iniciar o servidor
-    port: 3000, // Define a porta do servidor de desenvolvimento
+    port: 8080, // Define a porta do servidor de desenvolvimento
   },
 });
