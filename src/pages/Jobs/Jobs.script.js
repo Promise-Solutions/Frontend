@@ -5,11 +5,6 @@ export const registerRedirect = () => {
   window.location.href = "/jobs/register";
 };
 
-/**
- * @descrição Comentado pois foi transformado em uma função dentro do contexto
- */
-
-
 export const renderJobs = async (
   findJobs,
   navigate
@@ -27,6 +22,7 @@ export const renderJobs = async (
       id: job.id,
       title: job.titulo,
       category: job.categoria,
+      date: job.data, 
       time: job.horario,
       isDone: job.concluido,
       userId: job.idCliente,

@@ -1,11 +1,12 @@
 import ConfirmButton from "../ConfirmButton/ConfirmButton";
 import DeleteButton from "../DeleteButton/DeleteButton";
+import { createPortal } from "react-dom";
 
 const ModalConfirmDelete = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-5">
+  return createPortal(
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
       <div className="bg-[#1E1E1E90] border-1 border-[#9A3379] text-white p-6 shadow-lg w-[400px]">
         <h2 className="text-xl font-bold mb-4">Confirmar Exclusão</h2>
         <p className="mb-6">Tem certeza de que deseja deletar este usuário?</p>
@@ -18,7 +19,8 @@ const ModalConfirmDelete = ({ isOpen, onClose, onConfirm }) => {
           ></ConfirmButton>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

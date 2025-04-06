@@ -14,7 +14,7 @@ export const changeSubJobInfo = (subJobInfo, updateSubJobData) => {
         value: Number(subJobInfo.value)
     }
 
-    return updateSubJobData(infos);
+    updateSubJobData(infos);
 }
 
 export const deleteSubJob = (subJobId, deleteSubJobById) => {

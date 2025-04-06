@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import ImageDone from "../../assets/icone-concluido.png";
 import { useSubJobContext } from "../../context/SubJobContext";
 import { editInfos } from "./CardSubJob.script";
+import { useJobContext } from "../../context/JobContext";
 
 const CardSubJob = React.memo((
         { id, title, description, quantity, value,
         timeDone, isDone, setModalEditSub }) => {
-  // Usando apenas o estado local para controlar o status
   const [done, setDone] = useState(isDone);
   const [timeDoneText, setTimeDoneText] = useState(timeDone);
   const [isEditingSubJob, setIsEditingSubJob] = useState(false);
   const { currentDate, updateStatus } = useSubJobContext()
+  const { job, updateStatusJob } = useJobContext();
   const [modalEditSubJob, setModalEditSubJob] = useState(null);
 
   const handleChangeStatus = async () => {
@@ -19,6 +20,7 @@ const CardSubJob = React.memo((
     // // Atualiza o status no backend
     await updateStatus(id, !done);
     setTimeDoneText(currentDate)
+    await updateStatusJob(job.id)
   };
 
   useEffect(() => {
@@ -39,11 +41,11 @@ const CardSubJob = React.memo((
     
     <div
       id={`job_${id}`}
-      className={`card_subjob relative overflow-visible flex flex-col justify-center border-1 pl-3 text-[#d9d9d9] max-h-[16rem] h-auto min-h-[13rem] w-auto px-3 max-w-[27rem] min-w-[20rem] rounded-[3px] duration-100 bg-[#040404AA] ${
+      className={`card_subjob relative overflow-visible flex flex-col justify-center border-1 pl-3 text-[#d9d9d9] max-h-[16rem] h-auto min-h-[12rem] w-auto px-3 max-w-[27rem] min-w-[20rem] rounded-[3px] duration-100 bg-[#040404AA] ${
         done ? "border-cyan-zero" : "border-pink-zero"
       }`}
     >
-      <div className="absolute top-1/3 left-1/2 z-100 -translate-x-1/2 -translate-y-1/2 z-50">{modalEditSubJob}</div>
+      <div className="absolute top-4/9 left-4/9 z-100 -translate-x-1/2 -translate-y-1/2 z-40">{modalEditSubJob}</div>
       <div className="flex py-2 text-2xl font-bold items-center gap-[4px]">
         <h1 className="card_subjob_title">{title}</h1>
       </div>
@@ -55,13 +57,13 @@ const CardSubJob = React.memo((
                 } marker:duration-100 ease-in-out`}
         >
           <li>
-            <b>Descrição: </b> <span className="breakable-text"> {description} </span>
+            <b>Descrição: </b> <div className="breakable-text overflow-y-auto max-h-[3rem]"> {description} </div>
           </li>
           <li>
             <b>Quantidade: </b> <span className="breakable-text"> {quantity} </span>
           </li>
           <li>
-            <b>Valor: </b> <span className="breakable-text"> R$ {value.toFixed(2).replace(".", ",")} </span>
+            <b>Valor: </b> <span className="breakable-text overflow-y-auto max-h-[3rem]"> R$ {value.toFixed(2).replace(".", ",")} </span>
           </li>
           <li>
             <b>Status: </b> <b className={`${done ? "text-cyan-zero":"text-yellow-zero"}`}>{done ? "Concluído" : "Pendente"}</b>

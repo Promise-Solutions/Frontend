@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const JobContext = createContext({});
 
@@ -27,9 +28,7 @@ export function JobProvider({ children }) {
   };
 
 
-
-  // Função declarada
-  async function findJobs() {
+  const findJobs = async () => {
     try {
       const response = await axios.get("http://localhost:5000/servicos");
       const jobs = response.data;
@@ -42,19 +41,50 @@ export function JobProvider({ children }) {
     }
   }
 
-  async function updateStatus(id, isDone) {
-
+  const updateStatusJob = async (idServico) => {
     try {
-        const request = await axios.patch(`http://localhost:5000/servicos/${id}`, { concluido: isDone });
+        const response = await axios.get(`http://localhost:5000/subservicos?idServico=${idServico}`);
+
+        const verifyAllDone = response.data.every(subJob => subJob.concluido);
+        const request = await axios.patch(`http://localhost:5000/servicos/${idServico}`, {concluido: verifyAllDone})
         console.log("updateStatus")
         if (request.status === 200) {
             console.log("Status atualizado com sucesso")
           }
+      
     } catch(error) {
         console.error("Erro ao atualizar o status do atendimento:", error);
     } finally {
     }
   }
+
+  const updateJobData = async (id, jobData) => {
+    if(!id) return;
+
+    try {
+        const request = await axios.patch(`http://localhost:5000/servicos/${id}`, 
+                        { titulo: jobData.title, categoria:jobData.category, data: jobData.date, horario: jobData.time})
+                
+        if(request.status === 200) {
+            console.log("Serviço atualizado com sucesso!")
+        }
+    } catch(error) {
+        console.error("Erro ao atualizar o serviço", error)
+    }
+  }
+
+  const deleteJobById = async (id) => {
+    if(!id) return;
+    try {
+      const request = await axios.delete(`http://localhost:5000/servicos/${id}`)
+      toast.success("Serviço excluído com sucesso");
+      
+      return request.status
+    } catch(error) {
+      toast.error("Erro ao excluir serviço") 
+      console.error("Erro ao excluir serviço", error)
+    }
+  } 
 
   return (
     <JobContext.Provider
@@ -62,8 +92,10 @@ export function JobProvider({ children }) {
         job,
         setJob,
         findJobs,
-        updateStatus,
-        fetchJobData
+        updateStatusJob,
+        fetchJobData,
+        updateJobData,
+        deleteJobById
       }}
     >
       {children}

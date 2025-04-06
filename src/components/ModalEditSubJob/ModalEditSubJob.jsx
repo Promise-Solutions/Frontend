@@ -2,21 +2,23 @@ import { useEffect, useState } from "react";
 import { useSubJobContext } from "../../context/SubJobContext";
 import { handleInputChange, changeSubJobInfo, deleteSubJob } from "./ModalEditSubJob.script";
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
+import ModalConfirmDelete from "../ModalConfirmDelete/ModalConfirmDelete";
 
 const ModalEditSubJob = ({ subJobData, setModalEditSub, isEditingSubSob, setIsEditingSubJob }) => {
   const { updateSubJobData, deleteSubJobById } = useSubJobContext();
   const [subJobsInfos, setSubJobsInfos] = useState(subJobData);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   return (
     <div
-      className={`modal_edit_subjob flex flex-col justify-center border-2 pl-3 text-[#d9d9d9] max-h-[16rem] h-auto min-h-[13rem] w-auto px-3 max-w-[27rem] min-h-[13rem] w-auto rounded-[5px] duration-100 bg-[#0D0D0D]`}
+      className={`modal_edit_subjob flex flex-col justify-center border-2 pl-3 text-[#d9d9d9] max-h-[16rem] h-auto min-h-[13rem] min-w-[8rem] w-auto px-3 max-w-[27rem] w-auto rounded-[5px] duration-100 bg-[#0D0D0D]`}
     >
       <div className="flex py-2 text-2xl font-bold items-center gap-[4px]">
         <input
           name="title" 
           value={subJobsInfos.title} 
           autocomplete="off"
-          className="modal_edit_subjob_title outline-none caret-yellow-zero focus:border-b-pink-zero border-b-1 border-b-[#A5A5A5] text-yellow-zero pb-1" 
+          className="modal_edit_subjob_title outline-none caret-yellow-zero focus:border-b-pink-zero max-w-[18rem] border-b-1 border-b-[#A5A5A5] text-yellow-zero pb-1" 
           onChange={(e) => handleInputChange(e, setSubJobsInfos)}
           />
         <div onClick={() => setIsEditingSubJob(false)} className="flex justify-center items-center text-[12px] text-red-zero cursor-pointer rounded-[100%] border-2 border-red-zero w-5 h-5 " >x</div>
@@ -75,18 +77,24 @@ const ModalEditSubJob = ({ subJobData, setModalEditSub, isEditingSubSob, setIsEd
           </button>
 
           <button
-            onClick={() => deleteSubJob(subJobsInfos.id, deleteSubJobById)} 
+            onClick={() => setIsDeleteModalOpen(true)} 
             className={`h-[34px] w-[10rem] text-[14px] text-red-zero hover:text-[#B9B9B9]
                         border-2 border-red-zero
                         font-bold cursor-pointer duration-100`}
           >
-            Excluir Subserviço
+            Excluir
           </button>
         </div>
 
+          
 
 
       </div>
+      <ModalConfirmDelete
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={() => deleteSubJob(subJobsInfos.id, deleteSubJobById)}
+              />
     </div>
   );
 }
