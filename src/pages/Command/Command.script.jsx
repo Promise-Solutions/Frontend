@@ -11,7 +11,11 @@ import ModalEditCommandProduct from "../../components/modalEditCommandProduct/Mo
 import ModalAddDiscount from "../../components/modalAddDiscount/ModalAddDiscount"; // Importa o novo modal
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
-import { calcTotalWithDiscount } from "../../hooks/Calc"; // Importa a função de cálculo
+import {
+  calcTotalWithDiscount,
+  calcProductsTotal,
+  calcProductTotal,
+} from "../../hooks/Calc"; // Importa funções de cálculo
 
 export const RenderCommandDetails = () => {
   const { command, setCommand, commandId, setCommandId } = useCommandContext(); // Usa o BarContext para obter a comanda
@@ -32,6 +36,8 @@ export const RenderCommandDetails = () => {
   const [isDiscountModalOpen, setIsDiscountModalOpen] = useState(false);
   const [employeeName, setEmployeeName] = useState(""); // Nome do funcionário
   const [clientName, setClientName] = useState(""); // Nome do cliente
+  const [isDeleteCommandModalOpen, setIsDeleteCommandModalOpen] =
+    useState(false); // Estado separado para deletar a comanda
 
   const formatDateTime = (dateTime) => {
     if (!dateTime) return "Ainda aberta";
@@ -44,6 +50,10 @@ export const RenderCommandDetails = () => {
       minute: "2-digit",
       second: "2-digit",
     });
+  };
+
+  const recalculateTotalValue = (updatedProducts) => {
+    return calcProductsTotal(updatedProducts); // Usa a função de cálculo
   };
 
   useEffect(() => {
@@ -196,7 +206,19 @@ export const RenderCommandDetails = () => {
       );
 
       // Update the local state
-      setProducts((prev) => [...prev, response.data]);
+      const updatedProducts = [...products, response.data];
+      setProducts(updatedProducts);
+
+      // Recalculate the total value
+      const newTotalValue = recalculateTotalValue(updatedProducts);
+      await axios.patch(`http://localhost:5000/commands/${command.id}`, {
+        valorTotal: newTotalValue.toFixed(2),
+      });
+      setCommand((prevCommand) => ({
+        ...prevCommand,
+        valorTotal: newTotalValue.toFixed(2),
+      }));
+
       setAllProducts((prev) =>
         prev.map((product) =>
           product.id === newProduct.idProduto
@@ -248,9 +270,21 @@ export const RenderCommandDetails = () => {
       );
 
       // Update local state
-      setProducts((prev) =>
-        prev.filter((product) => product.id !== productToDelete.id)
+      const updatedProducts = products.filter(
+        (product) => product.id !== productToDelete.id
       );
+      setProducts(updatedProducts);
+
+      // Recalculate the total value
+      const newTotalValue = recalculateTotalValue(updatedProducts);
+      await axios.patch(`http://localhost:5000/commands/${command.id}`, {
+        valorTotal: newTotalValue.toFixed(2),
+      });
+      setCommand((prevCommand) => ({
+        ...prevCommand,
+        valorTotal: newTotalValue.toFixed(2),
+      }));
+
       setAllProducts((prev) =>
         prev.map((product) =>
           product.id === productToDelete.fkProduto
@@ -328,11 +362,20 @@ export const RenderCommandDetails = () => {
       );
 
       // Update local state
-      setProducts((prevProducts) =>
-        prevProducts.map((product) =>
-          product.id === editingCommandProduct.id ? productToUpdate : product
-        )
+      const updatedProducts = products.map((product) =>
+        product.id === editingCommandProduct.id ? productToUpdate : product
       );
+      setProducts(updatedProducts);
+
+      // Recalculate the total value
+      const newTotalValue = recalculateTotalValue(updatedProducts);
+      await axios.patch(`http://localhost:5000/commands/${command.id}`, {
+        valorTotal: newTotalValue.toFixed(2),
+      });
+      setCommand((prevCommand) => ({
+        ...prevCommand,
+        valorTotal: newTotalValue.toFixed(2),
+      }));
 
       setAllProducts((prevProducts) =>
         prevProducts.map((product) => {
@@ -345,25 +388,6 @@ export const RenderCommandDetails = () => {
           return product;
         })
       );
-
-      // Recalculate the total value of the command
-      const newTotalValue = products.reduce(
-        (sum, product) =>
-          sum +
-          (product.id === editingCommandProduct.id
-            ? productToUpdate.qtdProduto * productToUpdate.valorUnitario
-            : product.qtdProduto * product.valorUnitario),
-        0
-      );
-
-      await axios.patch(`http://localhost:5000/commands/${command.id}`, {
-        valorTotal: newTotalValue.toFixed(2),
-      });
-
-      setCommand((prevCommand) => ({
-        ...prevCommand,
-        valorTotal: newTotalValue.toFixed(2),
-      }));
 
       setEditingCommandProduct(null);
       setIsEditCommandProductModalOpen(false);
@@ -383,11 +407,7 @@ export const RenderCommandDetails = () => {
       setIsDiscountModalOpen(true); // Abre o modal para adicionar desconto
     } else {
       // Lógica para reabrir a comanda
-      const totalValue = products.reduce(
-        (sum, product) =>
-          sum + parseFloat(product.valorUnitario) * product.qtdProduto,
-        0
-      );
+      const totalValue = calcProductsTotal(products); // Usa a função de cálculo
 
       await axios.patch(`http://localhost:5000/commands/${command.id}`, {
         status: "Aberta",
@@ -409,11 +429,7 @@ export const RenderCommandDetails = () => {
   };
 
   const handleAddDiscount = async (discount) => {
-    const totalValue = products.reduce(
-      (sum, product) =>
-        sum + parseFloat(product.valorUnitario) * product.qtdProduto,
-      0
-    );
+    const totalValue = calcProductsTotal(products); // Usa a função de cálculo
     const discountedValue = calcTotalWithDiscount(totalValue, discount); // Usa a lógica atualizada
 
     await axios.patch(`http://localhost:5000/commands/${command.id}`, {
@@ -436,7 +452,20 @@ export const RenderCommandDetails = () => {
 
   const handleDeleteCommand = async () => {
     try {
-      // Delete the command from the database
+      // Fetch all items associated with the command
+      const commandProductsResponse = await axios.get(
+        `http://localhost:5000/commandProduct?fkComanda=${command.id}`
+      );
+      const commandProducts = commandProductsResponse.data;
+
+      // Delete each item in commandProduct associated with the command
+      for (const product of commandProducts) {
+        await axios.delete(
+          `http://localhost:5000/commandProduct/${product.id}`
+        );
+      }
+
+      // Delete the command itself
       await axios.delete(`http://localhost:5000/commands/${command.id}`);
 
       // Clear the command context and redirect
@@ -445,11 +474,15 @@ export const RenderCommandDetails = () => {
       sessionStorage.removeItem("commandId");
       window.location.href = "/bar";
 
-      showToast.success("Comanda deletada com sucesso!");
+      showToast.success("Comanda e itens associados deletados com sucesso!");
     } catch (error) {
-      console.error("Erro ao deletar comanda:", error);
+      console.error("Erro ao deletar comanda e itens associados:", error);
       showToast.error("Erro ao deletar comanda.");
     }
+  };
+
+  const handleRemoveCommand = () => {
+    setIsDeleteCommandModalOpen(true); // Abre o modal para deletar a comanda
   };
 
   if (!command) {
@@ -548,7 +581,7 @@ export const RenderCommandDetails = () => {
                 {command.status === "Fechada" && (
                   <DeleteButton
                     text="Deletar Comanda"
-                    onClick={() => setIsDeleteModalOpen(true)} // Open delete modal
+                    onClick={handleRemoveCommand} // Usa o estado correto para deletar a comanda
                   />
                 )}
               </div>
@@ -607,8 +640,8 @@ export const RenderCommandDetails = () => {
             onConfirm={handleAddDiscount}
           />
           <ModalConfirmDelete
-            isOpen={isDeleteModalOpen}
-            onClose={() => setIsDeleteModalOpen(false)}
+            isOpen={isDeleteCommandModalOpen} // Usa o estado correto para deletar a comanda
+            onClose={() => setIsDeleteCommandModalOpen(false)}
             onConfirm={handleDeleteCommand}
             title={"Deletar Comanda"}
             description={"Tem certeza de que deseja deletar esta comanda?"}
