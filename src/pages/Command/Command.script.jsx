@@ -127,6 +127,10 @@ export const RenderCommandDetails = () => {
 
     if (name === "qtdProduto") {
       const quantity = parseInt(value);
+      if (quantity < 0) {
+        showToast.error("A quantidade não pode ser negativa.");
+        return;
+      }
       if (quantity > newProduct.estoque) {
         showToast.error("A quantidade não pode exceder o estoque disponível.");
         return;
@@ -147,7 +151,7 @@ export const RenderCommandDetails = () => {
         nomeProduto: selectedProduct.nomeProduto,
         qtdProduto: 0,
         valorUnitario: selectedProduct.valorUnitario,
-        estoque: selectedProduct.qtdProduto, // Correctly map qtdProduto to estoque
+        estoque: selectedProduct.qtdProduto,
         idProduto: selectedProduct.id,
       });
     }
@@ -284,18 +288,23 @@ export const RenderCommandDetails = () => {
         return;
       }
 
-      const quantityDifference =
-        parseInt(updatedProduct.qtdProduto) - originalProduct.qtdProduto;
+      // Reset stock of the original product
+      const restoredStock =
+        allProducts.find((product) => product.id === originalProduct.idProduto)
+          .qtdProduto + originalProduct.qtdProduto;
 
-      if (
-        quantityDifference > 0 &&
-        quantityDifference > selectedProduct.qtdProduto
-      ) {
+      await axios.patch(
+        `http://localhost:5000/products/${originalProduct.idProduto}`,
+        { qtdProduto: restoredStock }
+      );
+
+      // Update stock for the newly selected product
+      const quantityDifference = parseInt(updatedProduct.qtdProduto);
+      if (quantityDifference > selectedProduct.qtdProduto) {
         showToast.error("A quantidade excede o estoque disponível.");
         return;
       }
 
-      // Update the stock in the database
       const updatedStock = selectedProduct.qtdProduto - quantityDifference;
 
       await axios.patch(
@@ -306,9 +315,11 @@ export const RenderCommandDetails = () => {
       // Update the product in the command
       const productToUpdate = {
         ...editingCommandProduct,
-        ...updatedProduct,
+        nomeProduto: selectedProduct.nomeProduto, // Update to new product name
+        idProduto: selectedProduct.id, // Update to new product ID
+        fkProduto: selectedProduct.id, // Update fkProduto to new product ID
         qtdProduto: parseInt(updatedProduct.qtdProduto),
-        valorUnitario: parseFloat(updatedProduct.valorUnitario).toFixed(2),
+        valorUnitario: parseFloat(selectedProduct.valorUnitario).toFixed(2),
       };
 
       await axios.patch(
@@ -324,12 +335,35 @@ export const RenderCommandDetails = () => {
       );
 
       setAllProducts((prevProducts) =>
-        prevProducts.map((product) =>
-          product.id === updatedProduct.idProduto
-            ? { ...product, qtdProduto: updatedStock }
-            : product
-        )
+        prevProducts.map((product) => {
+          if (product.id === originalProduct.idProduto) {
+            return { ...product, qtdProduto: restoredStock };
+          }
+          if (product.id === updatedProduct.idProduto) {
+            return { ...product, qtdProduto: updatedStock };
+          }
+          return product;
+        })
       );
+
+      // Recalculate the total value of the command
+      const newTotalValue = products.reduce(
+        (sum, product) =>
+          sum +
+          (product.id === editingCommandProduct.id
+            ? productToUpdate.qtdProduto * productToUpdate.valorUnitario
+            : product.qtdProduto * product.valorUnitario),
+        0
+      );
+
+      await axios.patch(`http://localhost:5000/commands/${command.id}`, {
+        valorTotal: newTotalValue.toFixed(2),
+      });
+
+      setCommand((prevCommand) => ({
+        ...prevCommand,
+        valorTotal: newTotalValue.toFixed(2),
+      }));
 
       setEditingCommandProduct(null);
       setIsEditCommandProductModalOpen(false);

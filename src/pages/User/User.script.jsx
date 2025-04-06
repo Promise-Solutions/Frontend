@@ -10,6 +10,7 @@ import Dropdown from "../../components/dropdown/Dropdown.jsx";
 import ModalConfirmDelete from "../../components/modalConfirmDelete/ModalConfirmDelete.jsx";
 import ScreenFilter from "../../components/screenFilter/ScreenFilter.jsx";
 import LineGrafic from "../../components/graphic/FreqPagGraphic.jsx";
+import toast from "react-hot-toast"; // Add this import
 
 export const RenderInfos = () => {
   const { user, setUser, userId, isClient } = useUserContext(); // Contexto do usuário
@@ -20,6 +21,24 @@ export const RenderInfos = () => {
   // Função para deletar usuário
   const handleDeleteUser = async () => {
     try {
+      // Check for open commands
+      const commandsEndpoint = `http://localhost:5000/commands`;
+      const { data: commands } = await axios.get(commandsEndpoint);
+      const hasOpenCommand = commands.some(
+        (command) =>
+          (isClient
+            ? command.fkCliente === userId
+            : command.fkFuncionario === userId) && command.status === "Aberta"
+      );
+
+      if (hasOpenCommand) {
+        showToast.error(
+          "Não é possível deletar o usuário com uma comanda aberta."
+        );
+        return;
+      }
+
+      // Proceed with deletion
       const endpoint = isClient
         ? `http://localhost:5000/clientes/${userId}`
         : `http://localhost:5000/funcionarios/${userId}`;
