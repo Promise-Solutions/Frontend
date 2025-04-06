@@ -9,6 +9,7 @@ export const tabs = [
   { id: "bar", name: "Bar" },
   { id: "dashboard", name: "Dashboard" },
   { id: "reports", name: "Relatórios" },
+  { id: "tasks", name: "Tarefas" },
 ];
 
 // Hook da lógica da navbar

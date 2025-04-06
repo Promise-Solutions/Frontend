@@ -16,6 +16,7 @@ import Home from "./pages/Home/Home"; // Página inicial
 import User from "./pages/User/User"; // Página de usuário
 import Stock from "./pages/Stock/Stock";
 import Command from "./pages/Command/Command"; // Página de comanda
+import Tasks from "./pages/Tasks/Tasks";
 
 function ProtectedRoute({ element }) {
   const isAuthenticated = !!localStorage.getItem("token"); // Verifica se o usuário está autenticado
@@ -59,6 +60,7 @@ function AppRoutes() {
         element={<ProtectedRoute element={<Projects />} />}
       />
       <Route path="/jobs" element={<ProtectedRoute element={<Jobs />} />} />
+      <Route path="/tasks" element={<ProtectedRoute element={<Tasks />} />} />
     </Routes>
   );
 }
