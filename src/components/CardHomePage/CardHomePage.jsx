@@ -19,8 +19,6 @@ function CardHomePage({ title, text, url, idButton }) {
         text="Acessar"
         onClick={() => handleButtonClick(idButton)}
         id={`${idButton}_id`}
-        className="h-[42px] ml-auto border-1 px-5 py-2 border-[#9A3379] text-[#9A3379] 
-                    font-bold cursor-pointer hover:border-[#02AEBA] hover:text-[#02AEBA] duration-300"
       ></PrimaryButton>
     </article>
   );

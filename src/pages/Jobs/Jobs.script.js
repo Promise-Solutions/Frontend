@@ -12,7 +12,7 @@ export const renderJobs = async (
   const jobs = await findJobs();
 
   return jobs.map((job) => {
-    console.log("Renderizando atendimentos:", {
+    console.log("Renderizando serviços:", {
       title: job.titulo,
       category: job.categoria
     });

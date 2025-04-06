@@ -4,15 +4,13 @@ import { useSubJobContext } from "../../context/SubJobContext";
 import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
 import DeleteButton from "../../components/DeleteButton/DeleteButton";
 import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete";
-import ModalEditSubJob from "../../components/ModalEditSubJob/ModalEditSubJob";
-import CardSubJob from "../../components/CardSubJob/CardSubJob";
 import { renderSubJobs, handleInputChange, saveChanges, deleteJob } from "./JobManagement.script";
 import Input from "../../components/Form/Input";
 import { useNavigate } from "react-router-dom";
 
 const JobManagement = () => {
   const [subJobs, setSubJobs] = useState([]);
-  const { job, setJob, fetchJobData, updateJobData, deleteJobById } = useJobContext();
+  const { setJob, fetchJobData, updateJobData, deleteJobById } = useJobContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { findSubJobsByJobId } = useSubJobContext();
@@ -41,7 +39,7 @@ const JobManagement = () => {
             >
               <div className="flex flex-col text-[#ddd]">
                 <h1 className="text-[42px]">
-                  <b>Atendimento: {jobData?.titulo}</b> 
+                  <b>Serviço: {jobData?.titulo}</b> 
                 </h1>
                 <span className="text-[18px]">Altere as informações</span>
                 <ul className="flex flex-col mt-6 gap-2">
@@ -64,7 +62,7 @@ const JobManagement = () => {
               </div>
               <PrimaryButton
                 id="button_edit"
-                text="Editar Atendimento"
+                text="Editar Serviço"
                 onClick={() => setIsEditing(true)}
               />
             </section>
@@ -118,7 +116,7 @@ const JobManagement = () => {
               <div className="flex mt-10">
                 <DeleteButton
                   id="delete_button"
-                  text="Deletar Atendimento"
+                  text="Deletar Serviço"
                   onClick={() => setIsDeleteModalOpen(true)}
                 />
               </div>
@@ -145,7 +143,7 @@ const JobManagement = () => {
           )}
           <section className="dropdown_section">
             <div className="gap-4 border-t-1 border-[#d9d9d91F] flex flex-wrap justify-center items-start mt-12 max-h-[330px] py-[35px] mx-10 overflow-y-auto w-full h-auto">
-              {subJobs != null ? subJobs : <p className="text-center text-gray-400">Nenhum subserviço encontrado para esse atendimento</p>}
+              {subJobs != null ? subJobs : <p className="text-center text-gray-400">Nenhum subserviço encontrado para esse serviço</p>}
             </div>
           </section>
         </div>

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // Importa o ícone de busca
 import icon from "../../assets/icone-busca.png";
 
-// Componente funcional para o filtro de busca de atendimentos
+// Componente funcional para o filtro de busca de serviços
 const jobFilter = ({ id, placeholder, onSearch }) => {
   // Estado para controlar se o input está focado
   const [isFocused, setIsFocused] = useState(false);
@@ -35,7 +35,7 @@ const jobFilter = ({ id, placeholder, onSearch }) => {
       // Filtra os cards com base no valor do input
       cards.forEach((card) => {
         const title = card
-          .querySelector(".card_job_title") // Seleciona o nome do atendimento no card
+          .querySelector(".card_job_title") // Seleciona o nome do serviço no card
           .textContent.toUpperCase().trim(); // Converte o texto para maiúsculas
         card.style.display = title.includes(filter) ? "block" : "none"; // Exibe ou oculta o card
       });

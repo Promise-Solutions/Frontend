@@ -1,8 +1,5 @@
 import React from "react"
 import CardSubJob from "../../components/CardSubJob/CardSubJob"
-import ModalEditSubJob from "../../components/ModalEditSubJob/ModalEditSubJob";
-import toast from "react-hot-toast";
-
 export const handleInputChange = (e, setJobData) => {
   const { name, value } = e.target;
   setJobData(prev => ({ ...prev, [name]: value }));

@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSubJobContext } from "../../context/SubJobContext";
 import { handleInputChange, changeSubJobInfo, deleteSubJob } from "./ModalEditSubJob.script";
-import PrimaryButton from "../PrimaryButton/PrimaryButton";
 import ModalConfirmDelete from "../ModalConfirmDelete/ModalConfirmDelete";
 
 const ModalEditSubJob = ({ subJobData, setModalEditSub, isEditingSubSob, setIsEditingSubJob }) => {

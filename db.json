@@ -76,7 +76,7 @@
   "servicos": [
     {
       "id": 1,
-      "titulo": "Atendimento1",
+      "titulo": "Serviço1",
       "categoria": "Ensaio Musical",
       "data": "12/02/2025",
       "horario": "20:00",
@@ -85,7 +85,7 @@
     },
     {
       "id": 3,
-      "titulo": "Atendimento2",
+      "titulo": "Serviço2",
       "categoria": "Ensaio Musical",
       "data": "12/02/2025",
       "horario": "20:00",
@@ -94,7 +94,7 @@
     },
     {
       "id": 4,
-      "titulo": "Atendimento2",
+      "titulo": "Serviço2",
       "categoria": "Ensaio Musical",
       "data": "12/02/2024",
       "horario": "20:00",
@@ -123,7 +123,7 @@
       "valor": 10,
       "data": "12/02/2025",
       "horarioInicio": "10:00",
-      "horarioConclusao": "05/04/2025 - 23:37",
+      "horarioConclusao": "05/04/2025 - 23:45",
       "concluido": true,
       "idServico": 1
     },

@@ -10,7 +10,6 @@ import DeleteButton from "../../components/DeleteButton/DeleteButton.jsx";
 import Dropdown from "../../components/Dropdown/Dropdown.jsx";
 import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete.jsx";
 import { ToastStyle } from "../../components/ToastStyle/ToastStyle.jsx";
-import Jobs from "../Jobs/Jobs.jsx";
 import React from "react";
 import CardJob from "../../components/CardJob/CardJob.jsx";
 
@@ -49,7 +48,7 @@ export const RenderInfos = () => {
     console.log("jobs", jobs)
   
     return jobs.map((job) => {
-      console.log("Renderizando atendimentos:", {
+      console.log("Renderizando serviços:", {
         title: job.titulo,
         category: job.categoria,
       });
@@ -152,7 +151,7 @@ export const RenderInfos = () => {
             setUser({ ...user, ...updatedFormData });
             setIsEditing(false);
           } catch (error) {
-            console.error("Erro ao salvar alterações:", error);
+            t.error("Erro ao salvar alterações:", error);
             throw new Error("Erro ao salvar alterações. Tente novamente.");
           }
         })(),
@@ -300,7 +299,7 @@ export const RenderInfos = () => {
         <Dropdown title="Dashboard" content="BATATA" />
         <Dropdown title="Serviços" content={
           <div className="gap-6 flex justify-center mt-12 max-h-[600px] overflow-y-auto w-full h-auto ">
-            {filteredJobs != null ? filteredJobs : <p className="text-center text-gray-400">Nenhum atendimento encontrado para esse cliente</p>}
+            {filteredJobs != null ? filteredJobs : <p className="text-center text-gray-400">Nenhum serviço encontrado para esse cliente</p>}
           </div>
         }
         />

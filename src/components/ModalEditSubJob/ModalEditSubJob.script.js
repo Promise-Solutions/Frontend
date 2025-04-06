@@ -1,5 +1,3 @@
-import { useSubJobContext } from "../../context/SubJobContext";
-
 export const handleInputChange = (e, setSubJobData) => {
     const { name, value } = e.target;
     setSubJobData(prev => ({ ...prev, [name]: value }));

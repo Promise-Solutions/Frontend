@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext } from "react"
 import axios from "axios"
+import toast from "react-hot-toast";
 
 const SubJobContext = createContext({});
 
@@ -44,6 +45,7 @@ export function SubJobProvider({ children }) {
                 console.log("Status atualizado com sucesso")
               }
         } catch(error) {
+            toast.error("Erro ao atualizar o status do subserviço:");
             console.error("Erro ao atualizar o status do subserviço:", error);
         } finally {
         }
@@ -58,8 +60,10 @@ export function SubJobProvider({ children }) {
         
             if(request.status === 200) {
                 console.log("Subserviço atualizado com sucesso!")
+                toast.success("Subserviço atualizado com sucesso!")
             }
         } catch(error) {
+            toast.error("Erro ao atualizar o subserviço")
             console.error("Erro ao atualizar o subserviço", error)
         }
     }
@@ -72,6 +76,7 @@ export function SubJobProvider({ children }) {
 
             console.log("Status da requisição: " + request.status)
         } catch (error) {
+            toast.error("Erro ao excluir subserviço")
             console.log("Erro ao excluir subserviço", error)
         }
     }

@@ -5,8 +5,7 @@ import toast from "react-hot-toast";
 const JobContext = createContext({});
 
 export function JobProvider({ children }) {
-  const [job, setJob] = useState(null);
-  const [jobId, setJobId] = useState(null);
+  const [job, setJob] = useState(null)
 
   const fetchJobData = async (jobId) => {
     if (!jobId) return;
@@ -17,13 +16,12 @@ export function JobProvider({ children }) {
 
       if (jobData) {
         setJob(jobData);
-        setJobId(jobData.id);
         return jobData;
       } else {
-        throw new Error("Atendimento não encontrado.");
+        throw new Error("serviço não encontrado.");
       }
     } catch (error) {
-      console.error("Erro ao buscar dados do atendimento:", error);
+      console.error("Erro ao buscar dados do serviço:", error);
     }
   };
 
@@ -37,8 +35,7 @@ export function JobProvider({ children }) {
     } catch (error) {
       console.error("Erro ao buscar servicos:", error);
       return [];
-    } finally {
-    }
+    }  
   }
 
   const updateStatusJob = async (idServico) => {
@@ -53,8 +50,8 @@ export function JobProvider({ children }) {
           }
       
     } catch(error) {
-        console.error("Erro ao atualizar o status do atendimento:", error);
-    } finally {
+        toast.error("Erro ao atualizar o status do serviço:");
+        console.error("Erro ao atualizar o status do serviço:", error);
     }
   }
 
@@ -69,6 +66,7 @@ export function JobProvider({ children }) {
             console.log("Serviço atualizado com sucesso!")
         }
     } catch(error) {
+        toast.error("Erro ao atualizar o serviço")
         console.error("Erro ao atualizar o serviço", error)
     }
   }

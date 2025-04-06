@@ -41,15 +41,15 @@ const Jobs = () => {
       {/* Seção de cabeçalho com título e botão */}
       <section className="flex justify-around items-center mt-14">
         <div className="mr-10">
-          <h1 className="text-[42px] font-bold tracking-widest">Atendimentos</h1>
+          <h1 className="text-[42px] font-bold tracking-widest">serviços</h1>
           <p className="text-[18px] mb-4">
-            Tenha uma visão geral de todos seus atendimentos já registrados
+            Tenha uma visão geral de todos seus serviços já registrados
           </p>
         </div>
         {/* Botão para cadastrar um novo usuário */}
         <PrimaryButton
           id="register_button"
-          text="Cadastrar Atendimento"
+          text="Cadastrar serviço"
           onClick={registerRedirect}
         />
       </section>
@@ -60,7 +60,7 @@ const Jobs = () => {
         <div className="flex text-gray-400">
           <JobsFilter
             id="input_search_job"
-            placeholder="Busque um Atendimento Cadastrado"
+            placeholder="Busque um serviço Cadastrado"
             onSearch={handleSearch} // Passa a função de busca
           />
         </div>
@@ -74,7 +74,7 @@ const Jobs = () => {
               filteredJobsElements
             ) : (
               <p className="text-center text-gray-400">
-                Nenhum atendimento encontrado.
+                Nenhum serviço encontrado.
               </p>
             )}
           </div>
