@@ -35,10 +35,9 @@
     {
       "id": 3,
       "nome": "ARTUR",
-      "cpf": "123.123.131-22",
+      "cpf": "123.123.131-23",
       "email": "artur@artur.com",
       "contato": "(12) 31231-2312",
-      "telefone": "(12) 31231-2315",
       "senha": "12345678",
       "ativo": true,
       "token": "nTrLmmQdVN5xc6X2"
@@ -77,23 +76,29 @@
   "jobs": [
     {
       "id": 1,
-      "titulo": "Serviço1",
+      "titulo": "Atendimento1",
       "categoria": "Ensaio Musical",
-      "data": "12/02/2025",
       "horario": "20:00",
-      
       "dataRegistro": "2023-10-01",
       "dataFinalizacao": "2023-10-02",
       "fkCliente": 1,
-      "concluido": true,
+      "concluido": false
+    },
+    {
+      "id": 2,
+      "titulo": "Atendimento2",
+      "categoria": "Ensaio Musical",
+      "horario": "20:00",
+      "dataRegistro": "2023-10-01",
+      "dataFinalizacao": "2023-10-02",
+      "fkCliente": 1,
+      "concluido": false
     },
     {
       "id": 3,
-      "titulo": "Serviço2",
+      "titulo": "Atendimento3",
       "categoria": "Ensaio Musical",
-      "data": "12/02/2025",
       "horario": "20:00",
-      
       "dataRegistro": "2023-10-01",
       "dataFinalizacao": "2023-10-02",
       "fkCliente": 1,
@@ -118,141 +123,6 @@
       "dataFinalizacao": "2023-10-02",
       "fkCliente": 1,
       "concluido": false
-    }
-  ],
-  "subservicos": [
-    {
-      "id": 1,
-      "titulo": "Subserviço1",
-      "descricao": "Descricao1",
-      "quantidade": 2,
-      "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": "05/04/2025 - 23:37",
-      "concluido": true,
-      "idServico": 1
-    },
-    {
-      "id": 2,
-      "titulo": "Subserviço2",
-      "descricao": "Descricao2",
-      "quantidade": 2,
-      "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": "05/04/2025 - 23:45",
-      "concluido": true,
-      "idServico": 1
-    },
-    {
-      "id": 3,
-      "titulo": "Subserviço3",
-      "descricao": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto",
-      "quantidade": 2,
-      "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
-      "concluido": false,
-      "idServico": 2
-    },
-    {
-      "id": 5,
-      "titulo": "Subserviço5",
-      "descricao": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto",
-      "quantidade": 2,
-      "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
-      "concluido": false,
-      "idServico": 4
-    },
-    {
-      "id": 7,
-      "titulo": "Subserviço7",
-      "descricao": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto ",
-      "quantidade": 2,
-      "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
-      "concluido": false,
-      "idServico": 4
-    },
-    {
-      "id": 8,
-      "titulo": "Subserviço",
-      "descricao": "Descricao",
-      "quantidade": 1,
-      "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
-      "concluido": false,
-      "idServico": 4
-    },
-    {
-      "id": 9,
-      "titulo": "Subserviço",
-      "descricao": "Descricao",
-      "quantidade": 1,
-      "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
-      "concluido": false,
-      "idServico": 4
-    },
-    {
-      "id": 10,
-      "titulo": "Subserviço",
-      "descricao": "Descricao",
-      "quantidade": 1,
-      "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
-      "concluido": false,
-      "idServico": 4
-    },
-    {
-      "id": 11,
-      "titulo": "Subserviço",
-      "descricao": "Descricao",
-      "quantidade": 1,
-      "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
-      "concluido": false,
-      "idServico": 4
-    },
-    {
-      "id": 13,
-      "titulo": "Subserviço",
-      "descricao": "Descricao",
-      "quantidade": 1,
-      "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
-      "concluido": false,
-      "idServico": 4
-    },
-    {
-      "id": 19,
-      "titulo": "Subserviço",
-      "descricao": "Descricao",
-      "quantidade": 1,
-      "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
-      "concluido": false,
-      "idServico": 5
-      
     }
   ],
   "commands": [
@@ -300,7 +170,7 @@
       "deadline": "",
       "responsible": "5",
       "id": "1743946666265",
-      "status": "concluido",
+      "status": "pendente",
       "start_date": "2025-04-06T13:37:46.265Z"
     },
     {
@@ -318,7 +188,7 @@
       "deadline": "",
       "responsible": "",
       "id": "1743948855462",
-      "status": "fazendo",
+      "status": "pendente",
       "start_date": "2025-04-06T14:14:15.462Z"
     }
   ]
