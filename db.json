@@ -170,7 +170,7 @@
       "deadline": "",
       "responsible": "5",
       "id": "1743946666265",
-      "status": "concluido",
+      "status": "pendente",
       "start_date": "2025-04-06T13:37:46.265Z"
     },
     {
@@ -188,7 +188,7 @@
       "deadline": "",
       "responsible": "",
       "id": "1743948855462",
-      "status": "fazendo",
+      "status": "pendente",
       "start_date": "2025-04-06T14:14:15.462Z"
     }
   ]
