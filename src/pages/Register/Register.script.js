@@ -1,10 +1,10 @@
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+// Removed useNavigate import
 
 let isEventRegistered = false; // Variável de controle para evitar múltiplos registros
 
-export function setupRegisterEvents() {
+export function setupRegisterEvents(navigate) {
   // Pegando os elementos do formulário
   const iptNome = document.querySelector("#nome");
   const iptEmail = document.querySelector("#email");
@@ -14,7 +14,6 @@ export function setupRegisterEvents() {
   const iptType = document.querySelector("#tipo");
   const iptTipoCliente = document.querySelector("#tipoCliente");
   const btnConfirm = document.getElementById("btn_form");
-  const navigate = useNavigate();
 
   let cpfMaskListener = null;
   let contatoMaskListener = null;
@@ -242,7 +241,7 @@ export function setupRegisterEvents() {
         iptType.value = "";
         if (iptSenha) iptSenha.value = "";
         if (iptTipoCliente) iptTipoCliente.value = "";
-        navigate("/users");
+        navigate("/users"); // Use navigate passed as a parameter
       } else {
         toast.error("Erro ao cadastrar usuário.");
       }

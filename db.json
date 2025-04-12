@@ -19,6 +19,16 @@
       "ativo": true,
       "token": "byKxDWdCOz8Yi5tq",
       "id": 3
+    },
+    {
+      "nome": "TESTE",
+      "cpf": "123.312.313-13",
+      "email": "teste@teste.com",
+      "contato": "(12) 34123-1231",
+      "tipoCliente": "AVULSO",
+      "ativo": true,
+      "token": "cNmMU0tFJ4W0kN0m",
+      "id": 4
     }
   ],
   "funcionarios": [
@@ -81,6 +91,16 @@
       "senha": "12345678",
       "ativo": true,
       "token": "2veVDIHYd6n011K9"
+    },
+    {
+      "nome": "TESTE",
+      "cpf": "123.123.131-23",
+      "email": "teste@teste.com",
+      "contato": "(13) 23123-1312",
+      "senha": "12345678",
+      "ativo": true,
+      "token": "GGk6IlX9FLxUWvlY",
+      "id": 7
     }
   ],
   "jobs": [
