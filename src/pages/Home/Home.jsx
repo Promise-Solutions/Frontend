@@ -1,9 +1,9 @@
 import { useEffect } from "react";
+import CardHomePage from "../../components/CardHomePage/CardHomePage.jsx";
 import { useNavigate } from "react-router-dom";
-import CardHomePage from "../../components/homePage/CardHomePage.jsx";
-import { handleButtonClick } from "../../components/homePage/CardHome.script";
+import { handleButtonClick } from "../../components/CardHomePage/CardHome.script";
 import UserIcon from "../../assets/icon-empresa.png";
-import JobIcon from "../../assets/icon-atendimentos.png";
+import JobIcon from "../../assets/icon-servicos.png";
 import BarIcon from "../../assets/icon-bar.png";
 import DashIcon from "../../assets/icon-dashboard.png";
 import RelatIcon from "../../assets/icon-report.png";
@@ -29,7 +29,7 @@ const Home = () => {
       <section className="flex w-[95vw] h-[65%] gap-4 items-center justify-between mx-4">
         <CardHomePage
           title="Usuários"
-          text="Gerencie seus usuários, atendimentos e tarefas"
+          text="Gerencie seus usuários, serviços e tarefas"
           url={UserIcon}
           idButton="users"
           className="text-[42px] text-transparent font-bold"

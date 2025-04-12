@@ -40,7 +40,7 @@ const Dropdown = ({ title, content }) => {
           isOpen ? "flex" : "hidden"
         }`}
       >
-        <div className="mx-16 p-4 bg-[#1E1E1E90] border-1 border-pink-zero ">
+        <div className="mx-16 p-4 ">
           {content}
         </div>
       </div>

@@ -18,7 +18,8 @@ const ModalConfirmDelete = ({ isOpen, onClose, onConfirm, title, description }) 
           ></DeleteButton>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

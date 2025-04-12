@@ -1,6 +1,7 @@
 // Função para tratar o logout
 // Redireciona o usuário para a página de login
-export const handleLogout = () => {
+export const handleLogout = (navigate) => {
   localStorage.clear();
-    window.location.href = "/login";
+  seessionStorage.clear();
+    navigate("/login");
   };

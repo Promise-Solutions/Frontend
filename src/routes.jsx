@@ -14,9 +14,12 @@ import Projects from "./pages/Projects/Projects"; // Página de projetos
 import Jobs from "./pages/Jobs/Jobs"; // Página de trabalhos
 import Home from "./pages/Home/Home"; // Página inicial
 import User from "./pages/User/User"; // Página de usuário
+import JobManagement from "./pages/JobManagement/JobManagement.jsx"
 import Stock from "./pages/Stock/Stock";
 import Command from "./pages/Command/Command"; // Página de comanda
 import Tasks from "./pages/Tasks/Tasks";
+import JobRegister from "./pages/JobRegister/JobRegister.jsx";
+import SubJobRegister from "./pages/SubJobRegister/SubJobRegister.jsx";
 
 function ProtectedRoute({ element }) {
   const isAuthenticated = !!localStorage.getItem("token"); // Verifica se o usuário está autenticado
@@ -33,6 +36,18 @@ function AppRoutes() {
       <Route
         path="/user/:user"
         element={<ProtectedRoute element={<User />} />}
+      />
+      <Route
+        path="/jobs/:job"
+        element={<ProtectedRoute element={<JobManagement />} />}
+      />
+      <Route
+        path="/register/jobs"
+        element={<ProtectedRoute element={<JobRegister />} />}
+      />
+      <Route
+        path="/register/subjobs"
+        element={<ProtectedRoute element={<SubJobRegister />} />}
       />
       <Route
         path="/register"

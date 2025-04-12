@@ -6,12 +6,12 @@ const CommandContext = createContext();
 
 export const CommandProvider = ({ children }) => {
   const [command, setCommand] = useState(null);
-  const [commandId, setCommandId] = useState(() => sessionStorage.getItem("commandId")
+  const [commandId, setCommandId] = useState(() => localStorage.getItem("commandId")
   );
 
-  // Sempre que commandId mudar, salvar na sessionStorage
+  // Sempre que commandId mudar, salvar na localStorage
   useEffect(() => {
-    sessionStorage.setItem("commandId", commandId || "");
+    localStorage.setItem("commandId", commandId || "");
   }, [commandId]);
 
   // Buscar comanda com base no ID armazenado

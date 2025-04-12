@@ -68,7 +68,7 @@ export const renderCommands = async (
         employeeName: employee ? employee.nome : "Funcionário não encontrado",
         onClick: () => {
           setCommandId(command.id);
-          sessionStorage.setItem("commandId", command.id);
+          localStorage.setItem("commandId", command.id);
           navigate(`/command/${command.id}`);
         },
       });

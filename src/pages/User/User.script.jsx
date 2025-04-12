@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext.jsx";
 import PrimaryButton from "../../components/primaryButton/PrimaryButton.jsx";
+import { useJobContext } from "../../context/JobContext.jsx";
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import Select from "../../components/form/Select.jsx";
 import Input from "../../components/form/Input.jsx";
@@ -10,13 +11,20 @@ import Dropdown from "../../components/dropdown/Dropdown.jsx";
 import ModalConfirmDelete from "../../components/modalConfirmDelete/ModalConfirmDelete.jsx";
 import ScreenFilter from "../../components/screenFilter/ScreenFilter.jsx";
 import LineGrafic from "../../components/graphic/FreqPagGraphic.jsx";
+import React from "react";
+import CardJob from "../../components/CardJob/CardJob.jsx";
 import toast from "react-hot-toast"; // Add this import
+import { useNavigate } from "react-router-dom";
+import RegisterButton from "../../components/RegisterButton/RegisterButton.jsx";
 
 export const RenderInfos = () => {
   const { user, setUser, userId, isClient } = useUserContext(); // Contexto do usuário
   const [isEditing, setIsEditing] = useState(false); // Controla o modo de edição
+  const [filteredJobs, setFilteredJobs] = useState();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla o modal de exclusão
   const [filterScreen, setFilterScreen] = useState("1"); // Controla o filtro de tela
+  const { findJobs } = useJobContext(); 
+  const navigate = useNavigate();
 
   // Função para deletar usuário
   const handleDeleteUser = async () => {
@@ -44,13 +52,58 @@ export const RenderInfos = () => {
         : `http://localhost:5000/funcionarios/${userId}`;
       await axios.delete(endpoint);
       showToast.success("Usuário deletado com sucesso!");
-      window.location.href = "/users";
+      navigate("/users");
     } catch (error) {
       showToast.error("Erro ao deletar usuário. Tente novamente.");
     } finally {
       setIsDeleteModalOpen(false);
     }
   };
+
+  const renderJobs = async () => {
+    const jobsRendered = await createFilteredJobs(findJobs)
+    console.log("render jobs", jobsRendered)
+
+    setFilteredJobs(jobsRendered);
+
+  }
+
+  const registerRedirect = (navigate) => {
+    navigate("/register/jobs")
+  }
+
+  const createFilteredJobs = async (
+    findJobs,
+  ) => {
+    const jobs = await findJobs();
+    console.log("jobs", jobs)
+  
+    return jobs.map((job) => {
+      console.log("Renderizando serviços:", {
+        title: job.titulo,
+        category: job.categoria,
+      });
+  
+      return job.fkCliente == userId ? React.createElement(CardJob, {
+        key: job.id,
+        id: job.id,
+        title: job.titulo,
+        category: job.categoria,
+        date: job.dataRegistro,
+        time: job.horario,
+        isDone: job.concluido,
+        userId: job.fkCliente,
+        onClick: () => {
+          localStorage.setItem("jobId", job.id);
+          navigate(`/jobs/${job.id}`); // redireciona sem recarregar a página
+      },
+      }): null;
+    });
+  };
+
+  useEffect(() => {
+    renderJobs();
+  },[])
 
   function Edit() {
     const [formData, setFormData] = useState({
@@ -126,7 +179,7 @@ export const RenderInfos = () => {
             setIsEditing(false);
             showToast.success("Informações atualizadas com sucesso!");
           } catch (error) {
-            console.error("Erro ao salvar alterações:", error);
+            t.error("Erro ao salvar alterações:", error);
             throw new Error("Erro ao salvar alterações. Tente novamente.");
           }
         })(),
@@ -300,9 +353,22 @@ export const RenderInfos = () => {
             </h1>
             <Dropdown
               title="Serviços"
-              content="Aqui ficam os serviços do usuário."
-            />
-          </div>
+              content={
+                <section>
+                  <div className="flex justify-end">
+                    <RegisterButton 
+                      id="register_button"
+                      title="Registrar subserviço"
+                      text="+"
+                      onClick={() => registerRedirect(navigate)} 
+                      />
+                  </div>
+                    <div className="gap-6 flex justify-center mt-12 max-h-[600px] overflow-y-auto w-full h-auto ">
+                  {filteredJobs != null ? filteredJobs : <p className="text-center text-gray-400">Aqui ficam os serviços do usuário.</p>}
+                    </div>
+                  </section>}
+                  />
+                </div>
         );
 
       case "3":

@@ -1,10 +1,11 @@
 // Componente funcional para a página Jobs
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
+import PrimaryButton from "../../components/primaryButton/PrimaryButton";
 import JobsFilter from "../../components/JobFilter/JobFilter"
 import { registerRedirect, renderJobs } from "./Jobs.script";
 import { useJobContext } from "../../context/JobContext";
+import RegisterButton from "../../components/RegisterButton/RegisterButton";
 
 // Representa a estrutura da página "Jobs", atualmente sem conteúdo
 const Jobs = () => {
@@ -39,42 +40,37 @@ const Jobs = () => {
   return (
     <div className="min-w-full min-h-full text-white">
       {/* Seção de cabeçalho com título e botão */}
-      <section className="flex justify-around items-center mt-14">
-        <div className="mr-10">
-          <h1 className="text-[42px] font-bold tracking-widest">Atendimentos</h1>
-          <p className="text-[18px] mb-4">
-            Tenha uma visão geral de todos seus atendimentos já registrados
-          </p>
-        </div>
-        {/* Botão para cadastrar um novo usuário */}
-        <PrimaryButton
-          id="register_button"
-          text="Cadastrar Atendimento"
-          onClick={registerRedirect}
-        />
-      </section>
-
-      {/* Seção principal com filtros e cards */}
-      <section className="px-16 mt-14">
-        {/* Filtro de busca de usuários */}
-        <div className="flex text-gray-400">
-          <JobsFilter
-            id="input_search_job"
-            placeholder="Busque um Atendimento Cadastrado"
-            onSearch={handleSearch} // Passa a função de busca
-          />
-        </div>
+      <section className="flex flex-col justify-around items-center mx-16 mt-6">
+      <div className="flex w-full justify-between">
+            <div className="flex items-center">
+              <h1 className="text-2xl font-thin">Gerencie seus serviços</h1>
+            </div>
+            <div className="flex gap-2 justify-end text-gray-400">
+              <JobsFilter
+                id="input_search_job"
+                placeholder="Busque um Serviço"
+                onSearch={handleSearch} // Passa a função de busca
+              />
+              {/* Botão para cadastrar um novo usuário */}
+              <RegisterButton
+                id="register_button"
+                title="Cadastrar Serviço"
+                text="+"
+                // onClick={() => registerRedirect(navigate)} // Pass navigate to registerRedirect
+              />
+            </div>
+          </div>
 
         {/* Filtros por tipo de usuário e exibição de cards */}
-        <div className="flex justify-center flex-col mt-4">
+        <div className="flex justify-center flex-col">
           {/* Atualiza o filtro */}
           {/* Espaço reservado para os cards de usuários */}
-          <div className="gap-6 flex flex-wrap justify-center mt-12 max-h-[600px] overflow-y-auto w-full h-auto">
+          <div className="gap-6 flex flex-wrap justify-center mt-6 max-h-[600px] overflow-y-auto w-full h-auto">
             {filteredJobsElements.length > 0 ? (
               filteredJobsElements
             ) : (
               <p className="text-center text-gray-400">
-                Nenhum atendimento encontrado.
+                Nenhum serviço encontrado.
               </p>
             )}
           </div>

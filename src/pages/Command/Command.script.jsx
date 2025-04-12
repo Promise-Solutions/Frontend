@@ -16,6 +16,7 @@ import {
   calcProductsTotal,
   calcProductTotal,
 } from "../../hooks/Calc"; // Importa funções de cálculo
+import { useNavigate } from "react-router-dom";
 
 export const RenderCommandDetails = () => {
   const { command, setCommand, commandId, setCommandId } = useCommandContext(); // Usa o BarContext para obter a comanda
@@ -38,6 +39,7 @@ export const RenderCommandDetails = () => {
   const [clientName, setClientName] = useState(""); // Nome do cliente
   const [isDeleteCommandModalOpen, setIsDeleteCommandModalOpen] =
     useState(false); // Estado separado para deletar a comanda
+  const navigate = useNavigate();  
 
   const formatDateTime = (dateTime) => {
     if (!dateTime) return "Ainda aberta";
@@ -471,8 +473,8 @@ export const RenderCommandDetails = () => {
       // Clear the command context and redirect
       setCommand(null);
       setCommandId(null);
-      sessionStorage.removeItem("commandId");
-      window.location.href = "/bar";
+      localStorage.removeItem("commandId");
+      navigate("/bar");
 
       showToast.success("Comanda e itens associados deletados com sucesso!");
     } catch (error) {

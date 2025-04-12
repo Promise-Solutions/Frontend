@@ -2,22 +2,15 @@ import React, { useState, useEffect } from "react";
 import ImageDone from "../../assets/icone-concluido.png";
 import { useJobContext } from "../../context/JobContext";
 
-const CardJob = React.memo(({ id, title, category, time, isDone, onClick }) => {
+const CardJob = React.memo(({ id, title, category, date, time, isDone, onClick }) => {
   // Usando apenas o estado local para controlar o status
   const [done, setDone] = useState(isDone);
   const { updateStatus } = useJobContext();
 
-  const handleChangeStatus = async () => {
-    setDone(!done);
-
-    // Atualiza o status no backend
-    await updateStatus(id, !done);
-  };
-
   return (
     <div
       id={`job_${id}`}
-      className={`card_job border-1 text-[#d9d9d9] w-3xs rounded-[5px] duration-100 pb-2 h-auto bg-[#1E1E1E90] ${
+      className={`card_job border-1 text-[#d9d9d9] w-3xs rounded-[5px] duration-100 pb-1 h-auto bg-[#1E1E1E90] ${
         done ? "border-cyan-zero" : "border-pink-zero"
       }`}
     >
@@ -31,13 +24,16 @@ const CardJob = React.memo(({ id, title, category, time, isDone, onClick }) => {
           }`}
         ></div>
         <ul
-          className={`pl-8 py-6 text-[16px] list-disc 
+          className={`pl-8 pt-3 text-[16px] list-disc 
                 ${
                   done ? "marker:text-pink-zero" : "marker:text-cyan-zero"
                 } marker:duration-100 ease-in-out`}
         >
           <li>
             <b>Categoria:</b> {category}
+          </li>
+          <li>
+            <b>Data:</b> {date}
           </li>
           <li>
             <b>Horário</b> {time}
@@ -51,28 +47,14 @@ const CardJob = React.memo(({ id, title, category, time, isDone, onClick }) => {
             done ? "opacity-100" : "opacity-0"
           }`}
         />
-        <div className="flex justify-center w-[75%]">
-          <button
-            onClick={handleChangeStatus}
-            className={`h-[38px] w-[50%] text-[14px] py-2 text-[#d9d9d9]
-                 ${
-                   done
-                     ? "border-cyan-zero hover:text-cyan-zero"
-                     : "border-pink-zero hover:text-pink-zero"
-                 } 
-                 font-bold cursor-pointer border-r-1 duration-100`}
-          >
-            {done ? "Desmarcar" : "Concluir"}
-          </button>
-          <button
-            onClick={onClick}
-            className={`h-[38px] w-[50%] text-[14px] border-0 px-5 py-2 text-[#D9D9D9]
-                 ${done ? "hover:text-cyan-zero" : "hover:text-pink-zero"} 
-                 font-bold cursor-pointer hover:text-cyan-zero duration-100 ease-in-out`}
-          >
-            Acessar
-          </button>
-        </div>
+        <button
+          onClick={onClick}
+          className={`h-[38px] text-[14px] border-0 px-5 py-2 text-[#D9D9D9]
+                ${done ? "hover:text-cyan-zero" : "hover:text-pink-zero"} 
+                font-bold cursor-pointer hover:text-cyan-zero duration-100 ease-in-out`}
+        >
+          Acessar
+        </button>
       </div>
     </div>
   );

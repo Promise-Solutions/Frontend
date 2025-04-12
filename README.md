@@ -1,15 +1,15 @@
-# 📌 Backoffice para Gerenciamento de Projetos e Atendimentos
+# 📌 Backoffice para Gerenciamento de Projetos e serviços
 
-Este projeto é um backoffice com o objetivo de auxiliar empresas no gerenciamento de seus projetos, atendimentos e controle financeiro. Ele oferece funcionalidades para organizar projetos, seus respectivos serviços, e acompanhar as finanças da empresa.
+Este projeto é um backoffice com o objetivo de auxiliar empresas no gerenciamento de seus projetos, serviços e controle financeiro. Ele oferece funcionalidades para organizar projetos, seus respectivos serviços, e acompanhar as finanças da empresa.
 
 ## 🚀 Funcionalidades Principais
 
 * **Gerenciamento de Projetos:**
     * Criação e edição de projetos.
     * Associação de serviços a cada projeto.
-* **Gerenciamento de Atendimentos:**
-    * Registro e acompanhamento de atendimentos aos clientes.
-    * Associação de atendimentos a projetos.
+* **Gerenciamento de serviços:**
+    * Registro e acompanhamento de serviços aos clientes.
+    * Associação de serviços a projetos.
 * **Controle Financeiro:**
     * Registro de receitas e despesas.
     * Geração de relatórios financeiros.

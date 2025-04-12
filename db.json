@@ -9,6 +9,16 @@
       "ativo": false,
       "token": "byKxDWdCOz8Yi5tq",
       "id": 2
+    },
+    {
+      "nome": "MENSAL",
+      "cpf": "123.123.243-32",
+      "email": "mensal@mensal.com",
+      "contato": "(13) 13131-3131",
+      "tipoCliente": "MENSAL",
+      "ativo": true,
+      "token": "byKxDWdCOz8Yi5tq",
+      "id": 3
     }
   ],
   "funcionarios": [
@@ -88,41 +98,184 @@
       "id": 2,
       "titulo": "Atendimento2",
       "categoria": "Ensaio Musical",
-      "horario": "20:00",
-      "dataRegistro": "2023-10-01",
-      "dataFinalizacao": "2023-10-02",
-      "fkCliente": 1,
-      "concluido": false
+      "fkCliente": 2,
+      "concluido": false,
+      "tipoServico": "Avulso"
     },
     {
       "id": 3,
-      "titulo": "Atendimento3",
+      "titulo": "Serviço2.1",
       "categoria": "Ensaio Musical",
-      "horario": "20:00",
-      "dataRegistro": "2023-10-01",
-      "dataFinalizacao": "2023-10-02",
-      "fkCliente": 1,
-      "concluido": false
+      "fkCliente": 2,
+      "concluido": false,
+      "tipoServico": "Avulso"
     },
     {
       "id": 4,
-      "titulo": "Atendimento4",
+      "titulo": "Servico4.1",
       "categoria": "Ensaio Musical",
-      "horario": "20:00",
-      "dataRegistro": "2023-10-01",
-      "dataFinalizacao": "2023-10-02",
-      "fkCliente": 1,
-      "concluido": false
+      "fkCliente": 2,
+      "concluido": false,
+      "tipoServico": "Avulso"
     },
     {
       "id": 5,
-      "titulo": "Atendimento5",
+      "titulo": "Servico5",
       "categoria": "Ensaio Musical",
-      "horario": "20:00",
-      "dataRegistro": "2023-10-01",
-      "dataFinalizacao": "2023-10-02",
-      "fkCliente": 1,
-      "concluido": false
+      "fkCliente": 2,
+      "concluido": false,
+      "tipoServico": "Avulso"
+    },
+    {
+      "titulo": "teste",
+      "categoria": "ENSAIO MUSICAL",
+      "tipoServico": "AVULSO",
+      "id": 6
+    }
+  ],
+  "subservicos": [
+    {
+      "id": 1,
+      "titulo": "Subserviço1",
+      "descricao": "Descricao1",
+      "quantidade": 2,
+      "valor": 10,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": "07/04/2025 - 16:30",
+      "concluido": true,
+      "fkServico": 1
+    },
+    {
+      "id": 2,
+      "titulo": "Subserviço2",
+      "descricao": "Descricao2",
+      "quantidade": 2,
+      "valor": 10,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
+      "concluido": false,
+      "fkServico": 1
+    },
+    {
+      "id": 3,
+      "titulo": "Subserviço3",
+      "descricao": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto",
+      "quantidade": 2,
+      "valor": 10,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
+      "concluido": false,
+      "fkServico": 2
+    },
+    {
+      "id": 5,
+      "titulo": "Subserviço5",
+      "descricao": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto",
+      "quantidade": 2,
+      "valor": 10,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
+      "concluido": false,
+      "fkServico": 4
+    },
+    {
+      "id": 7,
+      "titulo": "Subserviço7",
+      "descricao": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto ",
+      "quantidade": 2,
+      "valor": 10,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
+      "concluido": false,
+      "fkServico": 4
+    },
+    {
+      "id": 8,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
+      "concluido": false,
+      "fkServico": 4
+    },
+    {
+      "id": 9,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
+      "concluido": false,
+      "fkServico": 4
+    },
+    {
+      "id": 10,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": "07/04/2025 - 16:11",
+      "concluido": true,
+      "fkServico": 4
+    },
+    {
+      "id": 11,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": "07/04/2025 - 16:34",
+      "concluido": true,
+      "fkServico": 4
+    },
+    {
+      "id": 13,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
+      "concluido": false,
+      "fkServico": 4
+    },
+    {
+      "id": 19,
+      "titulo": "Subserviço",
+      "descricao": "Descricao",
+      "quantidade": 1,
+      "valor": 10,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": "07/04/2025 - 16:28",
+      "concluido": true,
+      "fkServico": 5
+    },
+    {
+      "titulo": "123",
+      "descricao": "12321",
+      "valor": 123,
+      "dataPrevista": "2025-04-23",
+      "dataHorarioInicio": "11/04/2025 - 21:01",
+      "dataHoraConclusao": null,
+      "concluido": false,
+      "fkServico": "5",
+      "id": 25
     }
   ],
   "commands": [

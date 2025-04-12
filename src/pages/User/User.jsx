@@ -1,4 +1,4 @@
-import { RenderInfos } from "./User.script.jsx";
+import { RenderInfos } from './User.script'
 
 const User = () => {
   return (

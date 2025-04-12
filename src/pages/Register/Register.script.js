@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 let isEventRegistered = false; // Variável de controle para evitar múltiplos registros
 
@@ -13,6 +14,7 @@ export function setupRegisterEvents() {
   const iptType = document.querySelector("#tipo");
   const iptTipoCliente = document.querySelector("#tipoCliente");
   const btnConfirm = document.getElementById("btn_form");
+  const navigate = useNavigate();
 
   let cpfMaskListener = null;
   let contatoMaskListener = null;
@@ -238,7 +240,7 @@ export function setupRegisterEvents() {
         iptType.value = "";
         if (iptSenha) iptSenha.value = "";
         if (iptTipoCliente) iptTipoCliente.value = "";
-        window.location.href = "/users";
+        navigate("/users");
       } else {
         toast.error("Erro ao cadastrar usuário.");
       }

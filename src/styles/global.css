@@ -22,6 +22,16 @@
   width: 8px; /* Largura personalizada */
 }
 
+@layer utilities {
+  .custom-calendar::-webkit-calendar-picker-indicator {
+    width: 27px;
+    height: 27px;
+    /* transform: scale(1); Aumenta o tamanho */
+    filter: invert(63%) sepia(42%) saturate(450%) hue-rotate(139deg) brightness(96%) contrast(93%);
+    cursor: pointer;
+  }
+}
+
 *::-webkit-scrollbar-thumb {
   background-color: var(--color-pink-zero);
   border-radius: 10px;
