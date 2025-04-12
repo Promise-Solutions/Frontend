@@ -7,14 +7,6 @@ const CardJob = React.memo(({ id, title, category, date, time, isDone, onClick }
   const [done, setDone] = useState(isDone);
   const { updateStatus } = useJobContext();
 
-  const handleChangeStatus = async () => {
-    setDone(!done);
-
-    // Atualiza o status no backend
-    await updateStatus(id, !done);
-  };
-
-
   return (
     <div
       id={`job_${id}`}

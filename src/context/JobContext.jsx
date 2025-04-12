@@ -7,11 +7,25 @@ const JobContext = createContext({});
 export function JobProvider({ children }) {
   const [job, setJob] = useState(null)
 
+
+  const saveJob = async (formData) => {
+    try {
+      const request = await axios.post(`http://localhost:5000/jobs`, formData)
+
+      if (request.status == 200) {
+        toast.success("Servico Cadastrado!")
+      }
+    } catch(error) {
+        toast.error("Erro ao cadastrar servico!")
+        console.error("Erro ao cadastrar servico!", error)
+    }
+  }
+
   const fetchJobData = async (jobId) => {
     if (!jobId) return;
 
     try {
-      const response = await axios.get(`http://localhost:5000/servicos?id=${jobId}`);
+      const response = await axios.get(`http://localhost:5000/jobs?id=${jobId}`);
       const jobData = response.data[0] || null;
 
       if (jobData) {
@@ -43,7 +57,7 @@ export function JobProvider({ children }) {
         const response = await axios.get(`http://localhost:5000/subservicos?idServico=${idServico}`);
 
         const verifyAllDone = response.data.every(subJob => subJob.concluido);
-        const request = await axios.patch(`http://localhost:5000/servicos/${idServico}`, {concluido: verifyAllDone})
+        const request = await axios.patch(`http://localhost:5000/jobs/${idServico}`, {concluido: verifyAllDone})
         console.log("updateStatus")
         if (request.status === 200) {
             console.log("Status atualizado com sucesso")
@@ -59,8 +73,8 @@ export function JobProvider({ children }) {
     if(!id) return;
 
     try {
-        const request = await axios.patch(`http://localhost:5000/servicos/${id}`, 
-                        { titulo: jobData.title, categoria:jobData.category, data: jobData.date, horario: jobData.time})
+        const request = await axios.patch(`http://localhost:5000/jobs/${id}`, 
+                        { titulo: jobData.title, categoria:jobData.category, dataRegistro: jobData.date, horario: jobData.time})
                 
         if(request.status === 200) {
             console.log("Serviço atualizado com sucesso!")
@@ -74,7 +88,7 @@ export function JobProvider({ children }) {
   const deleteJobById = async (id) => {
     if(!id) return;
     try {
-      const request = await axios.delete(`http://localhost:5000/servicos/${id}`)
+      const request = await axios.delete(`http://localhost:5000/jobs/${id}`)
       toast.success("Serviço excluído com sucesso");
       
       return request.status
@@ -93,7 +107,8 @@ export function JobProvider({ children }) {
         updateStatusJob,
         fetchJobData,
         updateJobData,
-        deleteJobById
+        deleteJobById,
+        saveJob
       }}
     >
       {children}

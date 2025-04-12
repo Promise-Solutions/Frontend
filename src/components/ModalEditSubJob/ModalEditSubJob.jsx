@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useSubJobContext } from "../../context/SubJobContext";
 import { handleInputChange, changeSubJobInfo, deleteSubJob } from "./ModalEditSubJob.script";
-import ModalConfirmDelete from "../ModalConfirmDelete/ModalConfirmDelete";
+import ModalConfirmDelete from "../modalConfirmDelete/ModalConfirmDelete";
 
-const ModalEditSubJob = ({ subJobData, setModalEditSub, isEditingSubSob, setIsEditingSubJob }) => {
+const ModalEditSubJob = ({ subJobData, setIsEditingSubJob }) => {
   const { updateSubJobData, deleteSubJobById } = useSubJobContext();
   const [subJobsInfos, setSubJobsInfos] = useState(subJobData);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -20,14 +20,14 @@ const ModalEditSubJob = ({ subJobData, setModalEditSub, isEditingSubSob, setIsEd
           className="modal_edit_subjob_title outline-none caret-yellow-zero focus:border-b-pink-zero max-w-[18rem] border-b-1 border-b-[#A5A5A5] text-yellow-zero pb-1" 
           onChange={(e) => handleInputChange(e, setSubJobsInfos)}
           />
-        <div onClick={() => setIsEditingSubJob(false)} className="flex justify-center items-center text-[12px] text-red-zero cursor-pointer rounded-[100%] border-2 border-red-zero w-5 h-5 " >x</div>
+        <div onClick={() => setIsEditingSubJob(false)} className="flex justify-center items-center text-[11px] text-red-zero cursor-pointer rounded-[100%] border-2 border-red-zero w-5 h-5 " >X</div>
       </div>
       <div>
         <ul
           className={`py-1 text-[14px] list-none`}
         >
           <li className="flex jutify-start">
-            <b className="w-[23%]">Descrição </b><b>:</b> 
+            <b className="w-[27%]">Descrição </b><b>:</b> 
             <input 
               name="description"
               value={subJobsInfos.description} 
@@ -37,7 +37,7 @@ const ModalEditSubJob = ({ subJobData, setModalEditSub, isEditingSubSob, setIsEd
             />
           </li>
           <li className="flex jutify-start">
-            <b className="w-[23%]">Quantidade </b><b>:</b>
+            <b className="w-[27%]">Quantidade </b><b>:</b>
             <input 
               name="quantity"
               value={subJobsInfos.quantity} 
@@ -47,7 +47,7 @@ const ModalEditSubJob = ({ subJobData, setModalEditSub, isEditingSubSob, setIsEd
             />
           </li>
           <li className="flex jutify-start">
-            <b className="w-[23%]">Valor R$</b><b>:</b>
+            <b className="w-[27%]">Valor "R$"</b><b>:</b>
             <input
               name="value"
               value={subJobsInfos.value}
@@ -57,7 +57,7 @@ const ModalEditSubJob = ({ subJobData, setModalEditSub, isEditingSubSob, setIsEd
             />
           </li>
           <li className="flex jutify-start">
-            <b className="w-[23%]">Status </b><b>:</b> <b className={`${subJobsInfos.isDone ? "text-cyan-zero" : "text-yellow-zero"} pl-1`}>{subJobsInfos.isDone ? "Concluído" : "Pendente"}</b>
+            <b className="w-[27%]">Status </b><b>:</b> <b className={`${subJobsInfos.isDone ? "text-cyan-zero" : "text-yellow-zero"} pl-1`}>{subJobsInfos.isDone ? "Concluído" : "Pendente"}</b>
           </li>
           <li>
             <b>Horário de conclusão: </b> {subJobsInfos.isDone ? subJobsInfos.timeDone : "Não concluído"}

@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import CardHomePage from "../../components/CardHomePage/CardHomePage.jsx";
 import { useNavigate } from "react-router-dom";
-import CardHomePage from "../../components/homePage/CardHomePage.jsx";
-import { handleButtonClick } from "../../components/homePage/CardHome.script";
+import { handleButtonClick } from "../../components/CardHomePage/CardHome.script";
 import UserIcon from "../../assets/icon-empresa.png";
 import JobIcon from "../../assets/icon-servicos.png";
 import BarIcon from "../../assets/icon-bar.png";

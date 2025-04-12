@@ -27,7 +27,6 @@ export const useNavbarLogic = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    sessionStorage.clear();
     navigate("/login");
   };
 

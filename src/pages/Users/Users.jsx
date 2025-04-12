@@ -1,7 +1,7 @@
 // Importa os componentes necessários
 import UserFilter from "../../components/userFilter/UserFilter";
 import UserTypeFilter from "../../components/userTypeFilter/UserTypeFilter";
-import RegisterUserButton from "../../components/RegisterUserButton/RegisterUserButton";
+import RegisterButton from "../../components/RegisterButton/RegisterButton";
 import { registerRedirect, renderUsers } from "./Users.script";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -86,8 +86,9 @@ const Users = () => {
                 onSearch={handleSearch} // Passa a função de busca
               />
               {/* Botão para cadastrar um novo usuário */}
-              <RegisterUserButton
+              <RegisterButton
                 id="register_button"
+                title="Cadastrar Usuário"
                 text="+"
                 onClick={() => registerRedirect(navigate)} // Pass navigate to registerRedirect
               />

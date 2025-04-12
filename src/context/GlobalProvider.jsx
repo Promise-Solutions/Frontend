@@ -7,9 +7,11 @@ function GlobalProvider({ children }) {
   return (
     <UserProvider>
     <JobProvider>
+    <SubJobProvider>
     <CommandProvider>
         {children}
     </CommandProvider>
+    </SubJobProvider>
     </JobProvider>
     </UserProvider>
   );

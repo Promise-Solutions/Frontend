@@ -6,7 +6,7 @@ export const handleInputChange = (e, setJobData) => {
 }
 
 export const renderSubJobs = async (findSubJobsByJobId) => {
-  const subJobsFound = await findSubJobsByJobId(sessionStorage.getItem("jobId"))
+  const subJobsFound = await findSubJobsByJobId(localStorage.getItem("jobId"))
   console.log("subserviços encontrados: ", subJobsFound)
   const cardsSubJob = subJobsFound.map((subJob) => {
     console.log("Renderizando subserviços:", {
@@ -30,12 +30,16 @@ export const renderSubJobs = async (findSubJobsByJobId) => {
     return cardsSubJob;
   }
 
+  export const registerRedirect = (navigate) => {
+    navigate("/register/subjobs")
+  }
+
 export const saveChanges = async (updateJobData, job) => {
     const jobId = job.id
     const jobData = {
       title: job.titulo,
       category: job.categoria,
-      date: job.data,
+      date: job.dataRegistro,
       time: job.horario
     }
     
@@ -43,7 +47,7 @@ export const saveChanges = async (updateJobData, job) => {
   }
   
   export const deleteJob = async (deleteJobById, id, navigate) => {
-    const status = await deleteJobById(id)
+    await deleteJobById(id)
         
     navigate("/jobs");
 }

@@ -4,9 +4,11 @@ import { toast } from "react-hot-toast";
 import Input from "../../components/form/Input";
 import SubmitButton from "../../components/Form/SubmitButton";
 import { ToastStyle } from "../../components/toastStyle/ToastStyle";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", senha: "" });
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -36,8 +38,8 @@ const Login = () => {
 
         if (usuarioEncontrado) {
           localStorage.setItem("token", usuarioEncontrado.token);
-          localStorage.setItem("id", usuarioEncontrado.id)
-          window.location.href = "/home";
+          localStorage.setItem("userId", usuarioEncontrado.id)
+          navigate("/home");
         } else {
           throw new Error("Credenciais inválidas.");
         }

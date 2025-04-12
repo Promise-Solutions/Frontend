@@ -9,6 +9,16 @@
       "ativo": false,
       "token": "byKxDWdCOz8Yi5tq",
       "id": 2
+    },
+    {
+      "nome": "MENSAL",
+      "cpf": "123.123.243-32",
+      "email": "mensal@mensal.com",
+      "contato": "(13) 13131-3131",
+      "tipoCliente": "MENSAL",
+      "ativo": true,
+      "token": "byKxDWdCOz8Yi5tq",
+      "id": 3
     }
   ],
   "funcionarios": [
@@ -79,45 +89,39 @@
       "id": 1,
       "titulo": "Serviço1",
       "categoria": "Ensaio Musical",
-      "data": "12/02/2025",
-      "horario": "20:00",
-      
-      "dataRegistro": "2023-10-01",
-      "dataFinalizacao": "2023-10-02",
-      "fkCliente": 1,
-      "concluido": true,
+      "fkCliente": 2,
+      "concluido": false,
+      "tipoServico": "Avulso"
     },
     {
       "id": 3,
-      "titulo": "Serviço2",
+      "titulo": "Serviço2.1",
       "categoria": "Ensaio Musical",
-      "data": "12/02/2025",
-      "horario": "20:00",
-      
-      "dataRegistro": "2023-10-01",
-      "dataFinalizacao": "2023-10-02",
-      "fkCliente": 1,
-      "concluido": false
+      "fkCliente": 2,
+      "concluido": false,
+      "tipoServico": "Avulso"
     },
     {
       "id": 4,
-      "titulo": "Atendimento4",
+      "titulo": "Servico4.1",
       "categoria": "Ensaio Musical",
-      "horario": "20:00",
-      "dataRegistro": "2023-10-01",
-      "dataFinalizacao": "2023-10-02",
-      "fkCliente": 1,
-      "concluido": false
+      "fkCliente": 2,
+      "concluido": false,
+      "tipoServico": "Avulso"
     },
     {
       "id": 5,
-      "titulo": "Atendimento5",
+      "titulo": "Servico5",
       "categoria": "Ensaio Musical",
-      "horario": "20:00",
-      "dataRegistro": "2023-10-01",
-      "dataFinalizacao": "2023-10-02",
-      "fkCliente": 1,
-      "concluido": false
+      "fkCliente": 2,
+      "concluido": false,
+      "tipoServico": "Avulso"
+    },
+    {
+      "titulo": "teste",
+      "categoria": "ENSAIO MUSICAL",
+      "tipoServico": "AVULSO",
+      "id": 6
     }
   ],
   "subservicos": [
@@ -127,11 +131,11 @@
       "descricao": "Descricao1",
       "quantidade": 2,
       "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": "05/04/2025 - 23:37",
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": "07/04/2025 - 16:30",
       "concluido": true,
-      "idServico": 1
+      "fkServico": 1
     },
     {
       "id": 2,
@@ -139,11 +143,11 @@
       "descricao": "Descricao2",
       "quantidade": 2,
       "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": "05/04/2025 - 23:45",
-      "concluido": true,
-      "idServico": 1
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
+      "concluido": false,
+      "fkServico": 1
     },
     {
       "id": 3,
@@ -151,11 +155,11 @@
       "descricao": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto",
       "quantidade": 2,
       "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
       "concluido": false,
-      "idServico": 2
+      "fkServico": 2
     },
     {
       "id": 5,
@@ -163,11 +167,11 @@
       "descricao": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto",
       "quantidade": 2,
       "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
       "concluido": false,
-      "idServico": 4
+      "fkServico": 4
     },
     {
       "id": 7,
@@ -175,11 +179,11 @@
       "descricao": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto ",
       "quantidade": 2,
       "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
       "concluido": false,
-      "idServico": 4
+      "fkServico": 4
     },
     {
       "id": 8,
@@ -187,11 +191,11 @@
       "descricao": "Descricao",
       "quantidade": 1,
       "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
       "concluido": false,
-      "idServico": 4
+      "fkServico": 4
     },
     {
       "id": 9,
@@ -199,11 +203,11 @@
       "descricao": "Descricao",
       "quantidade": 1,
       "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
       "concluido": false,
-      "idServico": 4
+      "fkServico": 4
     },
     {
       "id": 10,
@@ -211,11 +215,11 @@
       "descricao": "Descricao",
       "quantidade": 1,
       "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
-      "concluido": false,
-      "idServico": 4
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": "07/04/2025 - 16:11",
+      "concluido": true,
+      "fkServico": 4
     },
     {
       "id": 11,
@@ -223,11 +227,11 @@
       "descricao": "Descricao",
       "quantidade": 1,
       "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
-      "concluido": false,
-      "idServico": 4
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": "07/04/2025 - 16:34",
+      "concluido": true,
+      "fkServico": 4
     },
     {
       "id": 13,
@@ -235,11 +239,11 @@
       "descricao": "Descricao",
       "quantidade": 1,
       "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": null,
       "concluido": false,
-      "idServico": 4
+      "fkServico": 4
     },
     {
       "id": 19,
@@ -247,12 +251,22 @@
       "descricao": "Descricao",
       "quantidade": 1,
       "valor": 10,
-      "data": "12/02/2025",
-      "horarioInicio": "10:00",
-      "horarioConclusao": null,
+      "dataPrevista": "12/02/2025",
+      "dataHoraInicio": "10:00",
+      "dataHoraConclusao": "07/04/2025 - 16:28",
+      "concluido": true,
+      "fkServico": 5
+    },
+    {
+      "titulo": "123",
+      "descricao": "12321",
+      "valor": 123,
+      "dataPrevista": "2025-04-23",
+      "dataHorarioInicio": "11/04/2025 - 21:01",
+      "dataHoraConclusao": null,
       "concluido": false,
-      "idServico": 5
-      
+      "fkServico": "5",
+      "id": 25
     }
   ],
   "commands": [
@@ -311,15 +325,6 @@
       "id": "1743948850158",
       "status": "pendente",
       "start_date": "2025-04-06T14:14:10.158Z"
-    },
-    {
-      "title": "",
-      "description": "",
-      "deadline": "",
-      "responsible": "",
-      "id": "1743948855462",
-      "status": "fazendo",
-      "start_date": "2025-04-06T14:14:15.462Z"
     }
   ]
 }

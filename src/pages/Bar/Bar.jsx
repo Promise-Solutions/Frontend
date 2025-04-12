@@ -1,7 +1,7 @@
 // Importa os componentes necessários
 import UserFilter from "../../components/userFilter/UserFilter";
 import BarTypeFilter from "../../components/barTypeFilter/BarTypeFilter";
-import RegisterUserButton from "../../components/RegisterUserButton/RegisterUserButton";
+import RegisterButton from "../../components/RegisterButton/RegisterButton";
 import PrimaryButton from "../../components/primaryButton/PrimaryButton";
 import ModalOpenCommand from "../../components/modalOpenCommand/ModalOpenCommand"; // Import the new modal
 import { renderCommands, stockRedirect } from "./Bar.script";
@@ -82,8 +82,9 @@ const Bar = () => {
                 onSearch={handleSearch} // Passa a função de busca
               />
               {/* Botão para abrir o modal de nova comanda */}
-              <RegisterUserButton
+              <RegisterButton
                 id="register_button"
+                title="Registrar Comanda"
                 text="+"
                 onClick={() => setIsOpenCommandModalOpen(true)} // Open the modal
               />

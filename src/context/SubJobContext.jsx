@@ -7,11 +7,24 @@ const SubJobContext = createContext({});
 export function SubJobProvider({ children }) {
     const [currentDate, setCurrentDate] = useState();
 
+    const saveSubJob = async (formData) => {
+        try {
+           const request = await axios.post(`http://localhost:5000/subservicos`, formData)
+    
+           if (request.status == 201) {
+            toast.success("Subservico Cadastrado!")
+          } 
+        } catch(error) {
+            toast.error("Erro ao cadastrar subservico!")
+            console.error("Erro ao cadastrar subservico!", error)
+        }
+      }
+
     const findSubJobsByJobId = async (jobId) => {
         if(!jobId) return;
 
         try {
-            const response = await axios.get(`http://localhost:5000/subservicos?idServico=${jobId}`)
+            const response = await axios.get(`http://localhost:5000/subservicos?fkServico=${jobId}`)
             const subJobData = response.data 
             console.log("subserviços", subJobData)
             return subJobData;
@@ -89,7 +102,8 @@ export function SubJobProvider({ children }) {
                 findSubJobsByJobId,
                 updateStatus,
                 updateSubJobData,
-                deleteSubJobById
+                deleteSubJobById,
+                saveSubJob
             }}
         
         >

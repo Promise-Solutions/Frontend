@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useJobContext } from "../../context/JobContext";
 import { useSubJobContext } from "../../context/SubJobContext";
-import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
-import DeleteButton from "../../components/DeleteButton/DeleteButton";
-import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete";
-import { renderSubJobs, handleInputChange, saveChanges, deleteJob } from "./JobManagement.script";
-import Input from "../../components/Form/Input";
+import PrimaryButton from "../../components/primaryButton/PrimaryButton";
+import DeleteButton from "../../components/deleteButton/DeleteButton";
+import ModalConfirmDelete from "../../components/modalConfirmDelete/ModalConfirmDelete";
+import { renderSubJobs, handleInputChange, saveChanges, deleteJob, registerRedirect } from "./JobManagement.script";
+import Input from "../../components/form/Input";
 import { useNavigate } from "react-router-dom";
+import RegisterButton from "../../components/RegisterButton/RegisterButton";
 
 const JobManagement = () => {
   const [subJobs, setSubJobs] = useState([]);
@@ -19,7 +20,7 @@ const JobManagement = () => {
 
   useEffect(() => {
     const loadJobData = async () => {
-      const jobId = sessionStorage.getItem("jobId");
+      const jobId = localStorage.getItem("jobId");
       const jobData = await fetchJobData(jobId);
       setJob(jobData);
       setJobData(jobData); 
@@ -28,14 +29,14 @@ const JobManagement = () => {
     };
 
     loadJobData();
-  },[])
 
+  },[])
     return (
         <div id="container-job-management" className="w-full h-100vh flex flex-col justify-between">
           {!isEditing ? (
             <section
               id="info_section"
-              className="mt-12 flex w-full justify-evenly"
+              className="mt-12 mx-16 flex justify-between"
             >
               <div className="flex flex-col text-[#ddd]">
                 <h1 className="text-[42px]">
@@ -47,13 +48,13 @@ const JobManagement = () => {
                     <b>Categoria: </b> {jobData?.categoria}
                   </li>
                   <li>
-                    <b>Data: </b> {jobData?.data}
+                    <b>Data: </b> {jobData?.dataRegistro}
                   </li>
                   <li>
                     <b>Horario: </b> {jobData?.horario}
                   </li>
                   <li>
-                    <b  >Status: </b> 
+                    <b>Status: </b> 
                       <span className={`${jobData?.concluido ? "text-cyan-zero" : "text-yellow-zero"}`}>
                           {jobData?.concluido ? "Concluído" : "Pendente"}
                       </span>    
@@ -69,7 +70,7 @@ const JobManagement = () => {
           )
           :
           (
-            <section id="job_edit_section" className="mt-12 flex px-[4em] w-full text-white justify-between">
+            <section id="job_edit_section" className="mt-12 flex w-full text-white justify-between">
               <div className="flex flex-col">
                 <h1 className="text-[42px]">
                   <b>Editar Informações</b>
@@ -98,8 +99,8 @@ const JobManagement = () => {
                     <Input
                       text="Data"
                       type="text"
-                      name="data"
-                      value={jobData.data}
+                      name="dataRegistro"
+                      value={jobData.dataRegistro}
                       handleOnChange={(e) => handleInputChange(e, setJobData)}
                       />
                   </li>
@@ -141,8 +142,16 @@ const JobManagement = () => {
               </div>
             </section>
           )}
+          <div className="self-end mr-15">
+            <RegisterButton
+              id="register_button"
+              title="Registrar subserviço"
+              text="+"
+              onClick={() => registerRedirect(navigate)} // Pass navigate to registerRedirect
+            />
+            </div>
           <section className="dropdown_section">
-            <div className="gap-4 border-t-1 border-[#d9d9d91F] flex flex-wrap justify-center items-start mt-12 max-h-[330px] py-[35px] mx-10 overflow-y-auto w-full h-auto">
+            <div className="gap-4 border-t-1 border-[#d9d9d91F] flex flex-wrap justify-center items-start mt-12 max-h-[330px] py-[35px] mx-5 overflow-y-auto w-full h-auto">
               {subJobs != null ? subJobs : <p className="text-center text-gray-400">Nenhum subserviço encontrado para esse serviço</p>}
             </div>
           </section>
