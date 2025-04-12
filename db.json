@@ -131,6 +131,14 @@
       "categoria": "ENSAIO MUSICAL",
       "tipoServico": "AVULSO",
       "id": 6
+    },
+    {
+      "titulo": "Teste Serviço",
+      "categoria": "ENSAIO MUSICAL",
+      "tipoServico": "MENSAL",
+      "fkCliente": null,
+      "concluido": false,
+      "id": 7
     }
   ],
   "subservicos": [
@@ -267,6 +275,17 @@
       "fkServico": 5
     },
     {
+      "titulo": "teste",
+      "descricao": "testeteste",
+      "valor": 2,
+      "dataPrevista": "2025-04-15",
+      "dataHorarioInicio": "11/04/2025 - 23:40",
+      "dataHoraConclusao": null,
+      "concluido": false,
+      "fkServico": "3",
+      "id": 26
+    },
+    {
       "titulo": "123",
       "descricao": "12321",
       "valor": 123,
@@ -276,6 +295,30 @@
       "concluido": false,
       "fkServico": "5",
       "id": 25
+    },
+    {
+      "titulo": "Teste SubServiço",
+      "descricao": "Teste SubServiçoTeste SubServiçoTeste SubServiçoTeste SubServiço",
+      "valor": 50,
+      "dataPrevista": "2025-04-12",
+      "dataHorarioInicio": "11/04/2025 - 23:42",
+      "dataHoraConclusao": null,
+      "concluido": true,
+      "fkServico": "7",
+      "id": 27,
+      "quantidade": 4,
+      "horarioConclusao": "11/04/2025 - 23:44"
+    },
+    {
+      "titulo": "ASKLPDJIKAOLD",
+      "descricao": "SLKDASKLD",
+      "valor": 123,
+      "dataPrevista": "2025-04-23",
+      "dataHorarioInicio": "11/04/2025 - 23:44",
+      "dataHoraConclusao": null,
+      "concluido": false,
+      "fkServico": "7",
+      "id": 28
     }
   ],
   "commands": [
@@ -332,7 +375,7 @@
       "deadline": "",
       "responsible": "",
       "id": "1743948850158",
-      "status": "pendente",
+      "status": "fazendo",
       "start_date": "2025-04-06T14:14:10.158Z"
     },
     {
