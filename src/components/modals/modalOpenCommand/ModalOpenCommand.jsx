@@ -3,6 +3,7 @@ import Select from "../../form/Select";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
 import CancelButton from "../modalConfirmDelete/cancelButton";
 import { showToast } from "../../toastStyle/ToastStyle";
+import { axiosProvider } from "../../../provider/apiProvider";
 
 const ModalOpenCommand = ({ isOpen, onClose }) => {
   const [clients, setClients] = useState([]);

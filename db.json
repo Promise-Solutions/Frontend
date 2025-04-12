@@ -1,7 +1,7 @@
 {
   "clientes": [
     {
-      "nome": "CLIENTE001",
+      "nome": "CLIENTE01",
       "cpf": "123.123.213-31",
       "email": "avulso@avulso.com",
       "contato": "(31) 31313-1313",
@@ -19,16 +19,6 @@
       "ativo": true,
       "token": "byKxDWdCOz8Yi5tq",
       "id": 3
-    },
-    {
-      "nome": "TESTE",
-      "cpf": "123.312.313-13",
-      "email": "teste@teste.com",
-      "contato": "(12) 34123-1231",
-      "tipoCliente": "AVULSO",
-      "ativo": true,
-      "token": "cNmMU0tFJ4W0kN0m",
-      "id": 4
     }
   ],
   "funcionarios": [
