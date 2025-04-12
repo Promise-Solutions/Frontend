@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { setupRegisterEvents } from "./Register.script.js";
 import Input from "../../components/form/Input";
 import SubmitButton from "../../components/Form/SubmitButton";
@@ -7,6 +8,7 @@ import SelectTypeUser from "../../components/Form/SelectTypeUser.jsx";
 import Select from "../../components/form/Select.jsx";
 
 function Register() {
+  const navigate = useNavigate(); // Get navigate function
   const [formData, setFormData] = useState({
     nome: "",
     cpf: "",
@@ -30,13 +32,13 @@ function Register() {
   const [selectedType, setSelectedType] = useState("CLIENTE"); // Default to "Cliente"
 
   useEffect(() => {
-    const cleanup = setupRegisterEvents();
+    const cleanup = setupRegisterEvents(navigate); // Pass navigate as a parameter
     return cleanup;
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
-    setupRegisterEvents(); // Reaplicar eventos e máscaras após alteração do formulário
-  }, [selectedType]);
+    setupRegisterEvents(navigate); // Pass navigate as a parameter
+  }, [selectedType, navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
