@@ -1,12 +1,14 @@
 import React from "react"
 import CardSubJob from "../../components/CardSubJob/CardSubJob"
+import toast from "react-hot-toast";
+import { ToastStyle } from "../../components/toastStyle/ToastStyle";
 export const handleInputChange = (e, setJobData) => {
   const { name, value } = e.target;
   setJobData(prev => ({ ...prev, [name]: value }));
 }
 
 export const renderSubJobs = async (findSubJobsByJobId) => {
-  const subJobsFound = await findSubJobsByJobId(localStorage.getItem("jobId"))
+  const subJobsFound = await findSubJobsByJobId(sessionStorage.getItem("jobId"))
   console.log("subserviços encontrados: ", subJobsFound)
   const cardsSubJob = subJobsFound.map((subJob) => {
     console.log("Renderizando subserviços:", {
@@ -35,15 +37,19 @@ export const renderSubJobs = async (findSubJobsByJobId) => {
   }
 
 export const saveChanges = async (updateJobData, job) => {
-    const jobId = job.id
-    const jobData = {
-      title: job.titulo,
-      category: job.categoria,
-      date: job.dataRegistro,
-      time: job.horario
-    }
+    if(job.id == null || job.titulo == "" || job.categoria == "" || job.tipoServico == "") {
+      toast.error("Campos vazios não são aceitos!", { style: ToastStyle })
+      return;
+    } 
+      const jobId = job.id
+      const jobData = {
+        title: job.titulo,
+        category: job.categoria,
+        jobType: job.tipoServico,
+      }
+      
+      await updateJobData(jobId, jobData)
     
-    await updateJobData(jobId, jobData)
   }
   
   export const deleteJob = async (deleteJobById, id, navigate) => {

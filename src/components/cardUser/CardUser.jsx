@@ -16,7 +16,7 @@ const CardUser = ({
       className={`card_user border-1 border-pink-zero text-[#d9d9d9] w-[17rem] h-auto rounded-[5px] bg-[#1E1E1E90] cursor-pointer hover:border-cyan-zero transition duration-100 ease-in-out`}
       onClick={onClick}
     >
-      <div className="flex justify-between items-center px-4 py-6 text-2xl font-bold">
+      <div className="flex justify-between items-center px-4 py-6 text-2xl font-bold" title="Acessar Usuário">
         <h1 className="card_user_name">{name}</h1>
         <div
           className={`w-2 h-2 rounded-[50%] ${

@@ -1,6 +1,7 @@
 import React from "react";
 import CardJobs from "../../components/CardJob/CardJob.jsx";
 import { useNavigate } from "react-router-dom"; 
+import SecondaryButton from "../../components/SecondaryButton/SecondaryButton.jsx";
 
 export const registerRedirect = (navigate) => {
   navigate("/register/jobs");
@@ -8,31 +9,39 @@ export const registerRedirect = (navigate) => {
 
 export const renderJobs = async (
   findJobs,
-  navigate
+  navigate,
+  findClientById
 ) => {
   const jobs = await findJobs();
 
-  return jobs.map((job) => {
-    console.log("Renderizando serviços:", {
+  const jobsReturned = await Promise.all(
+    jobs.map( async (job) => {
+    console.log("Buscando serviços:", {
       title: job.titulo,
       category: job.categoria
     });
 
-    console.log(job.dataRegistro)
-
-    return React.createElement(CardJobs, {
-      key: job.id,
-      id: job.id,
-      title: job.titulo,
-      category: job.categoria,
-      date: job.dataRegistro, 
-      time: job.horario,
-      isDone: job.concluido,
-      clientId: job.fkCliente,
-      onClick: () => {
-          localStorage.setItem("jobId", job.id);
-          navigate(`/jobs/${job.id}`); // redireciona sem recarregar a página
-      },
-    });
-  });
-};
+      const client = await findClientById(job.fkCliente);
+      
+      console.log("client", client)
+      
+      return {
+        key: job.id,
+        id: job.id,
+        title: job.titulo,
+        category: job.categoria,
+        jobType: job.tipoServico, 
+        client: client?.nome != undefined ? client.nome : "Desconhecido",
+        isDone: job.concluido ? "Concluído": "Pendente",
+        action: React.createElement(SecondaryButton, {
+          id: "access_button",
+          text: "Acessar",
+          onClick: (() => {
+            navigate(`/jobs/${job.id}`)
+            sessionStorage.setItem("jobId", job.id)
+          }) 
+        })
+    }}),
+  )
+  return jobsReturned;
+}

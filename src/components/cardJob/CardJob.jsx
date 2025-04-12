@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import ImageDone from "../../assets/icone-concluido.png";
 import { useJobContext } from "../../context/JobContext";
+import Table from "../tables/Table";
 
-const CardJob = React.memo(({ id, title, category, date, time, isDone, onClick }) => {
+
+const CardJob = React.memo(({ id, title, category, jobType, client, isDone, onClick }) => {
   // Usando apenas o estado local para controlar o status
   const [done, setDone] = useState(isDone);
   const { updateStatus } = useJobContext();
 
   return (
+    
     <div
       id={`job_${id}`}
       className={`card_job border-1 text-[#d9d9d9] w-3xs rounded-[5px] duration-100 pb-1 h-auto bg-[#1E1E1E90] ${
@@ -17,6 +20,10 @@ const CardJob = React.memo(({ id, title, category, date, time, isDone, onClick }
       <div className="flex pl-5 py-6 text-2xl font-bold items-center gap-[4px]">
         <h1 className="card_job_title">{title}</h1>
       </div>
+      <Table 
+        headers={tableHeader}
+        data={{id, title, category, jobType, client, isDone}}
+      />
       <div>
         <div
           className={`border-1 transition duration-100 ${

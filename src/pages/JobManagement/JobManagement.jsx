@@ -8,10 +8,11 @@ import { renderSubJobs, handleInputChange, saveChanges, deleteJob, registerRedir
 import Input from "../../components/form/Input";
 import { useNavigate } from "react-router-dom";
 import RegisterButton from "../../components/RegisterButton/RegisterButton";
+import Select from "../../components/form/Select";
 
 const JobManagement = () => {
   const [subJobs, setSubJobs] = useState([]);
-  const { setJob, fetchJobData, updateJobData, deleteJobById } = useJobContext();
+  const { job, setJob, fetchJobData, updateJobData, deleteJobById } = useJobContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { findSubJobsByJobId } = useSubJobContext();
@@ -20,7 +21,7 @@ const JobManagement = () => {
 
   useEffect(() => {
     const loadJobData = async () => {
-      const jobId = localStorage.getItem("jobId");
+      const jobId = sessionStorage.getItem("jobId");
       const jobData = await fetchJobData(jobId);
       setJob(jobData);
       setJobData(jobData); 
@@ -31,6 +32,18 @@ const JobManagement = () => {
     loadJobData();
 
   },[])
+
+  const categoryOptions = [
+    {id: "Ensaio Musical", name: "Ensaio Musical"},
+    {id: "Podcast", name: "Podcast"},
+    {id: "Estudio Fotografico", name: "Estúdio Fotográfico"}
+  ] 
+
+  const typeOptions = [
+    {id: "AVULSO", name: "Avulso"},
+    {id: "MENSAL", name: "Mensal"}
+  ]
+
     return (
         <div id="container-job-management" className="w-full h-100vh flex flex-col justify-between">
           {!isEditing ? (
@@ -48,10 +61,7 @@ const JobManagement = () => {
                     <b>Categoria: </b> {jobData?.categoria}
                   </li>
                   <li>
-                    <b>Data: </b> {jobData?.dataRegistro}
-                  </li>
-                  <li>
-                    <b>Horario: </b> {jobData?.horario}
+                    <b>Tipo de Serviço: </b> {jobData?.tipoServico}
                   </li>
                   <li>
                     <b>Status: </b> 
@@ -70,7 +80,7 @@ const JobManagement = () => {
           )
           :
           (
-            <section id="job_edit_section" className="mt-12 flex w-full text-white justify-between">
+            <section id="job_edit_section" className="mt-12 flex mx-16 text-white justify-between">
               <div className="flex flex-col">
                 <h1 className="text-[42px]">
                   <b>Editar Informações</b>
@@ -87,30 +97,21 @@ const JobManagement = () => {
                     />
                   </li>
                   <li>
-                    <Input
-                      text="Categoria"
-                      type="text"
-                      name="categoria"
-                      value={jobData.categoria}
-                      handleOnChange={(e) => handleInputChange(e, setJobData)}
-                    />
+                  <Select
+                    text="Categoria"
+                    name="categoria"
+                    options={categoryOptions}
+                    handleOnChange={handleInputChange}
+                    value={jobData.categoria}
+                  />
                   </li>
                   <li>
-                    <Input
-                      text="Data"
-                      type="text"
-                      name="dataRegistro"
-                      value={jobData.dataRegistro}
+                    <Select
+                      text="Tipo do serviço"
+                      name="tipoServico"
+                      options={typeOptions}
                       handleOnChange={(e) => handleInputChange(e, setJobData)}
-                      />
-                  </li>
-                  <li>
-                    <Input
-                      text="Horário"
-                      type="text"
-                      name="horario"
-                      value={jobData.horario}
-                      handleOnChange={(e) => handleInputChange(e, setJobData)}
+                      value={jobData.tipoServico}
                       />
                   </li>
                 </ul>
@@ -125,6 +126,8 @@ const JobManagement = () => {
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={() => deleteJob(deleteJobById, jobData.id, navigate)}
+                title={"Deletar Serviço"}
+                description={"Tem certeza de que deseja deletar este serviço?"}
               />
               </div>
               <div className="flex flex-col gap-5">
@@ -136,7 +139,10 @@ const JobManagement = () => {
                 <PrimaryButton
                   id="button_cancel_job_edit"
                   text="Cancelar Alterações"
-                  onClick={() => setIsEditing(!isEditing)}
+                  onClick={() => {
+                    setJobData(job)  
+                    setIsEditing(!isEditing)
+                  }}
                   className="!border-[#C5C5C5] !text-[#C5C5C5] hover:!border-cyan-zero hover:!text-cyan-zero"
                   />
               </div>

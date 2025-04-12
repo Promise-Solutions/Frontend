@@ -24,9 +24,13 @@ export function JobProvider({ children }) {
   const fetchJobData = async (jobId) => {
     if (!jobId) return;
 
+    console.log("jobId" + jobId)
+
     try {
       const response = await axios.get(`http://localhost:5000/jobs?id=${jobId}`);
       const jobData = response.data[0] || null;
+
+      console.log("jobData", jobData)
 
       if (jobData) {
         setJob(jobData);
@@ -54,7 +58,12 @@ export function JobProvider({ children }) {
 
   const updateStatusJob = async (idServico) => {
     try {
-        const response = await axios.get(`http://localhost:5000/subservicos?idServico=${idServico}`);
+        console.log(idServico)
+
+        const response = await axios.get(`http://localhost:5000/subservicos?fkServico=${idServico}`);
+
+        console.log(response.status)
+        console.log(response.data)
 
         const verifyAllDone = response.data.every(subJob => subJob.concluido);
         const request = await axios.patch(`http://localhost:5000/jobs/${idServico}`, {concluido: verifyAllDone})
@@ -74,7 +83,7 @@ export function JobProvider({ children }) {
 
     try {
         const request = await axios.patch(`http://localhost:5000/jobs/${id}`, 
-                        { titulo: jobData.title, categoria:jobData.category, dataRegistro: jobData.date, horario: jobData.time})
+                        { titulo: jobData.title, categoria:jobData.category, tipoServico: jobData.jobType})
                 
         if(request.status === 200) {
             console.log("Serviço atualizado com sucesso!")
