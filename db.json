@@ -339,17 +339,7 @@
       "id": 28
     }
   ],
-  "commands": [
-    {
-      "fkCliente": null,
-      "fkFuncionario": 1,
-      "dataHoraAbertura": "2025-04-06T00:51:36.815Z",
-      "status": "Aberta",
-      "desconto": "0.00",
-      "valorTotal": "0.00",
-      "id": 1
-    }
-  ],
+  "commands": [],
   "commandProduct": [],
   "products": [
     {
