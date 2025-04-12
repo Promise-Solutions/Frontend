@@ -45,10 +45,9 @@
     {
       "id": 3,
       "nome": "ARTUR",
-      "cpf": "123.123.131-22",
+      "cpf": "123.123.131-23",
       "email": "artur@artur.com",
       "contato": "(12) 31231-2312",
-      "telefone": "(12) 31231-2315",
       "senha": "12345678",
       "ativo": true,
       "token": "nTrLmmQdVN5xc6X2"
@@ -87,7 +86,17 @@
   "jobs": [
     {
       "id": 1,
-      "titulo": "Serviço1",
+      "titulo": "Atendimento1",
+      "categoria": "Ensaio Musical",
+      "horario": "20:00",
+      "dataRegistro": "2023-10-01",
+      "dataFinalizacao": "2023-10-02",
+      "fkCliente": 1,
+      "concluido": false
+    },
+    {
+      "id": 2,
+      "titulo": "Atendimento2",
       "categoria": "Ensaio Musical",
       "fkCliente": 2,
       "concluido": false,
@@ -314,7 +323,7 @@
       "deadline": "",
       "responsible": "5",
       "id": "1743946666265",
-      "status": "concluido",
+      "status": "pendente",
       "start_date": "2025-04-06T13:37:46.265Z"
     },
     {
