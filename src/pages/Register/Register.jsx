@@ -166,7 +166,7 @@ function Register() {
             />
           </section>
         )}
-        <SubmitButton text="Confirmar" />
+        <SubmitButton id="btn_form" text="Confirmar" />
       </form>
     </main>
   );
