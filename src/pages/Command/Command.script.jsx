@@ -11,11 +11,7 @@ import ModalEditCommandProduct from "../../components/modalEditCommandProduct/Mo
 import ModalAddDiscount from "../../components/modalAddDiscount/ModalAddDiscount"; // Importa o novo modal
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
-import {
-  calcTotalWithDiscount,
-  calcProductsTotal,
-  calcProductTotal,
-} from "../../hooks/Calc"; // Importa funções de cálculo
+import { calcTotalWithDiscount, calcProductsTotal } from "../../hooks/Calc"; // Importa funções de cálculo
 import { useNavigate } from "react-router-dom";
 
 export const RenderCommandDetails = () => {
@@ -39,7 +35,7 @@ export const RenderCommandDetails = () => {
   const [clientName, setClientName] = useState(""); // Nome do cliente
   const [isDeleteCommandModalOpen, setIsDeleteCommandModalOpen] =
     useState(false); // Estado separado para deletar a comanda
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
 
   const formatDateTime = (dateTime) => {
     if (!dateTime) return "Ainda aberta";
@@ -474,7 +470,7 @@ export const RenderCommandDetails = () => {
       setCommand(null);
       setCommandId(null);
       localStorage.removeItem("commandId");
-      navigate("/bar");
+      navigate("/bar"); // Corrige o redirecionamento para uma rota válida
 
       showToast.success("Comanda e itens associados deletados com sucesso!");
     } catch (error) {

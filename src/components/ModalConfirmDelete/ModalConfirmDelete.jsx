@@ -1,7 +1,13 @@
 import DeleteButton from "../deleteButton/DeleteButton";
 import CancelButton from "./cancelButton";
 
-const ModalConfirmDelete = ({ isOpen, onClose, onConfirm, title, description }) => {
+const ModalConfirmDelete = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  description,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -10,16 +16,15 @@ const ModalConfirmDelete = ({ isOpen, onClose, onConfirm, title, description }) 
         <h2 className="text-xl font-bold mb-4">{title}</h2>
         <p className="mb-6">{description}</p>
         <div className="flex justify-end gap-4">
-          <CancelButton onClick={onClose} text="Cancelar"></CancelButton>
+          <CancelButton onClick={onClose} text="Cancelar" />
           <DeleteButton
             onClick={onConfirm}
             id="confirm-delete-button"
             text="Deletar"
-          ></DeleteButton>
+          />
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 };
 
