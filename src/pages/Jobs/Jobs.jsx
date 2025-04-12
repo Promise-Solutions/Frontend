@@ -6,23 +6,36 @@ import JobsFilter from "../../components/JobFilter/JobFilter"
 import { registerRedirect, renderJobs } from "./Jobs.script";
 import { useJobContext } from "../../context/JobContext";
 import RegisterButton from "../../components/RegisterButton/RegisterButton";
+import Table from "../../components/tables/Table";
+import { useUserContext } from "../../context/UserContext"; 
 
 // Representa a estrutura da página "Jobs", atualmente sem conteúdo
 const Jobs = () => {
-    const [jobsElements, setJobsElements] = useState([]); // Estado para armazenar os elementos renderizados
+  const [jobsElements, setJobsElements] = useState([]); // Estado para armazenar os elementos renderizados
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
-
+  const { findClientById } = useUserContext();
   const { findJobs } = useJobContext(); // Exportação do contexto
   const navigate = useNavigate(); //Navigate para navegatação, ele não atualiza a página
   
   const fetchAndRender = async () => {
       const elements = await renderJobs(
           findJobs,
-          navigate
+          navigate,
+          findClientById
       );
       console.log("elements", elements)
     setJobsElements(elements);
   };
+  
+  const tableHeader = [
+    { label: "ID", key: "id" },
+    { label: "Titulo", key: "title" },
+    { label: "Categoria", key: "category" },
+    { label: "Tipo do Serviço", key: "jobType" },
+    { label: "Cliente", key: "client"},
+    { label: "Status", key: "isDone" },
+    { label: "Ação", key: "action"}
+  ] 
 
   useEffect(() => {
     fetchAndRender();
@@ -33,7 +46,7 @@ const Jobs = () => {
   };
 
   const filteredJobsElements = jobsElements.filter((element) => {
-    const title = element.props.title.toUpperCase(); // Garante que o nome seja comparado em maiúsculas
+    const title = element.title.toUpperCase(); // Garante que o nome seja comparado em maiúsculas
     return title.includes(searchTerm); // Filtra os elementos com base no termo de busca
   });
 
@@ -56,15 +69,19 @@ const Jobs = () => {
                 id="register_button"
                 title="Cadastrar Serviço"
                 text="+"
-                // onClick={() => registerRedirect(navigate)} // Pass navigate to registerRedirect
+                onClick={() => registerRedirect(navigate)} // Pass navigate to registerRedirect
               />
             </div>
           </div>
 
         {/* Filtros por tipo de usuário e exibição de cards */}
-        <div className="flex justify-center flex-col">
+        <div className="flex justify-center mt-4 flex-col">
+          <Table 
+            headers={tableHeader}
+            data={filteredJobsElements}
+          />
           {/* Atualiza o filtro */}
-          {/* Espaço reservado para os cards de usuários */}
+          {/* Espaço reservado para os cards de usuários
           <div className="gap-6 flex flex-wrap justify-center mt-6 max-h-[600px] overflow-y-auto w-full h-auto">
             {filteredJobsElements.length > 0 ? (
               filteredJobsElements
@@ -73,7 +90,7 @@ const Jobs = () => {
                 Nenhum serviço encontrado.
               </p>
             )}
-          </div>
+          </div> */}
         </div>
       </section>
     </div>

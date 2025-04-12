@@ -4,10 +4,39 @@ import Input from "../../components/form/Input";
 import Select from "../../components/form/Select";
 import SubmitButton from "../../components/Form/SubmitButton";
 import { useJobContext } from "../../context/JobContext";
-import { useState } from "react";
-import { registrarServico } from "./JobRegister.script";
+import { useEffect, useState } from "react";
+import { registrarServico, createClientsOptions } from "./JobRegister.script";
+import { useUserContext } from "../../context/UserContext";
 
 const JobRegister = () => {
+    const [clientOptions, setClientOptions] = useState([]);
+    const { findClients } = useUserContext();
+
+    useEffect(() => {
+      renderClientOptions();
+    },[])
+
+    const renderClientOptions = async () => {
+      const clients = await createClientsOptions(findClients);
+       
+       
+       console.log("clients: ", clients)
+
+       const nameClients = clients.map(client => {
+          const clientObj = {
+            id: client.id,
+            name: client.nome
+          }
+          console.log("client obj", clientObj)
+
+          return clientObj
+       });
+
+       console.log("name clients: ", nameClients)
+
+       setClientOptions(nameClients);
+    }
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -24,13 +53,14 @@ const JobRegister = () => {
       const [formData, setFormData] = useState({
           titulo: "",
           categoria: "",
-          tipoServico: ""
+          tipoServico: "",
+          fkCliente: null
         });
 
       const categoryOptions = [
-        {id: "ENSAIO MUSICAL", name: "Ensaio Musical"},
-        {id: "PODCAST", name: "Podcast"},
-        {id: "ESTUDIO MUSICAL", name: "Estúdio Musical"}
+        {id: "Ensaio Musical", name: "Ensaio Musical"},
+        {id: "Podcast", name: "Podcast"},
+        {id: "Estudio Fotografico", name: "Estúdio Fotográfico"}
       ] 
 
       const typeOptions = [
@@ -77,6 +107,13 @@ const JobRegister = () => {
                   options={typeOptions}
                   handleOnChange={handleInputChange}
                   value={formData.tipoServico}
+                />
+                <Select
+                  text="Cliente Desejado"
+                  name="fkCliente"
+                  options={clientOptions}
+                  handleOnChange={handleInputChange}
+                  value={formData.fkCliente}
                 />
               
               </section>

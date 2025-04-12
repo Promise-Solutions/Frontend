@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
+import toast from "react-hot-toast/headless";
 
 const UserContext = createContext({});
 
@@ -56,6 +57,36 @@ export function UserProvider({ children }) {
     }
   }
 
+
+  async function findClients() {
+    try {
+      const endpoint = "http://localhost:5000/clientes"
+      const response = await axios.get(endpoint);
+      if(response.status === 200) {
+        return response.data;
+      } 
+    } catch (error) {
+      console.error("Erro ao buscar usuários:", error);
+      return [];
+    }
+  }
+
+  const findClientById = async (ClientId) => {
+    if(!ClientId) return;
+
+    try {
+        const response = await axios.get(`http://localhost:5000/clientes?id=${ClientId}`)
+        
+        if(response.status == 200) {
+          const clientData = response.data  
+          console.log("cliente", clientData)
+          return clientData[0];
+        }
+    } catch(error) {
+        console.error("Erro ao buscar client:", error)
+    };
+}
+
   return (
     <UserContext.Provider
       value={{
@@ -66,6 +97,8 @@ export function UserProvider({ children }) {
         isClient,
         setIsClient,
         findUsers,
+        findClients,
+        findClientById
       }}
     >
       {children}

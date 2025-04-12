@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext.jsx";
 import PrimaryButton from "../../components/primaryButton/PrimaryButton.jsx";
 import { useJobContext } from "../../context/JobContext.jsx";
-import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
+import { showToast, ToastStyle } from "../../components/toastStyle/ToastStyle.jsx";
 import Select from "../../components/form/Select.jsx";
 import Input from "../../components/form/Input.jsx";
 import axios from "axios";
@@ -16,14 +16,17 @@ import CardJob from "../../components/CardJob/CardJob.jsx";
 import toast from "react-hot-toast"; // Add this import
 import { useNavigate } from "react-router-dom";
 import RegisterButton from "../../components/RegisterButton/RegisterButton.jsx";
+import SecondaryButton from "../../components/SecondaryButton/SecondaryButton.jsx";
+import Table from "../../components/tables/Table.jsx";
 
 export const RenderInfos = () => {
   const { user, setUser, userId, isClient } = useUserContext(); // Contexto do usuário
   const [isEditing, setIsEditing] = useState(false); // Controla o modo de edição
-  const [filteredJobs, setFilteredJobs] = useState();
+  const [filteredJobs, setFilteredJobs] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla o modal de exclusão
   const [filterScreen, setFilterScreen] = useState("1"); // Controla o filtro de tela
   const { findJobs } = useJobContext(); 
+  const [tableData, setTableData] = useState({});
   const navigate = useNavigate();
 
   // Função para deletar usuário
@@ -60,6 +63,8 @@ export const RenderInfos = () => {
     }
   };
 
+  
+
   const renderJobs = async () => {
     const jobsRendered = await createFilteredJobs(findJobs)
     console.log("render jobs", jobsRendered)
@@ -67,6 +72,15 @@ export const RenderInfos = () => {
     setFilteredJobs(jobsRendered);
 
   }
+
+  const tableHeader = [
+    { label: "ID", key: "id" },
+    { label: "Titulo", key: "title" },
+    { label: "Categoria", key: "category" },
+    { label: "Tipo do Serviço", key: "jobType" },
+    { label: "Status", key: "isDone" },
+    { label: "Ação", key: "action"}
+  ] 
 
   const registerRedirect = (navigate) => {
     navigate("/register/jobs")
@@ -78,32 +92,47 @@ export const RenderInfos = () => {
     const jobs = await findJobs();
     console.log("jobs", jobs)
   
-    return jobs.map((job) => {
+    return jobs.filter((job) => {
       console.log("Renderizando serviços:", {
         title: job.titulo,
         category: job.categoria,
       });
-  
-      return job.fkCliente == userId ? React.createElement(CardJob, {
-        key: job.id,
-        id: job.id,
-        title: job.titulo,
-        category: job.categoria,
-        date: job.dataRegistro,
-        time: job.horario,
-        isDone: job.concluido,
-        userId: job.fkCliente,
-        onClick: () => {
-          localStorage.setItem("jobId", job.id);
-          navigate(`/jobs/${job.id}`); // redireciona sem recarregar a página
-      },
-      }): null;
+    return job.fkCliente == userId
     });
   };
 
   useEffect(() => {
     renderJobs();
   },[])
+
+  useEffect(() => {
+    const dataFiltered = filteredJobs.map((job) => {
+
+      const mensagemConcluido = job.concluido ? "Concluído": "Pendente"
+
+      console.log(mensagemConcluido)
+
+      console.log("jobID: " + job.id)
+
+      return {
+        id: job.id,
+        title: job.titulo,
+        category: job.categoria,
+        jobType: job.tipoServico,
+        isDone: mensagemConcluido,
+        action: React.createElement(SecondaryButton, {
+          id: "access_button",
+          text: "Acessar",
+          onClick: (() => {
+            navigate(`/jobs/${job.id}`)
+            sessionStorage.setItem("jobId", job.id)
+          }) 
+        })
+      }
+    })
+
+    setTableData(dataFiltered)
+  },[filteredJobs])
 
   function Edit() {
     const [formData, setFormData] = useState({
@@ -363,9 +392,10 @@ export const RenderInfos = () => {
                       onClick={() => registerRedirect(navigate)} 
                       />
                   </div>
-                    <div className="gap-6 flex justify-center mt-12 max-h-[600px] overflow-y-auto w-full h-auto ">
-                  {filteredJobs != null ? filteredJobs : <p className="text-center text-gray-400">Aqui ficam os serviços do usuário.</p>}
-                    </div>
+                  <Table 
+                    headers={tableHeader}
+                    data={tableData}
+                  />
                   </section>}
                   />
                 </div>

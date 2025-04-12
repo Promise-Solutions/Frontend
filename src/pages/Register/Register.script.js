@@ -226,6 +226,8 @@ export function setupRegisterEvents() {
       endpoint = "funcionarios";
     }
 
+    console.log("registrar")
+
     try {
       const res = await axios.post(
         `http://localhost:5000/${endpoint}`,
