@@ -116,10 +116,10 @@ const JobManagement = () => {
                   </li>
                 </ul>
               <div className="flex mt-10">
-                <DeleteButton
-                  id="delete_button"
-                  text="Deletar Serviço"
-                  onClick={() => setIsDeleteModalOpen(true)}
+              <PrimaryButton
+                id="button_confirm_job_edit"
+                text="Salvar Alterações"
+                onClick={() => saveChanges(updateJobData, jobData)}
                 />
               </div>
               <ModalConfirmDelete
@@ -131,11 +131,11 @@ const JobManagement = () => {
               />
               </div>
               <div className="flex flex-col gap-5">
-                <PrimaryButton
-                  id="button_confirm_job_edit"
-                  text="Salvar Alterações"
-                  onClick={() => saveChanges(updateJobData, jobData)}
-                  />
+                <DeleteButton
+                  id="delete_button"
+                  text="Deletar Serviço"
+                  onClick={() => setIsDeleteModalOpen(true)}
+                />
                 <PrimaryButton
                   id="button_cancel_job_edit"
                   text="Cancelar Alterações"

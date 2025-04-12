@@ -1,10 +1,10 @@
 import { useState } from "react";
-import axios from "axios"; // Import axios for API calls
 import CancelButton from "../modalConfirmDelete/cancelButton";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
 import DeleteButton from "../../buttons/deleteButton/DeleteButton";
 import Input from "../../form/Input";
 import Select from "../../form/Select";
+import { axiosProvider } from '../../../provider/apiProvider'
 
 const ModalEditTask = ({
   task,
@@ -28,8 +28,8 @@ const ModalEditTask = ({
 
   const handleEdit = async () => {
     try {
-      const response = await axios.patch(
-        `http://localhost:5000/tasks/${task.id}`,
+      const response = await axiosProvider.patch(
+        `/tasks/${task.id}`,
         formData
       );
       onEdit(task.id, response.data); // Update the task in the parent component

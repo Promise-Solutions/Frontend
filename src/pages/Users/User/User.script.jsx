@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useUserContext } from "../../../context/UserContext.jsx";
+import { useUserContext } from "../../../context/UserContext.jsx"
 import PrimaryButton from "../../../components/buttons/primaryButton/PrimaryButton.jsx";
-import { useJobContext } from "../../../context/JobContext.jsx";
+import { useJobContext } from "../../../context/JobContext.jsx"
 import { showToast, ToastStyle } from "../../../components/toastStyle/ToastStyle.jsx";
 import Select from "../../../components/form/Select.jsx";
 import Input from "../../../components/form/Input.jsx";
@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import RegisterButton from "../../../components/buttons/registerButton/RegisterButton.jsx";
 import SecondaryButton from "../../../components/buttons/secondaryButton/SecondaryButton.jsx";
 import Table from "../../../components/tables/Table.jsx";
+import { axiosProvider } from "../../../provider/apiProvider"
 
 export const RenderInfos = () => {
   const { user, setUser, userId, isClient } = useUserContext(); // Contexto do usuário
@@ -33,8 +34,8 @@ export const RenderInfos = () => {
   const handleDeleteUser = async () => {
     try {
       // Check for open commands
-      const commandsEndpoint = `http://localhost:5000/commands`;
-      const { data: commands } = await axios.get(commandsEndpoint);
+      const commandsEndpoint = `/commands`;
+      const { data: commands } = await axiosProvider.get(commandsEndpoint);
       const hasOpenCommand = commands.some(
         (command) =>
           (isClient
@@ -51,9 +52,9 @@ export const RenderInfos = () => {
 
       // Proceed with deletion
       const endpoint = isClient
-        ? `http://localhost:5000/clientes/${userId}`
-        : `http://localhost:5000/funcionarios/${userId}`;
-      await axios.delete(endpoint);
+        ? `/clientes/${userId}`
+        : `/funcionarios/${userId}`;
+      await axiosProvider.delete(endpoint);
       showToast.success("Usuário deletado com sucesso!");
       navigate("/users");
     } catch (error) {
@@ -62,8 +63,6 @@ export const RenderInfos = () => {
       setIsDeleteModalOpen(false);
     }
   };
-
-  
 
   const renderJobs = async () => {
     const jobsRendered = await createFilteredJobs(findJobs)
@@ -200,9 +199,9 @@ export const RenderInfos = () => {
             if (!isClient) delete updatedFormData.tipoCliente;
 
             const endpoint = isClient
-              ? `http://localhost:5000/clientes/${userId}`
-              : `http://localhost:5000/funcionarios/${userId}`;
-            await axios.patch(endpoint, updatedFormData);
+              ? `/clientes/${userId}`
+              : `/funcionarios/${userId}`;
+            await axiosProvider.patch(endpoint, updatedFormData);
 
             setUser({ ...user, ...updatedFormData });
             setIsEditing(false);
@@ -307,13 +306,25 @@ export const RenderInfos = () => {
               text="Salvar Alterações"
               onClick={handleSaveChanges}
             />
+
           </div>
         </div>
-        <DeleteButton
-          id="delete_button"
-          text="Deletar Usuário"
-          onClick={() => setIsDeleteModalOpen(true)}
-        />
+        <div className="flex flex-col gap-5">
+          <DeleteButton
+            id="delete_button"
+            text="Deletar Usuário"
+            onClick={() => setIsDeleteModalOpen(true)}
+            />
+          
+          <PrimaryButton
+            id="button_cancel_job_edit"
+            text="Cancelar Alterações"
+            onClick={() => {
+              setIsEditing(!isEditing)
+            }}
+            className="!border-[#C5C5C5] !text-[#C5C5C5] hover:!border-cyan-zero hover:!text-cyan-zero"
+            />
+          </div>
 
         <ModalConfirmDelete
           isOpen={isDeleteModalOpen}

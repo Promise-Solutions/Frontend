@@ -6,6 +6,7 @@ import StockTable from "../../components/tables/stockTable";
 import ModalAddProduct from "../../components/modals/modalAddProduct/ModalAddProduct.jsx";
 import ModalEditProduct from "../../components/modals/modalEditProduct/ModalEditProduct.jsx";
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
+import { axiosProvider } from "../../provider/apiProvider.js";
 
 const Stock = () => {
   const [products, setProducts] = useState([]);
@@ -26,7 +27,7 @@ const Stock = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/products");
+      const response = await axiosProvider.get("/products");
       setProducts(response.data);
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
@@ -40,8 +41,8 @@ const Stock = () => {
         qtdProduto: parseInt(newProduct.qtdProduto),
         valorUnitario: parseFloat(newProduct.valorUnitario).toFixed(2),
       };
-      const response = await axios.post(
-        "http://localhost:5000/products",
+      const response = await axiosProvider.post(
+        "/products",
         productToAdd
       );
       setProducts((prevProducts) => [...prevProducts, response.data]);
@@ -64,8 +65,8 @@ const Stock = () => {
         qtdProduto: parseInt(updatedProduct.qtdProduto),
         valorUnitario: parseFloat(updatedProduct.valorUnitario).toFixed(2),
       };
-      await axios.patch(
-        `http://localhost:5000/products/${editingProduct.id}`,
+      await axiosProvider.patch(
+        `/products/${editingProduct.id}`,
         productToUpdate
       );
       setProducts((prevProducts) =>
@@ -87,8 +88,8 @@ const Stock = () => {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(
-        `http://localhost:5000/products/${productToDelete.id}`
+      await axiosProvider.delete(
+        `/products/${productToDelete.id}`
       );
       setProducts((prevProducts) =>
         prevProducts.filter((product) => product.id !== productToDelete.id)

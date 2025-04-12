@@ -6,6 +6,7 @@ import TaskColumn from "../../components/tasks/TaskColumn";
 import ModalAddTask from "../../components/modals/modalAddTask/ModalAddTask";
 import ModalEditTask from "../../components/modals/modalEditTask/ModalEditTask";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
+import { axiosProvider } from "../../provider/apiProvider";
 
 const statuses = ["pendente", "fazendo", "concluido"];
 
@@ -20,8 +21,8 @@ const Tasks = () => {
     const fetchTasksAndEmployees = async () => {
       try {
         const [tasksResponse, employeesResponse] = await Promise.all([
-          axios.get("http://localhost:5000/tasks"),
-          axios.get("http://localhost:5000/funcionarios"),
+          axiosProvider.get("/tasks"),
+          axiosProvider.get("/funcionarios"),
         ]);
 
         const employeesMap = employeesResponse.data.reduce((map, emp) => {

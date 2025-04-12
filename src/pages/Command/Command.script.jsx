@@ -13,6 +13,7 @@ import { useCommandContext } from "../../context/CommandContext"; // Importa o B
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { calcTotalWithDiscount, calcProductsTotal } from "../../hooks/Calc"; // Importa funções de cálculo
 import { useNavigate } from "react-router-dom";
+import { axiosProvider } from "../../provider/apiProvider.js";
 
 export const RenderCommandDetails = () => {
   const { command, setCommand, commandId, setCommandId } = useCommandContext(); // Usa o BarContext para obter a comanda
@@ -63,8 +64,8 @@ export const RenderCommandDetails = () => {
     const fetchCommandDetails = async () => {
       try {
         // Buscar o funcionário pelo fkFuncionario
-        const employeeResponse = await axios.get(
-          `http://localhost:5000/funcionarios`
+        const employeeResponse = await axiosProvider.get(
+          `/funcionarios`
         );
         const employee = employeeResponse.data.find(
           (emp) => emp.id === command.fkFuncionario
@@ -75,8 +76,8 @@ export const RenderCommandDetails = () => {
 
         // Buscar o cliente pelo fkCliente
         if (command.fkCliente) {
-          const clientResponse = await axios.get(
-            `http://localhost:5000/clientes`
+          const clientResponse = await axiosProvider.get(
+            `/clientes`
           );
           const client = clientResponse.data.find(
             (cli) => cli.id === command.fkCliente
@@ -87,11 +88,11 @@ export const RenderCommandDetails = () => {
         }
 
         // Buscar produtos relacionados à comanda
-        const productsResponse = await axios.get(
-          `http://localhost:5000/commandProduct?fkComanda=${command.id}`
+        const productsResponse = await axiosProvider.get(
+          `/commandProduct?fkComanda=${command.id}`
         );
-        const allProductsResponse = await axios.get(
-          "http://localhost:5000/products"
+        const allProductsResponse = await axiosProvider.get(
+          "/products"
         );
 
         const enrichedProducts = productsResponse.data.map((product) => {
@@ -120,7 +121,7 @@ export const RenderCommandDetails = () => {
   useEffect(() => {
     const fetchAllProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/products");
+        const response = await axiosProvider.get("/products");
         setAllProducts(response.data);
       } catch (error) {
         console.error("Erro ao buscar todos os produtos:", error);
@@ -189,15 +190,15 @@ export const RenderCommandDetails = () => {
       };
 
       // Add the product to the command
-      const response = await axios.post(
-        "http://localhost:5000/commandProduct",
+      const response = await axiosProvider.post(
+        "/commandProduct",
         productToAdd
       );
 
       // Update the stock of the product in the database
       const updatedStock = newProduct.estoque - newProduct.qtdProduto;
-      await axios.patch(
-        `http://localhost:5000/products/${newProduct.idProduto}`,
+      await axiosProvider.patch(
+        `/products/${newProduct.idProduto}`,
         {
           qtdProduto: updatedStock,
         }
@@ -209,7 +210,7 @@ export const RenderCommandDetails = () => {
 
       // Recalculate the total value
       const newTotalValue = recalculateTotalValue(updatedProducts);
-      await axios.patch(`http://localhost:5000/commands/${command.id}`, {
+      await axiosProvider.patch(`/commands/${command.id}`, {
         valorTotal: newTotalValue.toFixed(2),
       });
       setCommand((prevCommand) => ({
@@ -257,14 +258,14 @@ export const RenderCommandDetails = () => {
         allProducts.find((product) => product.id === productToDelete.fkProduto)
           .qtdProduto + productToDelete.qtdProduto;
 
-      await axios.patch(
-        `http://localhost:5000/products/${productToDelete.fkProduto}`,
+      await axiosProvider.patch(
+        `/products/${productToDelete.fkProduto}`,
         { qtdProduto: updatedStock }
       );
 
       // Remove the product from the command
-      await axios.delete(
-        `http://localhost:5000/commandProduct/${productToDelete.id}`
+      await axiosProvider.delete(
+        `/commandProduct/${productToDelete.id}`
       );
 
       // Update local state
@@ -275,7 +276,7 @@ export const RenderCommandDetails = () => {
 
       // Recalculate the total value
       const newTotalValue = recalculateTotalValue(updatedProducts);
-      await axios.patch(`http://localhost:5000/commands/${command.id}`, {
+      await axiosProvider.patch(`/commands/${command.id}`, {
         valorTotal: newTotalValue.toFixed(2),
       });
       setCommand((prevCommand) => ({
@@ -325,8 +326,8 @@ export const RenderCommandDetails = () => {
         allProducts.find((product) => product.id === originalProduct.idProduto)
           .qtdProduto + originalProduct.qtdProduto;
 
-      await axios.patch(
-        `http://localhost:5000/products/${originalProduct.idProduto}`,
+      await axiosProvider.patch(
+        `/products/${originalProduct.idProduto}`,
         { qtdProduto: restoredStock }
       );
 
@@ -339,8 +340,8 @@ export const RenderCommandDetails = () => {
 
       const updatedStock = selectedProduct.qtdProduto - quantityDifference;
 
-      await axios.patch(
-        `http://localhost:5000/products/${updatedProduct.idProduto}`,
+      await axiosProvider.patch(
+        `/products/${updatedProduct.idProduto}`,
         { qtdProduto: updatedStock }
       );
 
@@ -354,8 +355,8 @@ export const RenderCommandDetails = () => {
         valorUnitario: parseFloat(selectedProduct.valorUnitario).toFixed(2),
       };
 
-      await axios.patch(
-        `http://localhost:5000/commandProduct/${editingCommandProduct.id}`,
+      await axiosProvider.patch(
+        `/commandProduct/${editingCommandProduct.id}`,
         productToUpdate
       );
 
@@ -367,7 +368,7 @@ export const RenderCommandDetails = () => {
 
       // Recalculate the total value
       const newTotalValue = recalculateTotalValue(updatedProducts);
-      await axios.patch(`http://localhost:5000/commands/${command.id}`, {
+      await axiosProvider.patch(`/commands/${command.id}`, {
         valorTotal: newTotalValue.toFixed(2),
       });
       setCommand((prevCommand) => ({
@@ -407,7 +408,7 @@ export const RenderCommandDetails = () => {
       // Lógica para reabrir a comanda
       const totalValue = calcProductsTotal(products); // Usa a função de cálculo
 
-      await axios.patch(`http://localhost:5000/commands/${command.id}`, {
+      await axiosProvider.patch(`/commands/${command.id}`, {
         status: "Aberta",
         dataHoraFechamento: null,
         desconto: "0.00", // Zera o desconto
@@ -430,7 +431,7 @@ export const RenderCommandDetails = () => {
     const totalValue = calcProductsTotal(products); // Usa a função de cálculo
     const discountedValue = calcTotalWithDiscount(totalValue, discount); // Usa a lógica atualizada
 
-    await axios.patch(`http://localhost:5000/commands/${command.id}`, {
+    await axiosProvider.patch(`/commands/${command.id}`, {
       status: "Fechada",
       dataHoraFechamento: new Date().toISOString(),
       desconto: discount.toFixed(2),
@@ -451,20 +452,20 @@ export const RenderCommandDetails = () => {
   const handleDeleteCommand = async () => {
     try {
       // Fetch all items associated with the command
-      const commandProductsResponse = await axios.get(
-        `http://localhost:5000/commandProduct?fkComanda=${command.id}`
+      const commandProductsResponse = await axiosProvider.get(
+        `/commandProduct?fkComanda=${command.id}`
       );
       const commandProducts = commandProductsResponse.data;
 
       // Delete each item in commandProduct associated with the command
       for (const product of commandProducts) {
-        await axios.delete(
-          `http://localhost:5000/commandProduct/${product.id}`
+        await axiosProvider.delete(
+          `/commandProduct/${product.id}`
         );
       }
 
       // Delete the command itself
-      await axios.delete(`http://localhost:5000/commands/${command.id}`);
+      await axiosProvider.delete(`/commands/${command.id}`);
 
       // Clear the command context and redirect
       setCommand(null);

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 import Input from "../../components/form/Input";
 import SubmitButton from "../../components/form/SubmitButton";
 import { ToastStyle } from "../../components/toastStyle/ToastStyle";
 import { useNavigate } from "react-router-dom";
+import { axiosProvider } from "../../provider/apiProvider";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", senha: "" });
@@ -29,7 +29,7 @@ const Login = () => {
     }
 
     toast.promise(
-      axios.get("http://localhost:5000/funcionarios").then((response) => {
+      axiosProvider.get("/funcionarios").then((response) => {
         const usuarios = response.data;
         const usuarioEncontrado = usuarios.find(
           (usuario) =>

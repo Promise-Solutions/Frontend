@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import CardCommand from "../../components/cards/cardCommand/CardCommand.jsx";
+import { axiosProvider } from "../../provider/apiProvider.js";
 
 export const registerRedirect = (navigate) => {
   navigate("/register"); // Use navigate passed as an argument
@@ -19,16 +20,16 @@ export const renderCommands = async (
   try {
     const commands = await findCommands(filterType);
 
-    const commandProductsResponse = await axios.get(
-      "http://localhost:5000/commandProduct"
+    const commandProductsResponse = await axiosProvider.get(
+      "/commandProduct"
     );
     const commandProducts = commandProductsResponse.data;
 
-    const clientsResponse = await axios.get("http://localhost:5000/clientes");
+    const clientsResponse = await axiosProvider.get("/clientes");
     const clients = clientsResponse.data;
 
-    const employeesResponse = await axios.get(
-      "http://localhost:5000/funcionarios"
+    const employeesResponse = await axiosProvider.get(
+      "/funcionarios"
     );
     const employees = employeesResponse.data;
 

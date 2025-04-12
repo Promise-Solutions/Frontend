@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Select from "../../form/Select";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
 import CancelButton from "../modalConfirmDelete/cancelButton";
-import axios from "axios";
 import { showToast } from "../../toastStyle/ToastStyle";
 
 const ModalOpenCommand = ({ isOpen, onClose }) => {
@@ -15,14 +14,14 @@ const ModalOpenCommand = ({ isOpen, onClose }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const clientsResponse = await axios.get(
-          "http://localhost:5000/clientes"
+        const clientsResponse = await axiosProvider.get(
+          "/clientes"
         );
-        const employeesResponse = await axios.get(
-          "http://localhost:5000/funcionarios"
+        const employeesResponse = await axiosProvider.get(
+          "/funcionarios"
         );
-        const commandsResponse = await axios.get(
-          "http://localhost:5000/commands?status=Aberta"
+        const commandsResponse = await axiosProvider.get(
+          "/commands?status=Aberta"
         );
 
         setClients(clientsResponse.data);
@@ -87,7 +86,7 @@ const ModalOpenCommand = ({ isOpen, onClose }) => {
         valorTotal: "0.00",
       };
 
-      await axios.post("http://localhost:5000/commands", newCommand);
+      await axiosProvider.post("/commands", newCommand);
       showToast.success("Comanda aberta com sucesso!");
       onClose(); // Close the modal
     } catch (error) {

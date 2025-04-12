@@ -228,8 +228,8 @@ export function setupRegisterEvents(navigate) {
     console.log("registrar")
 
     try {
-      const res = await axios.post(
-        `http://localhost:5000/${endpoint}`,
+      const res = await axiosProvider.post(
+        `/${endpoint}`,
         novoUsuario
       );
       if (res.status === 201) {
