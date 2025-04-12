@@ -6,7 +6,7 @@ import {
 } from "./Navbar.script.jsx";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo-branco-bg-sonoro.png";
-import LogoutButton from "../LogoutButton/LogoutButton.jsx";
+import LogoutButton from "../buttons/logoutButton/LogoutButton.jsx";
 import { Menu, X } from "lucide-react"; // Ícones do menu
 
 const Navbar = () => {

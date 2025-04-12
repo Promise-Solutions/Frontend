@@ -1,9 +1,9 @@
 // Importa os componentes necessários
-import UserFilter from "../../components/userFilter/UserFilter";
-import BarTypeFilter from "../../components/barTypeFilter/BarTypeFilter";
-import RegisterButton from "../../components/RegisterButton/RegisterButton";
-import PrimaryButton from "../../components/primaryButton/PrimaryButton";
-import ModalOpenCommand from "../../components/modalOpenCommand/ModalOpenCommand"; // Import the new modal
+import UserFilter from "../../components/filters/userFilter/UserFilter";
+import BarTypeFilter from "../../components/filters/barTypeFilter/BarTypeFilter";
+import RegisterButton from "../../components/buttons/registerButton/RegisterButton";
+import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
+import ModalOpenCommand from "../../components/modals/modalOpenCommand/ModalOpenCommand"; // Import the new modal
 import { renderCommands, stockRedirect } from "./Bar.script";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";

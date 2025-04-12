@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from "react"
-import axios from "axios"
 import toast from "react-hot-toast";
+import { axiosProvider } from "../provider/apiProvider";
 
 const SubJobContext = createContext({});
 
@@ -9,7 +9,7 @@ export function SubJobProvider({ children }) {
 
     const saveSubJob = async (formData) => {
         try {
-           const request = await axios.post(`http://localhost:5000/subservicos`, formData)
+           const request = await axiosProvider.post(`/subservicos`, formData)
     
            if (request.status == 201) {
             toast.success("Subservico Cadastrado!")
@@ -24,7 +24,7 @@ export function SubJobProvider({ children }) {
         if(!jobId) return;
 
         try {
-            const response = await axios.get(`http://localhost:5000/subservicos?fkServico=${jobId}`)
+            const response = await axiosProvider.get(`/subservicos?fkServico=${jobId}`)
             const subJobData = response.data 
             console.log("subserviços", subJobData)
             return subJobData;
@@ -37,31 +37,39 @@ export function SubJobProvider({ children }) {
         if(!id) return;
 
         try {
-            const dataAtual = isDone ? new Date() : null
-            console.log("data atual: " + dataAtual)
-
-            let dataFormatada = null
-            if(dataAtual != null) {
-                const diaAtual = String(dataAtual.getDate()).padStart(2, '0');
-                const mesAtual = String(dataAtual.getMonth() + 1).padStart(2, '0');
-                const anoAtual = dataAtual.getFullYear();
-                const horaAtual = String(dataAtual.getHours()).padStart(2, '0');
-                const minutoAtual = String(dataAtual.getMinutes()).padStart(2, '0');
-                dataFormatada = `${diaAtual}/${mesAtual}/${anoAtual} - ${horaAtual}:${minutoAtual}`
-
-                console.log(dataFormatada)
-            }
-
+            const dataFormatada = getCurrentDate(isDone);
             setCurrentDate(dataFormatada)
-            const request = await axios.patch(`http://localhost:5000/subservicos/${id}`, { concluido: isDone, horarioConclusao : dataFormatada });
+
+            const request = await axiosProvider.patch(`/subservicos/${id}`, { concluido: isDone, horarioConclusao : dataFormatada });
             if (request.status === 200) {
                 console.log("Status atualizado com sucesso")
               }
         } catch(error) {
             toast.error("Erro ao atualizar o status do subserviço:");
             console.error("Erro ao atualizar o status do subserviço:", error);
-        } finally {
         }
+      }
+
+      const getCurrentDate = (isDone) => {
+        const dataAtual = isDone ? new Date() : null
+        console.log("data atual: " + dataAtual, isDone)
+
+        let dataFormatada = null
+        if(dataAtual != null) {
+            dataFormatada = formatCurrenteDate(dataAtual)
+            console.log(dataFormatada)
+        }
+        return dataFormatada
+      }
+
+      const formatCurrenteDate = (dataAtual) => {
+        const diaAtual = String(dataAtual.getDate()).padStart(2, '0');
+            const mesAtual = String(dataAtual.getMonth() + 1).padStart(2, '0');
+            const anoAtual = dataAtual.getFullYear();
+            const horaAtual = String(dataAtual.getHours()).padStart(2, '0');
+            const minutoAtual = String(dataAtual.getMinutes()).padStart(2, '0');
+            
+            return `${diaAtual}/${mesAtual}/${anoAtual} - ${horaAtual}:${minutoAtual}`
       }
 
     const updateSubJobData = async (subJobData) => {
@@ -69,7 +77,7 @@ export function SubJobProvider({ children }) {
         const id = subJobData.id;
 
         try {
-            const request = await axios.patch(`http://localhost:5000/subservicos/${id}`, { titulo: subJobData.title, descricao: subJobData.description, quantidade: subJobData.quantity, valor: subJobData.value})
+            const request = await axiosProvider.patch(`/subservicos/${id}`, { titulo: subJobData.title, descricao: subJobData.description, quantidade: subJobData.quantity, valor: subJobData.value})
         
             if(request.status === 200) {
                 console.log("Subserviço atualizado com sucesso!")
@@ -85,7 +93,7 @@ export function SubJobProvider({ children }) {
         if(!subJobId) return;
 
         try {
-            const request = await axios.delete(`http://localhost:5000/subservicos/${subJobId}`)
+            const request = await axiosProvider.delete(`/subservicos/${subJobId}`)
 
             console.log("Status da requisição: " + request.status)
         } catch (error) {

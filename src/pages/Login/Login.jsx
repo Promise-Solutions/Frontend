@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import Input from "../../components/form/Input";
-import SubmitButton from "../../components/Form/SubmitButton";
+import SubmitButton from "../../components/form/SubmitButton";
 import { ToastStyle } from "../../components/toastStyle/ToastStyle";
 import { useNavigate } from "react-router-dom";
 

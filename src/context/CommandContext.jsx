@@ -1,6 +1,5 @@
 // context/CommandContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
 
 const CommandContext = createContext();
 
@@ -20,8 +19,8 @@ export const CommandProvider = ({ children }) => {
       if (!commandId) return;
 
       try {
-        const endpoint = `http://localhost:5000/commands?id=${commandId}`;
-        const response = await axios.get(endpoint);
+        const endpoint = `/commands?id=${commandId}`;
+        const response = await axiosProvider.get(endpoint);
         const commandData = response.data[0] || null;
 
         if (commandData) {
@@ -41,9 +40,9 @@ export const CommandProvider = ({ children }) => {
     try {
       const endpoint =
         filterType === "ABERTAS"
-          ? "http://localhost:5000/commands?status=Aberta"
-          : "http://localhost:5000/commands?status=Fechada";
-      const response = await axios.get(endpoint);
+          ? "/commands?status=Aberta"
+          : "/commands?status=Fechada";
+      const response = await axiosProvider.get(endpoint);
       return response.data;
     } catch (error) {
       console.error("Erro ao buscar comandas:", error);

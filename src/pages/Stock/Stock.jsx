@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import PrimaryButton from "../../components/primaryButton/PrimaryButton";
-import ModalConfirmDelete from "../../components/modalConfirmDelete/ModalConfirmDelete";
+import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton.jsx";
+import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete.jsx";
 import StockTable from "../../components/tables/stockTable";
-import ModalAddProduct from "../../components/modalAddProduct/ModalAddProduct";
-import ModalEditProduct from "../../components/modalEditProduct/ModalEditProduct";
+import ModalAddProduct from "../../components/modals/modalAddProduct/ModalAddProduct.jsx";
+import ModalEditProduct from "../../components/modals/modalEditProduct/ModalEditProduct.jsx";
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 
 const Stock = () => {

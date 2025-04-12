@@ -1,5 +1,5 @@
 import React from "react";
-import CardUser from "../../components/cardUser/CardUser.jsx";
+import CardUser from "../../components/cards/cardUser/CardUser.jsx";
 
 export const registerRedirect = (navigate) => {
   navigate("/register"); // Use navigate passed as an argument

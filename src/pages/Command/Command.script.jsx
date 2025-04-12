@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Input from "../../components/form/Input";
-import Select from "../../components/form/Select"; // Import Select component
-import ConfirmButton from "../../components/confirmButton/ConfirmButton"; // Import ConfirmButton component
-import PrimaryButton from "../../components/primaryButton/PrimaryButton";
-import DeleteButton from "../../components/deleteButton/DeleteButton";
+import Input from "../../components/form/Input.jsx";
+import Select from "../../components/form/Select.jsx"; // Import Select component
+import ConfirmButton from "../../components/buttons/confirmButton/ConfirmButton.jsx"; // Import ConfirmButton component
+import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton.jsx";
+import DeleteButton from "../../components/buttons/deleteButton/DeleteButton.jsx";
 import Table from "../../components/tables/Table";
-import ModalConfirmDelete from "../../components/modalConfirmDelete/ModalConfirmDelete";
-import ModalEditCommandProduct from "../../components/modalEditCommandProduct/ModalEditCommandProduct";
-import ModalAddDiscount from "../../components/modalAddDiscount/ModalAddDiscount"; // Importa o novo modal
+import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete.jsx";
+import ModalEditCommandProduct from "../../components/modals/modalEditCommandProduct/ModalEditCommandProduct.jsx";
+import ModalAddDiscount from "../../components/modals/modalAddDiscount/ModalAddDiscount.jsx"; // Importa o novo modal
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { calcTotalWithDiscount, calcProductsTotal } from "../../hooks/Calc"; // Importa funções de cálculo

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import CardHomePage from "../../components/CardHomePage/CardHomePage.jsx";
+import CardHomePage from "../../components/cards/cardHomePage/CardHomePage.jsx";
 import { useNavigate } from "react-router-dom";
-import { handleButtonClick } from "../../components/CardHomePage/CardHome.script";
+import { handleButtonClick } from "../../components/cards/cardHomePage/CardHome.script.js";
 import UserIcon from "../../assets/icon-empresa.png";
 import JobIcon from "../../assets/icon-servicos.png";
 import BarIcon from "../../assets/icon-bar.png";
@@ -9,7 +9,7 @@ import DashIcon from "../../assets/icon-dashboard.png";
 import RelatIcon from "../../assets/icon-report.png";
 import Logo from "../../assets/logo-branco-bg-sonoro.png";
 import { handleLogout } from "./Home.script.js";
-import LogoutButton from "../../components/LogoutButton/LogoutButton.jsx";
+import LogoutButton from "../../components/buttons/logoutButton/LogoutButton.jsx";
 
 // Componente funcional para a página Home
 // Representa a estrutura da página inicial

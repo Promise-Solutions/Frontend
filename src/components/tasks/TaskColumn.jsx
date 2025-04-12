@@ -2,7 +2,7 @@
 import { useDroppable } from "@dnd-kit/core";
 import { useState } from "react";
 import TaskCard from "./TaskCard";
-import ModalEditTask from "../modalEditTask/ModalEditTask";
+import ModalEditTask from "../modals/modalEditTask/ModalEditTask";
 
 const TaskColumn = ({
   status,

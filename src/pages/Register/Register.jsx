@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { setupRegisterEvents } from "./Register.script.js";
-import Input from "../../components/form/Input";
-import SubmitButton from "../../components/Form/SubmitButton";
+import Input from "../../components/form/Input.jsx";
+import SubmitButton from "../../components/form/SubmitButton.jsx";
 import logo from "../../assets/logo-branco-bg-sonoro.png";
-import SelectTypeUser from "../../components/Form/SelectTypeUser.jsx";
+import SelectTypeUser from "../../components/form/SelectTypeUser.jsx";
 import Select from "../../components/form/Select.jsx";
 
 function Register() {

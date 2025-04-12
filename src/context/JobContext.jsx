@@ -1,18 +1,17 @@
 import React, { createContext, useState, useContext } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
+import { axiosProvider } from "../provider/apiProvider";
 
 const JobContext = createContext({});
 
 export function JobProvider({ children }) {
   const [job, setJob] = useState(null)
 
-
   const saveJob = async (formData) => {
     try {
-      const request = await axios.post(`http://localhost:5000/jobs`, formData)
+      const request = await axiosProvider.post(`/jobs`, formData)
 
-      if (request.status == 200) {
+      if (request.status == 201) {
         toast.success("Servico Cadastrado!")
       }
     } catch(error) {
@@ -27,7 +26,7 @@ export function JobProvider({ children }) {
     console.log("jobId" + jobId)
 
     try {
-      const response = await axios.get(`http://localhost:5000/jobs?id=${jobId}`);
+      const response = await axiosProvider.get(`/jobs?id=${jobId}`)
       const jobData = response.data[0] || null;
 
       console.log("jobData", jobData)
@@ -46,7 +45,7 @@ export function JobProvider({ children }) {
 
   const findJobs = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/jobs");
+      const response = await axiosProvider.get("/jobs");
       const jobs = response.data;
       console.log(jobs)
       return jobs;
@@ -60,18 +59,14 @@ export function JobProvider({ children }) {
     try {
         console.log(idServico)
 
-        const response = await axios.get(`http://localhost:5000/subservicos?fkServico=${idServico}`);
-
-        console.log(response.status)
-        console.log(response.data)
+        const response = await axiosProvider.get(`/subservicos?fkServico=${idServico}`);
 
         const verifyAllDone = response.data.every(subJob => subJob.concluido);
-        const request = await axios.patch(`http://localhost:5000/jobs/${idServico}`, {concluido: verifyAllDone})
-        console.log("updateStatus")
+        const request = await axiosProvider.patch(`/jobs/${idServico}`, {concluido: verifyAllDone})
+
         if (request.status === 200) {
             console.log("Status atualizado com sucesso")
-          }
-      
+        }
     } catch(error) {
         toast.error("Erro ao atualizar o status do serviço:");
         console.error("Erro ao atualizar o status do serviço:", error);
@@ -82,7 +77,7 @@ export function JobProvider({ children }) {
     if(!id) return;
 
     try {
-        const request = await axios.patch(`http://localhost:5000/jobs/${id}`, 
+        const request = await axiosProvider.patch(`/jobs/${id}`, 
                         { titulo: jobData.title, categoria:jobData.category, tipoServico: jobData.jobType})
                 
         if(request.status === 200) {
@@ -97,7 +92,7 @@ export function JobProvider({ children }) {
   const deleteJobById = async (id) => {
     if(!id) return;
     try {
-      const request = await axios.delete(`http://localhost:5000/jobs/${id}`)
+      const request = await axiosProvider.delete(`/jobs/${id}`)
       toast.success("Serviço excluído com sucesso");
       
       return request.status

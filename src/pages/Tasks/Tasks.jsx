@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import TaskColumn from "../../components/tasks/TaskColumn";
-import ModalAddTask from "../../components/modalAddTask/ModalAddTask";
-import ModalEditTask from "../../components/modalEditTask/ModalEditTask";
-import PrimaryButton from "../../components/primaryButton/PrimaryButton";
+import ModalAddTask from "../../components/modals/modalAddTask/ModalAddTask";
+import ModalEditTask from "../../components/modals/modalEditTask/ModalEditTask";
+import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 
 const statuses = ["pendente", "fazendo", "concluido"];
 

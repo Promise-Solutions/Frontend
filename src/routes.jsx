@@ -13,13 +13,13 @@ import Reports from "./pages/Reports/Reports"; // Página de relatórios
 import Projects from "./pages/Projects/Projects"; // Página de projetos
 import Jobs from "./pages/Jobs/Jobs"; // Página de trabalhos
 import Home from "./pages/Home/Home"; // Página inicial
-import User from "./pages/User/User"; // Página de usuário
-import JobManagement from "./pages/JobManagement/JobManagement.jsx"
+import User from "./pages/Users/User/User.jsx"; // Página de usuário
+import JobManagement from "./pages/Jobs/JobManagement/JobManagement.jsx"
 import Stock from "./pages/Stock/Stock";
 import Command from "./pages/Command/Command"; // Página de comanda
 import Tasks from "./pages/Tasks/Tasks";
-import JobRegister from "./pages/JobRegister/JobRegister.jsx";
-import SubJobRegister from "./pages/SubJobRegister/SubJobRegister.jsx";
+import JobRegister from "./pages/Register/JobRegister/JobRegister.jsx";
+import SubJobRegister from "./pages/Register/SubJobRegister/SubJobRegister.jsx";
 
 function ProtectedRoute({ element }) {
   const isAuthenticated = !!localStorage.getItem("token"); // Verifica se o usuário está autenticado

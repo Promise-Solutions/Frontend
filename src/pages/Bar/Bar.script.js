@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import CardCommand from "../../components/cardCommand/CardCommand.jsx";
+import CardCommand from "../../components/cards/cardCommand/CardCommand.jsx";
 
 export const registerRedirect = (navigate) => {
   navigate("/register"); // Use navigate passed as an argument

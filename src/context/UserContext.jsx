@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import axios from "axios";
-import toast from "react-hot-toast/headless";
+import { axiosProvider } from "../provider/apiProvider";
 
 const UserContext = createContext({});
 
@@ -22,9 +21,9 @@ export function UserProvider({ children }) {
 
       try {
         const endpoint = isClient
-          ? `http://localhost:5000/clientes?id=${userId}`
-          : `http://localhost:5000/funcionarios?id=${userId}`;
-        const response = await axios.get(endpoint);
+          ? `/clientes?id=${userId}`
+          : `/funcionarios?id=${userId}`;
+        const response = await axiosProvider.get(endpoint);
         const userData = {
           ...response.data[0],
           contato: response.data[0]?.contato || "",
@@ -47,9 +46,9 @@ export function UserProvider({ children }) {
     try {
       const endpoint =
         filterType === "CLIENTE"
-          ? "http://localhost:5000/clientes"
-          : "http://localhost:5000/funcionarios";
-      const response = await axios.get(endpoint);
+          ? "/clientes"
+          : "/funcionarios";
+      const response = await axiosProvider.get(endpoint);
       return response.data;
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
@@ -60,8 +59,8 @@ export function UserProvider({ children }) {
 
   async function findClients() {
     try {
-      const endpoint = "http://localhost:5000/clientes"
-      const response = await axios.get(endpoint);
+      const endpoint = "/clientes"
+      const response = await axiosProvider.get(endpoint);
       if(response.status === 200) {
         return response.data;
       } 
@@ -75,7 +74,7 @@ export function UserProvider({ children }) {
     if(!ClientId) return;
 
     try {
-        const response = await axios.get(`http://localhost:5000/clientes?id=${ClientId}`)
+        const response = await axiosProvider.get(`/clientes?id=${ClientId}`)
         
         if(response.status == 200) {
           const clientData = response.data  

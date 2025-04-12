@@ -1,7 +1,5 @@
 import React from "react";
-import CardJobs from "../../components/CardJob/CardJob.jsx";
-import { useNavigate } from "react-router-dom"; 
-import SecondaryButton from "../../components/SecondaryButton/SecondaryButton.jsx";
+import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton.jsx";
 
 export const registerRedirect = (navigate) => {
   navigate("/register/jobs");
@@ -22,9 +20,6 @@ export const renderJobs = async (
     });
 
       const client = await findClientById(job.fkCliente);
-      
-      console.log("client", client)
-      
       return {
         key: job.id,
         id: job.id,
@@ -33,7 +28,7 @@ export const renderJobs = async (
         jobType: job.tipoServico, 
         client: client?.nome != undefined ? client.nome : "Desconhecido",
         isDone: job.concluido ? "Concluído": "Pendente",
-        action: React.createElement(SecondaryButton, {
+        action: React.createElement(PrimaryButton, {
           id: "access_button",
           text: "Acessar",
           onClick: (() => {

@@ -1,7 +1,7 @@
 // Importa os componentes necessários
-import UserFilter from "../../components/userFilter/UserFilter";
-import UserTypeFilter from "../../components/userTypeFilter/UserTypeFilter";
-import RegisterButton from "../../components/RegisterButton/RegisterButton";
+import UserFilter from "../../components/filters/userFilter/UserFilter";
+import UserTypeFilter from "../../components/filters/userTypeFilter/UserTypeFilter";
+import RegisterButton from "../../components/buttons/registerButton/RegisterButton";
 import { registerRedirect, renderUsers } from "./Users.script";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";

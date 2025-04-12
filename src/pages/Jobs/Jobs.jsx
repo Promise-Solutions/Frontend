@@ -1,13 +1,13 @@
 // Componente funcional para a página Jobs
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PrimaryButton from "../../components/primaryButton/PrimaryButton";
-import JobsFilter from "../../components/JobFilter/JobFilter"
+import JobsFilter from "../../components/filters/jobFilter/JobFilter"
 import { registerRedirect, renderJobs } from "./Jobs.script";
 import { useJobContext } from "../../context/JobContext";
-import RegisterButton from "../../components/RegisterButton/RegisterButton";
+import RegisterButton from "../../components/buttons/registerButton/RegisterButton";
 import Table from "../../components/tables/Table";
 import { useUserContext } from "../../context/UserContext"; 
+import { SyncLoader } from "react-spinners";
 
 // Representa a estrutura da página "Jobs", atualmente sem conteúdo
 const Jobs = () => {
@@ -15,6 +15,7 @@ const Jobs = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
   const { findClientById } = useUserContext();
   const { findJobs } = useJobContext(); // Exportação do contexto
+  const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate(); //Navigate para navegatação, ele não atualiza a página
   
   const fetchAndRender = async () => {
@@ -23,8 +24,11 @@ const Jobs = () => {
           navigate,
           findClientById
       );
+
+
       console.log("elements", elements)
     setJobsElements(elements);
+    setIsLoading(false);
   };
   
   const tableHeader = [
@@ -37,19 +41,19 @@ const Jobs = () => {
     { label: "Ação", key: "action"}
   ] 
 
-  useEffect(() => {
-    fetchAndRender();
-  }, []);
-
   const handleSearch = (term) => {
     setSearchTerm(term.toUpperCase()); // Atualiza o termo de busca
   };
-
+  
   const filteredJobsElements = jobsElements.filter((element) => {
     const title = element.title.toUpperCase(); // Garante que o nome seja comparado em maiúsculas
     return title.includes(searchTerm); // Filtra os elementos com base no termo de busca
   });
-
+  
+  useEffect(() => {
+    fetchAndRender();
+  }, []);
+  
   return (
     <div className="min-w-full min-h-full text-white">
       {/* Seção de cabeçalho com título e botão */}
@@ -73,24 +77,22 @@ const Jobs = () => {
               />
             </div>
           </div>
-
-        {/* Filtros por tipo de usuário e exibição de cards */}
         <div className="flex justify-center mt-4 flex-col">
-          <Table 
+          {isLoading ? 
+          ( 
+            <SyncLoader 
+              size={8}
+              loading={true}
+              color={"#02AEBA"}
+              speedMultiplier={2}
+            />
+          ):(
+            <Table 
             headers={tableHeader}
             data={filteredJobsElements}
-          />
-          {/* Atualiza o filtro */}
-          {/* Espaço reservado para os cards de usuários
-          <div className="gap-6 flex flex-wrap justify-center mt-6 max-h-[600px] overflow-y-auto w-full h-auto">
-            {filteredJobsElements.length > 0 ? (
-              filteredJobsElements
-            ) : (
-              <p className="text-center text-gray-400">
-                Nenhum serviço encontrado.
-              </p>
-            )}
-          </div> */}
+            />
+          )
+        }
         </div>
       </section>
     </div>
