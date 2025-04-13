@@ -1,123 +1,132 @@
-import React, { createContext, useState, useContext } from "react"
+import React, { createContext, useState, useContext } from "react";
 import toast from "react-hot-toast";
 import { axiosProvider } from "../provider/apiProvider";
 
 const SubJobContext = createContext({});
 
 export function SubJobProvider({ children }) {
-    const [currentDate, setCurrentDate] = useState();
+  const [currentDate, setCurrentDate] = useState();
 
-    const saveSubJob = async (formData) => {
-        try {
-           const request = await axiosProvider.post(`/subservicos`, formData)
-    
-           if (request.status == 201) {
-            toast.success("Subservico Cadastrado!")
-          } 
-        } catch(error) {
-            toast.error("Erro ao cadastrar subservico!")
-            console.error("Erro ao cadastrar subservico!", error)
-        }
+  const saveSubJob = async (formData) => {
+    try {
+      const request = await axiosProvider.post(`/sub-jobs`, formData);
+
+      if (request.status == 201) {
+        toast.success("Subservico Cadastrado!");
       }
-
-    const findSubJobsByJobId = async (jobId) => {
-        if(!jobId) return;
-
-        try {
-            const response = await axiosProvider.get(`/subservicos?fkServico=${jobId}`)
-            const subJobData = response.data 
-            console.log("subserviços", subJobData)
-            return subJobData;
-        } catch(error) {
-            console.error("Erro ao buscar subserviços:", error)
-        };
+    } catch (error) {
+      toast.error("Erro ao cadastrar subservico!");
+      console.error("Erro ao cadastrar subservico!", error);
     }
+  };
 
-    const updateStatus = async (id, isDone) => {
-        if(!id) return;
+  const findSubJobsByJobId = async (jobId) => {
+    if (!jobId) return;
 
-        try {
-            const dataFormatada = getCurrentDate(isDone);
-            setCurrentDate(dataFormatada)
-
-            const request = await axiosProvider.patch(`/subservicos/${id}`, { concluido: isDone, horarioConclusao : dataFormatada });
-            if (request.status === 200) {
-                console.log("Status atualizado com sucesso")
-              }
-        } catch(error) {
-            toast.error("Erro ao atualizar o status do subserviço:");
-            console.error("Erro ao atualizar o status do subserviço:", error);
-        }
-      }
-
-      const getCurrentDate = (isDone) => {
-        const dataAtual = isDone ? new Date() : null
-        console.log("data atual: " + dataAtual, isDone)
-
-        let dataFormatada = null
-        if(dataAtual != null) {
-            dataFormatada = formatCurrenteDate(dataAtual)
-            console.log(dataFormatada)
-        }
-        return dataFormatada
-      }
-
-      const formatCurrenteDate = (dataAtual) => {
-        const diaAtual = String(dataAtual.getDate()).padStart(2, '0');
-            const mesAtual = String(dataAtual.getMonth() + 1).padStart(2, '0');
-            const anoAtual = dataAtual.getFullYear();
-            const horaAtual = String(dataAtual.getHours()).padStart(2, '0');
-            const minutoAtual = String(dataAtual.getMinutes()).padStart(2, '0');
-            
-            return `${diaAtual}/${mesAtual}/${anoAtual} - ${horaAtual}:${minutoAtual}`
-      }
-
-    const updateSubJobData = async (subJobData) => {
-        if(subJobData == null) return;
-        const id = subJobData.id;
-
-        try {
-            const request = await axiosProvider.patch(`/subservicos/${id}`, { titulo: subJobData.title, descricao: subJobData.description, quantidade: subJobData.quantity, valor: subJobData.value})
-        
-            if(request.status === 200) {
-                console.log("Subserviço atualizado com sucesso!")
-                toast.success("Subserviço atualizado com sucesso!")
-            }
-        } catch(error) {
-            toast.error("Erro ao atualizar o subserviço")
-            console.error("Erro ao atualizar o subserviço", error)
-        }
+    try {
+      const response = await axiosProvider.get(`/sub-jobs?fkService=${jobId}`);
+      return response.data.map((subJob) => ({
+        ...subJob,
+        concluido: subJob.concluido ? "Concluído" : "Pendente",
+        valor: `R$ ${parseFloat(subJob.valor).toFixed(2)}`,
+      }));
+    } catch (error) {
+      console.error("Erro ao buscar subserviços:", error);
     }
+  };
 
-    const deleteSubJobById = async (subJobId) => {
-        if(!subJobId) return;
+  const updateStatus = async (id, isDone) => {
+    if (!id) return;
 
-        try {
-            const request = await axiosProvider.delete(`/subservicos/${subJobId}`)
+    try {
+      const dataFormatada = getCurrentDate(isDone);
+      setCurrentDate(dataFormatada);
 
-            console.log("Status da requisição: " + request.status)
-        } catch (error) {
-            toast.error("Erro ao excluir subserviço")
-            console.log("Erro ao excluir subserviço", error)
-        }
+      const request = await axiosProvider.patch(`/sub-jobs/${id}`, {
+        concluido: isDone,
+        horarioConclusao: dataFormatada,
+      });
+      if (request.status === 200) {
+        console.log("Status atualizado com sucesso");
+      }
+    } catch (error) {
+      toast.error("Erro ao atualizar o status do subserviço:");
+      console.error("Erro ao atualizar o status do subserviço:", error);
     }
+  };
 
-    return (
-        <SubJobContext.Provider 
-            value={{
-                currentDate,
-                setCurrentDate,
-                findSubJobsByJobId,
-                updateStatus,
-                updateSubJobData,
-                deleteSubJobById,
-                saveSubJob
-            }}
-        
-        >
-            {children}
-        </SubJobContext.Provider>
-    );
+  const getCurrentDate = (isDone) => {
+    const dataAtual = isDone ? new Date() : null;
+    console.log("data atual: " + dataAtual, isDone);
+
+    let dataFormatada = null;
+    if (dataAtual != null) {
+      dataFormatada = formatCurrenteDate(dataAtual);
+      console.log(dataFormatada);
+    }
+    return dataFormatada;
+  };
+
+  const formatCurrenteDate = (dataAtual) => {
+    const diaAtual = String(dataAtual.getDate()).padStart(2, "0");
+    const mesAtual = String(dataAtual.getMonth() + 1).padStart(2, "0");
+    const anoAtual = dataAtual.getFullYear();
+    const horaAtual = String(dataAtual.getHours()).padStart(2, "0");
+    const minutoAtual = String(dataAtual.getMinutes()).padStart(2, "0");
+
+    return `${diaAtual}/${mesAtual}/${anoAtual} - ${horaAtual}:${minutoAtual}`;
+  };
+
+  const updateSubJobData = async (subJobData) => {
+    if (subJobData == null) return;
+    const id = subJobData.id;
+
+    try {
+      const request = await axiosProvider.patch(`/sub-jobs/${id}`, {
+        titulo: subJobData.title,
+        descricao: subJobData.description,
+        quantidade: subJobData.quantity,
+        valor: subJobData.value,
+      });
+
+      if (request.status === 200) {
+        console.log("Subserviço atualizado com sucesso!");
+        toast.success("Subserviço atualizado com sucesso!");
+      }
+    } catch (error) {
+      toast.error("Erro ao atualizar o subserviço");
+      console.error("Erro ao atualizar o subserviço", error);
+    }
+  };
+
+  const deleteSubJobById = async (subJobId) => {
+    if (!subJobId) return;
+
+    try {
+      const request = await axiosProvider.delete(`/sub-jobs/${subJobId}`);
+
+      console.log("Status da requisição: " + request.status);
+    } catch (error) {
+      toast.error("Erro ao excluir subserviço");
+      console.log("Erro ao excluir subserviço", error);
+    }
+  };
+
+  return (
+    <SubJobContext.Provider
+      value={{
+        currentDate,
+        setCurrentDate,
+        findSubJobsByJobId,
+        updateStatus,
+        updateSubJobData,
+        deleteSubJobById,
+        saveSubJob,
+      }}
+    >
+      {children}
+    </SubJobContext.Provider>
+  );
 }
 
 export const useSubJobContext = () => useContext(SubJobContext);

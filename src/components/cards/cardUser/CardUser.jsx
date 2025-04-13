@@ -4,8 +4,8 @@ import React from "react";
 const CardUser = ({
   id,
   name,
-  tipoCliente,
-  ativo,
+  clientType,
+  active,
   email,
   contact,
   onClick,
@@ -20,16 +20,16 @@ const CardUser = ({
         <h1 className="card_user_name">{name}</h1>
         <div
           className={`w-2 h-2 rounded-[50%] ${
-            ativo ? "bg-green-zero" : "bg-red-zero"
+            active ? "bg-green-zero" : "bg-red-zero"
           }`}
         ></div>
       </div>
       <div>
         <div className="border-1 border-pink-zero hover:border-cyan-zero transition duration-100"></div>
         <ul className="px-8 py-6 text-[16px] list-disc marker:text-cyan-zero ease-in-out">
-          {tipoCliente && (
+          {clientType && (
             <li>
-              <b>Tipo:</b> <span>{tipoCliente}</span>
+              <b>Tipo:</b> <span>{clientType}</span>
             </li>
           )}
           <li>

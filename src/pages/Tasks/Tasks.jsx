@@ -8,7 +8,7 @@ import ModalEditTask from "../../components/modals/modalEditTask/ModalEditTask";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 import { axiosProvider } from "../../provider/apiProvider";
 
-const statuses = ["pendente", "fazendo", "concluido"];
+const statuses = ["Pendente", "Fazendo", "Concluído"];
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -22,17 +22,23 @@ const Tasks = () => {
       try {
         const [tasksResponse, employeesResponse] = await Promise.all([
           axiosProvider.get("/tasks"),
-          axiosProvider.get("/funcionarios"),
+          axiosProvider.get("/employees"),
         ]);
 
         const employeesMap = employeesResponse.data.reduce((map, emp) => {
-          map[emp.id] = emp.nome;
+          map[emp.id] = emp.name;
           return map;
         }, {});
 
         const tasksWithNames = tasksResponse.data.map((task) => ({
           ...task,
-          responsibleName: employeesMap[task.responsible] || "Não atribuído",
+          status:
+            task.status === "PENDING"
+              ? "Pendente"
+              : task.status === "FAZENDO"
+              ? "Fazendo"
+              : "Concluído",
+          responsibleName: employeesMap[task.fkEmployee] || "Não atribuído",
         }));
 
         setTasks(tasksWithNames);
@@ -98,9 +104,9 @@ const Tasks = () => {
                       className="flex flex-col items-center w-[320px]"
                     >
                       <h2 className="text-xl font-bold text-white mb-4 text-center bg-white/10 px-4 py-2 rounded-md w-full">
-                        {status === "pendente"
+                        {status === "Pendente"
                           ? "📌 Pendente"
-                          : status === "fazendo"
+                          : status === "Fazendo"
                           ? "⚙️ Fazendo"
                           : "✅ Concluído"}
                       </h2>

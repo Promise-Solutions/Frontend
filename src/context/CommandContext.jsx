@@ -6,7 +6,8 @@ const CommandContext = createContext();
 
 export const CommandProvider = ({ children }) => {
   const [command, setCommand] = useState(null);
-  const [commandId, setCommandId] = useState(() => localStorage.getItem("commandId")
+  const [commandId, setCommandId] = useState(() =>
+    localStorage.getItem("commandId")
   );
 
   // Sempre que commandId mudar, salvar na localStorage
@@ -20,12 +21,17 @@ export const CommandProvider = ({ children }) => {
       if (!commandId) return;
 
       try {
-        const endpoint = `/commands?id=${commandId}`;
+        const endpoint = `/commands/${commandId}`;
         const response = await axiosProvider.get(endpoint);
-        const commandData = response.data[0] || null;
+        const commandData = response.data || null;
 
         if (commandData) {
-          setCommand(commandData);
+          setCommand({
+            ...commandData,
+            status: commandData.status === "Aberta" ? "Aberta" : "Fechada",
+            desconto: `${commandData.desconto}%`,
+            valorTotal: `R$ ${parseFloat(commandData.valorTotal).toFixed(2)}`,
+          });
         } else {
           throw new Error("Comanda não encontrada.");
         }
@@ -44,7 +50,12 @@ export const CommandProvider = ({ children }) => {
           ? "/commands?status=Aberta"
           : "/commands?status=Fechada";
       const response = await axiosProvider.get(endpoint);
-      return response.data;
+      return response.data.map((command) => ({
+        ...command,
+        status: command.status === "Aberta" ? "Aberta" : "Fechada",
+        desconto: `${command.desconto}%`,
+        valorTotal: `R$ ${parseFloat(command.valorTotal).toFixed(2)}`,
+      }));
     } catch (error) {
       console.error("Erro ao buscar comandas:", error);
       return [];

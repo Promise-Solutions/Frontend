@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import { useUserContext } from "../../../context/UserContext.jsx"
+import { useUserContext } from "../../../context/UserContext.jsx";
 import PrimaryButton from "../../../components/buttons/primaryButton/PrimaryButton.jsx";
-import { useJobContext } from "../../../context/JobContext.jsx"
-import { showToast, ToastStyle } from "../../../components/toastStyle/ToastStyle.jsx";
+import { useJobContext } from "../../../context/JobContext.jsx";
+import {
+  showToast,
+  ToastStyle,
+} from "../../../components/toastStyle/ToastStyle.jsx";
 import Select from "../../../components/form/Select.jsx";
 import Input from "../../../components/form/Input.jsx";
-import axios from "axios";
 import DeleteButton from "../../../components/buttons/deleteButton/DeleteButton.jsx";
 import Dropdown from "../../../components/dropdown/Dropdown.jsx";
 import ModalConfirmDelete from "../../../components/modals/modalConfirmDelete/ModalConfirmDelete.jsx";
@@ -18,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 import RegisterButton from "../../../components/buttons/registerButton/RegisterButton.jsx";
 import SecondaryButton from "../../../components/buttons/secondaryButton/SecondaryButton.jsx";
 import Table from "../../../components/tables/Table.jsx";
-import { axiosProvider } from "../../../provider/apiProvider"
+import { axiosProvider } from "../../../provider/apiProvider";
 
 export const RenderInfos = () => {
   const { user, setUser, userId, isClient } = useUserContext(); // Contexto do usuário
@@ -26,7 +28,7 @@ export const RenderInfos = () => {
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla o modal de exclusão
   const [filterScreen, setFilterScreen] = useState("1"); // Controla o filtro de tela
-  const { findJobs } = useJobContext(); 
+  const { findJobs } = useJobContext();
   const [tableData, setTableData] = useState({});
   const navigate = useNavigate();
 
@@ -45,32 +47,32 @@ export const RenderInfos = () => {
 
       if (hasOpenCommand) {
         showToast.error(
-          "Não é possível deletar o usuário com uma comanda aberta."
+          "Não é possível deletar o usuário com uma comanda aberta.",
+          { style: ToastStyle }
         );
         return;
       }
 
       // Proceed with deletion
-      const endpoint = isClient
-        ? `/clientes/${userId}`
-        : `/funcionarios/${userId}`;
+      const endpoint = isClient ? `/clients/${userId}` : `/employees/${userId}`;
       await axiosProvider.delete(endpoint);
-      showToast.success("Usuário deletado com sucesso!");
+      showToast.success("Usuário deletado com sucesso!", { style: ToastStyle });
       navigate("/users");
     } catch (error) {
-      showToast.error("Erro ao deletar usuário. Tente novamente.");
+      showToast.error("Erro ao deletar usuário. Tente novamente.", {
+        style: ToastStyle,
+      });
     } finally {
       setIsDeleteModalOpen(false);
     }
   };
 
   const renderJobs = async () => {
-    const jobsRendered = await createFilteredJobs(findJobs)
-    console.log("render jobs", jobsRendered)
+    const jobsRendered = await createFilteredJobs(findJobs);
+    console.log("render jobs", jobsRendered);
 
     setFilteredJobs(jobsRendered);
-
-  }
+  };
 
   const tableHeader = [
     { label: "ID", key: "id" },
@@ -78,40 +80,37 @@ export const RenderInfos = () => {
     { label: "Categoria", key: "category" },
     { label: "Tipo do Serviço", key: "jobType" },
     { label: "Status", key: "isDone" },
-    { label: "Ação", key: "action"}
-  ] 
+    { label: "Ação", key: "action" },
+  ];
 
   const registerRedirect = (navigate) => {
-    navigate("/register/jobs")
-  }
+    navigate("/register/jobs");
+  };
 
-  const createFilteredJobs = async (
-    findJobs,
-  ) => {
+  const createFilteredJobs = async (findJobs) => {
     const jobs = await findJobs();
-    console.log("jobs", jobs)
-  
+    console.log("jobs", jobs);
+
     return jobs.filter((job) => {
       console.log("Renderizando serviços:", {
         title: job.titulo,
         category: job.categoria,
       });
-    return job.fkCliente == userId
+      return job.fkCliente == userId;
     });
   };
 
   useEffect(() => {
     renderJobs();
-  },[])
+  }, []);
 
   useEffect(() => {
     const dataFiltered = filteredJobs.map((job) => {
+      const mensagemConcluido = job.concluido ? "Concluído" : "Pendente";
 
-      const mensagemConcluido = job.concluido ? "Concluído": "Pendente"
+      console.log(mensagemConcluido);
 
-      console.log(mensagemConcluido)
-
-      console.log("jobID: " + job.id)
+      console.log("jobID: " + job.id);
 
       return {
         id: job.id,
@@ -122,31 +121,31 @@ export const RenderInfos = () => {
         action: React.createElement(PrimaryButton, {
           id: "access_button",
           text: "Acessar",
-          onClick: (() => {
-            navigate(`/jobs/${job.id}`)
-            sessionStorage.setItem("jobId", job.id)
-          }) 
-        })
-      }
-    })
+          onClick: () => {
+            navigate(`/jobs/${job.id}`);
+            sessionStorage.setItem("jobId", job.id);
+          },
+        }),
+      };
+    });
 
-    setTableData(dataFiltered)
-  },[filteredJobs])
+    setTableData(dataFiltered);
+  }, [filteredJobs]);
 
   function Edit() {
     const [formData, setFormData] = useState({
-      nome: user?.nome || "",
+      name: user?.name || "",
       cpf: user?.cpf || "",
       email: user?.email || "",
-      contato: user?.contato || "",
-      tipoCliente: user?.tipoCliente || "", // Garantir que o valor inicial seja do banco
-      ativo: user?.ativo !== undefined ? user.ativo : false, // Garantir que o valor inicial seja booleano
-      senha: "",
+      contact: user?.contact || "",
+      clientType: user?.clientType || "", // Garantir que o valor inicial seja do banco
+      active: user?.active, // Garantir que o valor inicial seja booleano
+      password: "",
     });
 
     const clienteOptions = [
-      { id: "AVULSO", name: "Avulso" },
-      { id: "MENSAL", name: "Mensal" },
+      { id: "SINGLE", name: "Avulso" },
+      { id: "MONTHLY", name: "Mensal" },
     ];
 
     const statusOptions = [
@@ -156,7 +155,7 @@ export const RenderInfos = () => {
 
     const handleInputChange = (e) => {
       const { name, value } = e.target;
-      const parsedValue = name === "ativo" ? value === "true" : value; // Convert "ativo" to boolean
+      const parsedValue = name === "active" ? value === "true" : value; // Convert "ativo" to boolean
       setFormData((prevData) => ({ ...prevData, [name]: parsedValue }));
     };
 
@@ -192,22 +191,23 @@ export const RenderInfos = () => {
           try {
             const updatedFormData = {
               ...formData,
-              nome: formData.nome.toUpperCase(),
+              name: formData.name.toUpperCase(),
+              contact: formData.contact, // Atualizado para 'contact'
             };
 
-            if (!formData.senha) delete updatedFormData.senha;
-            if (!isClient) delete updatedFormData.tipoCliente;
+            if (!formData.password) delete updatedFormData.password;
+            if (!isClient) delete updatedFormData.clientType;
 
             const endpoint = isClient
-              ? `/clientes/${userId}`
-              : `/funcionarios/${userId}`;
+              ? `/clients/${userId}`
+              : `/employees/${userId}`;
             await axiosProvider.patch(endpoint, updatedFormData);
 
             setUser({ ...user, ...updatedFormData });
             setIsEditing(false);
             showToast.success("Informações atualizadas com sucesso!");
           } catch (error) {
-            t.error("Erro ao salvar alterações:", error);
+            toast.error("Erro ao salvar alterações:", error);
             throw new Error("Erro ao salvar alterações. Tente novamente.");
           }
         })(),
@@ -235,10 +235,10 @@ export const RenderInfos = () => {
                 <li>
                   <Select
                     text="Tipo de Cliente"
-                    name="tipoCliente"
+                    name="clientType"
                     options={clienteOptions}
                     handleOnChange={handleInputChange}
-                    value={formData.tipoCliente} // Certificar-se de que o valor está correto
+                    value={formData.clientType} // Certificar-se de que o valor está correto
                   />
                 </li>
               </>
@@ -248,7 +248,7 @@ export const RenderInfos = () => {
                 text="Nome"
                 type="text"
                 name="nome"
-                value={formData.nome}
+                value={formData.name}
                 handleOnChange={handleInputChange}
               />
             </li>
@@ -275,7 +275,7 @@ export const RenderInfos = () => {
                 text="Contato"
                 type="text"
                 name="contato"
-                value={formData.contato}
+                value={formData.contact}
                 handleOnChange={handleMaskedInputChange}
               />
             </li>
@@ -285,7 +285,7 @@ export const RenderInfos = () => {
                   text="Senha"
                   type="text"
                   name="senha"
-                  value={formData.senha}
+                  value={formData.password}
                   handleOnChange={handleInputChange}
                 />
               </li>
@@ -293,10 +293,10 @@ export const RenderInfos = () => {
             <li>
               <Select
                 text="Status"
-                name="ativo"
+                name="active"
                 options={statusOptions}
                 handleOnChange={handleInputChange}
-                value={formData.ativo.toString()} // Convert boolean to string for proper matching
+                value={formData.active?.toString()} // Convert boolean to string for proper matching
               />
             </li>
           </ul>
@@ -306,7 +306,6 @@ export const RenderInfos = () => {
               text="Salvar Alterações"
               onClick={handleSaveChanges}
             />
-
           </div>
         </div>
         <div className="flex flex-col gap-5">
@@ -314,17 +313,17 @@ export const RenderInfos = () => {
             id="delete_button"
             text="Deletar Usuário"
             onClick={() => setIsDeleteModalOpen(true)}
-            />
-          
+          />
+
           <PrimaryButton
             id="button_cancel_job_edit"
             text="Cancelar Alterações"
             onClick={() => {
-              setIsEditing(!isEditing)
+              setIsEditing(!isEditing);
             }}
             className="!border-[#C5C5C5] !text-[#C5C5C5] hover:!border-cyan-zero hover:!text-cyan-zero"
-            />
-          </div>
+          />
+        </div>
 
         <ModalConfirmDelete
           isOpen={isDeleteModalOpen}
@@ -340,76 +339,78 @@ export const RenderInfos = () => {
 
   // Função para renderizar o conteúdo baseado no filtro selecionado
   const renderContent = () => {
+    if (!user) {
+      return (
+        <p className="text-center text-gray-400">
+          Carregando informações do usuário...
+        </p>
+      );
+    }
+
     switch (filterScreen) {
       case "1":
-        return isEditing ? ( // Modo edição ativo
+        return isEditing ? (
           <Edit setIsEditing={setIsEditing} />
         ) : (
-          <>
-            <section id="info_section" className="flex w-full justify-between">
-              <div className="flex flex-col">
-                <h1 className="text-[42px]">
-                  <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.nome}
-                </h1>
-                <span className="text-[18px]">Altere as informações</span>
-                <ul className="flex flex-col mt-6 gap-2">
-                  {isClient && (
-                    <li>
-                      <b>Tipo de Cliente: </b> {user?.tipoCliente}
-                    </li>
-                  )}
+          <section id="info_section" className="flex w-full justify-between">
+            <div className="flex flex-col">
+              <h1 className="text-[42px]">
+                <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
+              </h1>
+              <ul className="flex flex-col mt-6 gap-2">
+                {isClient && (
                   <li>
-                    <b>E-mail: </b> {user?.email}
+                    <b>Tipo de Cliente: </b>{" "}
+                    {user?.clientType == "SINGLE" ? "Avulso" : "Mensal"}
                   </li>
-                  <li>
-                    <b>CPF: </b> {user?.cpf}
-                  </li>
-                  <li>
-                    <b>Contato: </b> {user?.contato}
-                  </li>
-                  <li>
-                    <b>Status: </b> {user?.ativo ? "Ativo" : "Inativo"}
-                  </li>
-                </ul>
-              </div>
-
-              <div className="flex justify-between flex-col">
-                {/* Botão de editar */}
-                <PrimaryButton
-                  id="button_edit"
-                  text="Editar Usuário"
-                  onClick={() => setIsEditing(true)}
-                />
-              </div>
-            </section>
-          </>
+                )}
+                <li>
+                  <b>E-mail: </b> {user?.email}
+                </li>
+                <li>
+                  <b>CPF: </b> {user?.cpf}
+                </li>
+                <li>
+                  <b>Contato: </b> {user?.contact}
+                </li>
+                <li>
+                  <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
+                </li>
+              </ul>
+            </div>
+            <div className="flex justify-between flex-col">
+              <PrimaryButton
+                id="button_edit"
+                text="Editar Usuário"
+                onClick={() => setIsEditing(true)}
+              />
+            </div>
+          </section>
         );
 
       case "2":
         return (
           <div>
             <h1 className="text-[42px]">
-              <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.nome}
+              <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
             </h1>
             <Dropdown
               title="Serviços"
               content={
                 <section>
                   <div className="flex justify-end">
-                    <RegisterButton 
+                    <RegisterButton
                       id="register_button"
                       title="Registrar Serviço"
                       text="+"
-                      onClick={() => registerRedirect(navigate)} 
-                      />
+                      onClick={() => registerRedirect(navigate)}
+                    />
                   </div>
-                  <Table 
-                    headers={tableHeader}
-                    data={tableData}
-                  />
-                  </section>}
-                  />
-                </div>
+                  <Table headers={tableHeader} data={tableData} />
+                </section>
+              }
+            />
+          </div>
         );
 
       case "3":
@@ -417,12 +418,12 @@ export const RenderInfos = () => {
           <div className="flex justify-center mt-6 bg-[#1E1E1E90] p-4">
             <div className="flex flex-col">
               <h1 className="text-[42px]">
-                <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.nome}
+                <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
               </h1>
               <ul className="flex flex-col mt-6 gap-2">
                 {isClient && (
                   <li>
-                    <b>Tipo de Cliente: </b> {user?.tipoCliente}
+                    <b>Tipo de Cliente: </b> {user?.clientType}
                   </li>
                 )}
                 <li>
@@ -435,7 +436,7 @@ export const RenderInfos = () => {
                   <b>Contato: </b> {user?.contato}
                 </li>
                 <li>
-                  <b>Status: </b> {user?.ativo ? "Ativo" : "Inativo"}
+                  <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
                 </li>
               </ul>
             </div>
