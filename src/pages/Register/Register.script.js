@@ -1,4 +1,4 @@
-import axios from "axios";
+import { axiosProvider } from "../../provider/apiProvider"; // Importando o axiosProvider
 import { toast } from "react-hot-toast";
 // Removed useNavigate import
 
@@ -209,9 +209,8 @@ export function setupRegisterEvents(navigate) {
         contato: iptContato.value,
         tipoCliente: iptTipoCliente?.value || "AVULSO", // Correctly assign tipoCliente
         ativo: true, // Default to active
-        token: token,
       };
-      endpoint = "clientes";
+      endpoint = "clients";
     } else if (iptType.value === "FUNCIONARIO") {
       novoUsuario = {
         nome: iptNome.value.toUpperCase(),
@@ -222,7 +221,7 @@ export function setupRegisterEvents(navigate) {
         ativo: true, // Default to active
         token: token,
       };
-      endpoint = "funcionarios";
+      endpoint = "employees";
     }
 
     console.log("registrar")
