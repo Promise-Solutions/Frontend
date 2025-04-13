@@ -12,7 +12,7 @@ import DeleteButton from "../../../components/buttons/deleteButton/DeleteButton.
 import Dropdown from "../../../components/dropdown/Dropdown.jsx";
 import ModalConfirmDelete from "../../../components/modals/modalConfirmDelete/ModalConfirmDelete.jsx";
 import ScreenFilter from "../../../components/filters/screenFilter/ScreenFilter.jsx";
-import LineGrafic from "../../../components/graphic/FreqPagGraphic.jsx";
+import FreqPagGraphic from "../../../components/graphic/FreqPagGraphic.jsx";
 import React from "react";
 import CardJob from "../../../components/cards/cardJob/CardJob.jsx";
 import toast from "react-hot-toast"; // Add this import
@@ -433,14 +433,14 @@ export const RenderInfos = () => {
                   <b>CPF: </b> {user?.cpf}
                 </li>
                 <li>
-                  <b>Contato: </b> {user?.contato}
+                  <b>Contato: </b> {user?.contact}
                 </li>
                 <li>
                   <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
                 </li>
               </ul>
             </div>
-            <LineGrafic />
+            <FreqPagGraphic />
           </div>
         );
 
