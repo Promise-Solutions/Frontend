@@ -4,7 +4,7 @@ import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
 import DeleteButton from "../../buttons/deleteButton/DeleteButton";
 import Input from "../../form/Input";
 import Select from "../../form/Select";
-import { axiosProvider } from '../../../provider/apiProvider'
+import { axiosProvider } from "../../../provider/apiProvider";
 
 const ModalEditTask = ({
   task,
@@ -28,10 +28,7 @@ const ModalEditTask = ({
 
   const handleEdit = async () => {
     try {
-      const response = await axiosProvider.patch(
-        `/tasks/${task.id}`,
-        formData
-      );
+      const response = await axiosProvider.patch(`/tasks/${task.id}`, formData);
       onEdit(task.id, response.data); // Update the task in the parent component
       onClose();
     } catch (error) {
@@ -79,7 +76,7 @@ const ModalEditTask = ({
             name="responsible"
             options={employees.map((emp) => ({
               id: emp.id,
-              name: emp.nome,
+              name: emp.name, // Corrigido para usar "name" em vez de "nome"
             }))}
             handleOnChange={handleInputChange}
             value={formData.responsible}

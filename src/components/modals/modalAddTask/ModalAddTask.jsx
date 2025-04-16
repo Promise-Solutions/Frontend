@@ -68,7 +68,7 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
             name="responsible"
             options={employees.map((emp) => ({
               id: emp.id,
-              name: emp.nome,
+              name: emp.name, // Corrigido para usar "name" em vez de "nome"
             }))}
             handleOnChange={handleInputChange}
             value={formData.responsible}
