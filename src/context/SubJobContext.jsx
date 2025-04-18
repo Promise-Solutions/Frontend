@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext } from "react"
 import toast from "react-hot-toast";
 import { axiosProvider } from "../provider/apiProvider";
+import { showToast, ToastStyle } from "../components/toastStyle/ToastStyle";
 
 const SubJobContext = createContext({});
 
@@ -26,7 +27,6 @@ export function SubJobProvider({ children }) {
         try {
             const response = await axiosProvider.get(`/subservicos?fkServico=${jobId}`)
             const subJobData = response.data 
-            console.log("subserviços", subJobData)
             return subJobData;
         } catch(error) {
             console.error("Erro ao buscar subserviços:", error)
@@ -52,12 +52,10 @@ export function SubJobProvider({ children }) {
 
       const getCurrentDate = (isDone) => {
         const dataAtual = isDone ? new Date() : null
-        console.log("data atual: " + dataAtual, isDone)
 
         let dataFormatada = null
         if(dataAtual != null) {
             dataFormatada = formatCurrenteDate(dataAtual)
-            console.log(dataFormatada)
         }
         return dataFormatada
       }
@@ -77,11 +75,11 @@ export function SubJobProvider({ children }) {
         const id = subJobData.id;
 
         try {
-            const request = await axiosProvider.patch(`/subservicos/${id}`, { titulo: subJobData.title, descricao: subJobData.description, quantidade: subJobData.quantity, valor: subJobData.value})
+            const request = await axiosProvider.patch(`/subservicos/${id}`, { titulo: subJobData.title, descricao: subJobData.description, quantidade: subJobData.quantity, valor: subJobData.value, dataPrevista:subJobData.expectedDate})
         
             if(request.status === 200) {
                 console.log("Subserviço atualizado com sucesso!")
-                toast.success("Subserviço atualizado com sucesso!")
+                showToast.success("Subserviço atualizado com sucesso!")
             }
         } catch(error) {
             toast.error("Erro ao atualizar o subserviço")
@@ -95,7 +93,12 @@ export function SubJobProvider({ children }) {
         try {
             const request = await axiosProvider.delete(`/subservicos/${subJobId}`)
 
-            console.log("Status da requisição: " + request.status)
+
+            if(request.status == 200) {
+                return true;
+            }
+            return false;
+
         } catch (error) {
             toast.error("Erro ao excluir subserviço")
             console.log("Erro ao excluir subserviço", error)

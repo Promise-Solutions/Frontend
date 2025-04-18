@@ -18,21 +18,15 @@ const JobRegister = () => {
 
     const renderClientOptions = async () => {
       const clients = await createClientsOptions(findClients);
-       
-       
-       console.log("clients: ", clients)
 
        const nameClients = clients.map(client => {
           const clientObj = {
             id: client.id,
             name: client.nome
           }
-          console.log("client obj", clientObj)
-
           return clientObj
        });
 
-       console.log("name clients: ", nameClients)
 
        setClientOptions(nameClients);
     }

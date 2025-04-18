@@ -7,18 +7,16 @@ export const registrarSubServico = async (formData, saveSubJob) => {
         return;
     }
     
-    const dataAtual = formatDate();
+    const dataAtual = new Date();
+    const dataAtualFormatada = formatDate(dataAtual);
     const idServico = sessionStorage.getItem("jobId")
     
-    formData = {...formData, dataHorarioInicio: dataAtual, dataHoraConclusao: null,  concluido: false, fkServico: idServico}
+    formData = {...formData, dataHorarioInicio: dataAtualFormatada, dataHoraConclusao: null,  concluido: false, fkServico: idServico}
     await saveSubJob(formData)
 
 }
 
-const formatDate = () => {
-    const dataAtual = new Date()
-    console.log("data atual: " + dataAtual)
-
+const formatDate = (dataAtual) => {
     const diaAtual = String(dataAtual.getDate()).padStart(2, '0');
     const mesAtual = String(dataAtual.getMonth() + 1).padStart(2, '0');
     const anoAtual = dataAtual.getFullYear();
@@ -26,7 +24,6 @@ const formatDate = () => {
     const minutoAtual = String(dataAtual.getMinutes()).padStart(2, '0');
     
     const dataAtualFormatada = `${diaAtual}/${mesAtual}/${anoAtual} - ${horaAtual}:${minutoAtual}`
-    console.log(dataAtualFormatada)
 
     return dataAtualFormatada;
 }

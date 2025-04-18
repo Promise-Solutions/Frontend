@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
 import toast from "react-hot-toast";
 import { axiosProvider } from "../provider/apiProvider";
+import { ToastStyle } from "../components/toastStyle/ToastStyle";
 
 const JobContext = createContext({});
 
@@ -12,7 +13,7 @@ export function JobProvider({ children }) {
       const request = await axiosProvider.post(`/jobs`, formData)
 
       if (request.status == 201) {
-        toast.success("Servico Cadastrado!")
+        toast.success("Servico Cadastrado!", { style: ToastStyle })
       }
     } catch(error) {
         toast.error("Erro ao cadastrar servico!")
@@ -23,13 +24,9 @@ export function JobProvider({ children }) {
   const fetchJobData = async (jobId) => {
     if (!jobId) return;
 
-    console.log("jobId" + jobId)
-
     try {
       const response = await axiosProvider.get(`/jobs?id=${jobId}`)
       const jobData = response.data[0] || null;
-
-      console.log("jobData", jobData)
 
       if (jobData) {
         setJob(jobData);
@@ -47,7 +44,6 @@ export function JobProvider({ children }) {
     try {
       const response = await axiosProvider.get("/jobs");
       const jobs = response.data;
-      console.log(jobs)
       return jobs;
     } catch (error) {
       console.error("Erro ao buscar servicos:", error);
@@ -57,7 +53,6 @@ export function JobProvider({ children }) {
 
   const updateStatusJob = async (idServico) => {
     try {
-        console.log(idServico)
 
         const response = await axiosProvider.get(`/subservicos?fkServico=${idServico}`);
 

@@ -66,7 +66,6 @@ export const RenderInfos = () => {
 
   const renderJobs = async () => {
     const jobsRendered = await createFilteredJobs(findJobs)
-    console.log("render jobs", jobsRendered)
 
     setFilteredJobs(jobsRendered);
 
@@ -89,7 +88,6 @@ export const RenderInfos = () => {
     findJobs,
   ) => {
     const jobs = await findJobs();
-    console.log("jobs", jobs)
   
     return jobs.filter((job) => {
       console.log("Renderizando serviços:", {
@@ -108,10 +106,6 @@ export const RenderInfos = () => {
     const dataFiltered = filteredJobs.map((job) => {
 
       const mensagemConcluido = job.concluido ? "Concluído": "Pendente"
-
-      console.log(mensagemConcluido)
-
-      console.log("jobID: " + job.id)
 
       return {
         id: job.id,

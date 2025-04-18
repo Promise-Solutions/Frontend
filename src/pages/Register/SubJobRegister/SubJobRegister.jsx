@@ -12,14 +12,11 @@ const SubJobRegister = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
-        if (name === "tipo") setSelectedType(value); // Update selectedType when user type changes
       };
 
       const handleSubmit = (e) => {
         e.preventDefault();
         formData.valor = getNumericValue(formData.valor);
-        console.log(formData)
-
         registrarSubServico(formData, saveSubJob)
       };
 
@@ -29,7 +26,6 @@ const SubJobRegister = () => {
         value = value.replace(/\D/g, "")
         
         setFormData((prevData) => ({ ...prevData, [name]: value }));
-        if (name === "tipo") setSelectedType(value); // Update selectedType when user type changes
       }
 
       const handleValorChange = (e) => {
@@ -48,8 +44,6 @@ const SubJobRegister = () => {
       };
     
       const getNumericValue = (valueString) => {
-        console.log(typeof valueString)
-
         if(typeof valueString === "string" && valueString.includes(",")) {
           valueString = valueString.replace(",", ".");
         }
@@ -126,7 +120,7 @@ const SubJobRegister = () => {
                   placeholder="Digite o valor"
                   handleOnChange={handleInputChange}
                   value={`${formData.dataPrevista}`}
-                  min={new Date().toISOString().split("T")[0]}
+                  min={new Date().toLocaleDateString("en-CA")}
                   max="2099-12-31"
                   className="custom-calendar"
                 />

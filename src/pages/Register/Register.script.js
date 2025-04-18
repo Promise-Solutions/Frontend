@@ -224,8 +224,6 @@ export function setupRegisterEvents(navigate) {
       endpoint = "employees";
     }
 
-    console.log("registrar")
-
     try {
       const res = await axiosProvider.post(
         `/${endpoint}`,

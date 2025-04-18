@@ -1,20 +1,54 @@
-export const handleInputChange = (e, setSubJobData) => {
+import toast from "react-hot-toast";
+import { ToastStyle } from "../../toastStyle/ToastStyle";
+
+export const handleInputChange = (e, setSubJobsInfos) => {
     const { name, value } = e.target;
-    setSubJobData(prev => ({ ...prev, [name]: value }));
+    setSubJobsInfos(prev => ({ ...prev, [name]: value }));
 }
 
-export const changeSubJobInfo = (subJobInfo, updateSubJobData) => {
-    const infos = {
-        id: subJobInfo.id,
-        title: subJobInfo.title,
-        description: subJobInfo.description,
-        quantity: Number(subJobInfo.quantity),
-        value: Number(subJobInfo.value)
+export const deleteSubJob = async (subJobId, deleteSubJobById) => {
+   return await deleteSubJobById(subJobId)
+}
+
+export const changeSubJobData = async (infos, updateSubJobData) => {
+    if(!infos.title || !infos.description || infos.value == null  || !infos.expectedDate) {
+        toast.error("Todos os campos devem estar preenchidos!", { style: ToastStyle })
+        return;
+    } 
+    if(infos.quantity == 0) {
+        toast.error("A quantidade não pode ser 0 ou vazia!", { style: ToastStyle })
+        return;
     }
+    if(infos.quantity < 0 || infos.value < 0) {
+        toast.error("Não são aceitos valores negativos!", { style: ToastStyle })
+        return;
+    } 
 
-    updateSubJobData(infos);
+    const expectedDateFormatted = formatDate(infos.expectedDate)
+    const infosToUpdate = {
+        ...infos,
+        expectedDate: expectedDateFormatted
+    }
+    
+    await updateSubJobData(infosToUpdate);
 }
 
-export const deleteSubJob = (subJobId, deleteSubJobById) => {
-    deleteSubJobById(subJobId)
+
+const formatDate = (dataString) => {
+    const dataDate = new Date(dataString);
+
+    const dia = String(dataDate.getUTCDate()).padStart(2, '0');
+    const mes = String(dataDate.getUTCMonth() + 1).padStart(2, '0');
+    const ano = dataDate.getUTCFullYear();
+    
+    const dataFormatada = `${dia}/${mes}/${ano}`
+
+    return dataFormatada;
 }
+
+export const getNumericValue = (valueString) => {
+  if(typeof valueString === "string" && valueString.includes(",")) {
+    valueString = valueString.replace(",", ".");
+  }
+  return parseFloat(valueString);
+};

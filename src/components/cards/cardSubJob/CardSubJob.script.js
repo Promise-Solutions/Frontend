@@ -1,12 +1,10 @@
 import ModalEditSubJob from "../../modals/modalEditSubJob/ModalEditSubJob"
-import React from "react"
 
-export const editInfos = (subJobData, setModalEditSub, isEditingSubSob, setIsEditingSubJob) => {
-        if(isEditingSubSob) {
-            console.log(subJobData)
-            const modalEditSubJob = React.createElement(ModalEditSubJob, { subJobData, setModalEditSub, isEditingSubSob, setIsEditingSubJob })
+export const editSubJobsInfos = (subJobData, setModalEditSub, isEditingSubJob, setIsEditingSubJob) => {
+   
+    if(isEditingSubJob) {
+        const modalEditSubJob = React.createElement(ModalEditSubJob, { subJobData, setModalEditSub, isEditingSubJob, setIsEditingSubJob })
 
-            console.log("editInfos modal", modalEditSubJob)
-            return modalEditSubJob;
-        } 
+        return modalEditSubJob;
+    } 
 }

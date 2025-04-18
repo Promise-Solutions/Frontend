@@ -158,10 +158,10 @@
     },
     {
       "id": 2,
-      "titulo": "Subserviço2",
+      "titulo": "Atendimento2",
       "descricao": "Descricao2",
-      "quantidade": 2,
-      "valor": 10,
+      "quantidade": null,
+      "valor": 30,
       "dataPrevista": "12/02/2025",
       "dataHoraInicio": "10:00",
       "dataHoraConclusao": null,
@@ -170,16 +170,16 @@
     },
     {
       "id": 3,
-      "titulo": "Subserviço3",
+      "titulo": "serviço 3",
       "descricao": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto",
-      "quantidade": 3,
-      "valor": 10,
-      "dataPrevista": "12/02/2025",
+      "quantidade": 6,
+      "valor": 8,
+      "dataPrevista": "17/04/2025",
       "dataHoraInicio": "10:00",
       "dataHoraConclusao": null,
       "concluido": true,
       "fkServico": 2,
-      "horarioConclusao": "12/04/2025 - 14:24"
+      "horarioConclusao": "17/04/2025 - 21:10"
     },
     {
       "id": 5,
@@ -198,18 +198,6 @@
       "titulo": "Subserviço7",
       "descricao": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto ",
       "quantidade": 2,
-      "valor": 10,
-      "dataPrevista": "12/02/2025",
-      "dataHoraInicio": "10:00",
-      "dataHoraConclusao": null,
-      "concluido": false,
-      "fkServico": 4
-    },
-    {
-      "id": 8,
-      "titulo": "Subserviço",
-      "descricao": "Descricao",
-      "quantidade": 1,
       "valor": 10,
       "dataPrevista": "12/02/2025",
       "dataHoraInicio": "10:00",
@@ -254,18 +242,6 @@
       "fkServico": 4
     },
     {
-      "id": 13,
-      "titulo": "Subserviço",
-      "descricao": "Descricao",
-      "quantidade": 1,
-      "valor": 10,
-      "dataPrevista": "12/02/2025",
-      "dataHoraInicio": "10:00",
-      "dataHoraConclusao": null,
-      "concluido": false,
-      "fkServico": 4
-    },
-    {
       "id": 19,
       "titulo": "Subserviço",
       "descricao": "Descricao",
@@ -290,17 +266,6 @@
       "horarioConclusao": "12/04/2025 - 14:29"
     },
     {
-      "titulo": "123",
-      "descricao": "12321",
-      "valor": 123,
-      "dataPrevista": "2025-04-23",
-      "dataHorarioInicio": "11/04/2025 - 21:01",
-      "dataHoraConclusao": null,
-      "concluido": false,
-      "fkServico": "5",
-      "id": 25
-    },
-    {
       "titulo": "Teste SubServiço",
       "descricao": "Teste SubServiçoTeste SubServiçoTeste SubServiçoTeste SubServiço",
       "valor": 50,
@@ -314,27 +279,17 @@
       "horarioConclusao": "11/04/2025 - 23:44"
     },
     {
-      "titulo": "ASKLPDJIKAOLD",
-      "descricao": "SLKDASKLD",
-      "valor": 123,
-      "dataPrevista": "2025-04-23",
-      "dataHorarioInicio": "11/04/2025 - 23:44",
-      "dataHoraConclusao": null,
-      "concluido": false,
-      "fkServico": "7",
-      "id": 28
-    },
-    {
       "titulo": "subServico2",
       "descricao": "descricao",
-      "valor": 210.8,
-      "dataPrevista": "2025-04-23",
+      "valor": 1230.4,
+      "dataPrevista": "25/04/2025",
       "dataHorarioInicio": "12/04/2025 - 13:50",
       "dataHoraConclusao": null,
       "concluido": true,
-      "fkServico": "2",
+      "fkServico": 2,
       "id": 29,
-      "horarioConclusao": "12/04/2025 - 14:24"
+      "horarioConclusao": "12/04/2025 - 14:24",
+      "quantidade": 5
     }
   ],
   "commands": [],

@@ -60,7 +60,7 @@ const Navbar = () => {
 
       {/* Menu Mobile */}
       {menuOpen && (
-        <div className="absolute top-full left-0 w-full bg-[#000000cc] flex flex-col items-center py-6 z-50 gap-4 md:hidden transition-all duration-200">
+        <div className="absolute top-full left-0 w-full bg-[#000000cc] flex flex-col items-center py-6 z-40 gap-4 md:hidden transition-all duration-200">
           {generateTabItems(activeTab)}
           <LogoutButton
             id="logout_button_id_mobile"

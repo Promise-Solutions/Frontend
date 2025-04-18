@@ -1,15 +1,26 @@
 import React from "react"
-import CardSubJob from "../../../components/cards/cardSubJob/CardSubJob"
+import ModalEditSubJob from "../../../components/modals/modalEditSubJob/ModalEditSubJob"
 import toast from "react-hot-toast";
 import { ToastStyle } from "../../../components/toastStyle/ToastStyle";
+import CardSubJob from '../../../components/cards/cardSubJob/CardSubJob'
+
 export const handleInputChange = (e, setJobData) => {
   const { name, value } = e.target;
   setJobData(prev => ({ ...prev, [name]: value }));
 }
 
-export const renderSubJobs = async (findSubJobsByJobId) => {
+
+export const editSubJobsInfos = async (subJobData, setModalEditSub, isEditingSubJob, setIsEditingSubJob) => {
+    if(isEditingSubJob) {
+        const modalEditSubJob = React.createElement(ModalEditSubJob, { subJobData, setModalEditSub, isEditingSubJob, setIsEditingSubJob })
+
+        return modalEditSubJob;
+    } 
+}
+
+
+export const renderSubJobs = async (findSubJobsByJobId, setModalEditSubJob, isEditingSubJob, setIsEditingSubJob, setSubJobIdToEdit, setSubJobDataToEdit) => {
   const subJobsFound = await findSubJobsByJobId(sessionStorage.getItem("jobId"))
-  console.log("subserviços encontrados: ", subJobsFound)
   const cardsSubJob = subJobsFound.map((subJob) => {
     console.log("Renderizando subserviços:", {
         title: subJob.titulo,
@@ -23,9 +34,14 @@ export const renderSubJobs = async (findSubJobsByJobId) => {
         description: subJob.descricao,
         quantity: subJob.quantidade,
         value: subJob.valor,
-        date: subJob.data,
+        expectedDate: subJob.dataPrevista,
         timeDone: subJob.horarioConclusao,
-        isDone: subJob.concluido,
+        isDone: subJob.concluido,    
+        setModalEditSubJob,    
+        isEditingSubJob, 
+        setIsEditingSubJob,
+        setSubJobIdToEdit,
+        setSubJobDataToEdit
       })
       
     })

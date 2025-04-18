@@ -1,100 +1,157 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSubJobContext } from "../../../context/SubJobContext";
-import { handleInputChange, changeSubJobInfo, deleteSubJob } from "./ModalEditSubJob.script";
+import { handleInputChange, deleteSubJob, changeSubJobData, getNumericValue } from "./ModalEditSubJob.script";
 import ModalConfirmDelete from "../modalConfirmDelete/ModalConfirmDelete";
+import Input from '../../form/Input'
+import CancelButton from "../modalConfirmDelete/cancelButton";
+import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
+import DeleteButton from "../../buttons/deleteButton/DeleteButton";
+import { showToast } from "../../toastStyle/ToastStyle";
 
-const ModalEditSubJob = ({ subJobData, setIsEditingSubJob }) => {
+const ModalEditSubJob = ({ subJobData, setIsEditingSubJob}) => {
   const { updateSubJobData, deleteSubJobById } = useSubJobContext();
   const [subJobsInfos, setSubJobsInfos] = useState(subJobData);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  const handleQuantidadeChange = (e, setSubJobsInfos) => {
+    let { name, value } = e.target;
+
+    value = value.replace(/\D/g, "")
+    
+    setSubJobsInfos((prevData) => ({ ...prevData, [name]: value }));
+  }
+
+
+  const handleValorChange = (e, setSubJobsInfos) => {
+    let { name, value } = e.target;
+
+    value = value.replace(/[^0-9,]/g, "");
+
+    let newValue = value
+
+    const partes = newValue.split(",");
+    if (partes.length > 2) {
+      newValue = partes[0] + "," + partes.slice(1).join("");
+    }
+    
+    setSubJobsInfos((prevData) => ({ ...prevData, [name]: newValue }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log()
+
+    const infosUpdate = {
+      ...subJobsInfos,
+      quantity: Number(subJobsInfos.quantity),
+      value: getNumericValue(subJobsInfos.value),
+    }
+
+    changeSubJobData(infosUpdate, updateSubJobData)
+  };
+
+  const handleDelete = async (id, deleteSubJobById) => {
+    const requestDelete = await deleteSubJob(id, deleteSubJobById)
+    setIsDeleteModalOpen(false)
+
+    if(requestDelete) {
+      showToast.success("Subserviço excluído com sucesso")
+    } else {
+      showToast.error("Não foi possível exlcuir o subserviço")
+    }
+  }
+
+
+  const handleCancel = () => {
+    setIsEditingSubJob(false)
+  }
+
+  useEffect(() => {
+    console.log("subJobData", subJobData)
+    setSubJobsInfos(subJobData)
+  },[])
+
+  useEffect(() => {
+    console.log("subJObsInfos", subJobsInfos)
+  }, [subJobsInfos])
+
   return (
-    <div
-      className={`modal_edit_subjob flex flex-col justify-center border-2 pl-3 text-[#d9d9d9] max-h-[16rem] h-auto min-h-[13rem] min-w-[8rem] w-auto px-3 max-w-[27rem] w-auto rounded-[5px] duration-100 bg-[#0D0D0D]`}
-    >
-      <div className="flex py-2 text-2xl font-bold items-center gap-[4px]">
-        <input
-          name="title" 
-          value={subJobsInfos.title} 
-          autocomplete="off"
-          className="modal_edit_subjob_title outline-none caret-yellow-zero focus:border-b-pink-zero max-w-[18rem] border-b-1 border-b-[#A5A5A5] text-yellow-zero pb-1" 
-          onChange={(e) => handleInputChange(e, setSubJobsInfos)}
+    <div className="fixed backdrop-blur inset-0 bg-black/90 flex justify-center items-center z-50">
+    <div className="bg-[#1E1E1E98] border-1 border-pink-zero text-white p-6 shadow-lg min-w-[600px]">
+      <h2 className="text-xl font-bold mb-4">Editar Serviço</h2>
+      {subJobsInfos && (
+
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-4">
+          <Input
+            type="text"
+            name="title"
+            text="Titulo"
+            placeholder="Digite o titulo do subserviço"
+            value={subJobsInfos?.title || ""}
+            handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
+            disabled
           />
-        <div onClick={() => setIsEditingSubJob(false)} className="flex justify-center items-center text-[11px] text-red-zero cursor-pointer rounded-[100%] border-2 border-red-zero w-5 h-5 " >X</div>
-      </div>
-      <div>
-        <ul
-          className={`py-1 text-[14px] list-none`}
-        >
-          <li className="flex jutify-start">
-            <b className="w-[27%]">Descrição </b><b>:</b> 
-            <input 
-              name="description"
-              value={subJobsInfos.description} 
-              autocomplete="off"
-              className="breakable-text min-w-[14rem] w-auto max-w-[18rem] pl-1 outline-none focus:border-b-pink-zero text-yellow-zero border-b-[#A5A5A5] border-b-1 caret-yellow-zero" 
-              onChange={(e) => handleInputChange(e, setSubJobsInfos)}
-            />
-          </li>
-          <li className="flex jutify-start">
-            <b className="w-[27%]">Quantidade </b><b>:</b>
-            <input 
-              name="quantity"
-              value={subJobsInfos.quantity} 
-              autocomplete="off"
-              className="breakable-text min-w-[14rem] w-auto max-w-[18rem] pl-1 outline-none text-yellow-zero border-b-[#A5A5A5] focus:border-b-pink-zero border-b-1 caret-yellow-zero" 
-              onChange={(e) => handleInputChange(e, setSubJobsInfos)}
-            />
-          </li>
-          <li className="flex jutify-start">
-            <b className="w-[27%]">Valor "R$"</b><b>:</b>
-            <input
-              name="value"
-              value={subJobsInfos.value}
-              autocomplete="off"
-              className="breakable-text min-w-[14rem] w-auto max-w-[18rem] outline-none caret-yellow-zero pl-1 text-yellow-zero focus:border-b-pink-zero border-b-[#A5A5A5] border-b-1"
-              onChange={(e) => handleInputChange(e, setSubJobsInfos)}
-            />
-          </li>
-          <li className="flex jutify-start">
-            <b className="w-[27%]">Status </b><b>:</b> <b className={`${subJobsInfos.isDone ? "text-cyan-zero" : "text-yellow-zero"} pl-1`}>{subJobsInfos.isDone ? "Concluído" : "Pendente"}</b>
-          </li>
-          <li>
-            <b>Horário de conclusão: </b> {subJobsInfos.isDone ? subJobsInfos.timeDone : "Não concluído"}
-          </li>
-        </ul>
-      </div>
-      <div className="flex justify-between w-[100%] pr-1 py-2 mb-1 border-t-[#ccc] items-center">
-        <div className="flex justify-between w-[70%] max-w-[15rem] gap-2">
-          <button
-            id="btn_confirm_subjob_edit"z
-            onClick={() => changeSubJobInfo(subJobsInfos, updateSubJobData)}
-            className={`h-[34px] w-[7rem] text-[14px] border-2 hover:text-[#B9B9B9] text-yellow-zero border-yellow-zero
-                        font-bold cursor-pointer duration-100 ease-in-out`}
-          >
-            Confirmar
-          </button>
-
-          <button
-            onClick={() => setIsDeleteModalOpen(true)} 
-            className={`h-[34px] w-[10rem] text-[14px] text-red-zero hover:text-[#B9B9B9]
-                        border-2 border-red-zero
-                        font-bold cursor-pointer duration-100`}
-          >
-            Excluir
-          </button>
+          <Input
+            type="text"
+            name="description"
+            text="Descrição"
+            placeholder="Digite a descrição"
+            value={subJobsInfos?.description || ""}
+            handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
+            min="0"
+          />
+          <Input
+            type="text"
+            name="quantity"
+            text="Quantidade do produto"
+            placeholder="Digite a quantidade"
+            value={subJobsInfos?.quantity || ""}
+            handleOnChange={(e) => handleQuantidadeChange(e, setSubJobsInfos)}
+          />
+          <Input
+            type="text"
+            name="value"
+            text="Valor do produto"
+            placeholder="Digite o valor do serviço"
+            value={subJobsInfos?.value || ""}
+            handleOnChange={(e) => handleValorChange(e, setSubJobsInfos)}
+          />
+          <Input
+            type="date"
+            text="Data prevista para serviço"
+            name="expectedDate"
+            placeholder="Escolha a data"
+            handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
+            value={subJobsInfos?.expectedDate || ""}
+            min={new Date().toLocaleDateString("en-CA")}
+            max="2099-12-31"
+            className="custom-calendar"
+          />
         </div>
-
-          
-
-
-      </div>
-      <ModalConfirmDelete
-                isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
-                onConfirm={() => deleteSubJob(subJobsInfos.id, deleteSubJobById)}
-              />
+        <div className="flex justify-between items-center mt-4">
+          <DeleteButton 
+            id="btn_delete_subjob" 
+            text="Excluir"
+            onClick={() => setIsDeleteModalOpen(true)}
+          />
+          <div className="flex justify-end gap-4 w-[60%]">
+            <CancelButton text="Cancelar" type="button" onClick={handleCancel} />
+            <ConfirmButton type="submit" text="Salvar" />
+          </div>
+        </div>
+      </form>
+      )}
     </div>
+    <ModalConfirmDelete
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={() => handleDelete(subJobData.id, deleteSubJobById)}
+          title={"Deletar Usuário"}
+          description={"Tem certeza de que deseja deletar este usuário?"}
+        />
+  </div>
   );
 }
 

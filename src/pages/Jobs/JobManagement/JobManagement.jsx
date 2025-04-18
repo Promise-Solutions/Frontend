@@ -9,12 +9,17 @@ import Input from "../../../components/form/Input";
 import { useNavigate } from "react-router-dom";
 import RegisterButton from "../../../components/buttons/registerButton/RegisterButton";
 import Select from "../../../components/form/Select";
+import { editSubJobsInfos } from "./JobManagement.script";
 
 const JobManagement = () => {
   const [subJobs, setSubJobs] = useState([]);
+  const [subJobIdToEdit, setSubJobIdToEdit] = useState(null);
+  const [subJobDataToEdit, setSubJobDataToEdit] = useState(null);
   const { job, setJob, fetchJobData, updateJobData, deleteJobById } = useJobContext();
   const [isEditing, setIsEditing] = useState(false);
+  const [isEditingSubJob, setIsEditingSubJob] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [modalEditSubJob, setModalEditSubJob] = useState(null);
   const { findSubJobsByJobId } = useSubJobContext();
   const [jobData, setJobData ] = useState();
   const navigate = useNavigate(); 
@@ -22,16 +27,29 @@ const JobManagement = () => {
   useEffect(() => {
     const loadJobData = async () => {
       const jobId = sessionStorage.getItem("jobId");
-      const jobData = await fetchJobData(jobId);
-      setJob(jobData);
-      setJobData(jobData); 
-      const cardsSubJobs = await renderSubJobs(findSubJobsByJobId);
+      const jobDatFetched = await fetchJobData(jobId);
+      setJob(jobDatFetched);
+      setJobData(jobDatFetched);
+
+      const cardsSubJobs = await renderSubJobs(findSubJobsByJobId, setModalEditSubJob, isEditingSubJob, setIsEditingSubJob, setSubJobIdToEdit, setSubJobDataToEdit);
       setSubJobs(cardsSubJobs);
     };
 
     loadJobData();
-
   },[])
+
+  useEffect(() => {
+      if(isEditingSubJob) {
+        const modalEdit = editSubJobsInfos(subJobDataToEdit, setModalEditSubJob, isEditingSubJob, setIsEditingSubJob);
+        setModalEditSubJob(modalEdit);
+      
+      } else {
+        setModalEditSubJob(null);
+      }
+    },[isEditingSubJob])
+  
+
+
 
   const categoryOptions = [
     {id: "Ensaio Musical", name: "Ensaio Musical"},
@@ -46,6 +64,7 @@ const JobManagement = () => {
 
     return (
         <div id="container-job-management" className="w-full h-100vh flex flex-col justify-between">
+          {modalEditSubJob}
           {!isEditing ? (
             <section
               id="info_section"
@@ -157,7 +176,7 @@ const JobManagement = () => {
             />
             </div>
           <section className="dropdown_section">
-            <div className="gap-4 border-t-1 border-[#d9d9d91F] flex flex-wrap justify-center items-start mt-12 max-h-[330px] py-[35px] mx-5 overflow-y-auto w-full h-auto">
+            <div className="gap-4 border-t-1 border-[#d9d9d91F] flex flex-wrap justify-center items-start mt-12 max-h-[330px] py-[35px] overflow-y-auto w-full h-auto">
               {subJobs != null ? subJobs : <p className="text-center text-gray-400">Nenhum subserviço encontrado para esse serviço</p>}
             </div>
           </section>

@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
 import ImageDone from "../../../assets/icone-concluido.png";
 import { useSubJobContext } from "../../../context/SubJobContext";
-import { editInfos } from "./CardSubJob.script";
 import { useJobContext } from "../../../context/JobContext";
+import { editSubJobsInfos } from "./CardSubJob.script";
 
 const CardSubJob = React.memo((
-        { id, title, description, quantity, value,
-        timeDone, isDone, setModalEditSub }) => {
+        { id, title, description, quantity, value, expectedDate, 
+        timeDone, isDone, setModalEditSubJob, isEditingSubJob, setIsEditingSubJob, setSubJobIdToEdit, setSubJobDataToEdit }) => {
   const [done, setDone] = useState(isDone);
   const [timeDoneText, setTimeDoneText] = useState(timeDone);
-  const [isEditingSubJob, setIsEditingSubJob] = useState(false);
   const { currentDate, updateStatus } = useSubJobContext()
   const { job, updateStatusJob } = useJobContext();
-  const [modalEditSubJob, setModalEditSubJob] = useState(null);
 
   const handleChangeStatus = async () => {
     setDone(!done);
@@ -23,29 +21,30 @@ const CardSubJob = React.memo((
     await updateStatusJob(job.id)
   };
 
-  useEffect(() => {
+  const handleIsEditingStatus =  () => {
+    const [dia, mes, ano] = expectedDate.split("/");
+
     const subJobData = {
-        id, 
-        title, 
-        description, 
-        quantity,
-        value,
-        timeDone,
-        isDone
+      id,
+      title,
+      description,
+      quantity,
+      value: value.toFixed(2).replace(".", ","),
+      expectedDate: `${ano}-${mes}-${dia}`
     }
-    const modalEdit = editInfos( subJobData, setModalEditSubJob, isEditingSubJob, setIsEditingSubJob);
-    setModalEditSubJob(modalEdit)
-  }, [isEditingSubJob])
+
+    setSubJobIdToEdit(id)
+    setSubJobDataToEdit(subJobData)
+    setIsEditingSubJob(true)
+  }
 
   return (
-    
     <div
       id={`job_${id}`}
-      className={`card_subjob relative overflow-visible flex flex-col justify-center border-1 pl-3 text-[#d9d9d9] max-h-[16rem] h-auto min-h-[12rem] w-auto px-3 max-w-[27rem] min-w-[20rem] rounded-[3px] duration-100 bg-[#040404AA] ${
+      className={`card_subjob relative overflow-visible flex flex-col justify-center border-1 pl-3 text-[#d9d9d9] max-h-[18rem] h-auto min-h-[12rem] w-auto px-3 max-w-[27rem] min-w-[20rem] rounded-[3px] duration-100 bg-[#040404AA] ${
         done ? "border-cyan-zero" : "border-pink-zero"
       }`}
     >
-      <div className="absolute top-4/9 left-4/9 z-100 -translate-x-1/2 -translate-y-1/2 z-40">{modalEditSubJob}</div>
       <div className="flex py-2 text-2xl font-bold items-center gap-[4px]">
         <h1 className="card_subjob_title">{title}</h1>
       </div>
@@ -57,13 +56,16 @@ const CardSubJob = React.memo((
                 } marker:duration-100 ease-in-out`}
         >
           <li>
-            <b>Descrição: </b> <div className="breakable-text overflow-y-auto max-h-[3rem]"> {description} </div>
+            <b>Descrição: </b> <span className="block max-h-[3rem] overflow-y-auto break-words breakable-text"> {description} </span>
           </li>
           <li>
             <b>Quantidade: </b> <span className="breakable-text"> {quantity} </span>
           </li>
           <li>
             <b>Valor: </b> <span className="breakable-text overflow-y-auto max-h-[3rem]"> R$ {value.toFixed(2).replace(".", ",")} </span>
+          </li>
+          <li>
+            <b>Data Prevista: </b> <span className="breakable-text overflow-y-auto max-h-[3rem]"> {expectedDate} </span>
           </li>
           <li>
             <b>Status: </b> <b className={`${done ? "text-cyan-zero":"text-yellow-zero"}`}>{done ? "Concluído" : "Pendente"}</b>
@@ -84,7 +86,7 @@ const CardSubJob = React.memo((
               {done ? "Desmarcar": "Concluir"}
             </button>
             <button
-              onClick={() => setIsEditingSubJob(!isEditingSubJob) }
+              onClick={() => handleIsEditingStatus() }
               className={`h-[34px] w-[7rem] text-[14px] text-yellow-zero hover:text-[#B9B9B9]
                 border-2 border-yellow-zero
                 font-bold cursor-pointer duration-100`}

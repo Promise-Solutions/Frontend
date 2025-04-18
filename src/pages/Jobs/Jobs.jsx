@@ -25,8 +25,6 @@ const Jobs = () => {
           findClientById
       );
 
-
-      console.log("elements", elements)
     setJobsElements(elements);
     setIsLoading(false);
   };
@@ -58,7 +56,7 @@ const Jobs = () => {
     <div className="min-w-full min-h-full text-white">
       {/* Seção de cabeçalho com título e botão */}
       <section className="flex flex-col justify-around items-center mx-16 mt-6">
-      <div className="flex w-full justify-between">
+      <div className="flex flex-col md:flex-row w-full justify-between">
             <div className="flex items-center">
               <h1 className="text-2xl font-thin">Gerencie seus serviços</h1>
             </div>
