@@ -41,8 +41,8 @@ export const RenderInfos = () => {
       const hasOpenCommand = commands.some(
         (command) =>
           (isClient
-            ? command.fkCliente === userId
-            : command.fkFuncionario === userId) && command.status === "Aberta"
+            ? command.fkClient === userId
+            : command.fkEmployee === userId) && command.status === "OPEN"
       );
 
       if (hasOpenCommand) {
@@ -93,10 +93,10 @@ export const RenderInfos = () => {
 
     return jobs.filter((job) => {
       console.log("Renderizando serviços:", {
-        title: job.titulo,
-        category: job.categoria,
+        title: job.title,
+        category: job.category,
       });
-      return job.fkCliente == userId;
+      return job.fkClient == userId;
     });
   };
 
@@ -391,25 +391,24 @@ export const RenderInfos = () => {
       case "2":
         return (
           <div>
-            <h1 className="text-[42px]">
-              <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
-            </h1>
-            <Dropdown
-              title="Serviços"
-              content={
-                <section>
-                  <div className="flex justify-end">
-                    <RegisterButton
-                      id="register_button"
-                      title="Registrar Serviço"
-                      text="+"
-                      onClick={() => registerRedirect(navigate)}
-                    />
-                  </div>
-                  <Table headers={tableHeader} data={tableData} />
-                </section>
-              }
-            />
+            <div className="flex justify-between items-center">
+              <h1 className="text-[42px]">
+                <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
+              </h1>
+              <div className="flex justify-end">
+                <RegisterButton
+                  id="register_button"
+                  title="Registrar Serviço"
+                  text="+"
+                  onClick={() => registerRedirect(navigate)}
+                />
+              </div>
+            </div>
+            <section>
+              <div className="flex justify-center">
+                <Table headers={tableHeader} data={tableData} />
+              </div>
+            </section>
           </div>
         );
 
@@ -423,7 +422,8 @@ export const RenderInfos = () => {
               <ul className="flex flex-col mt-6 gap-2">
                 {isClient && (
                   <li>
-                    <b>Tipo de Cliente: </b> {user?.clientType}
+                    <b>Tipo de Cliente: </b>{" "}
+                    {user?.clientType == "SINGLE" ? "Avulso" : "Mensal"}
                   </li>
                 )}
                 <li>

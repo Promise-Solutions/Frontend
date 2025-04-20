@@ -7,18 +7,19 @@ const CommandContext = createContext();
 export const CommandProvider = ({ children }) => {
   const [command, setCommand] = useState(null);
   const [commandId, setCommandId] = useState(() =>
-    localStorage.getItem("commandId")
+    sessionStorage.getItem("commandId")
   );
 
-  // Sempre que commandId mudar, salvar na localStorage
   useEffect(() => {
-    localStorage.setItem("commandId", commandId || "");
+    sessionStorage.setItem("commandId", commandId || "");
   }, [commandId]);
 
-  // Buscar comanda com base no ID armazenado
   useEffect(() => {
     const fetchCommandData = async () => {
-      if (!commandId) return;
+      if (!commandId) {
+        setCommand(null); // Clear command when no commandId is set
+        return;
+      }
 
       try {
         const endpoint = `/commands/${commandId}`;
@@ -28,34 +29,49 @@ export const CommandProvider = ({ children }) => {
         if (commandData) {
           setCommand({
             ...commandData,
-            status: commandData.status === "Aberta" ? "Aberta" : "Fechada",
-            desconto: `${commandData.desconto}%`,
-            valorTotal: `R$ ${parseFloat(commandData.valorTotal).toFixed(2)}`,
+            status: commandData.status === "OPEN" ? "Aberta" : "Fechada",
+            desconto: `${commandData.discount}%`,
+            valorTotal: commandData.totalValue,
           });
         } else {
           throw new Error("Comanda não encontrada.");
         }
       } catch (error) {
         console.error("Erro ao buscar dados da comanda:", error);
+        setCommand(null); // Clear command on error
       }
     };
+
     fetchCommandData();
   }, [commandId]);
 
-  // Busca comandas filtradas por status
+  const updateCommandId = (newCommandId) => {
+    if (newCommandId !== commandId) {
+      setCommand(null); // Clear command to avoid flickering
+      setCommandId(newCommandId);
+      sessionStorage.setItem("commandId", newCommandId || "");
+    }
+  };
+
   const findCommands = async (filterType) => {
     try {
       const endpoint =
         filterType === "ABERTAS"
-          ? "/commands?status=Aberta"
-          : "/commands?status=Fechada";
+          ? "/commands?status=OPEN"
+          : "/commands?status=CLOSED";
       const response = await axiosProvider.get(endpoint);
-      return response.data.map((command) => ({
-        ...command,
-        status: command.status === "Aberta" ? "Aberta" : "Fechada",
-        desconto: `${command.desconto}%`,
-        valorTotal: `R$ ${parseFloat(command.valorTotal).toFixed(2)}`,
-      }));
+
+      if (Array.isArray(response.data)) {
+        return response.data.map((command) => ({
+          ...command,
+          status: command.status === "OPEN" ? "Aberta" : "Fechada", // Retorna status correto
+          discount: `${command.discount}%`,
+          totalValue: `R$ ${parseFloat(command.totalValue).toFixed(2)}`,
+        }));
+      } else {
+        console.log("Erro: response.data não é um array.", response.data);
+        return [];
+      }
     } catch (error) {
       console.error("Erro ao buscar comandas:", error);
       return [];
@@ -68,7 +84,7 @@ export const CommandProvider = ({ children }) => {
         command,
         setCommand,
         commandId,
-        setCommandId,
+        setCommandId: updateCommandId, // Use the updated function
         findCommands,
       }}
     >

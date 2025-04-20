@@ -23,13 +23,13 @@ const StockTable = ({ products, onEdit, onDelete }) => {
             <tr key={product.id} className="bg-[#02AEBA10]">
               <td className="border border-gray-700 text-center px-4 py-2">{product.id}</td>
               <td className="border border-gray-700 text-center px-4 py-2">
-                {product.nomeProduto}
+                {product.name}
               </td>
               <td className="border border-gray-700 text-center px-4 py-2">
-                {product.qtdProduto}
+                {product.quantity}
               </td>
               <td className="border border-gray-700 text-center px-4 py-2">
-                R$ {product.valorUnitario}
+                R$ {Number(product.unitValue).toFixed(2)}
               </td>
               <td className="border border-gray-700 text-center px-4 py-2">
                 <div className="flex gap-2">

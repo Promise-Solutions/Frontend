@@ -5,7 +5,7 @@ import CancelButton from "../modalConfirmDelete/cancelButton";
 import { showToast } from "../../toastStyle/ToastStyle";
 import { axiosProvider } from "../../../provider/apiProvider";
 
-const ModalOpenCommand = ({ isOpen, onClose }) => {
+const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
   const [clients, setClients] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [selectedClient, setSelectedClient] = useState(null);
@@ -15,19 +15,17 @@ const ModalOpenCommand = ({ isOpen, onClose }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const clientsResponse = await axiosProvider.get(
-          "/clientes"
-        );
-        const employeesResponse = await axiosProvider.get(
-          "/funcionarios"
-        );
+        const clientsResponse = await axiosProvider.get("/clients");
+        const employeesResponse = await axiosProvider.get("/employees");
         const commandsResponse = await axiosProvider.get(
-          "/commands?status=Aberta"
+          "/commands?status=OPEN"
         );
 
-        setClients(clientsResponse.data);
-        setEmployees(employeesResponse.data);
-        setOpenCommands(commandsResponse.data);
+        setClients(clientsResponse.data || []); // Ensure data is an array
+        setEmployees(employeesResponse.data || []); // Ensure data is an array
+        setOpenCommands(
+          Array.isArray(commandsResponse.data) ? commandsResponse.data : []
+        ); // Validate response
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
         showToast.error("Erro ao carregar dados.");
@@ -53,24 +51,21 @@ const ModalOpenCommand = ({ isOpen, onClose }) => {
       return;
     }
 
-    // Check if the client already has an open command
     if (
       selectedClient &&
       openCommands.some(
-        (command) => command.fkCliente === parseInt(selectedClient)
+        (command) => command.fkClient === parseInt(selectedClient)
       )
     ) {
       showToast.error("Este cliente já possui uma comanda aberta.");
       return;
     }
 
-    // Check if the employee already has an open command with no client
     if (
       (!selectedClient || selectedClient === "null") &&
       openCommands.some(
         (command) =>
-          command.fkCliente === null &&
-          command.fkFuncionario === parseInt(selectedEmployee)
+          command.fkClient === null && command.fkEmployee === selectedEmployee
       )
     ) {
       showToast.error("Este funcionário já possui uma comanda aberta.");
@@ -78,18 +73,25 @@ const ModalOpenCommand = ({ isOpen, onClose }) => {
     }
 
     try {
+      const now = new Date();
+      const offset = -3; // Brasília timezone offset (UTC-3)
+      const openingDateTime = new Date(
+        now.getTime() + offset * 60 * 60 * 1000
+      ).toISOString();
+
       const newCommand = {
-        fkCliente: selectedClient ? parseInt(selectedClient) : null, // Set to null if no client is selected
-        fkFuncionario: parseInt(selectedEmployee), // Ensure fkFuncionario is an integer
-        dataHoraAbertura: new Date().toISOString(),
-        status: "Aberta",
-        desconto: "0.00",
-        valorTotal: "0.00",
+        fkClient: selectedClient ? selectedClient : null,
+        fkEmployee: selectedEmployee,
+        openingDateTime: openingDateTime,
+        status: "OPEN",
+        discount: "0.00",
+        totalValue: "0.00",
       };
 
       await axiosProvider.post("/commands", newCommand);
       showToast.success("Comanda aberta com sucesso!");
-      onClose(); // Close the modal
+      onClose();
+      onCommandAdded(); // Notify parent to refresh the command list
     } catch (error) {
       console.error("Erro ao abrir comanda:", error);
       showToast.error("Erro ao abrir comanda.");
@@ -116,7 +118,7 @@ const ModalOpenCommand = ({ isOpen, onClose }) => {
               ...clients.map((client) => ({
                 id: client.id,
                 value: client.id,
-                name: client.nome,
+                name: client.name,
               })),
             ]}
             handleOnChange={handleClientChange}
@@ -128,7 +130,7 @@ const ModalOpenCommand = ({ isOpen, onClose }) => {
             options={[
               ...employees.map((employee) => ({
                 id: employee.id,
-                name: employee.nome,
+                name: employee.name,
               })),
             ]}
             handleOnChange={handleEmployeeChange}

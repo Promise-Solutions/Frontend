@@ -1,7 +1,7 @@
 // Importa os hooks useEffect e useState do React
 import { useEffect, useState } from "react";
 // Importa o ícone de busca
-import icon from "../../assets/icone-busca.png";
+import icon from "../../../assets/icone-busca.png";
 
 // Componente funcional para o filtro de busca de usuários
 const CommandFilter = ({ id, placeholder, onSearch }) => {
@@ -19,58 +19,28 @@ const CommandFilter = ({ id, placeholder, onSearch }) => {
 
   // useEffect para adicionar e remover o evento de input dinamicamente
   useEffect(() => {
-    const inputSearchUser = document.getElementById("input_search_user"); // Obtém o elemento do input pelo ID
+    const inputSearchCommand = document.getElementById("input_search_command"); // Updated ID
     const handleInput = () => {
-      const filter = inputSearchUser.value.toUpperCase(); // Converte o valor do input para maiúsculas
-      console.log("Filter value:", filter); // Log do valor do filtro
-      const cards = document.querySelectorAll(".card_user"); // Seleciona todos os elementos com a classe "card_user"
+      const filter = inputSearchCommand.value.toUpperCase(); // Convert input to uppercase
+      const cards = document.querySelectorAll(".card_command"); // Select all command cards
 
-      if (filter.trim() === "") {
-        // Se o input estiver vazio, exibe todos os cards
-        cards.forEach((card) => {
-          card.style.display = "block";
-          console.log("Exibindo card:", card); // Log para depuração
-        });
-        return;
-      }
-
-      // Filtra os cards com base no valor do input
       cards.forEach((card) => {
-        const name =
-          card.querySelector(".card_user_name")?.textContent.toUpperCase() ||
-          ""; // Seleciona o nome do usuário no card e converte para maiúsculas
-        const email =
-          card.querySelector(".card_user_email")?.textContent ||
-          ""; // Seleciona o e-mail do usuário no card e converte para maiúsculas
-        const contact =
-          card.querySelector(".card_user_contact")?.textContent ||
-          ""; // Seleciona o contato do usuário no card e converte para maiúsculas
-
-        // Logs para depuração
-        console.log("Card name:", name);
-        console.log("Card email:", email);
-        console.log("Card contact:", contact);
-
-        // Exibe o card se o nome, e-mail ou contato incluir o filtro
-        if (
-          name.includes(filter) ||
-          email.includes(filter) ||
-          contact.includes(filter)
-        ) {
-          card.style.display = "block";
-          console.log("Exibindo card:", card); // Log para depuração
+        const cardText = Array.from(card.querySelectorAll("span, h1, li")).map(
+          (element) => element.textContent.toUpperCase()
+        ); // Collect all visible text content
+        if (cardText.some((text) => text.includes(filter))) {
+          card.style.display = "block"; // Show card if any text matches the filter
         } else {
-          card.style.display = "none"; // Oculta o card se não corresponder ao filtro
-          console.log("Ocultando card:", card); // Log para depuração
+          card.style.display = "none"; // Hide card if no text matches
         }
       });
     };
 
-    inputSearchUser.addEventListener("input", handleInput); // Adiciona o evento de input
+    inputSearchCommand.addEventListener("input", handleInput); // Add input event listener
 
     // Remove o evento ao desmontar o componente
     return () => {
-      inputSearchUser.removeEventListener("input", handleInput);
+      inputSearchCommand.removeEventListener("input", handleInput); // Remove event listener on cleanup
     };
   }, []); // Executa apenas uma vez ao montar o componente
 
@@ -83,7 +53,7 @@ const CommandFilter = ({ id, placeholder, onSearch }) => {
       <img src={icon} alt="Buscar" className="mx-2 w-[24px] h-[24px]" />{" "}
       {/* Ícone de busca */}
       <input
-        id={id} // Define o ID do input
+        id={id || "input_search_command"} // Updated default ID
         type="text" // Define o tipo como texto
         placeholder={placeholder} // Define o texto de placeholder
         className="outline-none" // Remove o contorno padrão

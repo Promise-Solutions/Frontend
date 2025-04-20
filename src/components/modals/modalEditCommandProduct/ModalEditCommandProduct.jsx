@@ -3,6 +3,7 @@ import Select from "../../form/Select.jsx";
 import Input from "../../form/Input.jsx";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton.jsx";
 import CancelButton from "../modalConfirmDelete/cancelButton.jsx";
+import { showToast } from "../../toastStyle/ToastStyle";
 
 const ModalEditCommandProduct = ({
   isOpen,
@@ -14,7 +15,15 @@ const ModalEditCommandProduct = ({
   const [formData, setFormData] = useState(initialData || {});
 
   useEffect(() => {
-    setFormData(initialData || {});
+    if (initialData) {
+      setFormData({
+        idProduto: initialData.idProduto,
+        nomeProduto: initialData.name, // Map initial product name
+        qtdProduto: initialData.productQuantity, // Map initial quantity
+        valorUnitario: initialData.unitValue, // Map initial unit value
+        estoque: initialData.stockQuantity, // Map initial stock quantity
+      });
+    }
   }, [initialData]);
 
   const handleInputChange = (e) => {
@@ -23,25 +32,43 @@ const ModalEditCommandProduct = ({
   };
 
   const handleProductSelect = (e) => {
-    const selectedProductId = e.target.value;
+    const selectedProductId = parseInt(e.target.value); // Ensure the ID is parsed as an integer
     const selectedProduct = allProducts.find(
-      (product) => product.id === parseInt(selectedProductId)
+      (product) => product.id === selectedProductId
     );
 
     if (selectedProduct) {
       setFormData({
         ...formData,
         idProduto: selectedProduct.id,
-        nomeProduto: selectedProduct.nomeProduto,
-        valorUnitario: selectedProduct.valorUnitario,
-        estoque: selectedProduct.qtdProduto,
+        nomeProduto: selectedProduct.name, // Correct field for product name
+        valorUnitario: selectedProduct.unitValue, // Correct field for unit value
+        estoque: selectedProduct.quantity, // Correct field for stock quantity
       });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+
+    if (!formData.idProduto) {
+      showToast.error("Por favor, selecione um produto.");
+      return;
+    }
+    if (!formData.qtdProduto || formData.qtdProduto <= 0) {
+      showToast.error("Por favor, insira uma quantidade válida.");
+      return;
+    }
+    if (formData.qtdProduto > formData.estoque) {
+      showToast.error("A quantidade não pode exceder o estoque disponível.");
+      return;
+    }
+
+    onSave({
+      ...formData,
+      qtdProduto: parseInt(formData.qtdProduto),
+      valorUnitario: parseFloat(formData.valorUnitario),
+    });
   };
 
   if (!isOpen) return null;
@@ -57,7 +84,7 @@ const ModalEditCommandProduct = ({
               name="idProduto"
               options={allProducts.map((product) => ({
                 id: product.id,
-                name: `${product.nomeProduto} (Estoque: ${product.qtdProduto})`,
+                name: `${product.name} (Estoque: ${product.quantity})`,
               }))}
               handleOnChange={handleProductSelect}
               value={formData.idProduto || ""}

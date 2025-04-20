@@ -22,20 +22,11 @@ export function UserProvider({ children }) {
         return;
       }
 
-      console.log(
-        "Buscando dados do usuário com userId:",
-        userId,
-        "isClient:",
-        isClient
-      );
-
       try {
         const endpoint = isClient
           ? `/clients/${userId}`
           : `/employees/${userId}`;
         const response = await axiosProvider.get(endpoint);
-
-        console.log("Resposta da API:", response);
 
         if (response.data) {
           const userData = Array.isArray(response.data)
@@ -48,7 +39,6 @@ export function UserProvider({ children }) {
             contact: userData?.contact || userData?.contato || "",
           };
 
-          console.log("Dados formatados do usuário:", formattedUserData);
           setUser(formattedUserData); // Atualiza o estado do usuário
         } else {
           console.error("Nenhum dado encontrado para o usuário.");
@@ -65,10 +55,28 @@ export function UserProvider({ children }) {
     try {
       const endpoint = filterType === "CLIENTE" ? "/clients" : "/employees";
       const response = await axiosProvider.get(endpoint);
-      return response.data.map((user) => ({
-        ...user,
-        clientType: user.clientType === "SINGLE" ? "AVULSO" : "MENSAL", // Map values for display
-      }));
+
+      // Verifique se response.data é um array antes de usar .map()
+      if (Array.isArray(response.data)) {
+        console.log("Resposta da API:", response.data);
+        return response.data.map((user) => ({
+          ...user,
+          clientType: user.clientType === "SINGLE" ? "AVULSO" : "MENSAL", // Map values for display
+        }));
+      } else if (response.data && typeof response.data === "object") {
+        console.log(
+          "Resposta da API não é um array, mas um objeto:",
+          response.data
+        );
+        // Aqui você pode retornar um array com os dados do objeto
+        return [response.data];
+      } else {
+        console.log(
+          "Resposta da API não é um array nem um objeto:",
+          response.data
+        );
+        return [];
+      }
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
       return [];

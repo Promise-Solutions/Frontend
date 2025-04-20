@@ -6,21 +6,21 @@ import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
 
 const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
-    nomeProduto: "",
-    qtdProduto: 0,
-    valorUnitario: "",
+    name: "",
+    quantity: 0,
+    unitValue: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const sanitizedValue = name === "qtdProduto" && value < 0 ? 0 : value;
+    const sanitizedValue = name === "quantity" && value < 0 ? 0 : value;
     setFormData((prevData) => ({ ...prevData, [name]: sanitizedValue }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onAdd(formData);
-    setFormData({ nomeProduto: "", qtdProduto: 0, valorUnitario: "" });
+    setFormData({ name: "", quantity: 0, unitValue: "" });
   };
 
   if (!isOpen) return null;
@@ -33,27 +33,27 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
           <div className="flex flex-col gap-4">
             <Input
               type="text"
-              name="nomeProduto"
+              name="name"
               text="Nome do Produto"
               placeholder="Digite o nome do produto"
-              value={formData.nomeProduto}
+              value={formData.name}
               handleOnChange={handleInputChange}
             />
             <Input
               type="number"
-              name="qtdProduto"
+              name="quantity"
               text="Quantidade"
               placeholder="Digite a quantidade"
-              value={formData.qtdProduto}
+              value={formData.quantity}
               handleOnChange={handleInputChange}
               min="0"
             />
             <Input
               type="text"
-              name="valorUnitario"
+              name="unitValue"
               text="Valor Unitário"
               placeholder="Digite o valor unitário"
-              value={formData.valorUnitario}
+              value={formData.unitValue}
               handleOnChange={handleInputChange}
             />
           </div>

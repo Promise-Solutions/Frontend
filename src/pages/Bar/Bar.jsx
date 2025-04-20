@@ -1,5 +1,5 @@
 // Importa os componentes necessários
-import UserFilter from "../../components/filters/userFilter/UserFilter";
+import CommandFilter from "../../components/filters/commandFilter/CommandFilter"; // Updated import
 import BarTypeFilter from "../../components/filters/barTypeFilter/BarTypeFilter";
 import RegisterButton from "../../components/buttons/registerButton/RegisterButton";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
@@ -13,52 +13,68 @@ import { useCommandContext } from "../../context/CommandContext"; // Importa o B
 // Representa a estrutura da página "Bar", atualmente sem conteúdo
 const Bar = () => {
   const { setCommandId, findCommands } = useCommandContext(); // Obtém o setCommandId do contexto
-  const [userElements, setUserElements] = useState([]); // Estado para armazenar os elementos renderizados
+  const [commandElements, setCommandElements] = useState([]); // Estado para armazenar os elementos renderizados
   const [filterType, setFilterType] = useState("ABERTAS"); // Default to "ABERTAS"
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
   const [isOpenCommandModalOpen, setIsOpenCommandModalOpen] = useState(false); // State to control the modal
 
-  const navigate = useNavigate(); //Navigate para navegatação, ele não atualiza a página
+  const navigate = useNavigate(); // Navigate para navegação, ele não atualiza a página
+
+  const refreshCommands = async () => {
+    try {
+      const elements = await renderCommands(
+        filterType,
+        findCommands,
+        setCommandId,
+        navigate
+      );
+      setCommandElements(elements);
+    } catch (error) {
+      console.error("Erro ao renderizar comandas:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchAndRender = async () => {
-      try {
-        const elements = await renderCommands(
-          filterType,
-          findCommands,
-          setCommandId,
-          navigate
-        );
-        setUserElements(elements);
-      } catch (error) {
-        console.error("Erro ao renderizar comandas:", error);
-      }
-    };
-
-    fetchAndRender();
-  }, [filterType, setCommandId]); // Atualiza quando filterType ou setCommandId muda
+    refreshCommands();
+  }, [filterType]); // Atualiza quando filterType muda
 
   const handleSearch = (term) => {
-    setSearchTerm(term.toUpperCase()); // Atualiza o termo de busca
+    setSearchTerm(term.toUpperCase().trim());
   };
 
   const handleFilterChange = (newFilter) => {
-    setFilterType(newFilter === "1" ? "ABERTAS" : "FECHADAS"); // Map filter value to type
+    setFilterType(newFilter); // Atualiza diretamente com o valor correto ("ABERTAS" ou "FECHADAS")
   };
 
-  const filteredUserElements = userElements.filter((element) => {
-    const name = element.props?.name?.toUpperCase(); // Verifica se name existe antes de chamar toUpperCase
-    return name && name.includes(searchTerm); // Filtra apenas se name for válido
+  const filteredCommandElements = commandElements.filter((element) => {
+    const visibleFields = [
+      element.props.name,
+      element.props.employeeName,
+      element.props.totalValue,
+      element.props.discount,
+      element.props.dateHourOpen,
+      element.props.dateHourClose,
+    ].map((field) => (field || "").toUpperCase().trim());
+
+    const term = searchTerm.toUpperCase().trim();
+
+    return visibleFields.some((field) => field.includes(term));
   });
+
+  const noResultsMessage =
+    searchTerm && filteredCommandElements.length === 0 ? (
+      <p className="text-center text-gray-400">
+        Nenhum resultado encontrado para "{searchTerm}".
+      </p>
+    ) : null;
 
   return (
     <div className="min-w-full min-h-full text-white overflow-y-hidden">
       {/* Seção principal com filtros e cards */}
       <section className="mx-16 my-6">
-        {/* Filtro de busca de usuários */}
-        {/* Filtros por tipo de usuário e exibição de cards */}
+        {/* Filtro de busca de comandas */}
         <div className="flex justify-center flex-col">
-          {/* Filtro por tipo de usuário (Clientes ou Internos) */}
+          {/* Filtro por tipo de comanda (Abertas ou Fechadas) */}
           <div className="flex w-full justify-between">
             <div className="flex items-center w-[30%] gap-4">
               <div className="flex justify-between items-center">
@@ -72,12 +88,12 @@ const Bar = () => {
             </div>
             <div className="flex justify-center w-full pr-30 flex-1">
               <BarTypeFilter
-                onFilterChange={handleFilterChange} // Pass updated callback
+                onFilterChange={handleFilterChange} // Passa a função corrigida
               />
             </div>
             <div className="flex gap-2 justify-end text-gray-400">
-              <UserFilter
-                id="input_search_user"
+              <CommandFilter
+                id="input_search_command" // Updated ID
                 placeholder="Busque uma Comanda"
                 onSearch={handleSearch} // Passa a função de busca
               />
@@ -90,19 +106,20 @@ const Bar = () => {
               />
             </div>
           </div>
-          {/* Espaço reservado para os cards de usuários */}
+          {/* Espaço reservado para os cards de comandas */}
           <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
-            {filteredUserElements.length > 0 ? (
-              filteredUserElements
-            ) : filterType === "ABERTAS" ? (
-              <p className="text-center text-gray-400">
-                Nenhuma comanda aberta encontrada.
-              </p>
-            ) : (
-              <p className="text-center text-gray-400">
-                Nenhuma comanda fechada encontrada.
-              </p>
-            )}
+            {filteredCommandElements.length > 0
+              ? filteredCommandElements // Renderiza os elementos filtrados
+              : noResultsMessage ||
+                (filterType === "ABERTAS" ? (
+                  <p className="text-center text-gray-400">
+                    Nenhuma comanda aberta encontrada.
+                  </p>
+                ) : (
+                  <p className="text-center text-gray-400">
+                    Nenhuma comanda fechada encontrada.
+                  </p>
+                ))}
           </div>
         </div>
       </section>
@@ -110,6 +127,7 @@ const Bar = () => {
       <ModalOpenCommand
         isOpen={isOpenCommandModalOpen}
         onClose={() => setIsOpenCommandModalOpen(false)}
+        onCommandAdded={refreshCommands} // Refresh commands on new command addition
       />
     </div>
   );
