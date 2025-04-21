@@ -75,7 +75,7 @@ const Jobs = () => {
               />
             </div>
           </div>
-        <div className="flex justify-center mt-4 flex-col">
+        <div className="flex justify-center w-full mt-4 flex-col">
           {isLoading ? 
           ( 
             <SyncLoader 

@@ -23,7 +23,7 @@ const Table = ({ headers, data }) => {
               {headers.map((header, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className="border border-gray-700 text-center px-4 bg-[#02AEBA10] py-2"
+                  className="border border-gray-700 text-center px-7 bg-[#02AEBA10] py-2"
                 >
                   {typeof row[header.key] === "string" ||
                   typeof row[header.key] === "number"
