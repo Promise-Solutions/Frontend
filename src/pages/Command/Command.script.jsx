@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Input from "../../components/form/Input.jsx";
 import Select from "../../components/form/Select.jsx"; // Import Select component
 import ConfirmButton from "../../components/buttons/confirmButton/ConfirmButton.jsx"; // Import ConfirmButton component
@@ -12,18 +11,17 @@ import ModalAddDiscount from "../../components/modals/modalAddDiscount/ModalAddD
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { calcTotalWithDiscount, calcProductsTotal } from "../../hooks/Calc"; // Importa funções de cálculo
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { axiosProvider } from "../../provider/apiProvider.js";
 
 export const RenderCommandDetails = () => {
   const { command, setCommand, commandId, setCommandId } = useCommandContext(); // Usa o BarContext para obter a comanda
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState({
-    nomeProduto: "",
-    qtdProduto: 0,
-    valorUnitario: "",
-    estoque: 0,
-    idProduto: null,
+    name: "",
+    productQuantity: 0,
+    unitValue: "",
+    idProduct: null,
   });
   const [allProducts, setAllProducts] = useState([]); // State to store all available products
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -35,8 +33,8 @@ export const RenderCommandDetails = () => {
   const [employeeName, setEmployeeName] = useState(""); // Nome do funcionário
   const [clientName, setClientName] = useState(""); // Nome do cliente
   const [isDeleteCommandModalOpen, setIsDeleteCommandModalOpen] =
-    useState(false); // Estado separado para deletar a comanda
-  const navigate = useNavigate();
+    useState(false);
+  const navigate = useNavigate(); // Inicializa a função navigate
 
   const formatDateTime = (dateTime) => {
     if (!dateTime) return "Ainda aberta";
@@ -51,72 +49,15 @@ export const RenderCommandDetails = () => {
     });
   };
 
-  const recalculateTotalValue = (updatedProducts) => {
-    return calcProductsTotal(updatedProducts); // Usa a função de cálculo
-  };
-
+  // Lógica de reset de campos e busca de informações da comanda a cara interação
   useEffect(() => {
     if (!command) {
       setProducts([]);
       return;
     }
 
-    const fetchCommandDetails = async () => {
-      try {
-        // Buscar o funcionário pelo fkFuncionario
-        const employeeResponse = await axiosProvider.get(
-          `/funcionarios`
-        );
-        const employee = employeeResponse.data.find(
-          (emp) => emp.id === command.fkFuncionario
-        );
-        setEmployeeName(
-          employee ? employee.nome : "Funcionário não encontrado"
-        );
-
-        // Buscar o cliente pelo fkCliente
-        if (command.fkCliente) {
-          const clientResponse = await axiosProvider.get(
-            `/clientes`
-          );
-          const client = clientResponse.data.find(
-            (cli) => cli.id === command.fkCliente
-          );
-          setClientName(client ? client.nome : "Cliente não encontrado");
-        } else {
-          setClientName("Cliente não associado");
-        }
-
-        // Buscar produtos relacionados à comanda
-        const productsResponse = await axiosProvider.get(
-          `/commandProduct?fkComanda=${command.id}`
-        );
-        const allProductsResponse = await axiosProvider.get(
-          "/products"
-        );
-
-        const enrichedProducts = productsResponse.data.map((product) => {
-          const relatedProduct = allProductsResponse.data.find(
-            (p) => p.id === product.fkProduto
-          );
-          return {
-            ...product,
-            nomeProduto: relatedProduct
-              ? relatedProduct.nomeProduto
-              : "Desconhecido",
-            idProduto: relatedProduct ? relatedProduct.id : "N/A",
-          };
-        });
-
-        setProducts(enrichedProducts);
-      } catch (error) {
-        console.error("Erro ao buscar detalhes da comanda:", error);
-        setProducts([]);
-      }
-    };
-
     fetchCommandDetails();
-  }, [command]);
+  }, [command?.id]);
 
   useEffect(() => {
     const fetchAllProducts = async () => {
@@ -131,17 +72,107 @@ export const RenderCommandDetails = () => {
     fetchAllProducts();
   }, []);
 
+  useEffect(() => {
+    if (!commandId) {
+      setCommand(null); // Clear command when no commandId is set
+      return;
+    }
+
+    const fetchCommandDetails = async () => {
+      try {
+        // Evita buscar detalhes se o estado atual já corresponde ao commandId
+        if (command && command.id === commandId) {
+          console.log("Comanda já carregada no estado.");
+          return;
+        }
+
+        const endpoint = `/commands/${commandId}`;
+        const response = await axiosProvider.get(endpoint);
+        const commandData = response.data;
+
+        if (commandData) {
+          setCommand(commandData); // Atualiza o estado com os dados da comanda
+        } else {
+          console.error("Comanda não encontrada.");
+          setCommand(null);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar detalhes da comanda:", error);
+        setCommand(null);
+      }
+    };
+
+    fetchCommandDetails();
+  }, [commandId]); // Observa apenas commandId
+
+  const fetchAllProducts = async () => {
+    try {
+      const response = await axiosProvider.get("/products");
+      setAllProducts(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar todos os produtos:", error);
+    }
+  };
+
+  const fetchCommandDetails = async () => {
+    try {
+      // Fetch employee details
+      const employeeResponse = await axiosProvider.get(`/employees`);
+      const employee = employeeResponse.data.find(
+        (emp) => emp.id === command.fkEmployee
+      );
+      setEmployeeName(employee ? employee.name : "Funcionário não encontrado");
+
+      // Fetch client details
+      if (command.fkClient) {
+        const clientResponse = await axiosProvider.get(`/clients`);
+        const client = clientResponse.data.find(
+          (cli) => cli.id === command.fkClient
+        );
+        setClientName(client ? client.name : "Cliente não encontrado");
+      } else {
+        setClientName("Cliente não associado");
+      }
+
+      // Fetch products related to the command
+      const productsResponse = await axiosProvider.get(
+        `/command-products?fkComanda=${command.id}`
+      );
+      const allProductsResponse = await axiosProvider.get("/products");
+
+      const productsData = Array.isArray(productsResponse.data)
+        ? productsResponse.data
+        : []; // Ensure productsData is an array
+
+      const enrichedProducts = productsData.map((product) => {
+        const relatedProduct = allProductsResponse.data.find(
+          (p) => p.id === product.fkProduct
+        );
+        return {
+          ...product,
+          name: relatedProduct ? relatedProduct.name : "Desconhecido",
+          idProduto: relatedProduct ? relatedProduct.id : "N/A",
+        };
+      });
+
+      setProducts(enrichedProducts);
+
+      // Fetch updated command details
+      const updatedCommand = await axiosProvider.get(`/commands/${command.id}`);
+      setCommand(updatedCommand.data);
+    } catch (error) {
+      console.error("Erro ao buscar detalhes da comanda:", error);
+      setProducts([]);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "qtdProduto") {
+    if (name === "quantity") {
       const quantity = parseInt(value);
       if (quantity < 0) {
         showToast.error("A quantidade não pode ser negativa.");
-        return;
-      }
-      if (quantity > newProduct.estoque) {
-        showToast.error("A quantidade não pode exceder o estoque disponível.");
         return;
       }
     }
@@ -150,17 +181,17 @@ export const RenderCommandDetails = () => {
   };
 
   const handleProductSelect = (e) => {
-    const selectedProductId = e.target.value;
+    const selectedProductId = parseInt(e.target.value); // Ensure the ID is parsed as an integer
     const selectedProduct = allProducts.find(
-      (product) => product.id === parseInt(selectedProductId)
+      (product) => product.id === selectedProductId
     );
 
     if (selectedProduct) {
       setNewProduct({
-        nomeProduto: selectedProduct.nomeProduto,
-        qtdProduto: 0,
-        valorUnitario: selectedProduct.valorUnitario,
-        estoque: selectedProduct.qtdProduto,
+        name: selectedProduct.name,
+        quantity: 0,
+        unitValue: selectedProduct.unitValue,
+        stockQuantity: selectedProduct.quantity, // Set stock quantity
         idProduto: selectedProduct.id,
       });
     }
@@ -169,68 +200,33 @@ export const RenderCommandDetails = () => {
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
-    if (!newProduct.idProduto || newProduct.qtdProduto <= 0) {
+    if (!newProduct.idProduto || newProduct.quantity <= 0) {
       showToast.error(
         "Por favor, selecione um produto e insira uma quantidade válida."
       );
       return;
     }
 
-    if (newProduct.qtdProduto > newProduct.estoque) {
-      showToast.error("A quantidade não pode exceder o estoque disponível.");
-      return;
-    }
-
     try {
       const productToAdd = {
-        fkComanda: command.id,
-        fkProduto: newProduct.idProduto,
-        qtdProduto: parseInt(newProduct.qtdProduto),
-        valorUnitario: parseFloat(newProduct.valorUnitario).toFixed(2),
+        fkProduct: newProduct.idProduto,
+        fkCommand: command.id,
+        productQuantity: parseInt(newProduct.quantity),
+        unitValue: parseFloat(newProduct.unitValue).toFixed(2),
       };
 
-      // Add the product to the command
-      const response = await axiosProvider.post(
-        "/commandProduct",
-        productToAdd
-      );
+      await axiosProvider.post("/command-products", productToAdd);
 
-      // Update the stock of the product in the database
-      const updatedStock = newProduct.estoque - newProduct.qtdProduto;
-      await axiosProvider.patch(
-        `/products/${newProduct.idProduto}`,
-        {
-          qtdProduto: updatedStock,
-        }
-      );
+      // Refetch command details and all products
+      await fetchCommandDetails();
+      await fetchAllProducts(); // Update stock information
 
-      // Update the local state
-      const updatedProducts = [...products, response.data];
-      setProducts(updatedProducts);
-
-      // Recalculate the total value
-      const newTotalValue = recalculateTotalValue(updatedProducts);
-      await axiosProvider.patch(`/commands/${command.id}`, {
-        valorTotal: newTotalValue.toFixed(2),
-      });
-      setCommand((prevCommand) => ({
-        ...prevCommand,
-        valorTotal: newTotalValue.toFixed(2),
-      }));
-
-      setAllProducts((prev) =>
-        prev.map((product) =>
-          product.id === newProduct.idProduto
-            ? { ...product, qtdProduto: updatedStock }
-            : product
-        )
-      );
-
+      // Clear inputs
       setNewProduct({
-        nomeProduto: "",
-        qtdProduto: 0,
-        valorUnitario: "",
-        estoque: 0,
+        name: "",
+        quantity: 0,
+        unitValue: "",
+        stockQuantity: 0,
         idProduto: null,
       });
 
@@ -242,7 +238,10 @@ export const RenderCommandDetails = () => {
   };
 
   const handleEditCommandProduct = (product) => {
-    setEditingCommandProduct(product);
+    setEditingCommandProduct({
+      ...product,
+      productQuantity: product.productQuantity, // Map productQuantity to quantity for editing
+    });
     setIsEditCommandProductModalOpen(true);
   };
 
@@ -253,44 +252,11 @@ export const RenderCommandDetails = () => {
 
   const confirmDelete = async () => {
     try {
-      // Add the product back to the stock
-      const updatedStock =
-        allProducts.find((product) => product.id === productToDelete.fkProduto)
-          .qtdProduto + productToDelete.qtdProduto;
+      await axiosProvider.delete(`/command-products/${productToDelete.id}`);
 
-      await axiosProvider.patch(
-        `/products/${productToDelete.fkProduto}`,
-        { qtdProduto: updatedStock }
-      );
-
-      // Remove the product from the command
-      await axiosProvider.delete(
-        `/commandProduct/${productToDelete.id}`
-      );
-
-      // Update local state
-      const updatedProducts = products.filter(
-        (product) => product.id !== productToDelete.id
-      );
-      setProducts(updatedProducts);
-
-      // Recalculate the total value
-      const newTotalValue = recalculateTotalValue(updatedProducts);
-      await axiosProvider.patch(`/commands/${command.id}`, {
-        valorTotal: newTotalValue.toFixed(2),
-      });
-      setCommand((prevCommand) => ({
-        ...prevCommand,
-        valorTotal: newTotalValue.toFixed(2),
-      }));
-
-      setAllProducts((prev) =>
-        prev.map((product) =>
-          product.id === productToDelete.fkProduto
-            ? { ...product, qtdProduto: updatedStock }
-            : product
-        )
-      );
+      // Refetch command details and all products
+      await fetchCommandDetails();
+      await fetchAllProducts(); // Update stock information
 
       setIsDeleteModalOpen(false);
       setProductToDelete(null);
@@ -303,90 +269,21 @@ export const RenderCommandDetails = () => {
 
   const handleUpdateProduct = async (updatedProduct) => {
     try {
-      const originalProduct = products.find(
-        (product) => product.id === editingCommandProduct.id
-      );
-
-      if (!originalProduct) {
-        showToast.error("Produto original não encontrado.");
-        return;
-      }
-
-      const selectedProduct = allProducts.find(
-        (product) => product.id === updatedProduct.idProduto
-      );
-
-      if (!selectedProduct) {
-        showToast.error("Produto selecionado não encontrado.");
-        return;
-      }
-
-      // Reset stock of the original product
-      const restoredStock =
-        allProducts.find((product) => product.id === originalProduct.idProduto)
-          .qtdProduto + originalProduct.qtdProduto;
-
-      await axiosProvider.patch(
-        `/products/${originalProduct.idProduto}`,
-        { qtdProduto: restoredStock }
-      );
-
-      // Update stock for the newly selected product
-      const quantityDifference = parseInt(updatedProduct.qtdProduto);
-      if (quantityDifference > selectedProduct.qtdProduto) {
-        showToast.error("A quantidade excede o estoque disponível.");
-        return;
-      }
-
-      const updatedStock = selectedProduct.qtdProduto - quantityDifference;
-
-      await axiosProvider.patch(
-        `/products/${updatedProduct.idProduto}`,
-        { qtdProduto: updatedStock }
-      );
-
-      // Update the product in the command
       const productToUpdate = {
-        ...editingCommandProduct,
-        nomeProduto: selectedProduct.nomeProduto, // Update to new product name
-        idProduto: selectedProduct.id, // Update to new product ID
-        fkProduto: selectedProduct.id, // Update fkProduto to new product ID
-        qtdProduto: parseInt(updatedProduct.qtdProduto),
-        valorUnitario: parseFloat(selectedProduct.valorUnitario).toFixed(2),
+        fkCommand: command.id,
+        fkProduct: updatedProduct.idProduto,
+        productQuantity: parseInt(updatedProduct.qtdProduto),
+        unitValue: parseFloat(updatedProduct.valorUnitario),
       };
 
       await axiosProvider.patch(
-        `/commandProduct/${editingCommandProduct.id}`,
+        `/command-products/${editingCommandProduct.id}`,
         productToUpdate
       );
 
-      // Update local state
-      const updatedProducts = products.map((product) =>
-        product.id === editingCommandProduct.id ? productToUpdate : product
-      );
-      setProducts(updatedProducts);
-
-      // Recalculate the total value
-      const newTotalValue = recalculateTotalValue(updatedProducts);
-      await axiosProvider.patch(`/commands/${command.id}`, {
-        valorTotal: newTotalValue.toFixed(2),
-      });
-      setCommand((prevCommand) => ({
-        ...prevCommand,
-        valorTotal: newTotalValue.toFixed(2),
-      }));
-
-      setAllProducts((prevProducts) =>
-        prevProducts.map((product) => {
-          if (product.id === originalProduct.idProduto) {
-            return { ...product, qtdProduto: restoredStock };
-          }
-          if (product.id === updatedProduct.idProduto) {
-            return { ...product, qtdProduto: updatedStock };
-          }
-          return product;
-        })
-      );
+      // Refetch command details and all products
+      await fetchCommandDetails();
+      await fetchAllProducts(); // Update stock information
 
       setEditingCommandProduct(null);
       setIsEditCommandProductModalOpen(false);
@@ -398,70 +295,73 @@ export const RenderCommandDetails = () => {
   };
 
   const calculateTotalValue = () => {
-    return parseFloat(command.valorTotal).toFixed(2); // Reflete o valor total do banco
+    return parseFloat(command.totalValue).toFixed(2); // Reflete o valor total do banco
   };
 
   const handleToggleCommandStatus = async () => {
-    if (command.status === "Aberta") {
-      setIsDiscountModalOpen(true); // Abre o modal para adicionar desconto
-    } else {
-      // Lógica para reabrir a comanda
-      const totalValue = calcProductsTotal(products); // Usa a função de cálculo
+    try {
+      if (command.status === "OPEN") {
+        setIsDiscountModalOpen(true);
+      } else {
+        await axiosProvider.patch(`/commands/${command.id}`, {
+          status: "OPEN",
+          closingDateTime: null,
+          discount: "0.00",
+          openingDateTime: command.openingDateTime,
+          totalValue: command.totalValue,
+          fkEmployee: command.fkEmployee,
+        });
 
-      await axiosProvider.patch(`/commands/${command.id}`, {
-        status: "Aberta",
-        dataHoraFechamento: null,
-        desconto: "0.00", // Zera o desconto
-        valorTotal: totalValue.toFixed(2), // Atualiza o valor total sem desconto
-      });
+        // Refetch command details
+        await fetchCommandDetails();
 
-      setCommand({
-        ...command,
-        status: "Aberta",
-        dataHoraFechamento: null,
-        desconto: "0.00",
-        valorTotal: totalValue.toFixed(2),
-      });
-
-      showToast.success("Comanda reaberta com sucesso!");
+        showToast.success("Comanda reaberta com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao alterar status da comanda:", error);
+      showToast.error("Erro ao alterar status da comanda.");
     }
   };
 
   const handleAddDiscount = async (discount) => {
-    const totalValue = calcProductsTotal(products); // Usa a função de cálculo
-    const discountedValue = calcTotalWithDiscount(totalValue, discount); // Usa a lógica atualizada
+    try {
+      const now = new Date();
+      const offset = -3; // Brasília timezone offset (UTC-3)
+      const closingDateTime = new Date(
+        now.getTime() + offset * 60 * 60 * 1000
+      ).toISOString();
 
-    await axiosProvider.patch(`/commands/${command.id}`, {
-      status: "Fechada",
-      dataHoraFechamento: new Date().toISOString(),
-      desconto: discount.toFixed(2),
-      valorTotal: discountedValue.toFixed(2),
-    });
+      await axiosProvider.patch(`/commands/${command.id}`, {
+        status: "CLOSED",
+        closingDateTime: closingDateTime,
+        openingDateTime: command.openingDateTime,
+        totalValue: command.totalValue,
+        fkEmployee: command.fkEmployee,
+        discount: discount.toFixed(2),
+        fkClient: command.fkClient, // Keep the client associated
+      });
 
-    setCommand({
-      ...command,
-      status: "Fechada",
-      dataHoraFechamento: new Date().toISOString(),
-      desconto: discount.toFixed(2),
-      valorTotal: discountedValue.toFixed(2),
-    });
+      // Refetch command details
+      await fetchCommandDetails();
 
-    showToast.success("Desconto aplicado com sucesso!");
+      showToast.success("Desconto aplicado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao aplicar desconto:", error);
+      showToast.error("Erro ao aplicar desconto.");
+    }
   };
 
   const handleDeleteCommand = async () => {
     try {
       // Fetch all items associated with the command
       const commandProductsResponse = await axiosProvider.get(
-        `/commandProduct?fkComanda=${command.id}`
+        `/command-products?fkComanda=${command.id}`
       );
       const commandProducts = commandProductsResponse.data;
 
       // Delete each item in commandProduct associated with the command
       for (const product of commandProducts) {
-        await axiosProvider.delete(
-          `/commandProduct/${product.id}`
-        );
+        await axiosProvider.delete(`/command-products/${product.id}`);
       }
 
       // Delete the command itself
@@ -470,8 +370,9 @@ export const RenderCommandDetails = () => {
       // Clear the command context and redirect
       setCommand(null);
       setCommandId(null);
-      localStorage.removeItem("commandId");
-      navigate("/bar"); // Corrige o redirecionamento para uma rota válida
+      sessionStorage.removeItem("commandId");
+      console.log("Navigating to /bar after deleting command");
+      navigate("/bar"); // Usa navigate para redirecionar
 
       showToast.success("Comanda e itens associados deletados com sucesso!");
     } catch (error) {
@@ -503,25 +404,24 @@ export const RenderCommandDetails = () => {
               <b>Funcionário:</b> {employeeName}
             </li>
             <li>
-              <b>Data Abertura:</b> {formatDateTime(command.dataHoraAbertura)}
+              <b>Data Abertura:</b> {formatDateTime(command.openingDateTime)}
             </li>
             <li>
-              <b>Data Fechamento:</b>{" "}
-              {formatDateTime(command.dataHoraFechamento)}
+              <b>Data Fechamento:</b> {formatDateTime(command.closingDateTime)}
             </li>
             <li>
-              <b>Desconto:</b> {command.desconto}%
+              <b>Desconto:</b> {command.discount}%
             </li>
             <li>
               <b>Valor Total:</b> R$ {calculateTotalValue()}
             </li>
             <li>
-              <b>Status:</b> {command.status}
+              <b>Status:</b> {command.status == "OPEN" ? "Aberta" : "Fechada"}
             </li>
             <div className="flex mt-6 gap-4">
               <PrimaryButton
                 text={
-                  command.status === "Aberta"
+                  command.status === "OPEN"
                     ? "Fechar Comanda"
                     : "Reabrir Comanda"
                 }
@@ -531,7 +431,7 @@ export const RenderCommandDetails = () => {
           </ul>
           <div className="flex flex-col w-full flex-1">
             <div className="mt-4">
-              {command.status !== "Fechada" ? (
+              {command.status !== "CLOSED" ? (
                 <form
                   onSubmit={handleAddProduct}
                   className="flex flex-col gap-4"
@@ -541,32 +441,32 @@ export const RenderCommandDetails = () => {
                     name="idProduto"
                     options={allProducts.map((product) => ({
                       id: product.id,
-                      name: `${product.nomeProduto} (Estoque: ${product.qtdProduto})`, // Include stock in the display
+                      name: `${product.name} (Estoque: ${product.quantity})`, // Display stock quantity
                     }))}
                     handleOnChange={handleProductSelect}
                     value={newProduct.idProduto || ""}
                   />
                   <Input
                     type="number"
-                    name="qtdProduto"
+                    name="quantity"
                     text={`Quantidade ${
-                      newProduct.estoque
-                        ? `(Disponível: ${newProduct.estoque})`
+                      newProduct.stockQuantity
+                        ? `(Disponível: ${newProduct.stockQuantity})`
                         : ""
-                    }`}
+                    }`} // Display available stock
                     placeholder="Digite a quantidade"
                     handleOnChange={handleInputChange}
-                    value={newProduct.qtdProduto}
+                    value={newProduct.quantity}
                     min={1} // Prevent negative values
-                    max={newProduct.estoque || ""} // Prevent exceeding stock
+                    max={newProduct.stockQuantity || ""} // Prevent exceeding stock
                   />
                   <Input
                     type="text"
-                    name="valorUnitario"
+                    name="unitValue"
                     text="Valor Unitário"
                     placeholder="Valor unitário"
                     handleOnChange={handleInputChange}
-                    value={newProduct.valorUnitario}
+                    value={newProduct.unitValue}
                     disabled
                   />
                   <ConfirmButton type="submit" text="Adicionar Produto" />
@@ -577,7 +477,7 @@ export const RenderCommandDetails = () => {
                 </p>
               )}
               <div className="flex mt-6">
-                {command.status === "Fechada" && (
+                {command.status === "CLOSED" && (
                   <DeleteButton
                     text="Deletar Comanda"
                     onClick={handleRemoveCommand} // Usa o estado correto para deletar a comanda
@@ -592,28 +492,29 @@ export const RenderCommandDetails = () => {
           <Table
             headers={[
               { label: "ID", key: "idProduto" },
-              { label: "Nome", key: "nomeProduto" },
-              { label: "Quantidade", key: "qtdProduto" },
-              { label: "Valor Unitário", key: "valorUnitario" },
-              { label: "Valor Total", key: "valorTotal" },
+              { label: "Nome", key: "name" },
+              { label: "Quantidade", key: "productQuantity" },
+              { label: "Valor Unitário", key: "unitValue" },
+              { label: "Valor Total", key: "totalValue" },
               { label: "Ações", key: "actions" },
             ]}
             data={products.map((product) => ({
               ...product,
-              valorTotal: `R$ ${(
-                product.qtdProduto * product.valorUnitario
+              unitValue: `R$ ${parseFloat(product.unitValue).toFixed(2)}`,
+              totalValue: `R$ ${parseFloat(
+                product.productQuantity * product.unitValue
               ).toFixed(2)}`,
               actions: (
                 <div className="flex gap-2">
                   <PrimaryButton
                     text="Editar"
                     onClick={() => handleEditCommandProduct(product)}
-                    disabled={command.status === "Fechada"} // Disable if command is closed
+                    disabled={command.status === "CLOSED"} // Disable if command is closed
                   />
                   <DeleteButton
                     text="Excluir"
                     onClick={() => handleRemoveProduct(product)}
-                    disabled={command.status === "Fechada"} // Disable if command is closed
+                    disabled={command.status === "CLOSED"} // Disable if command is closed
                   />
                 </div>
               ),
@@ -623,7 +524,7 @@ export const RenderCommandDetails = () => {
             isOpen={isEditCommandProductModalOpen}
             onClose={() => setIsEditCommandProductModalOpen(false)}
             onSave={handleUpdateProduct}
-            initialData={editingCommandProduct}
+            initialData={editingCommandProduct} // Pass the correct initial data
             allProducts={allProducts}
           />
           <ModalConfirmDelete
@@ -631,7 +532,9 @@ export const RenderCommandDetails = () => {
             onClose={() => setIsDeleteModalOpen(false)}
             onConfirm={confirmDelete}
             title={"Deletar Produto"}
-            description={"Tem certeza de que deseja deletar este produto?"}
+            description={
+              "Tem certeza de que deseja deletar este produto? Os itens retornarão ao estoque."
+            }
           />
           <ModalAddDiscount
             isOpen={isDiscountModalOpen}
@@ -643,7 +546,9 @@ export const RenderCommandDetails = () => {
             onClose={() => setIsDeleteCommandModalOpen(false)}
             onConfirm={handleDeleteCommand}
             title={"Deletar Comanda"}
-            description={"Tem certeza de que deseja deletar esta comanda?"}
+            description={
+              "Tem certeza de que deseja deletar esta comanda? Os itens associados serão também deletados!"
+            }
           />
         </div>
       </div>

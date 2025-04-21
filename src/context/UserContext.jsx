@@ -17,22 +17,31 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (!userId) return;
+      if (!userId) {
+        console.log("Nenhum userId encontrado no contexto.");
+        return;
+      }
 
       try {
         const endpoint = isClient
           ? `/clients/${userId}`
           : `/employees/${userId}`;
         const response = await axiosProvider.get(endpoint);
-        const userData = {
-          ...response.data[0],
-          contato: response.data[0]?.contato || "",
-        };
 
-        if (userData) {
-          setUser(userData);
+        if (response.data) {
+          const userData = Array.isArray(response.data)
+            ? response.data[0] // Caso a API retorne um array
+            : response.data; // Caso a API retorne um objeto diretamente
+
+          const formattedUserData = {
+            ...userData,
+            clientType: userData?.clientType || null,
+            contact: userData?.contact || userData?.contato || "",
+          };
+
+          setUser(formattedUserData); // Atualiza o estado do usuário
         } else {
-          throw new Error("Usuário não encontrado.");
+          console.error("Nenhum dado encontrado para o usuário.");
         }
       } catch (error) {
         console.error("Erro ao buscar dados do usuário:", error);
@@ -44,47 +53,82 @@ export function UserProvider({ children }) {
 
   async function findUsers(filterType) {
     try {
-      const endpoint =
-        filterType === "CLIENTE"
-          ? "/clients"
-          : "/employees";
+      const endpoint = filterType === "CLIENTE" ? "/clients" : "/employees";
       const response = await axiosProvider.get(endpoint);
-      return response.data;
+
+      // Verifique se response.data é um array antes de usar .map()
+      if (Array.isArray(response.data)) {
+        console.log("Resposta da API:", response.data);
+        return response.data.map((user) => ({
+          ...user,
+          clientType: user.clientType === "SINGLE" ? "AVULSO" : "MENSAL", // Map values for display
+        }));
+      } else if (response.data && typeof response.data === "object") {
+        console.log(
+          "Resposta da API não é um array, mas um objeto:",
+          response.data
+        );
+        // Aqui você pode retornar um array com os dados do objeto
+        return [response.data];
+      } else {
+        console.log(
+          "Resposta da API não é um array nem um objeto:",
+          response.data
+        );
+        return [];
+      }
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
       return [];
     }
   }
 
-
-  async function findClients() {
+  const findClients = async () => {
     try {
-      const endpoint = "/clients"
-      const response = await axiosProvider.get(endpoint);
-      if(response.status === 200) {
-        return response.data;
-      } 
+      const response = await axiosProvider.get("/clients");
+      return response.data.map((client) => ({
+        ...client,
+        clientType: client.clientType === "SINGLE" ? "Avulso" : "Mensal",
+        active: client.active ? "Ativo" : "Inativo",
+      }));
     } catch (error) {
-      console.error("Erro ao buscar usuários:", error);
+      console.error("Erro ao buscar clientes:", error);
       return [];
     }
-  }
+  };
+
+  const findEmployees = async () => {
+    try {
+      const response = await axiosProvider.get("/employees");
+      return response.data.map((employee) => ({
+        ...employee,
+        active: employee.active ? "Ativo" : "Inativo",
+      }));
+    } catch (error) {
+      console.error("Erro ao buscar funcionários:", error);
+      return [];
+    }
+  };
 
   const findClientById = async (ClientId) => {
-    if(!ClientId) return;
+    if (!ClientId) return;
 
     try {
-        const response = await axiosProvider.get(`/clients/${ClientId}`)
-        
-        if(response.status == 200) {
-          const clientData = response.data  
-          console.log("cliente", clientData)
-          return clientData[0];
-        }
-    } catch(error) {
-        console.error("Erro ao buscar client:", error)
-    };
-}
+      const response = await axiosProvider.get(`/clients/${ClientId}`);
+
+      if (response.status == 200) {
+        const clientData = response.data;
+        console.log("cliente", clientData);
+        return {
+          ...clientData[0],
+          clientType:
+            clientData[0]?.clientType === "SINGLE" ? "AVULSO" : "MENSAL", // Map values for display
+        };
+      }
+    } catch (error) {
+      console.error("Erro ao buscar client:", error);
+    }
+  };
 
   return (
     <UserContext.Provider
@@ -97,7 +141,8 @@ export function UserProvider({ children }) {
         setIsClient,
         findUsers,
         findClients,
-        findClientById
+        findEmployees,
+        findClientById,
       }}
     >
       {children}

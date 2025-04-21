@@ -9,15 +9,16 @@ export const useBarTypeFilterLogic = () => {
   const [activeFilter, setActiveFilter] = useState("1");
   // Define os filtros disponíveis como "Cliente" e "Interno"
   const filters = [
-    { label: "Aberta", value: "1" },
-    { label: "Fechada", value: "2" },
+    { label: "Abertas", value: "1" },
+    { label: "Fechadas", value: "2" },
   ];
 
   // Função para atualizar o filtro ativo ao clicar em um botão
   const handleFilterClick = (filterValue, onFilterChange) => {
-    setActiveFilter(filterValue); // Update the active filter state
+    setActiveFilter(filterValue); // Atualiza o estado do filtro ativo
     if (onFilterChange) {
-      onFilterChange(filterValue); // Notify parent of filter change
+      const filterType = filterValue === "1" ? "ABERTAS" : "FECHADAS"; // Define o tipo de filtro
+      onFilterChange(filterType); // Notifica o componente pai sobre a mudança do filtro
     }
   };
 

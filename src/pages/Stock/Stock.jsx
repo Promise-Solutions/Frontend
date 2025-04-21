@@ -11,9 +11,9 @@ import { axiosProvider } from "../../provider/apiProvider.js";
 const Stock = () => {
   const [products, setProducts] = useState([]);
   const [formData, setFormData] = useState({
-    nomeProduto: "",
-    qtdProduto: 0,
-    valorUnitario: "",
+    productName: "",
+    quantity: 0,
+    unitValue: "",
   });
   const [editingProduct, setEditingProduct] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -38,8 +38,8 @@ const Stock = () => {
     try {
       const productToAdd = {
         ...newProduct,
-        qtdProduto: parseInt(newProduct.qtdProduto),
-        valorUnitario: parseFloat(newProduct.valorUnitario).toFixed(2),
+        quantity: parseInt(newProduct.quantity),
+        unitValue: parseFloat(newProduct.unitValue).toFixed(2),
       };
       const response = await axiosProvider.post(
         "/products",
@@ -62,8 +62,8 @@ const Stock = () => {
       const productToUpdate = {
         ...editingProduct,
         ...updatedProduct,
-        qtdProduto: parseInt(updatedProduct.qtdProduto),
-        valorUnitario: parseFloat(updatedProduct.valorUnitario).toFixed(2),
+        quantity: parseInt(updatedProduct.quantity),
+        unitValue: parseFloat(updatedProduct.unitValue).toFixed(2),
       };
       await axiosProvider.patch(
         `/products/${editingProduct.id}`,

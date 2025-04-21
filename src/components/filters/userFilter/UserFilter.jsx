@@ -24,14 +24,20 @@ const UserFilter = ({ id, placeholder, onSearch }) => {
           "";
         const email =
           card.querySelector(".card_user_email")?.textContent.toUpperCase() ||
-          ""; // Convert email to uppercase
+          "";
         const contact =
-          card.querySelector(".card_user_contact")?.textContent || "";
+          card.querySelector(".card_user_contact")?.textContent.toUpperCase() ||
+          "";
+        const clientType =
+          card
+            .querySelector(".card_user_clientType")
+            ?.textContent.toUpperCase() || ""; // Ensure clientType is included
 
         if (
           name.includes(filter) ||
           email.includes(filter) ||
-          contact.includes(filter)
+          contact.includes(filter) ||
+          clientType.includes(filter) // Ensure clientType is part of the filter
         ) {
           card.style.display = "block";
         } else {

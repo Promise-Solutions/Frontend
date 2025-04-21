@@ -48,10 +48,14 @@ const Users = () => {
     const name = (element.props.name || "").toUpperCase().trim();
     const email = (element.props.email || "").toUpperCase().trim();
     const contact = (element.props.contact || "").toUpperCase().trim();
+    const clientType = (element.props.clientType || "").toUpperCase().trim(); // Ensure clientType is included
     const term = searchTerm.toUpperCase().trim();
 
     return (
-      name.includes(term) || email.includes(term) || contact.includes(term)
+      name.includes(term) ||
+      email.includes(term) ||
+      contact.includes(term) ||
+      clientType.includes(term) // Ensure clientType is part of the filter
     );
   });
 

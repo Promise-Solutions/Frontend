@@ -1,138 +1,139 @@
 {
-  "clientes": [
+  "employees": [
     {
-      "nome": "CLIENTE01",
-      "cpf": "123.123.213-31",
-      "email": "avulso@avulso.com",
-      "contato": "(31) 31313-1313",
-      "tipoCliente": "AVULSO",
-      "ativo": true,
-      "token": "byKxDWdCOz8Yi5tq",
-      "id": 2
+      "id": "b3c1a8f4-1d2e-4c3a-9f6b-8e7d2a9c1f4b",
+      "name": "GUSTAVO",
+      "email": "okohii@gmail.com",
+      "contact": "(11) 96195-6359",
+      "cpf": "123.123.123-12",
+      "password": "12345678",
+      "token": "HzUQZUCFVPlGEK8l",
+      "active": true
     },
     {
-      "nome": "Cliente02",
-      "cpf": "123.123.243-32",
-      "email": "mensal@mensal.com",
-      "contato": "(13) 13131-3131",
-      "tipoCliente": "MENSAL",
-      "ativo": true,
-      "token": "byKxDWdCOz8Yi5tq",
-      "id": 3
+      "id": "a7d3e9f2-4b5c-6d7e-8f9a-1b2c3d4e5f6a",
+      "name": "RODOLFO",
+      "email": "rodolfo@rodolfo.com",
+      "contact": "(12) 31231-2312",
+      "cpf": "123.123.213-13",
+      "password": "12345678",
+      "token": "10Ra3HW4u7ZaFUOW",
+      "active": true
+    },
+    {
+      "id": "c1d2e3f4-5a6b-7c8d-9e0f-1a2b3c4d5e6f",
+      "name": "ARTUR",
+      "email": "artur@artur.com",
+      "contact": "(12) 31231-2312",
+      "cpf": "123.123.131-23",
+      "password": "12345678",
+      "token": "nTrLmmQdVN5xc6X2",
+      "active": true
+    },
+    {
+      "id": "d3e4f5a6-7b8c-9d0e-1f2a-3b4c5d6e7f8a",
+      "name": "IAGO",
+      "email": "iago@iago.com",
+      "contact": "(23) 12312-3213",
+      "cpf": "123.123.123-13",
+      "password": "12345678",
+      "token": "ogaMD0dS7pViKyXP",
+      "active": true
+    },
+    {
+      "id": "e5f6a7b8-9c0d-1e2f-3a4b-5c6d7e8f9a1b",
+      "name": "CINDY BARBOSA",
+      "email": "cindy@cindy.com",
+      "contact": "(21) 31231-2321",
+      "cpf": "121.312.312-31",
+      "password": "12345678",
+      "token": "GkITzSMvuPySthY4",
+      "active": true
+    },
+    {
+      "id": "f7a8b9c0-d1e2-f3a4-b5c6-d7e8f9a1b2c3",
+      "name": "MEDINA",
+      "email": "medina@medina.com",
+      "contact": "(22) 22222-2222",
+      "cpf": "123.132.313-13",
+      "password": "12345678",
+      "token": "2veVDIHYd6n011K9",
+      "active": true
+    },
+    {
+      "id": "a9b1c2d3-e4f5-a6b7-c8d9-e0f1a2b3c4d5",
+      "name": "TESTE",
+      "email": "teste@teste.com",
+      "contact": "(13) 23123-1312",
+      "cpf": "123.123.131-23",
+      "password": "12345678",
+      "token": "GGk6IlX9FLxUWvlY",
+      "active": true
     }
   ],
-  "funcionarios": [
+  "clients": [
     {
-      "id": 1,
-      "nome": "GUSTAVO",
-      "cpf": "123.123.123-12",
-      "email": "okohii@gmail.com",
-      "contato": "(11) 96195-6359",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "HzUQZUCFVPlGEK8l"
+      "id": "c4d5e6f7-8a9b-1c2d-3e4f-5a6b7c8d9e0f",
+      "name": "CLIENTE01",
+      "cpf": "123.123.213-31",
+      "email": "avulso@avulso.com",
+      "contact": "(31) 31313-1313",
+      "clientType": "MENSAL",
+      "active": true,
+      "nome": "CLIENTE01",
+      "contato": "(31) 31313-1313",
+      "ativo": true
     },
     {
-      "id": 2,
-      "nome": "RODOLFO",
-      "cpf": "123.123.213-13",
-      "email": "rodolfo@rodolfo.com",
-      "contato": "(12) 31231-2312",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "10Ra3HW4u7ZaFUOW"
-    },
-    {
-      "id": 3,
-      "nome": "ARTUR",
-      "cpf": "123.123.131-23",
-      "email": "artur@artur.com",
-      "contato": "(12) 31231-2312",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "nTrLmmQdVN5xc6X2"
-    },
-    {
-      "id": 4,
-      "nome": "IAGO",
-      "cpf": "123.123.123-13",
-      "email": "iago@iago.com",
-      "contato": "(23) 12312-3213",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "ogaMD0dS7pViKyXP"
-    },
-    {
-      "id": 5,
-      "nome": "CINDY BARBOSA",
-      "cpf": "121.312.312-31",
-      "email": "cindy@cindy.com",
-      "contato": "(21) 31231-2321",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "GkITzSMvuPySthY4"
-    },
-    {
-      "id": 6,
-      "nome": "MEDINA",
-      "cpf": "123.132.313-13",
-      "email": "medina@medina.com",
-      "contato": "(22) 22222-2222",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "2veVDIHYd6n011K9"
-    },
-    {
-      "nome": "TESTE",
-      "cpf": "123.123.131-23",
-      "email": "teste@teste.com",
-      "contato": "(13) 23123-1312",
-      "senha": "12345678",
-      "ativo": true,
-      "token": "GGk6IlX9FLxUWvlY",
-      "id": 7
+      "id": "d7e8f9a1-b2c3-d4e5-f6a7-8b9c1d2e3f4a",
+      "name": "Cliente02",
+      "cpf": "123.123.243-32",
+      "email": "mensal@mensal.com",
+      "contact": "(13) 13131-3131",
+      "clientType": "MONTHLY",
+      "active": true
     }
   ],
   "jobs": [
     {
-      "id": 2,
-      "titulo": "Atendimento2",
-      "categoria": "Ensaio Musical",
-      "fkCliente": 2,
-      "concluido": true,
-      "tipoServico": "AVULSO"
+      "id": "e9f1a2b3-c4d5-e6f7-a8b9-1c2d3e4f5a6b",
+      "fkClient": "c4d5e6f7-8a9b-1c2d-3e4f-5a6b7c8d9e0f",
+      "totalValue": 100,
+      "category": "MUSIC_REHEARSAL",
+      "status": "COMPLETED",
+      "serviceType": "SINGLE"
     },
     {
-      "id": 3,
-      "titulo": "Serviço2.1",
-      "categoria": "Ensaio Musical",
-      "fkCliente": 2,
-      "concluido": true,
-      "tipoServico": "AVULSO"
+      "id": "f2a3b4c5-d6e7-f8a9-b1c2-d3e4f5a6b7c8",
+      "fkClient": "d7e8f9a1-b2c3-d4e5-f6a7-8b9c1d2e3f4a",
+      "totalValue": 200,
+      "category": "PHOTO_VIDEO_STUDIO",
+      "status": "PENDING",
+      "serviceType": "MONTHLY"
     },
     {
-      "id": 4,
-      "titulo": "Serviço4.1",
-      "categoria": "Ensaio Musical",
-      "fkCliente": 2,
-      "concluido": false,
-      "tipoServico": "AVULSO"
+      "id": "a3b4c5d6-e7f8-a9b1-c2d3-e4f5a6b7c8d9",
+      "fkClient": "c4d5e6f7-8a9b-1c2d-3e4f-5a6b7c8d9e0f",
+      "totalValue": 150,
+      "category": "MUSIC_REHEARSAL",
+      "status": "PENDING",
+      "serviceType": "SINGLE"
     },
     {
-      "id": 5,
-      "titulo": "Servico5",
-      "categoria": "Ensaio Musical",
-      "fkCliente": 2,
-      "concluido": false,
-      "tipoServico": "AVULSO"
+      "id": "b4c5d6e7-f8a9-b1c2-d3e4-f5a6b7c8d9e0",
+      "fkClient": "c4d5e6f7-8a9b-1c2d-3e4f-5a6b7c8d9e0f",
+      "totalValue": 120,
+      "category": "MUSIC_REHEARSAL",
+      "status": "Pendente",
+      "serviceType": "AVULSO"
     },
     {
-      "titulo": "Serviço",
-      "categoria": "Estudio Fotografico",
-      "tipoServico": "AVULSO",
-      "fkCliente": 2,
-      "concluido": false,
-      "id": 6
+      "id": "c5d6e7f8-a9b1-c2d3-e4f5-a6b7c8d9e0f1",
+      "fkClient": "c4d5e6f7-8a9b-1c2d-3e4f-5a6b7c8d9e0f",
+      "totalValue": 80,
+      "category": "PHOTO_VIDEO_STUDIO",
+      "status": "Pendente",
+      "serviceType": "AVULSO"
     },
     {
       "titulo": "Servico",
@@ -292,67 +293,282 @@
       "quantidade": 5
     }
   ],
-  "commands": [],
-  "commandProduct": [],
+  "tasks": [
+    {
+      "id": "a1b2c3d4-e5f6-a7b8-c9d0-e1f2a3b4c5d6",
+      "title": "Teste Tarefa",
+      "description": "Descrição da tarefa",
+      "startDate": "2025-04-06",
+      "limitDate": "2025-04-12",
+      "fkEmployee": "b3c1a8f4-1d2e-4c3a-9f6b-8e7d2a9c1f4b",
+      "status": "PENDING"
+    },
+    {
+      "id": "b3d4e5f6-a7b8-c9d0-e1f2-a3b4c5d6e7f8",
+      "title": "teste1",
+      "description": "teste2",
+      "startDate": "2025-04-06T13:37:46.265Z",
+      "limitDate": "",
+      "fkEmployee": "e5f6a7b8-9c0d-1e2f-3a4b-5c6d7e8f9a1b",
+      "status": "PENDING"
+    },
+    {
+      "id": "c4d5e6f7-8a9b-1c2d-3e4f-5a6b7c8d9e0f",
+      "title": "",
+      "description": "",
+      "startDate": "2025-04-06T14:14:10.158Z",
+      "limitDate": "",
+      "fkEmployee": "",
+      "status": "fazendo"
+    },
+    {
+      "id": "d7e8f9a1-b2c3-d4e5-f6a7-8b9c1d2e3f4a",
+      "title": "",
+      "description": "",
+      "startDate": "2025-04-06T14:14:15.462Z",
+      "limitDate": "",
+      "fkEmployee": "",
+      "status": "pendente"
+    }
+  ],
+  "sub-jobs": [
+    {
+      "id": "c5d6e7f8-a9b1-c2d3-e4f5-a6b7c8d9e0f1",
+      "title": "Subserviço1",
+      "description": "Descricao1",
+      "value": 10,
+      "date": "2025-04-12",
+      "startTime": "10:00:00",
+      "endTime": "16:30:00",
+      "status": "COMPLETED",
+      "fkService": "e9f1a2b3-c4d5-e6f7-a8b9-1c2d3e4f5a6b"
+    },
+    {
+      "id": "d6e7f8a9-b1c2-d3e4-f5a6-b7c8d9e0f1a2",
+      "title": "Subserviço2",
+      "description": "Descricao2",
+      "value": 10,
+      "date": "2025-04-12",
+      "startTime": "10:00:00",
+      "endTime": null,
+      "status": "PENDING",
+      "fkService": "e9f1a2b3-c4d5-e6f7-a8b9-1c2d3e4f5a6b"
+    },
+    {
+      "id": "e7f8a9b1-c2d3-e4f5-a6b7-c8d9e0f1a2b3",
+      "title": "Subserviço3",
+      "description": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto",
+      "value": 10,
+      "date": "2025-04-12",
+      "startTime": "10:00:00",
+      "endTime": null,
+      "status": "Concluído",
+      "fkService": "e9f1a2b3-c4d5-e6f7-a8b9-1c2d3e4f5a6b"
+    },
+    {
+      "id": "f8a9b1c2-d3e4-f5a6-b7c8-d9e0f1a2b3c4",
+      "title": "Subserviço5",
+      "description": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto",
+      "value": 10,
+      "date": "2025-04-12",
+      "startTime": "10:00:00",
+      "endTime": null,
+      "status": "Pendente",
+      "fkService": "a3b4c5d6-e7f8-a9b1-c2d3-e4f5a6b7c8d9"
+    },
+    {
+      "id": "a9b1c2d3-e4f5-a6b7-c8d9-e0f1a2b3c4d5",
+      "title": "Subserviço7",
+      "description": "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto  texto texto texto texto texto texto texto ",
+      "value": 10,
+      "date": "2025-04-12",
+      "startTime": "10:00:00",
+      "endTime": null,
+      "status": "Pendente",
+      "fkService": "a3b4c5d6-e7f8-a9b1-c2d3-e4f5a6b7c8d9"
+    },
+    {
+      "id": "b1c2d3e4-f5a6-b7c8-d9e0-f1a2b3c4d5e6",
+      "title": "Subserviço",
+      "description": "Descricao",
+      "value": 10,
+      "date": "2025-04-12",
+      "startTime": "10:00:00",
+      "endTime": null,
+      "status": "Pendente",
+      "fkService": "a3b4c5d6-e7f8-a9b1-c2d3-e4f5a6b7c8d9"
+    },
+    {
+      "id": "c2d3e4f5-a6b7-c8d9-e0f1-a2b3c4d5e6f7",
+      "title": "Subserviço",
+      "description": "Descricao",
+      "value": 10,
+      "date": "2025-04-12",
+      "startTime": "10:00:00",
+      "endTime": null,
+      "status": "Pendente",
+      "fkService": "a3b4c5d6-e7f8-a9b1-c2d3-e4f5a6b7c8d9"
+    },
+    {
+      "id": "d3e4f5a6-b7c8-d9e0-f1a2-b3c4d5e6f7a8",
+      "title": "Subserviço",
+      "description": "Descricao",
+      "value": 10,
+      "date": "2025-04-12",
+      "startTime": "10:00:00",
+      "endTime": "16:11:00",
+      "status": "Concluído",
+      "fkService": "a3b4c5d6-e7f8-a9b1-c2d3-e4f5a6b7c8d9"
+    },
+    {
+      "id": "e4f5a6b7-c8d9-e0f1-a2b3-c4d5e6f7a8b9",
+      "title": "Subserviço",
+      "description": "Descricao",
+      "value": 10,
+      "date": "2025-04-12",
+      "startTime": "10:00:00",
+      "endTime": "16:34:00",
+      "status": "Concluído",
+      "fkService": "a3b4c5d6-e7f8-a9b1-c2d3-e4f5a6b7c8d9"
+    },
+    {
+      "id": "f5a6b7c8-d9e0-f1a2-b3c4-d5e6f7a8b9c0",
+      "title": "Subserviço",
+      "description": "Descricao",
+      "value": 10,
+      "date": "2025-04-12",
+      "startTime": "10:00:00",
+      "endTime": null,
+      "status": "Pendente",
+      "fkService": "a3b4c5d6-e7f8-a9b1-c2d3-e4f5a6b7c8d9"
+    },
+    {
+      "id": "a6b7c8d9-e0f1-a2b3-c4d5-e6f7a8b9c0d1",
+      "title": "Subserviço",
+      "description": "Descricao",
+      "value": 10,
+      "date": "2025-04-12",
+      "startTime": "10:00:00",
+      "endTime": "16:28:00",
+      "status": "Concluído",
+      "fkService": "f8a9b1c2-d3e4-f5a6-b7c8-d9e0f1a2b3c4"
+    },
+    {
+      "id": "b7c8d9e0-f1a2-b3c4-d5e6-f7a8b9c0d1e2",
+      "title": "teste",
+      "description": "testeteste",
+      "value": 2,
+      "date": "2025-04-15",
+      "startTime": "23:40:00",
+      "endTime": null,
+      "status": "Concluído",
+      "fkService": "f2a3b4c5-d6e7-f8a9-b1c2-d3e4f5a6b7c8"
+    },
+    {
+      "id": "c8d9e0f1-a2b3-c4d5-e6f7-a8b9c0d1e2f3",
+      "title": "123",
+      "description": "12321",
+      "value": 123,
+      "date": "2025-04-23",
+      "startTime": "21:01:00",
+      "endTime": null,
+      "status": "Pendente",
+      "fkService": "f8a9b1c2-d3e4-f5a6-b7c8-d9e0f1a2b3c4"
+    },
+    {
+      "id": "d9e0f1a2-b3c4-d5e6-f7a8-b9c0d1e2f3a4",
+      "title": "Teste SubServiço",
+      "description": "Teste SubServiçoTeste SubServiçoTeste SubServiçoTeste SubServiço",
+      "value": 50,
+      "date": "2025-04-12",
+      "startTime": "23:42:00",
+      "endTime": null,
+      "status": "Concluído",
+      "fkService": "a9b1c2d3-e4f5-a6b7-c8d9-e0f1a2b3c4d5"
+    },
+    {
+      "id": "e0f1a2b3-c4d5-e6f7-a8b9-c0d1e2f3a4b5",
+      "title": "ASKLPDJIKAOLD",
+      "description": "SLKDASKLD",
+      "value": 123,
+      "date": "2025-04-23",
+      "startTime": "23:44:00",
+      "endTime": null,
+      "status": "Pendente",
+      "fkService": "a9b1c2d3-e4f5-a6b7-c8d9-e0f1a2b3c4d5"
+    },
+    {
+      "id": "f1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6",
+      "title": "subServico2",
+      "description": "descricao",
+      "value": 210.8,
+      "date": "2025-04-23",
+      "startTime": "13:50:00",
+      "endTime": null,
+      "status": "Concluído",
+      "fkService": "e9f1a2b3-c4d5-e6f7-a8b9-1c2d3e4f5a6b"
+    }
+  ],
   "products": [
     {
       "id": 1,
-      "nomeProduto": "Coca-Cola",
-      "qtdProduto": 0,
-      "valorUnitario": "7.00"
+      "name": "Coca-Cola",
+      "quantity": 0,
+      "unitValue": 7
     },
     {
-      "nomeProduto": "Guaraná",
-      "qtdProduto": 0,
-      "valorUnitario": "7.00",
-      "id": 2
+      "id": 2,
+      "name": "Guaraná",
+      "quantity": 0,
+      "unitValue": 7
     },
     {
-      "nomeProduto": "Ruffles",
-      "qtdProduto": 10,
-      "valorUnitario": "6.50",
-      "id": 5
+      "id": 5,
+      "name": "Ruffles",
+      "quantity": 10,
+      "unitValue": 6.5
     },
     {
-      "nomeProduto": "Chocolate",
-      "qtdProduto": 10,
-      "valorUnitario": "5.60",
-      "id": 6
+      "id": 6,
+      "name": "Chocolate",
+      "quantity": 10,
+      "unitValue": 5.6
     },
     {
-      "nomeProduto": "Bala Halls",
-      "qtdProduto": 2,
-      "valorUnitario": "2.00",
-      "id": 7
+      "id": 7,
+      "name": "Bala Halls",
+      "quantity": 2,
+      "unitValue": 2
     }
   ],
-  "tasks": [
+  "commands": [
     {
-      "title": "teste1",
-      "description": "teste2",
-      "deadline": "",
-      "responsible": "5",
-      "id": "1743946666265",
-      "status": "fazendo",
-      "start_date": "2025-04-06T13:37:46.265Z"
+      "id": 1,
+      "openingDateTime": "2025-04-06T13:37:46",
+      "closingDateTime": null,
+      "discount": 0,
+      "totalValue": 50,
+      "fkClient": "c4d5e6f7-8a9b-1c2d-3e4f-5a6b7c8d9e0f",
+      "fkEmployee": "b3c1a8f4-1d2e-4c3a-9f6b-8e7d2a9c1f4b",
+      "status": "Aberta"
     },
     {
-      "title": "",
-      "description": "",
-      "deadline": "",
-      "responsible": "",
-      "id": "1743948850158",
-      "status": "fazendo",
-      "start_date": "2025-04-06T14:14:10.158Z"
-    },
+      "fkClient": null,
+      "fkEmployee": "a9b1c2d3-e4f5-a6b7-c8d9-e0f1a2b3c4d5",
+      "openingDateTime": "2025-04-20T22:36:24.212Z",
+      "status": "OPEN",
+      "discount": "0.00",
+      "totalValue": "0.00",
+      "id": 2
+    }
+  ],
+  "command-products": [
     {
-      "title": "",
-      "description": "",
-      "deadline": "",
-      "responsible": "",
-      "id": "1743948855462",
-      "status": "pendente",
-      "start_date": "2025-04-06T14:14:15.462Z"
+      "id": 1,
+      "fkProduct": 1,
+      "fkCommand": 1,
+      "productQuantity": 2,
+      "unitValue": 7
     }
   ]
 }

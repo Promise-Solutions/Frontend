@@ -1,6 +1,5 @@
 // Tasks.jsx
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import TaskColumn from "../../components/tasks/TaskColumn";
 import ModalAddTask from "../../components/modals/modalAddTask/ModalAddTask";
@@ -8,7 +7,19 @@ import ModalEditTask from "../../components/modals/modalEditTask/ModalEditTask";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 import { axiosProvider } from "../../provider/apiProvider";
 
-const statuses = ["pendente", "fazendo", "concluido"];
+const statuses = ["Pendente", "Fazendo", "Concluído"];
+
+const mapStatusToBackend = {
+  Pendente: "PENDING",
+  Fazendo: "WORKING",
+  Concluído: "COMPLETED",
+};
+
+const mapStatusToFrontend = {
+  PENDING: "Pendente",
+  WORKING: "Fazendo",
+  COMPLETED: "Concluído",
+};
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -22,35 +33,102 @@ const Tasks = () => {
       try {
         const [tasksResponse, employeesResponse] = await Promise.all([
           axiosProvider.get("/tasks"),
-          axiosProvider.get("/funcionarios"),
+          axiosProvider.get("/employees"),
         ]);
 
+        if (
+          !tasksResponse.data ||
+          !Array.isArray(tasksResponse.data) ||
+          !employeesResponse.data ||
+          !Array.isArray(employeesResponse.data)
+        ) {
+          console.error("Invalid API response structure", {
+            tasksResponse: tasksResponse.data,
+            employeesResponse: employeesResponse.data,
+          });
+          throw new Error("Invalid API response structure");
+        }
+
         const employeesMap = employeesResponse.data.reduce((map, emp) => {
-          map[emp.id] = emp.nome;
+          map[emp.id] = emp.name;
           return map;
         }, {});
 
         const tasksWithNames = tasksResponse.data.map((task) => ({
           ...task,
-          responsibleName: employeesMap[task.responsible] || "Não atribuído",
+          status: mapStatusToFrontend[task.status] || task.status,
+          responsibleName: employeesMap[task.fkEmployee] || "Não atribuído",
         }));
 
         setTasks(tasksWithNames);
         setEmployees(employeesResponse.data);
       } catch (err) {
-        console.error(err);
+        console.error("Failed to fetch tasks or employees:", err);
+        setTasks([]); // Set default empty array to prevent breaking
+        setEmployees([]); // Set default empty array to prevent breaking
       }
     };
 
     fetchTasksAndEmployees();
+
+    return () => {
+      // Cleanup logic if needed in the future
+    };
   }, []);
 
   const handleAddTask = (newTask) => {
-    axios
-      .post("http://localhost:5000/tasks", newTask)
+    const { fkEmployee, limitDate, ...rest } = newTask;
+
+    const payload = {
+      ...rest,
+      fkEmployee: fkEmployee || null, // Send null if no responsible is selected
+      limitDate: limitDate || null, // Send null if no limit date is selected
+      status: "PENDING", // Always send status as PENDING
+    };
+    console.log("Payload for adding task:", payload); // Log the payload
+    axiosProvider
+      .post(`/tasks`, payload)
       .then((res) => {
-        setTasks([...tasks, res.data]);
+        const taskWithNames = {
+          ...res.data,
+          status: mapStatusToFrontend[res.data.status],
+          responsibleName:
+            employees.find((emp) => emp.id === res.data.fkEmployee)?.name ||
+            "Não atribuído",
+        };
+        setTasks([...tasks, taskWithNames]);
         setIsAddModalOpen(false);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const handleEditTask = (id, updatedTask) => {
+    const { fkEmployee, limitDate, status, startDate, ...rest } = updatedTask;
+
+    const payload = {
+      id, // Adiciona o campo id explicitamente
+      ...rest,
+      fkEmployee: fkEmployee || null, // Certifica-se de enviar fkEmployee corretamente
+      limitDate: limitDate || null, // Envia null se limitDate estiver vazio
+      startDate,
+      status: mapStatusToBackend[status],
+    };
+
+    axiosProvider
+      .patch(`tasks/${id}`, payload)
+      .then((res) => {
+        const updatedTaskWithNames = {
+          ...res.data,
+          status: mapStatusToFrontend[res.data.status],
+          responsibleName:
+            employees.find((emp) => emp.id === res.data.fkEmployee)?.name ||
+            "Não atribuído", // Atualiza o campo responsibleName
+        };
+
+        setTasks((prev) =>
+          prev.map((t) => (t.id === id ? updatedTaskWithNames : t))
+        );
+        setIsEditModalOpen(false);
       })
       .catch((err) => console.error(err));
   };
@@ -60,13 +138,26 @@ const Tasks = () => {
     if (!over) return;
 
     const taskId = active.id;
-    const newStatus = over.id;
+    const newStatus = mapStatusToBackend[over.id];
 
-    axios
-      .patch(`http://localhost:5000/tasks/${taskId}`, { status: newStatus })
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) return;
+
+    const { responsibleName, ...payload } = {
+      ...task,
+      fkEmployee: task.fkEmployee || null, // Certifica-se de enviar fkEmployee corretamente
+      status: newStatus, // Atualiza o status
+    }; // Remove o campo responsibleName do payload
+
+    axiosProvider
+      .patch(`tasks/${taskId}`, payload)
       .then(() => {
         setTasks((prev) =>
-          prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t))
+          prev.map((t) =>
+            t.id === taskId
+              ? { ...t, status: mapStatusToFrontend[newStatus] }
+              : t
+          )
         );
       })
       .catch((err) => console.error(err));
@@ -79,7 +170,6 @@ const Tasks = () => {
           <div className="flex justify-between items-center w-full mb-4">
             <h1 className="text-2xl font-thin">Tarefas</h1>
             <PrimaryButton
-              className="border border-pink-zero text-pink-zero px-4 py-2 rounded-md hover:bg-pink-zero hover:text-white transition"
               onClick={() => setIsAddModalOpen(true)}
               text="Adicionar Tarefa"
             />
@@ -98,9 +188,9 @@ const Tasks = () => {
                       className="flex flex-col items-center w-[320px]"
                     >
                       <h2 className="text-xl font-bold text-white mb-4 text-center bg-white/10 px-4 py-2 rounded-md w-full">
-                        {status === "pendente"
+                        {status === "Pendente"
                           ? "📌 Pendente"
-                          : status === "fazendo"
+                          : status === "Fazendo"
                           ? "⚙️ Fazendo"
                           : "✅ Concluído"}
                       </h2>
@@ -108,25 +198,10 @@ const Tasks = () => {
                         status={status}
                         tasks={tasks}
                         employees={employees}
-                        editTask={(id, updatedTask) => {
-                          axios
-                            .patch(
-                              `http://localhost:5000/tasks/${id}`,
-                              updatedTask
-                            )
-                            .then(() => {
-                              setTasks((prev) =>
-                                prev.map((t) =>
-                                  t.id === id ? { ...t, ...updatedTask } : t
-                                )
-                              );
-                              setIsEditModalOpen(false);
-                            })
-                            .catch((err) => console.error(err));
-                        }}
+                        editTask={handleEditTask}
                         deleteTask={(id) => {
-                          axios
-                            .delete(`http://localhost:5000/tasks/${id}`)
+                          axiosProvider
+                            .delete(`tasks/${id}`)
                             .then(() =>
                               setTasks((prev) =>
                                 prev.filter((t) => t.id !== id)
@@ -158,19 +233,10 @@ const Tasks = () => {
           task={selectedTask}
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
-          onEdit={(id, updatedTask) => {
-            axios
-              .patch(`http://localhost:5000/tasks/${id}`, updatedTask)
-              .then(() => {
-                setTasks((prev) =>
-                  prev.map((t) => (t.id === id ? { ...t, ...updatedTask } : t))
-                );
-              })
-              .catch((err) => console.error(err));
-          }}
+          onEdit={handleEditTask}
           onDelete={(id) => {
-            axios
-              .delete(`http://localhost:5000/tasks/${id}`)
+            axiosProvider
+              .delete(`tasks/${id}`)
               .then(() => setTasks((prev) => prev.filter((t) => t.id !== id)))
               .catch((err) => console.error(err));
           }}

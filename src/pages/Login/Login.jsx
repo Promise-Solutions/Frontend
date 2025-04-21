@@ -29,15 +29,15 @@ const Login = () => {
     }
 
     toast.promise(
-      axiosProvider.get("/funcionarios").then((response) => {
-        const usuarios = response.data;
-        const usuarioEncontrado = usuarios.find(
-          (usuario) =>
-            usuario.email === formData.email && usuario.senha === formData.senha
-        );
+      axiosProvider.post("/employees/login", {
+        email: formData.email,
+        password: formData.senha,
+      }).then((response) => {
+        const data = response.data;
+        const token = data.token; 
 
-        if (usuarioEncontrado) {
-          localStorage.setItem("token", usuarioEncontrado.token);
+        if (token) {
+          localStorage.setItem("token", token);
           navigate("/home");
         } else {
           throw new Error("Credenciais inválidas.");
@@ -80,7 +80,7 @@ const Login = () => {
             name="senha"
             placeholder="Digite sua senha"
             handleOnChange={handleInputChange}
-            value={formData.senha}
+            value={formData.password}
           />
           <SubmitButton text="Confirmar" />
         </form>

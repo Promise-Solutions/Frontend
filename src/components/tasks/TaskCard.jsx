@@ -31,6 +31,14 @@ const TaskCard = ({ task, onClick, dragDisabled }) => {
     textOverflow: "ellipsis",
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return `${String(date.getUTCDate()).padStart(2, "0")}/${String(
+      date.getUTCMonth() + 1
+    ).padStart(2, "0")}/${date.getUTCFullYear()}`; // Formata a data no formato DD/MM/YYYY sem ajustes de fuso horário
+  };
+
   const handlePointerDown = (e) => {
     pointerStart.current = { x: e.clientX, y: e.clientY };
     setDragEnabled(false);
@@ -88,14 +96,14 @@ const TaskCard = ({ task, onClick, dragDisabled }) => {
           <span className="text-sm font-bold text-cyan-zero">
             Data de Início:
           </span>{" "}
-          {new Date(task.start_date).toLocaleDateString()}
+          {formatDate(task.startDate)}
         </p>
-        {task.deadline && (
+        {task.limitDate && (
           <p className="text-xs">
             <span className="text-sm font-bold text-cyan-zero">
               Data Limite:
             </span>{" "}
-            {new Date(task.deadline).toLocaleDateString()}
+            {formatDate(task.limitDate)}
           </p>
         )}
         <p className="text-xs">

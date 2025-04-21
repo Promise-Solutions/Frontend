@@ -6,45 +6,69 @@ const CommandContext = createContext();
 
 export const CommandProvider = ({ children }) => {
   const [command, setCommand] = useState(null);
-  const [commandId, setCommandId] = useState(() => localStorage.getItem("commandId")
+  const [commandId, setCommandId] = useState(() =>
+    sessionStorage.getItem("commandId")
   );
 
-  // Sempre que commandId mudar, salvar na localStorage
-  useEffect(() => {
-    localStorage.setItem("commandId", commandId || "");
-  }, [commandId]);
-
-  // Buscar comanda com base no ID armazenado
   useEffect(() => {
     const fetchCommandData = async () => {
-      if (!commandId) return;
+      if (!commandId) {
+        setCommand(null);
+        return;
+      }
 
       try {
-        const endpoint = `/commands?id=${commandId}`;
+        const endpoint = `/commands/${commandId}`;
         const response = await axiosProvider.get(endpoint);
-        const commandData = response.data[0] || null;
+        const commandData = response.data || null;
 
         if (commandData) {
-          setCommand(commandData);
+          setCommand({
+            ...commandData,
+            status: commandData.status === "OPEN" ? "Aberta" : "Fechada",
+            desconto: `${commandData.discount}%`,
+            valorTotal: commandData.totalValue,
+          });
         } else {
           throw new Error("Comanda não encontrada.");
         }
       } catch (error) {
         console.error("Erro ao buscar dados da comanda:", error);
+        setCommand(null); // Clear command on error
       }
     };
-    fetchCommandData();
-  }, [commandId]);
 
-  // Busca comandas filtradas por status
+    fetchCommandData();
+  }, [commandId]); // Removed unnecessary dependencies
+
+  const updateCommandId = (newCommandId) => {
+    const currentCommandId = sessionStorage.getItem("commandId");
+    if (newCommandId !== commandId && newCommandId !== currentCommandId) {
+      setCommand(null);
+      setCommandId(newCommandId);
+      sessionStorage.setItem("commandId", newCommandId || "");
+    }
+  };
+
   const findCommands = async (filterType) => {
     try {
       const endpoint =
         filterType === "ABERTAS"
-          ? "/commands?status=Aberta"
-          : "/commands?status=Fechada";
+          ? "/commands?status=OPEN"
+          : "/commands?status=CLOSED";
       const response = await axiosProvider.get(endpoint);
-      return response.data;
+
+      if (Array.isArray(response.data)) {
+        return response.data.map((command) => ({
+          ...command,
+          status: command.status === "OPEN" ? "Aberta" : "Fechada", // Retorna status correto
+          discount: `${command.discount}%`,
+          totalValue: `R$ ${parseFloat(command.totalValue).toFixed(2)}`,
+        }));
+      } else {
+        console.log("Erro: response.data não é um array.", response.data);
+        return [];
+      }
     } catch (error) {
       console.error("Erro ao buscar comandas:", error);
       return [];
@@ -57,7 +81,7 @@ export const CommandProvider = ({ children }) => {
         command,
         setCommand,
         commandId,
-        setCommandId,
+        setCommandId: updateCommandId, // Use the updated function
         findCommands,
       }}
     >

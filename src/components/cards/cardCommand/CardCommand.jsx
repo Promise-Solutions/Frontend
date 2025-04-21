@@ -26,7 +26,6 @@ const CardCommand = ({
     >
       <div
         className="flex justify-between items-center px-4 py-6 text-2xl font-bold"
-        onClick={onClick}
       >
         <h1 className="card_command_number">{`Comanda: ${id}`}</h1>
         {isClosed && (
@@ -49,7 +48,6 @@ const CardCommand = ({
           className={`px-8 py-6 text-[16px] list-disc marker:${
             isClosed ? "text-pink-zero" : "text-cyan-zero"
           } ease-in-out`}
-          onClick={onClick}
         >
           <li>
             <b>Cliente:</b> <span>{name}</span>

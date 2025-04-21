@@ -1,7 +1,7 @@
 export default {
   content: [
     "./index.html", // Arquivo HTML principal
-    "./src/**/*.{html,js,jsx,ts,tsx}", // Todos os arquivos dentro de src com extensões suportadas
+    "./src/**/*.{html,js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {

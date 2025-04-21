@@ -3,14 +3,23 @@ import Select from "../../form/Select";
 import Input from "../../form/Input";
 import CancelButton from "../modalConfirmDelete/cancelButton";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
+import { showToast } from "../../toastStyle/ToastStyle";
 
 const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    deadline: "",
-    responsible: "",
+    startDate: "",
+    limitDate: "",
+    fkEmployee: "",
+    status: "",
   });
+
+  const mapStatusToBackend = {
+    Pendente: "PENDING",
+    Fazendo: "WORKING",
+    Concluído: "COMPLETED",
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -18,18 +27,33 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
   };
 
   const handleSubmit = () => {
+    if (!formData.title) {
+      showToast.error("Por favor, insira o título da tarefa.");
+      return;
+    }
+    if (!formData.description) {
+      showToast.error("Por favor, insira a descrição da tarefa.");
+      return;
+    }
+
     const newTask = {
       ...formData,
-      id: Date.now().toString(),
-      status: "pendente",
-      start_date: new Date().toISOString(),
+      title: formData.title,
+      description: formData.description,
+      startDate: new Date().toISOString(),
+      limitDate: formData.limitDate || null,
+      fkEmployee: formData.fkEmployee || null,
+      status: "PENDING",
     };
+    console.log("Payload for new task:", newTask);
     onAddTask(newTask);
     setFormData({
       title: "",
       description: "",
-      deadline: "",
-      responsible: "",
+      startDate: "",
+      limitDate: "",
+      fkEmployee: "",
+      status: "",
     });
   };
 
@@ -59,19 +83,19 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
           <Input
             type="date"
             text="Data Limite"
-            name="deadline"
+            name="limitDate"
             handleOnChange={handleInputChange}
-            value={formData.deadline}
+            value={formData.limitDate}
           />
           <Select
             text="Responsável"
-            name="responsible"
+            name="fkEmployee"
             options={employees.map((emp) => ({
               id: emp.id,
-              name: emp.nome,
+              name: emp.name,
             }))}
             handleOnChange={handleInputChange}
-            value={formData.responsible}
+            value={formData.fkEmployee}
           />
         </div>
         <div className="mt-4 flex justify-end gap-4">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Input from "../../form/Input.jsx";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton.jsx";
 import CancelButton from "../modalConfirmDelete/cancelButton.jsx";
+import { showToast } from "../../toastStyle/ToastStyle";
 
 const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
   const [formData, setFormData] = useState(initialData || {});
@@ -18,6 +19,20 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!formData.name) {
+      showToast.error("Por favor, insira o nome do produto.");
+      return;
+    }
+    if (!formData.quantity || formData.quantity < 0) {
+      showToast.error("Por favor, insira uma quantidade válida.");
+      return;
+    }
+    if (!formData.unitValue || parseFloat(formData.unitValue) <= 0) {
+      showToast.error("Por favor, insira um valor unitário válido.");
+      return;
+    }
+
     onSave(formData);
   };
 
@@ -31,28 +46,28 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
           <div className="flex flex-col gap-4">
             <Input
               type="text"
-              name="nomeProduto"
+              name="name"
               text="Nome do Produto"
               placeholder="Digite o nome do produto"
-              value={formData.nomeProduto || ""}
+              value={formData.name || ""}
               handleOnChange={handleInputChange}
               disabled
             />
             <Input
               type="number"
-              name="qtdProduto"
+              name="quantity"
               text="Quantidade"
               placeholder="Digite a quantidade"
-              value={formData.qtdProduto || ""}
+              value={formData.quantity || ""}
               handleOnChange={handleInputChange}
               min="0"
             />
             <Input
               type="text"
-              name="valorUnitario"
+              name="unitValue"
               text="Valor Unitário"
               placeholder="Digite o valor unitário"
-              value={formData.valorUnitario || ""}
+              value={formData.unitValue || ""}
               handleOnChange={handleInputChange}
             />
           </div>

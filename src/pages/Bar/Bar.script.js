@@ -1,13 +1,14 @@
 import React from "react";
-import axios from "axios";
 import CardCommand from "../../components/cards/cardCommand/CardCommand.jsx";
 import { axiosProvider } from "../../provider/apiProvider.js";
 
 export const registerRedirect = (navigate) => {
+  console.log("Navigating to /register");
   navigate("/register"); // Use navigate passed as an argument
 };
 
 export const stockRedirect = (navigate) => {
+  console.log("Navigating to /bar/stock");
   navigate("/bar/stock"); // Use navigate passed as an argument
 };
 
@@ -18,19 +19,13 @@ export const renderCommands = async (
   navigate
 ) => {
   try {
-    const commands = await findCommands(filterType);
+    const commands = await findCommands(filterType); // Busca comandas já filtradas
+    console.log("Comandas filtradas:", commands);
 
-    const commandProductsResponse = await axiosProvider.get(
-      "/commandProduct"
-    );
-    const commandProducts = commandProductsResponse.data;
-
-    const clientsResponse = await axiosProvider.get("/clientes");
+    const clientsResponse = await axiosProvider.get("/clients");
     const clients = clientsResponse.data;
 
-    const employeesResponse = await axiosProvider.get(
-      "/funcionarios"
-    );
+    const employeesResponse = await axiosProvider.get("/employees");
     const employees = employeesResponse.data;
 
     const formatDateTime = (dateTime) => {
@@ -47,29 +42,29 @@ export const renderCommands = async (
     };
 
     return commands.map((command) => {
-      const client = clients.find((client) => client.id === command.fkCliente);
+      const client = clients.find((client) => client.id === command.fkClient);
       const employee = employees.find(
-        (employee) => employee.id === command.fkFuncionario
+        (employee) => employee.id === command.fkEmployee
       );
 
-      const dateHourOpen = formatDateTime(command.dataHoraAbertura);
+      const dateHourOpen = formatDateTime(command.openingDateTime);
       const dateHourClose =
         command.status === "Fechada"
-          ? formatDateTime(command.dataHoraFechamento)
+          ? formatDateTime(command.closingDateTime)
           : null;
 
       return React.createElement(CardCommand, {
         key: command.id,
         id: command.id,
-        name: client ? client.nome : "Funcionário",
-        totalValue: `R$ ${parseFloat(command.valorTotal).toFixed(2)}`, // Reflete o valor total do banco
+        name: client ? client.name : "Funcionário",
+        totalValue: command.totalValue,
         dateHourOpen,
         dateHourClose,
-        discount: `${command.desconto}%`,
-        employeeName: employee ? employee.nome : "Funcionário não encontrado",
+        discount: `${command.discount}`,
+        employeeName: employee ? employee.name : "Funcionário não encontrado",
         onClick: () => {
+          console.log(`Navigating to /command/${command.id}`);
           setCommandId(command.id);
-          localStorage.setItem("commandId", command.id);
           navigate(`/command/${command.id}`);
         },
       });
