@@ -11,7 +11,7 @@ import ModalAddDiscount from "../../components/modals/modalAddDiscount/ModalAddD
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { calcTotalWithDiscount, calcProductsTotal } from "../../hooks/Calc"; // Importa funções de cálculo
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { axiosProvider } from "../../provider/apiProvider.js";
 
 export const RenderCommandDetails = () => {
@@ -34,7 +34,7 @@ export const RenderCommandDetails = () => {
   const [clientName, setClientName] = useState(""); // Nome do cliente
   const [isDeleteCommandModalOpen, setIsDeleteCommandModalOpen] =
     useState(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Inicializa a função navigate
 
   const formatDateTime = (dateTime) => {
     if (!dateTime) return "Ainda aberta";
@@ -49,6 +49,7 @@ export const RenderCommandDetails = () => {
     });
   };
 
+  // Lógica de reset de campos e busca de informações da comanda a cara interação
   useEffect(() => {
     if (!command) {
       setProducts([]);
@@ -56,7 +57,7 @@ export const RenderCommandDetails = () => {
     }
 
     fetchCommandDetails();
-  }, [command]);
+  }, [command?.id]);
 
   useEffect(() => {
     const fetchAllProducts = async () => {
@@ -79,62 +80,30 @@ export const RenderCommandDetails = () => {
 
     const fetchCommandDetails = async () => {
       try {
-        // Fetch employee details
-        const employeeResponse = await axiosProvider.get(`/employees`);
-        const employee = employeeResponse.data.find(
-          (emp) => emp.id === command.fkEmployee
-        );
-        setEmployeeName(
-          employee ? employee.name : "Funcionário não encontrado"
-        );
-
-        // Fetch client details
-        if (command.fkClient) {
-          const clientResponse = await axiosProvider.get(`/clients`);
-          const client = clientResponse.data.find(
-            (cli) => cli.id === command.fkClient
-          );
-          setClientName(client ? client.name : "Cliente não encontrado");
-        } else {
-          setClientName("Cliente não associado");
+        // Evita buscar detalhes se o estado atual já corresponde ao commandId
+        if (command && command.id === commandId) {
+          console.log("Comanda já carregada no estado.");
+          return;
         }
 
-        // Fetch products related to the command
-        const productsResponse = await axiosProvider.get(
-          `/command-products?fkComanda=${command.id}`
-        );
-        const allProductsResponse = await axiosProvider.get("/products");
+        const endpoint = `/commands/${commandId}`;
+        const response = await axiosProvider.get(endpoint);
+        const commandData = response.data;
 
-        const productsData = Array.isArray(productsResponse.data)
-          ? productsResponse.data
-          : []; // Ensure productsData is an array
-
-        const enrichedProducts = productsData.map((product) => {
-          const relatedProduct = allProductsResponse.data.find(
-            (p) => p.id === product.fkProduct
-          );
-          return {
-            ...product,
-            name: relatedProduct ? relatedProduct.name : "Desconhecido",
-            idProduto: relatedProduct ? relatedProduct.id : "N/A",
-          };
-        });
-
-        setProducts(enrichedProducts);
-
-        // Fetch updated command details
-        const updatedCommand = await axiosProvider.get(
-          `/commands/${command.id}`
-        );
-        setCommand(updatedCommand.data);
+        if (commandData) {
+          setCommand(commandData); // Atualiza o estado com os dados da comanda
+        } else {
+          console.error("Comanda não encontrada.");
+          setCommand(null);
+        }
       } catch (error) {
         console.error("Erro ao buscar detalhes da comanda:", error);
-        setProducts([]);
+        setCommand(null);
       }
     };
 
     fetchCommandDetails();
-  }, [commandId]); // Trigger fetch when commandId changes
+  }, [commandId]); // Observa apenas commandId
 
   const fetchAllProducts = async () => {
     try {
@@ -402,7 +371,8 @@ export const RenderCommandDetails = () => {
       setCommand(null);
       setCommandId(null);
       sessionStorage.removeItem("commandId");
-      navigate("/bar"); // Corrige o redirecionamento para uma rota válida
+      console.log("Navigating to /bar after deleting command");
+      navigate("/bar"); // Usa navigate para redirecionar
 
       showToast.success("Comanda e itens associados deletados com sucesso!");
     } catch (error) {
@@ -562,7 +532,9 @@ export const RenderCommandDetails = () => {
             onClose={() => setIsDeleteModalOpen(false)}
             onConfirm={confirmDelete}
             title={"Deletar Produto"}
-            description={"Tem certeza de que deseja deletar este produto?"}
+            description={
+              "Tem certeza de que deseja deletar este produto? Os itens retornarão ao estoque."
+            }
           />
           <ModalAddDiscount
             isOpen={isDiscountModalOpen}
@@ -574,7 +546,9 @@ export const RenderCommandDetails = () => {
             onClose={() => setIsDeleteCommandModalOpen(false)}
             onConfirm={handleDeleteCommand}
             title={"Deletar Comanda"}
-            description={"Tem certeza de que deseja deletar esta comanda?"}
+            description={
+              "Tem certeza de que deseja deletar esta comanda? Os itens associados serão também deletados!"
+            }
           />
         </div>
       </div>

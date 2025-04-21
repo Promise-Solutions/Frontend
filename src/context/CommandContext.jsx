@@ -11,13 +11,9 @@ export const CommandProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    sessionStorage.setItem("commandId", commandId || "");
-  }, [commandId]);
-
-  useEffect(() => {
     const fetchCommandData = async () => {
       if (!commandId) {
-        setCommand(null); // Clear command when no commandId is set
+        setCommand(null);
         return;
       }
 
@@ -43,11 +39,12 @@ export const CommandProvider = ({ children }) => {
     };
 
     fetchCommandData();
-  }, [commandId]);
+  }, [commandId]); // Removed unnecessary dependencies
 
   const updateCommandId = (newCommandId) => {
-    if (newCommandId !== commandId) {
-      setCommand(null); // Clear command to avoid flickering
+    const currentCommandId = sessionStorage.getItem("commandId");
+    if (newCommandId !== commandId && newCommandId !== currentCommandId) {
+      setCommand(null);
       setCommandId(newCommandId);
       sessionStorage.setItem("commandId", newCommandId || "");
     }

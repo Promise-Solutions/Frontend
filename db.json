@@ -402,6 +402,15 @@
       "fkClient": "c4d5e6f7-8a9b-1c2d-3e4f-5a6b7c8d9e0f",
       "fkEmployee": "b3c1a8f4-1d2e-4c3a-9f6b-8e7d2a9c1f4b",
       "status": "Aberta"
+    },
+    {
+      "fkClient": null,
+      "fkEmployee": "a9b1c2d3-e4f5-a6b7-c8d9-e0f1a2b3c4d5",
+      "openingDateTime": "2025-04-20T22:36:24.212Z",
+      "status": "OPEN",
+      "discount": "0.00",
+      "totalValue": "0.00",
+      "id": 2
     }
   ],
   "command-products": [

@@ -45,7 +45,7 @@ const CardSubJob = React.memo((
         done ? "border-cyan-zero" : "border-pink-zero"
       }`}
     >
-      <div className="absolute top-4/9 left-4/9 z-100 -translate-x-1/2 -translate-y-1/2 z-40">{modalEditSubJob}</div>
+      <div className="absolute top-4/9 left-4/9 z-100 -translate-x-1/2 -translate-y-1/2">{modalEditSubJob}</div>
       <div className="flex py-2 text-2xl font-bold items-center gap-[4px]">
         <h1 className="card_subjob_title">{title}</h1>
       </div>

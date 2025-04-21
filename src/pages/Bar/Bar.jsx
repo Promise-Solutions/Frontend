@@ -6,7 +6,7 @@ import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton"
 import ModalOpenCommand from "../../components/modals/modalOpenCommand/ModalOpenCommand"; // Import the new modal
 import { renderCommands, stockRedirect } from "./Bar.script";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
 
 // Componente funcional para a página Bar
@@ -18,7 +18,7 @@ const Bar = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
   const [isOpenCommandModalOpen, setIsOpenCommandModalOpen] = useState(false); // State to control the modal
 
-  const navigate = useNavigate(); // Navigate para navegação, ele não atualiza a página
+  const navigate = useNavigate(); // Inicializa a função navigate
 
   const refreshCommands = async () => {
     try {
@@ -26,7 +26,7 @@ const Bar = () => {
         filterType,
         findCommands,
         setCommandId,
-        navigate
+        navigate // Passa o navigate como argumento
       );
       setCommandElements(elements);
     } catch (error) {
@@ -83,7 +83,7 @@ const Bar = () => {
               <PrimaryButton
                 id="stock_button"
                 text="Gerenciar Estoque"
-                onClick={() => stockRedirect(navigate)} // Pass navigate to stockRedirect
+                onClick={() => stockRedirect(navigate)} // Passa navigate para a função stockRedirect
               />
             </div>
             <div className="flex justify-center w-full pr-30 flex-1">
