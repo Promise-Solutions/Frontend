@@ -134,14 +134,6 @@
       "category": "PHOTO_VIDEO_STUDIO",
       "status": "Pendente",
       "serviceType": "AVULSO"
-    },
-    {
-      "titulo": "Servico",
-      "categoria": "Estudio Fotografico",
-      "tipoServico": "AVULSO",
-      "fkCliente": 3,
-      "concluido": false,
-      "id": 7
     }
   ],
   "subservicos": [

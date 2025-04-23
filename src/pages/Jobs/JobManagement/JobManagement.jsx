@@ -182,7 +182,6 @@ const JobManagement = () => {
           </section>
         </div>
       );
-    
 }
 
 export default JobManagement

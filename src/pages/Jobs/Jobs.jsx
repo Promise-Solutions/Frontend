@@ -25,6 +25,7 @@ const Jobs = () => {
           findClientById
       );
 
+      console.log("elements", elements)
     setJobsElements(elements);
     setIsLoading(false);
   };
@@ -35,7 +36,7 @@ const Jobs = () => {
     { label: "Categoria", key: "category" },
     { label: "Tipo do Serviço", key: "jobType" },
     { label: "Cliente", key: "client"},
-    { label: "Status", key: "isDone" },
+    { label: "Status", key: "status" },
     { label: "Ação", key: "action"}
   ] 
 

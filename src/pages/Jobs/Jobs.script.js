@@ -19,15 +19,15 @@ export const renderJobs = async (
       category: job.categoria
     });
 
-      const client = await findClientById(job.fkCliente);
+      const client = await findClientById(job.fkClient);
       return {
         key: job.id,
         id: job.id,
-        title: job.titulo,
-        category: job.categoria,
-        jobType: job.tipoServico, 
-        client: client?.nome != undefined ? client.nome : "Desconhecido",
-        isDone: job.concluido ? "Concluído": "Pendente",
+        title: job.title,
+        category: job.category,
+        jobType: job.serviceType, 
+        client: client?.name != undefined ? client.name : "Desconhecido",
+        status: job.status,
         action: React.createElement(PrimaryButton, {
           id: "access_button",
           text: "Acessar",

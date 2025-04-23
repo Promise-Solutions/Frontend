@@ -61,7 +61,7 @@ const JobRegister = () => {
         {id: "AVULSO", name: "Avulso"},
         {id: "MENSAL", name: "Mensal"}
       ]
-      
+
     return(
         <main className="flex items-center justify-center h-[600px] my-6 w-full px-16">
           <section className="flex flex-col items-center justify-start gap-6 w-full px-4">
@@ -109,7 +109,6 @@ const JobRegister = () => {
                   handleOnChange={handleInputChange}
                   value={formData.fkCliente}
                 />
-              
               </section>
         
           <SubmitButton text="Confirmar" />
