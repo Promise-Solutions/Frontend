@@ -68,12 +68,8 @@ export const RenderInfos = () => {
   };
 
   const renderJobs = async () => {
-<<<<<<< HEAD
-    const jobsRendered = await createFilteredJobs(findJobs)
-=======
     const jobsRendered = await createFilteredJobs(findJobs);
     console.log("render jobs", jobsRendered);
->>>>>>> refactor/change-urls
 
     setFilteredJobs(jobsRendered);
   };
@@ -93,12 +89,8 @@ export const RenderInfos = () => {
 
   const createFilteredJobs = async (findJobs) => {
     const jobs = await findJobs();
-<<<<<<< HEAD
-  
-=======
     console.log("jobs", jobs);
 
->>>>>>> refactor/change-urls
     return jobs.filter((job) => {
       console.log("Renderizando serviços:", {
         title: job.title,
@@ -118,11 +110,8 @@ export const RenderInfos = () => {
 
       console.log(mensagemConcluido);
 
-<<<<<<< HEAD
-=======
       console.log("jobID: " + job.id);
 
->>>>>>> refactor/change-urls
       return {
         id: job.id,
         title: job.titulo,
