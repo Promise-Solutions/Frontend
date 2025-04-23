@@ -32,7 +32,6 @@ const Jobs = () => {
   
   const tableHeader = [
     { label: "ID", key: "id" },
-    { label: "Titulo", key: "title" },
     { label: "Categoria", key: "category" },
     { label: "Tipo do Serviço", key: "jobType" },
     { label: "Cliente", key: "client"},
@@ -44,10 +43,7 @@ const Jobs = () => {
     setSearchTerm(term.toUpperCase()); // Atualiza o termo de busca
   };
   
-  const filteredJobsElements = jobsElements.filter((element) => {
-    const title = element.title.toUpperCase(); // Garante que o nome seja comparado em maiúsculas
-    return title.includes(searchTerm); // Filtra os elementos com base no termo de busca
-  });
+  //   
   
   useEffect(() => {
     fetchAndRender();
@@ -88,7 +84,7 @@ const Jobs = () => {
           ):(
             <Table 
             headers={tableHeader}
-            data={filteredJobsElements}
+            data={jobsElements}
             />
           )
         }

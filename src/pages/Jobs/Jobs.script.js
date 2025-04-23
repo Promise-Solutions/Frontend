@@ -5,6 +5,19 @@ export const registerRedirect = (navigate) => {
   navigate("/register/jobs");
 };
 
+function getCategoryTranslated(category) {
+  switch (category) {
+    case  "MUSIC_REHEARSAL": 
+      return "Ensaio Musical";
+      case "PODCAST":
+        return "Podcast";
+      case "PHOTO_VIDEO_STUDIO":
+        return "Estúdio Fotográfico";
+      default:
+        return category;  
+  }
+}
+
 export const renderJobs = async (
   findJobs,
   navigate,
@@ -23,8 +36,7 @@ export const renderJobs = async (
       return {
         key: job.id,
         id: job.id,
-        title: job.title,
-        category: job.category,
+        category: getCategoryTranslated(job.category),
         jobType: job.serviceType, 
         client: client?.name != undefined ? client.name : "Desconhecido",
         status: job.status,
