@@ -5,6 +5,19 @@ export const registerRedirect = (navigate) => {
   navigate("/register/jobs");
 };
 
+function getCategoryTranslated(category) {
+  switch (category) {
+    case  "MUSIC_REHEARSAL": 
+      return "Ensaio Musical";
+      case "PODCAST":
+        return "Podcast";
+      case "PHOTO_VIDEO_STUDIO":
+        return "Estúdio Fotográfico";
+      default:
+        return category;  
+  }
+}
+
 export const renderJobs = async (
   findJobs,
   navigate,
@@ -19,15 +32,14 @@ export const renderJobs = async (
       category: job.categoria
     });
 
-      const client = await findClientById(job.fkCliente);
+      const client = await findClientById(job.fkClient);
       return {
         key: job.id,
         id: job.id,
-        title: job.titulo,
-        category: job.categoria,
-        jobType: job.tipoServico, 
-        client: client?.nome != undefined ? client.nome : "Desconhecido",
-        isDone: job.concluido ? "Concluído": "Pendente",
+        category: getCategoryTranslated(job.category),
+        jobType: job.serviceType, 
+        client: client?.name != undefined ? client.name : "Desconhecido",
+        status: job.status,
         action: React.createElement(PrimaryButton, {
           id: "access_button",
           text: "Acessar",
