@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Input from "../../form/Input";
-import SubmitButton from "../../form/SubmitButton";
 import CancelButton from "../modalConfirmDelete/cancelButton";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
 
@@ -9,6 +8,7 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
     name: "",
     quantity: 0,
     unitValue: "",
+    buyValue: 0.0,
   });
 
   const handleInputChange = (e) => {
@@ -20,7 +20,7 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onAdd(formData);
-    setFormData({ name: "", quantity: 0, unitValue: "" });
+    setFormData({ name: "", quantity: 0, unitValue: "", buyValue: 0.0 });
   };
 
   if (!isOpen) return null;
@@ -51,10 +51,20 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
             <Input
               type="text"
               name="unitValue"
-              text="Valor Unitário"
+              text="Valor Unitário de Venda"
               placeholder="Digite o valor unitário"
               value={formData.unitValue}
               handleOnChange={handleInputChange}
+            />
+            <Input
+              type="number"
+              name="buyValue"
+              text="Valor Total de Compra"
+              placeholder="Digite o valor de compra"
+              value={formData.buyValue}
+              handleOnChange={handleInputChange}
+              min="0"
+              step="any"
             />
           </div>
           <div className="mt-4 flex justify-end gap-4">

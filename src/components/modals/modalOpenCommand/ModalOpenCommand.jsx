@@ -4,6 +4,7 @@ import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
 import CancelButton from "../modalConfirmDelete/cancelButton";
 import { showToast } from "../../toastStyle/ToastStyle";
 import { axiosProvider } from "../../../provider/apiProvider";
+import Input from "../../form/Input";
 
 const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
   const [clients, setClients] = useState([]);
@@ -11,6 +12,7 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
   const [selectedClient, setSelectedClient] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [openCommands, setOpenCommands] = useState([]);
+  const [numberCommand, setNumberCommand] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,12 +42,22 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
     setSelectedClient(clientId);
   };
 
+  const handleNumberCommandChange = (e) => {
+    const numberCommand = e.target.value;
+    setNumberCommand(numberCommand);
+  };
+
   const handleEmployeeChange = (e) => {
     const employeeId = e.target.value;
     setSelectedEmployee(employeeId);
   };
 
   const handleOpenCommand = async () => {
+    if (!numberCommand) {
+      showToast.error("Por favor, digite um número para comanda.");
+      return;
+    }
+
     if (!selectedEmployee) {
       showToast.error("Por favor, selecione um funcionário.");
       return;
@@ -80,14 +92,16 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
       ).toISOString();
 
       const newCommand = {
+        commandNumber: Number(numberCommand || null),
         fkClient: selectedClient ? selectedClient : null,
         fkEmployee: selectedEmployee,
         openingDateTime: openingDateTime,
         status: "OPEN",
-        discount: "0.00",
-        totalValue: "0.00",
+        discount: 0.00,
+        totalValue: 0.00,
       };
 
+      console.log(newCommand)
       await axiosProvider.post("/commands", newCommand);
       showToast.success("Comanda aberta com sucesso!");
       onClose();
@@ -110,6 +124,13 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
           </span>
         </h2>
         <div className="flex flex-col gap-4">
+          <Input
+            type="number"
+            name="commandNumber"
+            text="Número da Comanda"
+            placeholder="Digite o número da comanda"
+            handleOnChange={handleNumberCommandChange}
+          />
           <Select
             text="Cliente"
             name="client"

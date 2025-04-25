@@ -42,10 +42,11 @@ export const renderCommands = async (
     };
 
     return commands.map((command) => {
-      const client = clients.find((client) => client.id === command.fkClient);
       const employee = employees.find(
         (employee) => employee.id === command.fkEmployee
       );
+      
+      const client = clients.length > 0 ? clients.find((client) => client.id === command.fkClient) : null;
 
       const dateHourOpen = formatDateTime(command.openingDateTime);
       const dateHourClose =
@@ -56,6 +57,7 @@ export const renderCommands = async (
       return React.createElement(CardCommand, {
         key: command.id,
         id: command.id,
+        commandNumber: command.commandNumber,
         name: client ? client.name : "Funcionário",
         totalValue: command.totalValue,
         dateHourOpen,

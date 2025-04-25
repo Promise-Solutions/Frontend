@@ -17,7 +17,7 @@ export const addStockItem = async (item) => {
 
 export const editStockItem = async (id, updatedItem) => {
   // Edit an existing stock item
-  const response = await axios.put(`/products${id}`, updatedItem, {
+  const response = await axios.patch(`/products${id}`, updatedItem, {
     headers: { "Content-Type": "application/json" },
   });
   return response.data;

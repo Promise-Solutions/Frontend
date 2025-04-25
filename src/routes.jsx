@@ -1,81 +1,47 @@
 import {
   Routes, // Contêiner para as rotas
   Route, // Define uma rota específica
-  Navigate,
+  Navigate, // Redireciona para uma nova página
 } from "react-router-dom";
 
-import Register from "./pages/Register/Register"; // Página de registro
-import Users from "./pages/Users/Users"; // Página de usuários
-import Login from "./pages/Login/Login"; // Página de login
-import Bar from "./pages/Bar/Bar"; // Página do bar
-import Dashboard from "./pages/Dashboard/Dashboard"; // Página do dashboard
-import Reports from "./pages/Reports/Reports"; // Página de relatórios
-import Projects from "./pages/Projects/Projects"; // Página de projetos
-import Jobs from "./pages/Jobs/Jobs"; // Página de trabalhos
-import Home from "./pages/Home/Home"; // Página inicial
-import User from "./pages/Users/User/User.jsx"; // Página de usuário
-import JobManagement from "./pages/Jobs/JobManagement/JobManagement.jsx"
+// Importação das páginas
+import Register from "./pages/Register/Register";
+import Users from "./pages/Users/Users";
+import Login from "./pages/Login/Login";
+import Bar from "./pages/Bar/Bar";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Reports from "./pages/Reports/Reports";
+import Projects from "./pages/Projects/Projects";
+import Jobs from "./pages/Jobs/Jobs";
+import Home from "./pages/Home/Home";
+import User from "./pages/Users/User/User.jsx";
+import JobManagement from "./pages/Jobs/JobManagement/JobManagement.jsx";
 import Stock from "./pages/Stock/Stock";
-import Command from "./pages/Command/Command"; // Página de comanda
+import Command from "./pages/Command/Command";
 import Tasks from "./pages/Tasks/Tasks";
 import JobRegister from "./pages/Register/JobRegister/JobRegister.jsx";
 import SubJobRegister from "./pages/Register/SubJobRegister/SubJobRegister.jsx";
 
-function ProtectedRoute({ element }) {
-  const isAuthenticated = !!localStorage.getItem("token"); // Verifica se o usuário está autenticado
-  return isAuthenticated ? element : <Navigate to="/login" />;
-}
-
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<ProtectedRoute element={<Home />} />} />
-      <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
-      <Route
-        path="/user/:user"
-        element={<ProtectedRoute element={<User />} />}
-      />
-      <Route
-        path="/jobs/:job"
-        element={<ProtectedRoute element={<JobManagement />} />}
-      />
-      <Route
-        path="/register/jobs"
-        element={<ProtectedRoute element={<JobRegister />} />}
-      />
-      <Route
-        path="/register/subjobs"
-        element={<ProtectedRoute element={<SubJobRegister />} />}
-      />
-      <Route
-        path="/register"
-        element={<ProtectedRoute element={<Register />} />}
-      />
-      <Route path="/bar" element={<ProtectedRoute element={<Bar />} />} />
-      <Route
-        path="/bar/stock"
-        element={<ProtectedRoute element={<Stock />} />}
-      />
-      <Route
-        path="/command/:command"
-        element={<ProtectedRoute element={<Command />} />}
-      />
-      <Route
-        path="/dashboard"
-        element={<ProtectedRoute element={<Dashboard />} />}
-      />
-      <Route
-        path="/reports"
-        element={<ProtectedRoute element={<Reports />} />}
-      />
-      <Route
-        path="/projects"
-        element={<ProtectedRoute element={<Projects />} />}
-      />
-      <Route path="/jobs" element={<ProtectedRoute element={<Jobs />} />} />
-      <Route path="/tasks" element={<ProtectedRoute element={<Tasks />} />} />
+      <Route path="/users" element={<Users />} />
+      <Route path="/user/:user" element={<User />} />
+      <Route path="/jobs/:job" element={<JobManagement />} />
+      <Route path="/register/jobs" element={<JobRegister />} />
+      <Route path="/register/subjobs" element={<SubJobRegister />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/bar" element={<Bar />} />
+      <Route path="/bar/stock" element={<Stock />} />
+      <Route path="/command/:command" element={<Command />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/reports" element={<Reports />} />
+      <Route path="/projects" element={<Projects />} />
+      <Route path="/jobs" element={<Jobs />} />
+      <Route path="/tasks" element={<Tasks />} />
     </Routes>
   );
 }

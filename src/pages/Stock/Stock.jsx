@@ -14,6 +14,7 @@ const Stock = () => {
     productName: "",
     quantity: 0,
     unitValue: "",
+    buyValue: 0.0,
   });
   const [editingProduct, setEditingProduct] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -40,6 +41,7 @@ const Stock = () => {
         ...newProduct,
         quantity: parseInt(newProduct.quantity),
         unitValue: parseFloat(newProduct.unitValue).toFixed(2),
+        buyValue: parseFloat(newProduct.buyValue).toFixed(2),
       };
       const response = await axiosProvider.post(
         "/products",
@@ -64,6 +66,7 @@ const Stock = () => {
         ...updatedProduct,
         quantity: parseInt(updatedProduct.quantity),
         unitValue: parseFloat(updatedProduct.unitValue).toFixed(2),
+        buyValue: parseFloat(updatedProduct.buyValue).toFixed(2),
       };
       await axiosProvider.patch(
         `/products/${editingProduct.id}`,

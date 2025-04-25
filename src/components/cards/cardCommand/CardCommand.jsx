@@ -8,6 +8,7 @@ const CardCommand = ({
   dateHourClose,
   discount,
   employeeName,
+  commandNumber,
   onClick,
 }) => {
   const isClosed = !!dateHourClose; // Verifica se a comanda está fechada
@@ -24,10 +25,8 @@ const CardCommand = ({
       } transition duration-100 ease-in-out `}
       onClick={onClick}
     >
-      <div
-        className="flex justify-between items-center px-4 py-6 text-2xl font-bold"
-      >
-        <h1 className="card_command_number">{`Comanda: ${id}`}</h1>
+      <div className="flex justify-between items-center px-4 py-6 text-2xl font-bold">
+        <h1 className="card_command_number">{`Comanda: ${commandNumber}`}</h1>
         {isClosed && (
           <img
             src={ImageDone}
@@ -62,7 +61,8 @@ const CardCommand = ({
             <b>Desconto:</b> <span>{discount}</span>
           </li>
           <li>
-            <b>Data Abertura:</b><br></br> <span>{dateHourOpen}</span>
+            <b>Data Abertura:</b>
+            <br></br> <span>{dateHourOpen}</span>
           </li>
           {dateHourClose && (
             <li>

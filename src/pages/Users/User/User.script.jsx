@@ -35,24 +35,6 @@ export const RenderInfos = () => {
   // Função para deletar usuário
   const handleDeleteUser = async () => {
     try {
-      // Check for open commands
-      const commandsEndpoint = `/commands`;
-      const { data: commands } = await axiosProvider.get(commandsEndpoint);
-      const hasOpenCommand = commands.some(
-        (command) =>
-          (isClient
-            ? command.fkClient === userId
-            : command.fkEmployee === userId) && command.status === "OPEN"
-      );
-
-      if (hasOpenCommand) {
-        showToast.error(
-          "Não é possível deletar o usuário com uma comanda aberta.",
-          { style: ToastStyle }
-        );
-        return;
-      }
-
       // Proceed with deletion
       const endpoint = isClient ? `/clients/${userId}` : `/employees/${userId}`;
       await axiosProvider.delete(endpoint);

@@ -13,6 +13,7 @@ import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { calcTotalWithDiscount, calcProductsTotal } from "../../hooks/Calc"; // Importa funções de cálculo
 import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { axiosProvider } from "../../provider/apiProvider.js";
+import { comma } from "postcss/lib/list";
 
 export const RenderCommandDetails = () => {
   const { command, setCommand, commandId, setCommandId } = useCommandContext(); // Usa o BarContext para obter a comanda
@@ -207,6 +208,11 @@ export const RenderCommandDetails = () => {
       return;
     }
 
+    if (newProduct.quantity > newProduct.stockQuantity) {
+      showToast.error("A quantidade inserida excede o estoque disponível.");
+      return;
+    }
+
     try {
       const productToAdd = {
         fkProduct: newProduct.idProduto,
@@ -241,6 +247,8 @@ export const RenderCommandDetails = () => {
     setEditingCommandProduct({
       ...product,
       productQuantity: product.productQuantity, // Map productQuantity to quantity for editing
+      stockQuantity:
+        allProducts.find((p) => p.id === product.fkProduct)?.quantity || 0, // Fetch stock quantity
     });
     setIsEditCommandProductModalOpen(true);
   };
@@ -268,6 +276,11 @@ export const RenderCommandDetails = () => {
   };
 
   const handleUpdateProduct = async (updatedProduct) => {
+    if (updatedProduct.qtdProduto > updatedProduct.stockQuantity) {
+      showToast.error("A quantidade inserida excede o estoque disponível.");
+      return;
+    }
+
     try {
       const productToUpdate = {
         fkCommand: command.id,
@@ -305,8 +318,9 @@ export const RenderCommandDetails = () => {
       } else {
         await axiosProvider.patch(`/commands/${command.id}`, {
           status: "OPEN",
+          commandNumber: command.commandNumber,
           closingDateTime: null,
-          discount: "0.00",
+          discount: 0.00,
           openingDateTime: command.openingDateTime,
           totalValue: command.totalValue,
           fkEmployee: command.fkEmployee,
@@ -333,6 +347,7 @@ export const RenderCommandDetails = () => {
 
       await axiosProvider.patch(`/commands/${command.id}`, {
         status: "CLOSED",
+        commandNumber: command.commandNumber,
         closingDateTime: closingDateTime,
         openingDateTime: command.openingDateTime,
         totalValue: command.totalValue,

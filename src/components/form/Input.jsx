@@ -7,6 +7,7 @@ function Input({
   value,
   min,
   max,
+  step,
   className = ""
 }) {
   return (
@@ -16,6 +17,7 @@ function Input({
       </label>
       <input
         type={type}
+        step={step || ""} // Default to "any" if not provided
         name={name}
         id={name}
         placeholder={placeholder}

@@ -32,6 +32,10 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
       showToast.error("Por favor, insira um valor unitário válido.");
       return;
     }
+    if (!formData.buyValue || parseFloat(formData.buyValue) < 0) {
+      showToast.error("Por favor, insira um valor unitário válido.");
+      return;
+    }
 
     onSave(formData);
   };
@@ -65,10 +69,20 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
             <Input
               type="text"
               name="unitValue"
-              text="Valor Unitário"
+              text="Valor Unitário de Venda"
               placeholder="Digite o valor unitário"
               value={formData.unitValue || ""}
               handleOnChange={handleInputChange}
+            />
+            <Input
+              type="number"
+              name="buyValue"
+              text="Valor Total de Compra"
+              placeholder="Digite o valor de compra"
+              value={formData.buyValue || ""}
+              handleOnChange={handleInputChange}
+              min="0"
+              step="any"
             />
           </div>
           <div className="mt-4 flex justify-end gap-4">
