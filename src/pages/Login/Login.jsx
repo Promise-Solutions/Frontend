@@ -15,7 +15,7 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.email.trim()) {
@@ -28,29 +28,38 @@ const Login = () => {
       return;
     }
 
-    toast.promise(
-      axiosProvider.post("/employees/login", {
-        email: formData.email,
-        password: formData.senha,
-      }).then((response) => {
-        const data = response.data;
-        const token = data.token; 
+    try {
+      await toast.promise(
+        axiosProvider
+          .post("/employees/login", {
+            email: formData.email,
+            password: formData.senha,
+          })
+          .then((response) => {
+            const data = response.data;
+            const token = data.token;
 
-        if (token) {
-          localStorage.setItem("token", token);
-          navigate("/home");
-        } else {
-          throw new Error("Credenciais inválidas.");
-        }
-      }),
-      {
-        loading: "Autenticando...",
-        success: "Usuário autenticado com sucesso!",
-        error: "Erro ao autenticar. Verifique suas credenciais.",
-      },
-      { style: ToastStyle }
-    );
+            if (token) {
+              localStorage.setItem("token", token);
+              navigate("/home");
+            } else {
+              throw new Error("Token não recebido.");
+            }
+          }),
+        {
+          loading: "Autenticando...",
+          success: "Usuário autenticado com sucesso!",
+          error: "Erro ao autenticar. Verifique suas credenciais.",
+        },
+        { style: ToastStyle }
+      );
+    } catch (error) {
+      toast.error("Erro ao autenticar. Verifique suas credenciais.", {
+        style: ToastStyle,
+      });
+    }
   };
+
 
   return (
     <div className="container text-white min-w-screen min-h-screen flex items-center justify-center">
