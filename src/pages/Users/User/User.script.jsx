@@ -2,10 +2,7 @@ import { useState, useEffect } from "react";
 import { useUserContext } from "../../../context/UserContext.jsx";
 import PrimaryButton from "../../../components/buttons/primaryButton/PrimaryButton.jsx";
 import { useJobContext } from "../../../context/JobContext.jsx";
-import {
-  showToast,
-  ToastStyle,
-} from "../../../components/toastStyle/ToastStyle.jsx";
+import { showToast, ToastStyle } from "../../../components/toastStyle/ToastStyle.jsx";
 import Select from "../../../components/form/Select.jsx";
 import Input from "../../../components/form/Input.jsx";
 import DeleteButton from "../../../components/buttons/deleteButton/DeleteButton.jsx";
@@ -16,19 +13,21 @@ import FreqPagGraphic from "../../../components/graphic/FreqPagGraphic.jsx";
 import React from "react";
 import CardJob from "../../../components/cards/cardJob/CardJob.jsx";
 import toast from "react-hot-toast"; // Add this import
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import RegisterButton from "../../../components/buttons/registerButton/RegisterButton.jsx";
 import SecondaryButton from "../../../components/buttons/secondaryButton/SecondaryButton.jsx";
 import Table from "../../../components/tables/Table.jsx";
 import { axiosProvider } from "../../../provider/apiProvider";
+import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } from "../../../hooks/translateAttributes.js";
 
 export const RenderInfos = () => {
+  const { userParam } =  useParams();
   const { user, setUser, userId, isClient } = useUserContext(); // Contexto do usuário
   const [isEditing, setIsEditing] = useState(false); // Controla o modo de edição
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla o modal de exclusão
   const [filterScreen, setFilterScreen] = useState("1"); // Controla o filtro de tela
-  const { findJobs } = useJobContext();
+  const { findJobsByClientId } = useJobContext();
   const [tableData, setTableData] = useState({});
   const navigate = useNavigate();
 
@@ -68,7 +67,7 @@ export const RenderInfos = () => {
   };
 
   const renderJobs = async () => {
-    const jobsRendered = await createFilteredJobs(findJobs)
+    const jobsRendered = await findJobsByClientId(userParam)
 
     setFilteredJobs(jobsRendered);
   };
@@ -77,8 +76,8 @@ export const RenderInfos = () => {
     { label: "ID", key: "id" },
     { label: "Titulo", key: "title" },
     { label: "Categoria", key: "category" },
-    { label: "Tipo do Serviço", key: "jobType" },
-    { label: "Status", key: "isDone" },
+    { label: "Tipo do Serviço", key: "serviceType" },
+    { label: "Status", key: "status" },
     { label: "Ação", key: "action" },
   ];
 
@@ -86,40 +85,24 @@ export const RenderInfos = () => {
     navigate("/register/jobs");
   };
 
-  const createFilteredJobs = async (findJobs) => {
-    const jobs = await findJobs();
-  
-    return jobs.filter((job) => {
-      console.log("Renderizando serviços:", {
-        title: job.title,
-        category: job.category,
-      });
-      return job.fkClient == userId;
-    });
-  };
-
   useEffect(() => {
     renderJobs();
-  }, []);
+  }, [userParam]);
 
   useEffect(() => {
     const dataFiltered = filteredJobs.map((job) => {
-      const mensagemConcluido = job.concluido ? "Concluído" : "Pendente";
-
-      console.log(mensagemConcluido);
-
+      
       return {
         id: job.id,
-        title: job.titulo,
-        category: job.categoria,
-        jobType: job.tipoServico,
-        isDone: mensagemConcluido,
+        title: job.title,
+        category: getCategoryTranslated(job.category),
+        serviceType: getServiceTypeTranslated(job.serviceType),
+        status: getStatusTranslated(job.status),
         action: React.createElement(PrimaryButton, {
           id: "access_button",
           text: "Acessar",
           onClick: () => {
             navigate(`/jobs/${job.id}`);
-            sessionStorage.setItem("jobId", job.id);
           },
         }),
       };

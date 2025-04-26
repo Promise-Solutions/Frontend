@@ -1,77 +1,76 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ImageDone from "../../../assets/icone-concluido.png";
 import { useSubJobContext } from "../../../context/SubJobContext";
-import { useJobContext } from "../../../context/JobContext";
-import { editSubJobsInfos } from "./CardSubJob.script";
+import { showToast } from "../../toastStyle/ToastStyle";
 
-const CardSubJob = React.memo((
-        { id, title, description, quantity, value, expectedDate, 
-        timeDone, isDone, setModalEditSubJob, isEditingSubJob, setIsEditingSubJob, setSubJobIdToEdit, setSubJobDataToEdit }) => {
-  const [done, setDone] = useState(isDone);
-  const [timeDoneText, setTimeDoneText] = useState(timeDone);
-  const { currentDate, updateStatus } = useSubJobContext()
-  const { job, updateStatusJob } = useJobContext();
+const CardSubJob = React.memo(({ data, onEdit }) => {
+  const [isClosed, setIsClosed] = useState(
+    data == "CLOSED" ? true : false
+  );
+  const [timeDoneText, setTimeDoneText] = useState();
+  const { updateSubJobStatus } = useSubJobContext()
 
-  const handleChangeStatus = async () => {
-    setDone(!done);
+  const handleChangeStatus =  async () => {
+    const currentDateTime = isClosed ? null : new Date();
+    const responseStatus = await updateSubJobStatus(data.id, isClosed ? "PENDING" : "CLOSED", currentDateTime);
 
-    // // Atualiza o status no backend
-    await updateStatus(id, !done);
-    setTimeDoneText(currentDate)
-    await updateStatusJob(job.id)
+    if(responseStatus == 204) {
+      setIsClosed(!isClosed)
+      const currentDateFormatted = formatCurrenteDate(currentDateTime);
+      setTimeDoneText(currentDateFormatted)
+    } else {
+      showToast.error("Não foi possível atualizar o status do subserviço")
+    }
   };
 
-  const handleIsEditingStatus =  () => {
-    const [dia, mes, ano] = expectedDate.split("/");
-
-    const subJobData = {
-      id,
-      title,
-      description,
-      quantity,
-      value: value.toFixed(2).replace(".", ","),
-      expectedDate: `${ano}-${mes}-${dia}`
+  const formatCurrenteDate = (dataAtual) => {
+    if(dataAtual != null) {
+      const diaAtual = String(dataAtual.getDate()).padStart(2, "0");
+      const mesAtual = String(dataAtual.getMonth() + 1).padStart(2, "0");
+      const anoAtual = dataAtual.getFullYear();
+      const horaAtual = String(dataAtual.getHours()).padStart(2, "0");
+      const minutoAtual = String(dataAtual.getMinutes()).padStart(2, "0");
+      return `${diaAtual}/${mesAtual}/${anoAtual} - ${horaAtual}:${minutoAtual}`;
     }
 
-    setSubJobIdToEdit(id)
-    setSubJobDataToEdit(subJobData)
-    setIsEditingSubJob(true)
-  }
+    return null;
+  };
 
   return (
     <div
-      id={`job_${id}`}
-      className={`card_subjob relative overflow-visible flex flex-col justify-center border-1 pl-3 text-[#d9d9d9] max-h-[18rem] h-auto min-h-[12rem] w-auto px-3 max-w-[27rem] min-w-[20rem] rounded-[3px] duration-100 bg-[#040404AA] ${
-        done ? "border-cyan-zero" : "border-pink-zero"
-      }`}
+      id={`job_${data.id}`}
+      className={`card_subjob relative overflow-visible flex flex-col justify-center border-1 pl-3 text-[#d9d9d9] max-h-[18rem] h-auto min-h-[12rem] w-auto px-3 max-w-[27rem] min-w-[20rem] rounded-[3px] duration-100 bg-[#040404AA] 
+          ${
+            isClosed ? "border-cyan-zero" : "border-pink-zero"
+          } `
+      }
     >
       <div className="flex py-2 text-2xl font-bold items-center gap-[4px]">
-        <h1 className="card_subjob_title">{title}</h1>
+        <h1 className="card_subjob_title">{data?.title}</h1>
       </div>
       <div>
         <ul
           className={`py-1 text-[14px] list-none
                 ${
-                  done ? "marker:text-pink-zero" : "marker:text-cyan-zero"
+                  isClosed ? "marker:text-pink-zero" : "marker:text-cyan-zero"
                 } marker:duration-100 ease-in-out`}
         >
           <li>
-            <b>Descrição: </b> <span className="block max-h-[3rem] overflow-y-auto break-words breakable-text"> {description} </span>
+            <b>Descrição: </b> <span className="block max-h-[3rem] overflow-y-auto break-words breakable-text"> {data?.description || ""} </span>
           </li>
           <li>
-            <b>Quantidade: </b> <span className="breakable-text"> {quantity} </span>
+            <b>Valor: </b> <span className="breakable-text overflow-y-auto max-h-[3rem]"> R$ {typeof data?.value === "number" ? data.value.toFixed(2).replace(".", ",") : ""} </span>
           </li>
           <li>
-            <b>Valor: </b> <span className="breakable-text overflow-y-auto max-h-[3rem]"> R$ {value.toFixed(2).replace(".", ",")} </span>
+            <b>Data Prevista: </b> <span className="breakable-text overflow-y-auto max-h-[3rem]"> {data?.date || ""} </span>
           </li>
           <li>
-            <b>Data Prevista: </b> <span className="breakable-text overflow-y-auto max-h-[3rem]"> {expectedDate} </span>
+            <b>Status: </b> 
+            <b className={`${isClosed ? "text-cyan-zero":"text-yellow-zero"}`}>{isClosed ? "Concluído" : "Pendente"}</b>
           </li>
           <li>
-            <b>Status: </b> <b className={`${done ? "text-cyan-zero":"text-yellow-zero"}`}>{done ? "Concluído" : "Pendente"}</b>
-          </li>
-          <li>
-            <b>Horário de conclusão: </b> {done ? timeDoneText : "Não concluído"}
+            <b>Horário de conclusão: </b> 
+            {isClosed? timeDoneText : "Não concluído"}
           </li>
         </ul>
       </div>
@@ -80,13 +79,13 @@ const CardSubJob = React.memo((
             <button
               onClick={handleChangeStatus}
               className={`h-[34px] w-[7rem] text-[14px] border-2 hover:text-[#B9B9B9]
-                ${done ? "text-pink-zero border-pink-zero " : "text-cyan-zero border-cyan-zero"} 
-                font-bold cursor-pointer duration-100 ease-in-out`}
+                font-bold cursor-pointer duration-100 ease-in-out
+                ${isClosed} ? "text-pink-zero border-pink-zero " : "text-cyan-zero border-cyan-zero`} 
             >
-              {done ? "Desmarcar": "Concluir"}
+              {isClosed ? "Desmarcar": "Concluir"}
             </button>
             <button
-              onClick={() => handleIsEditingStatus() }
+              onClick={() => onEdit() }
               className={`h-[34px] w-[7rem] text-[14px] text-yellow-zero hover:text-[#B9B9B9]
                 border-2 border-yellow-zero
                 font-bold cursor-pointer duration-100`}
@@ -97,9 +96,11 @@ const CardSubJob = React.memo((
           
           <img
             src={ImageDone}
-            className={`h-8 ml-4 duration-100 mr-2 ${
-              done ? "opacity-100" : "opacity-0"
-            }`}
+            className={`h-8 ml-4 duration-100 mr-2 
+              ${
+                isClosed ? "opacity-100" : "opacity-0"
+            }`
+          }
           />
       </div>
     </div>

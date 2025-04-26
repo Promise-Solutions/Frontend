@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { axiosProvider } from "../../provider/apiProvider";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", senha: "" });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -23,7 +23,7 @@ const Login = () => {
       return;
     }
 
-    if (!formData.senha.trim()) {
+    if (!formData.password.trim()) {
       toast.error("O campo de senha está vazio.", { style: ToastStyle });
       return;
     }
@@ -31,7 +31,7 @@ const Login = () => {
     toast.promise(
       axiosProvider.post("/employees/login", {
         email: formData.email,
-        password: formData.senha,
+        password: formData.password,
       }).then((response) => {
         const data = response.data;
         const token = data.token; 
@@ -77,7 +77,7 @@ const Login = () => {
           <Input
             type="password"
             text="Senha"
-            name="senha"
+            name="password"
             placeholder="Digite sua senha"
             handleOnChange={handleInputChange}
             value={formData.password}

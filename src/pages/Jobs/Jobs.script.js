@@ -1,22 +1,10 @@
 import React from "react";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton.jsx";
+import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } from "../../hooks/translateAttributes.js";
 
 export const registerRedirect = (navigate) => {
   navigate("/register/jobs");
 };
-
-function getCategoryTranslated(category) {
-  switch (category) {
-    case  "MUSIC_REHEARSAL": 
-      return "Ensaio Musical";
-      case "PODCAST":
-        return "Podcast";
-      case "PHOTO_VIDEO_STUDIO":
-        return "Estúdio Fotográfico";
-      default:
-        return category;  
-  }
-}
 
 export const renderJobs = async (
   findJobs,
@@ -24,31 +12,38 @@ export const renderJobs = async (
   findClientById
 ) => {
   const jobs = await findJobs();
+  console.log("jobs", jobs)
 
-  const jobsReturned = await Promise.all(
-    jobs.map( async (job) => {
-    console.log("Buscando serviços:", {
-      title: job.titulo,
-      category: job.categoria
-    });
+  if (jobs != []) {
+    const jobsReturned =  await Promise.all(
+      jobs.map( async (job) => {
+      console.log("Buscando serviços:", {
+        title: job.title,
+        category: job.category
+      });
+  
+        const client = await findClientById(job.fkClient);
+  
+        return {
+          key: job.id,
+          id: job.id,
+          title: job.title,
+          category: getCategoryTranslated(job.category),
+          jobType: getServiceTypeTranslated(job.serviceType), 
+          client: client?.name != undefined ? client.name : "Desconhecido",
+          status: getStatusTranslated(job.status),
+          action: React.createElement(PrimaryButton, {
+            id: "access_button",
+            text: "Acessar",
+            onClick: (() => {
+              navigate(`/jobs/${job.id}`)
+              sessionStorage.setItem("jobId", job.id)
+            }) 
+          })
+      }}),
+    )
 
-      const client = await findClientById(job.fkClient);
-      return {
-        key: job.id,
-        id: job.id,
-        category: getCategoryTranslated(job.category),
-        jobType: job.serviceType, 
-        client: client?.name != undefined ? client.name : "Desconhecido",
-        status: job.status,
-        action: React.createElement(PrimaryButton, {
-          id: "access_button",
-          text: "Acessar",
-          onClick: (() => {
-            navigate(`/jobs/${job.id}`)
-            sessionStorage.setItem("jobId", job.id)
-          }) 
-        })
-    }}),
-  )
-  return jobsReturned;
+    return jobsReturned;
+  }
+  return [];
 }

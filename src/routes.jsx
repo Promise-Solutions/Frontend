@@ -34,19 +34,19 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/users" element={<ProtectedRoute element={<Users />} />} />
       <Route
-        path="/user/:user"
+        path="/user/:userParam"
         element={<ProtectedRoute element={<User />} />}
       />
       <Route
-        path="/jobs/:job"
-        element={<ProtectedRoute element={<JobManagement />} />}
+        path="/jobs/:jobId"
+        element={<ProtectedRoute element={<JobManagement />}  />}
       />
       <Route
         path="/register/jobs"
         element={<ProtectedRoute element={<JobRegister />} />}
       />
       <Route
-        path="/register/subjobs"
+        path="/jobs/:jobId/register/subjobs"
         element={<ProtectedRoute element={<SubJobRegister />} />}
       />
       <Route

@@ -1,26 +1,18 @@
 import { useEffect, useState } from "react";
 import { useSubJobContext } from "../../../context/SubJobContext";
-import { handleInputChange, deleteSubJob, changeSubJobData, getNumericValue } from "./ModalEditSubJob.script";
+import { handleInputChange, changeSubJobData, getNumericValue } from "./ModalEditSubJob.script";
 import ModalConfirmDelete from "../modalConfirmDelete/ModalConfirmDelete";
 import Input from '../../form/Input'
 import CancelButton from "../modalConfirmDelete/cancelButton";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
 import DeleteButton from "../../buttons/deleteButton/DeleteButton";
-import { showToast } from "../../toastStyle/ToastStyle";
+import { useParams } from "react-router-dom";
 
-const ModalEditSubJob = ({ subJobData, setIsEditingSubJob}) => {
+const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
   const { updateSubJobData, deleteSubJobById } = useSubJobContext();
   const [subJobsInfos, setSubJobsInfos] = useState(subJobData);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
-  const handleQuantidadeChange = (e, setSubJobsInfos) => {
-    let { name, value } = e.target;
-
-    value = value.replace(/\D/g, "")
-    
-    setSubJobsInfos((prevData) => ({ ...prevData, [name]: value }));
-  }
-
+  const { jobId } = useParams(); 
 
   const handleValorChange = (e, setSubJobsInfos) => {
     let { name, value } = e.target;
@@ -40,41 +32,28 @@ const ModalEditSubJob = ({ subJobData, setIsEditingSubJob}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log()
+    console.log(subJobsInfos)
 
     const infosUpdate = {
       ...subJobsInfos,
-      quantity: Number(subJobsInfos.quantity),
       value: getNumericValue(subJobsInfos.value),
+      fkService: jobId
     }
 
-    changeSubJobData(infosUpdate, updateSubJobData)
+    const dataUpdated = await changeSubJobData(infosUpdate, updateSubJobData)
+    if (dataUpdated) {
+      onSave(dataUpdated.data);   
+    }
   };
 
-  const handleDelete = async (id, deleteSubJobById) => {
-    const requestDelete = await deleteSubJob(id, deleteSubJobById)
-    setIsDeleteModalOpen(false)
+  const handleDelete = async (id) => {
+    const subJobIdDeleted = await deleteSubJobById(id)
 
-    if(requestDelete) {
-      showToast.success("Subserviço excluído com sucesso")
-    } else {
-      showToast.error("Não foi possível exlcuir o subserviço")
+    if (subJobIdDeleted != null) {
+      onDelete(subJobIdDeleted);
     }
+    setIsDeleteModalOpen(false)
   }
-
-
-  const handleCancel = () => {
-    setIsEditingSubJob(false)
-  }
-
-  useEffect(() => {
-    console.log("subJobData", subJobData)
-    setSubJobsInfos(subJobData)
-  },[])
-
-  useEffect(() => {
-    console.log("subJObsInfos", subJobsInfos)
-  }, [subJobsInfos])
 
   return (
     <div className="fixed backdrop-blur inset-0 bg-black/90 flex justify-center items-center z-50">
@@ -104,14 +83,6 @@ const ModalEditSubJob = ({ subJobData, setIsEditingSubJob}) => {
           />
           <Input
             type="text"
-            name="quantity"
-            text="Quantidade do produto"
-            placeholder="Digite a quantidade"
-            value={subJobsInfos?.quantity || ""}
-            handleOnChange={(e) => handleQuantidadeChange(e, setSubJobsInfos)}
-          />
-          <Input
-            type="text"
             name="value"
             text="Valor do produto"
             placeholder="Digite o valor do serviço"
@@ -121,10 +92,10 @@ const ModalEditSubJob = ({ subJobData, setIsEditingSubJob}) => {
           <Input
             type="date"
             text="Data prevista para serviço"
-            name="expectedDate"
+            name="date"
             placeholder="Escolha a data"
             handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
-            value={subJobsInfos?.expectedDate || ""}
+            value={subJobsInfos?.date || ""}
             min={new Date().toLocaleDateString("en-CA")}
             max="2099-12-31"
             className="custom-calendar"
@@ -137,7 +108,7 @@ const ModalEditSubJob = ({ subJobData, setIsEditingSubJob}) => {
             onClick={() => setIsDeleteModalOpen(true)}
           />
           <div className="flex justify-end gap-4 w-[60%]">
-            <CancelButton text="Cancelar" type="button" onClick={handleCancel} />
+            <CancelButton text="Cancelar" type="button" onClick={onCancel} />
             <ConfirmButton type="submit" text="Salvar" />
           </div>
         </div>
@@ -147,7 +118,7 @@ const ModalEditSubJob = ({ subJobData, setIsEditingSubJob}) => {
     <ModalConfirmDelete
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
-          onConfirm={() => handleDelete(subJobData.id, deleteSubJobById)}
+          onConfirm={() => handleDelete(subJobData.id)}
           title={"Deletar Usuário"}
           description={"Tem certeza de que deseja deletar este usuário?"}
         />

@@ -117,13 +117,7 @@ export function UserProvider({ children }) {
       const response = await axiosProvider.get(`/clients/${ClientId}`);
 
       if (response.status == 200) {
-        const clientData = response.data;
-        console.log("cliente", clientData);
-        return {
-          ...clientData[0],
-          clientType:
-            clientData[0]?.clientType === "SINGLE" ? "AVULSO" : "MENSAL", // Map values for display
-        };
+        return response.data;
       }
     } catch (error) {
       console.error("Erro ao buscar client:", error);

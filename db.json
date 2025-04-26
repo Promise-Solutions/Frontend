@@ -98,14 +98,19 @@
     {
       "id": "e9f1a2b3-c4d5-e6f7-a8b9-1c2d3e4f5a6b",
       "fkClient": "c4d5e6f7-8a9b-1c2d-3e4f-5a6b7c8d9e0f",
+      "title": "Serviço",
       "totalValue": 100,
-      "category": "MUSIC_REHEARSAL",
+      "category": "PODCAST",
       "status": "COMPLETED",
-      "serviceType": "SINGLE"
+      "serviceType": "MONTHLY",
+      "titulo": "Serviço",
+      "categoria": "PHOTO_VIDEO_STUDIO",
+      "tipoServico": "MONTHLY"
     },
     {
       "id": "f2a3b4c5-d6e7-f8a9-b1c2-d3e4f5a6b7c8",
       "fkClient": "d7e8f9a1-b2c3-d4e5-f6a7-8b9c1d2e3f4a",
+      "title": "Serviço2",
       "totalValue": 200,
       "category": "PHOTO_VIDEO_STUDIO",
       "status": "PENDING",
@@ -114,6 +119,7 @@
     {
       "id": "a3b4c5d6-e7f8-a9b1-c2d3-e4f5a6b7c8d9",
       "fkClient": "c4d5e6f7-8a9b-1c2d-3e4f-5a6b7c8d9e0f",
+      "title": "Serviço3",
       "totalValue": 150,
       "category": "MUSIC_REHEARSAL",
       "status": "PENDING",
@@ -122,6 +128,7 @@
     {
       "id": "b4c5d6e7-f8a9-b1c2-d3e4-f5a6b7c8d9e0",
       "fkClient": "c4d5e6f7-8a9b-1c2d-3e4f-5a6b7c8d9e0f",
+      "title": "Serviço4",
       "totalValue": 120,
       "category": "MUSIC_REHEARSAL",
       "status": "Pendente",
@@ -130,10 +137,19 @@
     {
       "id": "c5d6e7f8-a9b1-c2d3-e4f5-a6b7c8d9e0f1",
       "fkClient": "c4d5e6f7-8a9b-1c2d-3e4f-5a6b7c8d9e0f",
+      "title": "Serviço5",
       "totalValue": 80,
       "category": "PHOTO_VIDEO_STUDIO",
       "status": "Pendente",
       "serviceType": "AVULSO"
+    },
+    {
+      "title": "Serviço",
+      "category": "MUSIC_REHEARSAL",
+      "serviceType": "SINGLE",
+      "fkClient": null,
+      "status": "PENDING",
+      "id": "YIFQq58"
     }
   ],
   "subservicos": [

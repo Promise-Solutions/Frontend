@@ -19,22 +19,22 @@ const JobRegister = () => {
     const renderClientOptions = async () => {
       const clients = await createClientsOptions(findClients);
 
+
        const nameClients = clients.map(client => {
           const clientObj = {
             id: client.id,
-            name: client.nome
+            name: client.name
           }
           return clientObj
        });
 
-
+       console.log("clients", nameClients)
        setClientOptions(nameClients);
     }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
-        if (name === "tipo") setSelectedType(value); // Update selectedType when user type changes
       };
 
       const handleSubmit = (e) => {
@@ -45,21 +45,21 @@ const JobRegister = () => {
       const { saveJob } = useJobContext();
 
       const [formData, setFormData] = useState({
-          titulo: "",
-          categoria: "",
-          tipoServico: "",
-          fkCliente: null
+          title: "",
+          category: "",
+          serviceType: "",
+          fkClient: null
         });
 
       const categoryOptions = [
-        {id: "Ensaio Musical", name: "Ensaio Musical"},
-        {id: "Podcast", name: "Podcast"},
-        {id: "Estudio Fotografico", name: "Estúdio Fotográfico"}
+        {id: "MUSIC_REHEARSAL", name: "Ensaio Musical"},
+        {id: "PODCAST", name: "Podcast"},
+        {id: "PHOTO_VIDEO_STUDIO", name: "Estúdio Fotográfico"}
       ] 
 
       const typeOptions = [
-        {id: "AVULSO", name: "Avulso"},
-        {id: "MENSAL", name: "Mensal"}
+        {id: "SINGLE", name: "Avulso"},
+        {id: "MONTHLY", name: "Mensal"}
       ]
 
     return(
@@ -82,32 +82,32 @@ const JobRegister = () => {
                 <Input
                   type="text"
                   text="Titulo"
-                  name="titulo"
+                  name="title"
                   placeholder="Digite o titulo"
                   handleOnChange={handleInputChange}
-                  value={formData.titulo}
+                  value={formData.title}
                   maxLength="50"
                 />
                 <Select
                   text="Categoria de Servico"
-                  name="categoria"
+                  name="category"
                   options={categoryOptions}
                   handleOnChange={handleInputChange}
-                  value={formData.categoria}
+                  value={formData.category}
                 />
                 <Select
                   text="Tipo de serviço"
-                  name="tipoServico"
+                  name="serviceType"
                   options={typeOptions}
                   handleOnChange={handleInputChange}
-                  value={formData.tipoServico}
+                  value={formData.serviceType}
                 />
                 <Select
                   text="Cliente Desejado"
-                  name="fkCliente"
+                  name="fkClient"
                   options={clientOptions}
                   handleOnChange={handleInputChange}
-                  value={formData.fkCliente}
+                  value={formData.fkClient}
                 />
               </section>
         

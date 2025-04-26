@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
 import toast from "react-hot-toast";
 import { axiosProvider } from "../provider/apiProvider";
-import { ToastStyle } from "../components/toastStyle/ToastStyle";
+import { showToast, ToastStyle } from "../components/toastStyle/ToastStyle";
 
 const JobContext = createContext({});
 
@@ -14,7 +14,7 @@ export function JobProvider({ children }) {
 
       if (request.status == 201) {
         toast.success("Servico Cadastrado!", { style: ToastStyle })
-      }
+      } 
     } catch (error) {
       toast.error("Erro ao cadastrar servico!");
       console.error("Erro ao cadastrar servico!", error);
@@ -25,21 +25,33 @@ export function JobProvider({ children }) {
     if (!jobId) return;
 
     try {
-      const response = await axiosProvider.get(`/jobs?id=${jobId}`)
-      const jobData = response.data[0] || null;
+      console.log("jobId " + jobId)
+      const response = await axiosProvider.get(`/jobs/${jobId}`)
+
+      console.log("response " , response)
+
+      const jobData = response.data || null;
 
       if (jobData) {
+        console.log(jobData)
+
         setJob({
           ...jobData,
           categoria:
-            jobData.categoria === "MUSIC_REHEARSAL"
+            jobData.category === "MUSIC_REHEARSAL"
               ? "Ensaio Musical"
-              : jobData.categoria === "PHOTO_VIDEO_STUDIO"
+              : jobData.category === "PHOTO_VIDEO_STUDIO"
               ? "Estúdio Fotográfico"
               : "Podcast",
-          tipoServico: jobData.tipoServico === "SINGLE" ? "Avulso" : "Mensal",
-          concluido: jobData.concluido ? "Concluído" : "Pendente",
+          tipoServico: jobData.serviceType === "SINGLE" ? "Avulso" : "Mensal",
+          status: 
+            jobData.status === "PENDING" 
+              ? "Pendente"
+              : jobData.status === "COMPLETED"
+              ? "Concluído"
+              : "Cancelado"
         });
+
         return jobData;
       } else {
         throw new Error("Serviço não encontrado.");
@@ -54,6 +66,21 @@ export function JobProvider({ children }) {
       const response = await axiosProvider.get("/jobs");
       const jobs = response.data;
       return jobs;
+    } catch (error) {
+      console.error("Erro ao buscar serviços:", error);
+      return [];
+    }
+  };
+
+  const findJobsByClientId = async (clientId) => {
+    try {
+      const response = await axiosProvider.get(`/jobs/client?fkClient=${clientId}`);
+
+      if(response.status == 200) {
+        return response.data;
+      }
+      
+      return [];
     } catch (error) {
       console.error("Erro ao buscar serviços:", error);
       return [];
@@ -83,16 +110,21 @@ export function JobProvider({ children }) {
 
   const updateJobData = async (id, jobData) => {
     if (!id) return;
-
-    try {
+    try { 
       const request = await axiosProvider.patch(`/jobs/${id}`, {
-        titulo: jobData.title,
-        categoria: jobData.category,
-        tipoServico: jobData.jobType,
+        title: jobData.title,
+        category: jobData.category,
+        totalValue: jobData.totalValue,
+        fkClient: jobData.fkClient,
+        status: jobData.status,
+        serviceType: jobData.serviceType
       });
+
+      console.log("status " + request.status)
 
       if (request.status === 200) {
         console.log("Serviço atualizado com sucesso!");
+        showToast.success("Serviço atualizado com sucesso!");
       }
     } catch (error) {
       toast.error("Erro ao atualizar o serviço");
@@ -104,8 +136,9 @@ export function JobProvider({ children }) {
     if (!id) return;
     try {
       const request = await axiosProvider.delete(`/jobs/${id}`);
-      toast.success("Serviço excluído com sucesso");
-
+      if (request.status) {
+        toast.success("Serviço excluído com sucesso");
+      }
       return request.status;
     } catch (error) {
       toast.error("Erro ao excluir serviço");
@@ -124,6 +157,7 @@ export function JobProvider({ children }) {
         updateJobData,
         deleteJobById,
         saveJob,
+        findJobsByClientId
       }}
     >
       {children}

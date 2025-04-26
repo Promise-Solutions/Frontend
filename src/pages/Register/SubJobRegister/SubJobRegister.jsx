@@ -1,64 +1,69 @@
 import logo from "../../../assets/logo-branco-bg-sonoro.png";
 import Input from "../../../components/form/Input";
-import Select from "../../../components/form/Select";
 import SubmitButton from "../../../components/form/SubmitButton";
 import { useSubJobContext } from "../../../context/SubJobContext";
 import { useState } from "react";
 import { registrarSubServico } from "./SubJobRegister.script";
+import { useNavigate, useParams } from "react-router-dom";
 
 const SubJobRegister = () => {
     const { saveSubJob } = useSubJobContext();
+    const { jobId } = useParams();
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        title: "",
+        description: "",
+        value: "",
+        date: "",
+        fkService: jobId
+      });
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-      };
+      const { name, value } = e.target;
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
+    };
 
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        formData.valor = getNumericValue(formData.valor);
-        registrarSubServico(formData, saveSubJob)
-      };
-
-      const handleQuantidadeChange = (e) => {
-        let { name, value } = e.target;
-
-        value = value.replace(/\D/g, "")
-        
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-      }
-
-      const handleValorChange = (e) => {
-        let { name, value } = e.target;
-
-        value = value.replace(/[^0-9,]/g, "");
-
-        let newValue = value
-
-        const partes = newValue.split(",");
-        if (partes.length > 2) {
-          newValue = partes[0] + "," + partes.slice(1).join("");
-        }
-        
-        setFormData((prevData) => ({ ...prevData, [name]: newValue }));
-      };
-    
-      const getNumericValue = (valueString) => {
-        if(typeof valueString === "string" && valueString.includes(",")) {
-          valueString = valueString.replace(",", ".");
-        }
-        return parseFloat(valueString);
-      };
-
-
-      const [formData, setFormData] = useState({
-          titulo: "",
-          descricao: "",
-          quantidade: "",
-          valor: "",
-          dataPrevista: ""
-        });
+    const handleSubmit = async (e) => {
+      e.preventDefault();
       
+
+      setFormData((prevData) => ({
+        ...prevData,
+        value: getNumericValue(prevData.value)
+      }))
+
+      const responseCode = await registrarSubServico(formData, saveSubJob)
+
+      if(responseCode == 201) {
+        setTimeout(() => {
+          navigate(`/jobs/${jobId}`)
+        }, 700)
+      }
+    };
+
+    const handleValorChange = (e) => {
+      let { name, value } = e.target;
+
+      value = value.replace(/[^0-9,]/g, "");
+
+      let newValue = value
+
+      const partes = newValue.split(",");
+      if (partes.length > 2) {
+        newValue = partes[0] + "," + partes.slice(1).join("");
+      }
+      
+      setFormData((prevData) => ({ ...prevData, [name]: newValue }));
+    };
+  
+    const getNumericValue = (valueString) => {
+      if(typeof valueString === "string" && valueString.includes(",")) {
+        valueString = valueString.replace(",", ".");
+      }
+      return parseFloat(valueString);
+    };
+
+
     return(
         <main className="flex items-center justify-center h-[600px] my-6 w-full px-16">
           <section className="flex flex-col items-center justify-start gap-6 w-full px-4">
@@ -79,47 +84,37 @@ const SubJobRegister = () => {
                 <Input
                   type="text"
                   text="Titulo"
-                  name="titulo"
+                  name="title"
                   placeholder="Digite o titulo"
                   handleOnChange={handleInputChange}
-                  value={formData.titulo}
+                  value={formData.title}
                   maxLength="50"
                 />
                 <Input
                   type="text"
                   text="Descrição"
-                  name="descricao"
+                  name="description"
                   placeholder="Digite a descrição"
                   handleOnChange={handleInputChange}
-                  value={formData.descricao}
-                  maxLength="50"
-                />
-                <Input
-                  type="text"
-                  text="Quantidade"
-                  name="quantidade"
-                  placeholder="Digite a quantidade"
-                  handleOnChange={handleQuantidadeChange}
-                  value={formData.quantidade}
+                  value={formData.description}
                   maxLength="50"
                 />
                 <Input
                   type="tel"
                   text="Valor (R$)"
-                  name="valor"
+                  name="value"
                   placeholder="Digite o valor"
                   handleOnChange={handleValorChange}
-                  value={formData.valor === NaN ? null : formData.valor}
+                  value={formData.value === NaN ? null : formData.value}
                   maxLength="50"
-                  className=""
                 />
                 <Input
                   type="date"
-                  text="Data prevista para serviço"
-                  name="dataPrevista"
+                  text="Data prevista para subserviço"
+                  name="date"
                   placeholder="Digite o valor"
                   handleOnChange={handleInputChange}
-                  value={`${formData.dataPrevista}`}
+                  value={`${formData.date}`}
                   min={new Date().toLocaleDateString("en-CA")}
                   max="2099-12-31"
                   className="custom-calendar"
