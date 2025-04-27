@@ -16,9 +16,6 @@ export const changeSubJobData = async (infos, updateSubJobData) => {
         toast.error("Não são aceitos valores negativos!", { style: ToastStyle })
         return;
     } 
-
-    console.log("infos", infos)
-    
     return await updateSubJobData(infos);
 }
 

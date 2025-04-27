@@ -27,12 +27,13 @@ const SubJobRegister = () => {
       e.preventDefault();
       
 
-      setFormData((prevData) => ({
-        ...prevData,
-        value: getNumericValue(prevData.value)
-      }))
 
-      const responseCode = await registrarSubServico(formData, saveSubJob)
+      const subJobDataToRegister = {
+        ...formData,
+        value: getNumericValue(formData.value)
+      }
+
+      const responseCode = await registrarSubServico(subJobDataToRegister, saveSubJob)
 
       if(responseCode == 201) {
         setTimeout(() => {
@@ -57,6 +58,9 @@ const SubJobRegister = () => {
     };
   
     const getNumericValue = (valueString) => {
+      if(valueString == "" || valueString == NaN || valueString == null) {
+        return "";
+      }
       if(typeof valueString === "string" && valueString.includes(",")) {
         valueString = valueString.replace(",", ".");
       }

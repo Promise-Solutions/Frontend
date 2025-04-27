@@ -23,10 +23,10 @@ export function SubJobProvider({ children }) {
     if (!id) return;
     
     try {
-      const request = await axiosProvider.patch(`/sub-jobs/${id}/update-status`, { status: newStatus, endTime: currentDateTime })
+      const response = await axiosProvider.patch(`/sub-jobs/${id}/update-status`, { status: newStatus, endTime: currentDateTime })
   
-      if (request.status == 204) {
-        return request.status;
+      if (response.status == 200) {
+        return response.data;
       }
       return null;
     } catch (error) {
@@ -69,7 +69,7 @@ export function SubJobProvider({ children }) {
       if (request.status === 200) {
         console.log("Subserviço atualizado com sucesso!");
         toast.success("Subserviço atualizado com sucesso!");
-        return request
+        return request.data
       }
     } catch (error) {
       toast.error("Erro ao atualizar o subserviço");
@@ -84,7 +84,7 @@ export function SubJobProvider({ children }) {
       const request = await axiosProvider.delete(`/sub-jobs/${subJobId}`);
       if(request.status == 200) {
         showToast.success("Subserviço excluído com sucesso!")
-        return subJobId
+        return request.data
       } else {
         showToast.error("Não foi possível excluir o subserviço")
         return null

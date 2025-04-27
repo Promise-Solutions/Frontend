@@ -29,8 +29,9 @@ export const renderJobs = async (
           id: job.id,
           title: job.title,
           category: getCategoryTranslated(job.category),
-          jobType: getServiceTypeTranslated(job.serviceType), 
+          serviceType: getServiceTypeTranslated(job.serviceType), 
           client: client?.name != undefined ? client.name : "Desconhecido",
+          totalValue: job.totalValue,
           status: getStatusTranslated(job.status),
           action: React.createElement(PrimaryButton, {
             id: "access_button",

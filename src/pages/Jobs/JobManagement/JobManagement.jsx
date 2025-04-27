@@ -27,7 +27,6 @@ const JobManagement = () => {
 
   useEffect(() => {
     const loadJobData = async () => {
-      console.log("jobID " + jobId )
       const jobDataFetched = await fetchJobData(jobId);
       setJob(jobDataFetched);
       setJobData(jobDataFetched);
@@ -40,17 +39,54 @@ const JobManagement = () => {
     })();
   }, [jobId]);
 
-  const handleSubJobUpdated = (subJobUpdated) => {
+  useEffect(() => {
+    console.log("jobData", jobData)
+  },[jobData])
+
+  const handleChangeSubJobStatus = (response, date) => {
+    setSubJobsData((prev) => 
+      prev.map((subJob) => 
+        (subJob.id === response.subJobId ? 
+          {...subJob, status: response.subJobStatus, endTime: date} 
+          : subJob))
+    )
+    
+    setJobData((jobData) => ({
+      ...jobData,
+      status: response.jobStatus
+    }))
+  }
+
+  const handleUpdateJobData = async (updateJobData, jobData) => {
+    const responseData = await saveChanges(updateJobData, jobData)
+    if(responseData) {
+      setJobData(responseData)
+      setIsEditing(false)
+    }
+  }
+
+  const handleSubJobUpdated = (subJobUpdated, jobTotalValue) => {
     setSubJobsData((prev) =>
       prev.map((subJob) => (subJob.id === subJobUpdated.id ? subJobUpdated : subJob))
     );
+    setJobData((jobData) => ({
+      ...jobData,
+      totalValue: jobTotalValue
+    }))
+
     setEditingSubJob(null);
   };
 
-  const handleSubJobDeleted = (subJobIdDeleted) => {
+  const handleSubJobDeleted = (response) => {
     setSubJobsData((prev) =>
-      prev.filter((subJob) => (subJob.id !== subJobIdDeleted))
+      prev.filter((subJob) => (subJob.id !== response.id))
     );
+    setJobData((jobData) => ({
+      ...jobData,
+      status: response.jobStatus,
+      totalValue: response.jobTotalValue
+    }))
+    
     setEditingSubJob(null);
   }
 
@@ -93,8 +129,11 @@ const JobManagement = () => {
                     <b>Tipo de Serviço: </b> {getServiceTypeTranslated(jobData?.serviceType)}
                   </li>
                   <li>
+                    <b>Valor Total do Serviço: </b> {typeof jobData?.totalValue === "number" ? `R$ ${jobData.totalValue.toFixed(2).replace(".", ",")}` : "Erro ao buscar valor total"}
+                  </li>
+                  <li>
                     <b>Status: </b> 
-                      <span className={`${jobData?.status === "PENDING" ? "text-yellow-zero": jobData?.status === "CLOSED" ? "text-cyan-zero": "text-red-zero"}`}>{getStatusTranslated(jobData?.status)}
+                      <span className={`${jobData?.status === "PENDING" ? "text-yellow-zero font-semibold": jobData?.status === "CLOSED" ? "text-cyan-zero font-semibold": "text-pink-zero font-semibold"}`}>{getStatusTranslated(jobData?.status)}
                       </span>    
                   </li>
                 </ul>
@@ -147,13 +186,14 @@ const JobManagement = () => {
               <PrimaryButton
                 id="button_confirm_job_edit"
                 text="Salvar Alterações"
-                onClick={() => saveChanges(updateJobData, jobData)}
+                onClick={() => handleUpdateJobData(updateJobData, jobData)}
+          
                 />
               </div>
               <ModalConfirmDelete
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
-                onConfirm={() => deleteJob(deleteJobById, jobId, navigate)}
+                onConfirm={() => deleteJob(deleteJobById, jobId, navigate, setIsDeleteModalOpen)}
                 title={"Deletar Serviço"}
                 description={"Tem certeza de que deseja deletar este serviço?"}
               />
@@ -192,6 +232,7 @@ const JobManagement = () => {
                     key={subJob.id}
                     data={subJob}
                     onEdit={() => setEditingSubJob(subJob)}
+                    onUpdateStatus={handleChangeSubJobStatus}
                     setModalEditSubJob
                     isEditingSubJob 
                     setIsEditingSubJob

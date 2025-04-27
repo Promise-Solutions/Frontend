@@ -40,17 +40,20 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
       fkService: jobId
     }
 
-    const dataUpdated = await changeSubJobData(infosUpdate, updateSubJobData)
-    if (dataUpdated) {
-      onSave(dataUpdated.data);   
+    const response = await changeSubJobData(infosUpdate, updateSubJobData)
+    if (response) {
+      const {jobTotalValue, ...dataUpdated} = response 
+      
+
+      onSave(dataUpdated, jobTotalValue);   
     }
   };
 
   const handleDelete = async (id) => {
-    const subJobIdDeleted = await deleteSubJobById(id)
+    const response = await deleteSubJobById(id)
 
-    if (subJobIdDeleted != null) {
-      onDelete(subJobIdDeleted);
+    if (response.id != null) {
+      onDelete(response);
     }
     setIsDeleteModalOpen(false)
   }

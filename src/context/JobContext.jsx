@@ -13,10 +13,10 @@ export function JobProvider({ children }) {
       const request = await axiosProvider.post(`/jobs`, formData);
 
       if (request.status == 201) {
-        toast.success("Servico Cadastrado!", { style: ToastStyle })
+        showToast.success("Servico Cadastrado!", { style: ToastStyle })
       } 
     } catch (error) {
-      toast.error("Erro ao cadastrar servico!");
+      showToast.error("Erro ao cadastrar servico!");
       console.error("Erro ao cadastrar servico!", error);
     }
   };
@@ -25,16 +25,10 @@ export function JobProvider({ children }) {
     if (!jobId) return;
 
     try {
-      console.log("jobId " + jobId)
       const response = await axiosProvider.get(`/jobs/${jobId}`)
-
-      console.log("response " , response)
-
       const jobData = response.data || null;
 
       if (jobData) {
-        console.log(jobData)
-
         setJob({
           ...jobData,
           categoria:
@@ -65,6 +59,7 @@ export function JobProvider({ children }) {
     try {
       const response = await axiosProvider.get("/jobs");
       const jobs = response.data;
+      console.log("jobs", jobs)
       return jobs;
     } catch (error) {
       console.error("Erro ao buscar serviços:", error);
@@ -103,7 +98,7 @@ export function JobProvider({ children }) {
         console.log("Status atualizado com sucesso");
       }
     } catch (error) {
-      toast.error("Erro ao atualizar o status do serviço:");
+      showToast.error("Erro ao atualizar o status do serviço:");
       console.error("Erro ao atualizar o status do serviço:", error);
     }
   };
@@ -111,7 +106,7 @@ export function JobProvider({ children }) {
   const updateJobData = async (id, jobData) => {
     if (!id) return;
     try { 
-      const request = await axiosProvider.patch(`/jobs/${id}`, {
+      const response = await axiosProvider.patch(`/jobs/${id}`, {
         title: jobData.title,
         category: jobData.category,
         totalValue: jobData.totalValue,
@@ -120,14 +115,13 @@ export function JobProvider({ children }) {
         serviceType: jobData.serviceType
       });
 
-      console.log("status " + request.status)
-
-      if (request.status === 200) {
+      if (response.status === 200) {
         console.log("Serviço atualizado com sucesso!");
         showToast.success("Serviço atualizado com sucesso!");
+        return response.data
       }
     } catch (error) {
-      toast.error("Erro ao atualizar o serviço");
+      showToast.error("Erro ao atualizar o serviço");
       console.error("Erro ao atualizar o serviço", error);
     }
   };
@@ -137,14 +131,20 @@ export function JobProvider({ children }) {
     try {
       const request = await axiosProvider.delete(`/jobs/${id}`);
       if (request.status) {
-        toast.success("Serviço excluído com sucesso");
+        showToast.success("Serviço excluído com sucesso");
       }
       return request.status;
     } catch (error) {
-      toast.error("Erro ao excluir serviço");
-      console.error("Erro ao excluir serviço", error);
+      if(error.response && error.response.status == 409) {
+        console.log("Erro! Não é possível excluir um serviço com subserviços associados");
+        showToast.error("Ainda há subserviços existentes associados");
+
+      } else {
+        showToast.error("Erro ao excluir serviço");
+        console.error("Erro ao excluir serviço", error);
+      }
     }
-  };
+  }
 
   return (
     <JobContext.Provider

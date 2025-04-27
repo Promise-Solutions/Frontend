@@ -10,20 +10,22 @@ export const registerRedirect = (navigate, jobId) => {
 }
 
 export const saveChanges = async (updateJobData, job) => {
-    console.log("job", job)
-
     if(job.id == null || job.title == "" || job.category == "" || job.serviceType == "") {
       showToast.error("Campos vazios não são aceitos!")
       return;
     } 
     const jobId = job.id   
-    await updateJobData(jobId, job)
+    return await updateJobData(jobId, job)
 }
   
-export const deleteJob = async (deleteJobById, id, navigate) => {
+export const deleteJob = async (deleteJobById, id, navigate, setIsDeleteModalOpen) => {
     const response = await deleteJobById(id)
         
+    setIsDeleteModalOpen(false)
     if (response == 200) {
       navigate("/jobs");
+    } else if(response == 409) {
+      console.log("Erro! Não é possível excluir um serviço com subserviços associados");
+      showToast.error("Não é possível excluir um serviço com subserviços associados");
     }
 }
