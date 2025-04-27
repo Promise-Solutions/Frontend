@@ -32,9 +32,11 @@ const Jobs = () => {
   
   const tableHeader = [
     { label: "ID", key: "id" },
+    { label: "Titulo", key: "title" },
     { label: "Categoria", key: "category" },
-    { label: "Tipo do Serviço", key: "jobType" },
+    { label: "Tipo do Serviço", key: "serviceType" },
     { label: "Cliente", key: "client"},
+    { label: "Valor Total (R$)", key: "totalValue"},
     { label: "Status", key: "status" },
     { label: "Ação", key: "action"}
   ] 
@@ -43,8 +45,7 @@ const Jobs = () => {
     setSearchTerm(term.toUpperCase()); // Atualiza o termo de busca
   };
   
-  //   
-  
+
   useEffect(() => {
     fetchAndRender();
   }, []);
@@ -81,11 +82,19 @@ const Jobs = () => {
               color={"#02AEBA"}
               speedMultiplier={2}
             />
-          ):(
+          ): jobsElements != [] ?(
             <Table 
             headers={tableHeader}
-            data={jobsElements}
+            data={
+              jobsElements.map((job) => ({
+                ...job,
+                totalValue: `R$ ${job.totalValue.toFixed(2).replace(".", ",")}` 
+              }))}
             />
+          ) : (
+            <p className="text-center text-gray-400">
+                Nenhum serviço registrado.
+            </p>
           )
         }
         </div>

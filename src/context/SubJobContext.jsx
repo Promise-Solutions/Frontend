@@ -6,37 +6,33 @@ import { showToast, ToastStyle } from "../components/toastStyle/ToastStyle";
 const SubJobContext = createContext({});
 
 export function SubJobProvider({ children }) {
-  const [currentDate, setCurrentDate] = useState();
-
   const saveSubJob = async (formData) => {
     try {
       const request = await axiosProvider.post(`/sub-jobs`, formData);
-
       if (request.status == 201) {
         toast.success("Subservico Cadastrado!");
+        return request.status
       }
+      return null;
     } catch (error) {
       toast.error("Erro ao cadastrar subserviço!");
     };
-    
   };
   
-  const updateStatus = async (id, isDone) => {
+  const updateSubJobStatus = async (id, newStatus, currentDateTime) => {
     if (!id) return;
     
     try {
-      const dataFormatada = getCurrentDate(isDone);
-      setCurrentDate(dataFormatada);
-      
-      
-      if (request.status == 200) {
-        return true;
+      const response = await axiosProvider.patch(`/sub-jobs/${id}/update-status`, { status: newStatus, endTime: currentDateTime })
+  
+      if (response.status == 200) {
+        return response.data;
       }
-      return false;
-      
+      return null;
     } catch (error) {
       toast.error("Erro ao excluir subserviço")
       console.log("Erro ao excluir subserviço", error)
+      return null;
     }
   }
   
@@ -44,51 +40,36 @@ export function SubJobProvider({ children }) {
     if (!jobId) return;
 
     try {
-      const response = await axiosProvider.get(`/subservicos?fkServico=${jobId}`)
+      const response = await axiosProvider.get(`/sub-jobs/job?fkService=${jobId}`)
       const subJobData = response.data
       return subJobData;
     } catch (error) {
       console.error("Erro ao buscar subserviços:", error)
+      return [];
     };
   }
-  
-  const getCurrentDate = (isDone) => {
-    const dataAtual = isDone ? new Date() : null;
-    console.log("data atual: " + dataAtual, isDone);
-    
-    let dataFormatada = null;
-    if (dataAtual != null) {
-      dataFormatada = formatCurrenteDate(dataAtual);
-      console.log(dataFormatada);
-    }
-    return dataFormatada;
-  };
-
-  const formatCurrenteDate = (dataAtual) => {
-    const diaAtual = String(dataAtual.getDate()).padStart(2, "0");
-    const mesAtual = String(dataAtual.getMonth() + 1).padStart(2, "0");
-    const anoAtual = dataAtual.getFullYear();
-    const horaAtual = String(dataAtual.getHours()).padStart(2, "0");
-    const minutoAtual = String(dataAtual.getMinutes()).padStart(2, "0");
-
-    return `${diaAtual}/${mesAtual}/${anoAtual} - ${horaAtual}:${minutoAtual}`;
-  };
 
   const updateSubJobData = async (subJobData) => {
     if (subJobData == null) return;
     const id = subJobData.id;
 
     try {
+      console.log("subJobDAta",  subJobData)
       const request = await axiosProvider.patch(`/sub-jobs/${id}`, {
-        titulo: subJobData.title,
-        descricao: subJobData.description,
-        quantidade: subJobData.quantity,
-        valor: subJobData.value,
+        title: subJobData.title,
+        description: subJobData.description,
+        value: subJobData.value,
+        date: subJobData.date,
+        startTime: subJobData.startTime,
+        endTime: subJobData.endTime,
+        status: subJobData.status,
+        fkService: subJobData.fkService
       });
 
       if (request.status === 200) {
         console.log("Subserviço atualizado com sucesso!");
         toast.success("Subserviço atualizado com sucesso!");
+        return request.data
       }
     } catch (error) {
       toast.error("Erro ao atualizar o subserviço");
@@ -101,8 +82,13 @@ export function SubJobProvider({ children }) {
 
     try {
       const request = await axiosProvider.delete(`/sub-jobs/${subJobId}`);
-
-      console.log("Status da requisição: " + request.status);
+      if(request.status == 200) {
+        showToast.success("Subserviço excluído com sucesso!")
+        return request.data
+      } else {
+        showToast.error("Não foi possível excluir o subserviço")
+        return null
+      }
     } catch (error) {
       toast.error("Erro ao excluir subserviço");
       console.log("Erro ao excluir subserviço", error);
@@ -112,10 +98,8 @@ export function SubJobProvider({ children }) {
   return (
     <SubJobContext.Provider
       value={{
-        currentDate,
-        setCurrentDate,
         findSubJobsByJobId,
-        updateStatus,
+        updateSubJobStatus,
         updateSubJobData,
         deleteSubJobById,
         saveSubJob,
