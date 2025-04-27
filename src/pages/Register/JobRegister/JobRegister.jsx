@@ -45,8 +45,7 @@ const JobRegister = () => {
         const responseCode = await registrarServico(formData, saveJob);
 
         if(responseCode == 201) {
-          const urlRedirect = userParam ? `/user/${userParam}` : `/jobs`
-          navigate(urlRedirect);
+          navigate(-1);
         }
       };
 
