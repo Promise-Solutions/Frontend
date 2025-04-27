@@ -29,9 +29,10 @@ function AppRoutes() {
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/users" element={<Users />} />
-      <Route path="/user/:user" element={<User />} />
-      <Route path="/jobs/:job" element={<JobManagement />} />
+      <Route path="/user/:userParam" element={<User />} />
+      <Route path="/jobs/:jobId" element={<JobManagement />} />
       <Route path="/register/jobs" element={<JobRegister />} />
+      <Route path="/user/:userParam/register/jobs" element={<JobRegister />} />
       <Route path="/register/subjobs" element={<SubJobRegister />} />
       <Route path="/register" element={<Register />} />
       <Route path="/bar" element={<Bar />} />

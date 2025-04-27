@@ -7,10 +7,13 @@ import { useJobContext } from "../../../context/JobContext";
 import { useEffect, useState } from "react";
 import { registrarServico, createClientsOptions } from "./JobRegister.script";
 import { useUserContext } from "../../../context/UserContext";
+import { useNavigate, useParams } from "react-router-dom";
 
 const JobRegister = () => {
+    const { userParam } = useParams();
     const [clientOptions, setClientOptions] = useState([]);
     const { findClients } = useUserContext();
+    const navigate = useNavigate();
 
     useEffect(() => {
       renderClientOptions();
@@ -37,9 +40,14 @@ const JobRegister = () => {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
       };
 
-      const handleSubmit = (e) => {
+      const handleSubmit = async (e) => {
         e.preventDefault();
-        registrarServico(formData, saveJob);
+        const responseCode = await registrarServico(formData, saveJob);
+
+        if(responseCode == 201) {
+          const urlRedirect = userParam ? `/user/${userParam}` : `/jobs`
+          navigate(urlRedirect);
+        }
       };
 
       const { saveJob } = useJobContext();
@@ -48,7 +56,7 @@ const JobRegister = () => {
           title: "",
           category: "",
           serviceType: "",
-          fkClient: null
+          fkClient: userParam? userParam : null
         });
 
       const categoryOptions = [

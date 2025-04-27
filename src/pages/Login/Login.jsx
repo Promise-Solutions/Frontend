@@ -33,7 +33,7 @@ const Login = () => {
         axiosProvider
           .post("/employees/login", {
             email: formData.email,
-            password: formData.senha,
+            password: formData.password,
           })
           .then((response) => {
             const data = response.data;

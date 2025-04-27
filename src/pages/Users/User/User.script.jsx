@@ -63,8 +63,8 @@ export const RenderInfos = () => {
     { label: "Ação", key: "action" },
   ];
 
-  const registerRedirect = (navigate) => {
-    navigate("/register/jobs");
+  const registerRedirect = (navigate, userParam) => {
+    navigate(`/user/${userParam}/register/jobs`);
   };
 
   useEffect(() => {
@@ -361,7 +361,7 @@ export const RenderInfos = () => {
                   id="register_button"
                   title="Registrar Serviço"
                   text="+"
-                  onClick={() => registerRedirect(navigate)}
+                  onClick={() => registerRedirect(navigate, userParam)}
                 />
               </div>
             </div>

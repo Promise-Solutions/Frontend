@@ -8,7 +8,9 @@ export const registrarServico = async (formData, saveJob) => {
     }
 
     formData = {...formData, totalValue: 0, status: "PENDING", }
-    await saveJob(formData)
+    const response = await saveJob(formData)
+    
+    return response
 }
 
 export const createClientsOptions = async (findClients) => {
