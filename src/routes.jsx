@@ -33,7 +33,7 @@ function AppRoutes() {
       <Route path="/jobs/:jobId" element={<JobManagement />} />
       <Route path="/register/jobs" element={<JobRegister />} />
       <Route path="/user/:userParam/register/jobs" element={<JobRegister />} />
-      <Route path="/register/subjobs" element={<SubJobRegister />} />
+      <Route path="/jobs/:jobId/register/subjobs" element={<SubJobRegister />} />
       <Route path="/register" element={<Register />} />
       <Route path="/bar" element={<Bar />} />
       <Route path="/bar/stock" element={<Stock />} />
