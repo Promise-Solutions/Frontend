@@ -8,6 +8,7 @@ function Input({
   min,
   max,
   step,
+  maxLength,
   className = ""
 }) {
   return (
@@ -23,6 +24,7 @@ function Input({
         placeholder={placeholder}
         onChange={handleOnChange}
         value={value}
+        {...(maxLength !== undefined ? { maxLength } : {})}
         {...(min !== undefined && { min })} // Add min if provided
         {...(max !== undefined && { max })} // Add max if provided
         className={`h-8 bg-transparent border-b border-[#5f6176] text-white text-lg focus:outline-none transition-all duration-150 ease-in-out focus:border-pink-zero ${className}`}

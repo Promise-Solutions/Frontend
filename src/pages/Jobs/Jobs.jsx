@@ -8,6 +8,7 @@ import RegisterButton from "../../components/buttons/registerButton/RegisterButt
 import Table from "../../components/tables/Table";
 import { useUserContext } from "../../context/UserContext"; 
 import { SyncLoader } from "react-spinners";
+import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } from "../../hooks/translateAttributes";
 
 // Representa a estrutura da página "Jobs", atualmente sem conteúdo
 const Jobs = () => {
@@ -88,6 +89,9 @@ const Jobs = () => {
             data={
               jobsElements.map((job) => ({
                 ...job,
+                category: getCategoryTranslated(job.category),
+                serviceType: getServiceTypeTranslated(job.serviceType),
+                status: getStatusTranslated(job.status),
                 totalValue: `R$ ${job.totalValue.toFixed(2).replace(".", ",")}` 
               }))}
             />

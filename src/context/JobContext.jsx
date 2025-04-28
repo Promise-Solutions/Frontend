@@ -10,10 +10,11 @@ export function JobProvider({ children }) {
 
   const saveJob = async (formData) => {
     try {
-      const request = await axiosProvider.post(`/jobs`, formData);
+      const response = await axiosProvider.post(`/jobs`, formData);
 
-      if (request.status == 201) {
+      if (response.status == 201) {
         showToast.success("Servico Cadastrado!", { style: ToastStyle })
+        return response.status
       } 
     } catch (error) {
       showToast.error("Erro ao cadastrar servico!");

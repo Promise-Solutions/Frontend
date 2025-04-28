@@ -79,6 +79,7 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
             type="text"
             name="description"
             text="Descrição"
+            maxLength={320}
             placeholder="Digite a descrição"
             value={subJobsInfos?.description || ""}
             handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
@@ -89,7 +90,7 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
             name="value"
             text="Valor do produto"
             placeholder="Digite o valor do serviço"
-            value={subJobsInfos?.value || ""}
+            value={String(subJobsInfos?.value).replace(".", ",") || ""}
             handleOnChange={(e) => handleValorChange(e, setSubJobsInfos)}
           />
           <Input
@@ -122,8 +123,8 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={() => handleDelete(subJobData.id)}
-          title={"Deletar Usuário"}
-          description={"Tem certeza de que deseja deletar este usuário?"}
+          title={"Deletar Subserviço"}
+          description={"Tem certeza de que deseja deletar este subserviço?"}
         />
   </div>
   );

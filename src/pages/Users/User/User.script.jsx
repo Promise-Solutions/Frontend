@@ -26,7 +26,7 @@ export const RenderInfos = () => {
   const [isEditing, setIsEditing] = useState(false); // Controla o modo de edição
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla o modal de exclusão
-  const [filterScreen, setFilterScreen] = useState("1"); // Controla o filtro de tela
+  const [filterScreen, vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvsetFilterScreen] = useState("1"); // Controla o filtro de tela
   const { findJobsByClientId } = useJobContext();
   const [tableData, setTableData] = useState({});
   const navigate = useNavigate();
@@ -63,8 +63,8 @@ export const RenderInfos = () => {
     { label: "Ação", key: "action" },
   ];
 
-  const registerRedirect = (navigate) => {
-    navigate("/register/jobs");
+  const registerRedirect = (navigate, userParam) => {
+    navigate(`/user/${userParam}/register/jobs`);
   };
 
   useEffect(() => {
@@ -361,7 +361,7 @@ export const RenderInfos = () => {
                   id="register_button"
                   title="Registrar Serviço"
                   text="+"
-                  onClick={() => registerRedirect(navigate)}
+                  onClick={() => registerRedirect(navigate, userParam)}
                 />
               </div>
             </div>
