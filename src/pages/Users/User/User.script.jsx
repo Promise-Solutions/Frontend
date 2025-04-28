@@ -26,7 +26,7 @@ export const RenderInfos = () => {
   const [isEditing, setIsEditing] = useState(false); // Controla o modo de edição
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla o modal de exclusão
-  const [filterScreen, vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvsetFilterScreen] = useState("1"); // Controla o filtro de tela
+  const [filterScreen, setFilterScreen] = useState("1"); // Controla o filtro de tela
   const { findJobsByClientId } = useJobContext();
   const [tableData, setTableData] = useState({});
   const navigate = useNavigate();
