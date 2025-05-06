@@ -322,6 +322,7 @@ export const RenderCommandDetails = () => {
           closingDateTime: null,
           discount: 0.00,
           openingDateTime: command.openingDateTime,
+          fkClient: command.fkClient,
           totalValue: command.totalValue,
           fkEmployee: command.fkEmployee,
         });
