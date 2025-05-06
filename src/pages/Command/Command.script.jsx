@@ -50,7 +50,7 @@ export const RenderCommandDetails = () => {
     });
   };
 
-  // Lógica de reset de campos e busca de informações da comanda a cara interação
+  // Lógica de reset de campos e busca de informações da comanda a cada interação
   useEffect(() => {
     if (!command) {
       setProducts([]);
@@ -410,7 +410,7 @@ export const RenderCommandDetails = () => {
       <div className="flex justify-between">
         <div className="shadow-[8px_0_15px_rgba(255,255,255,0.1)] pr-8 max-w-[400px]">
           <h1 className="text-[42px]">
-            <b>Comanda:</b> {command.id}
+            <b>Comanda:</b> {command.commandNumber}
           </h1>
           <ul className="mt-4 border-b-1 border-b-gray-400 pb-8">
             <li>
