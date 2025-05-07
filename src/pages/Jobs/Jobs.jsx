@@ -32,11 +32,10 @@ const Jobs = () => {
   };
   
   const tableHeader = [
-    { label: "ID", key: "id" },
+    { label: "Cliente", key: "client"},
     { label: "Titulo", key: "title" },
     { label: "Categoria", key: "category" },
     { label: "Tipo do Serviço", key: "serviceType" },
-    { label: "Cliente", key: "client"},
     { label: "Valor Total (R$)", key: "totalValue"},
     { label: "Status", key: "status" },
     { label: "Ação", key: "action"}

@@ -55,7 +55,6 @@ export const RenderInfos = () => {
   };
 
   const tableHeader = [
-    { label: "ID", key: "id" },
     { label: "Titulo", key: "title" },
     { label: "Categoria", key: "category" },
     { label: "Tipo do Serviço", key: "serviceType" },
