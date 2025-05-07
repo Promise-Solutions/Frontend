@@ -455,10 +455,10 @@ export const RenderCommandDetails = () => {
                   <Select
                     text="Produto"
                     name="idProduto"
-                    options={allProducts.map((product) => ({
+                    options={allProducts.length != 0 ? allProducts.map((product) => ({
                       id: product.id,
                       name: `${product.name} (Estoque: ${product.quantity})`, // Display stock quantity
-                    }))}
+                    })) : []}
                     handleOnChange={handleProductSelect}
                     value={newProduct.idProduto || ""}
                   />

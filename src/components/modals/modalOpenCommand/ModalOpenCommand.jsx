@@ -64,6 +64,13 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
     }
 
     if (
+      openCommands.some((command) => command.commandNumber === Number(numberCommand))
+    ) {
+      showToast.error("Este número de comanda já está em uso.");
+      return;
+    }
+
+    if (
       selectedClient &&
       openCommands.some(
         (command) => command.fkClient === parseInt(selectedClient)
@@ -85,6 +92,7 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
     }
 
     try {
+      console.log(openCommands)
       const now = new Date();
       const offset = -3; // Brasília timezone offset (UTC-3)
       const openingDateTime = new Date(

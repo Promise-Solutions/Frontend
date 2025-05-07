@@ -102,7 +102,9 @@ const Stock = () => {
       showToast.success("Produto deletado com sucesso!");
     } catch (error) {
       console.error("Erro ao excluir produto:", error);
-      showToast.error("Erro ao excluir produto.");
+      showToast.error("Erro ao excluir produto. Verifique se o produto está em uso.");
+      setIsDeleteModalOpen(false);
+      setProductToDelete(null);
     }
   };
 

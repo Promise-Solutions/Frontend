@@ -19,6 +19,7 @@ import SecondaryButton from "../../../components/buttons/secondaryButton/Seconda
 import Table from "../../../components/tables/Table.jsx";
 import { axiosProvider } from "../../../provider/apiProvider";
 import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } from "../../../hooks/translateAttributes.js";
+import CancelButton from "../../../components/modals/modalConfirmDelete/cancelButton.jsx";
 
 export const RenderInfos = () => {
   const { userParam } =  useParams();
@@ -152,7 +153,7 @@ export const RenderInfos = () => {
             const updatedFormData = {
               ...formData,
               name: formData.name.toUpperCase(),
-              contact: formData.contact, // Atualizado para 'contact'
+              contact: formData.contact,
             };
 
             if (!formData.password) delete updatedFormData.password;
@@ -161,6 +162,7 @@ export const RenderInfos = () => {
             const endpoint = isClient
               ? `/clients/${userId}`
               : `/employees/${userId}`;
+              console.log("Dados atualizados:", updatedFormData);
             await axiosProvider.patch(endpoint, updatedFormData);
 
             setUser({ ...user, ...updatedFormData });
@@ -207,7 +209,7 @@ export const RenderInfos = () => {
               <Input
                 text="Nome"
                 type="text"
-                name="nome"
+                name="name"
                 value={formData.name}
                 handleOnChange={handleInputChange}
               />
@@ -234,7 +236,7 @@ export const RenderInfos = () => {
               <Input
                 text="Contato"
                 type="text"
-                name="contato"
+                name="contact"
                 value={formData.contact}
                 handleOnChange={handleMaskedInputChange}
               />
@@ -244,7 +246,7 @@ export const RenderInfos = () => {
                 <Input
                   text="Senha"
                   type="text"
-                  name="senha"
+                  name="password"
                   value={formData.password}
                   handleOnChange={handleInputChange}
                 />
@@ -275,13 +277,12 @@ export const RenderInfos = () => {
             onClick={() => setIsDeleteModalOpen(true)}
           />
 
-          <PrimaryButton
+          <CancelButton
             id="button_cancel_job_edit"
             text="Cancelar Alterações"
             onClick={() => {
               setIsEditing(!isEditing);
             }}
-            className="!border-[#C5C5C5] !text-[#C5C5C5] hover:!border-cyan-zero hover:!text-cyan-zero"
           />
         </div>
 
@@ -300,122 +301,83 @@ export const RenderInfos = () => {
   // Função para renderizar o conteúdo baseado no filtro selecionado
   const renderContent = () => {
     if (!user) {
-      return (
-        <p className="text-center text-gray-400">
-          Carregando informações do usuário...
-        </p>
-      );
+      return <p>Carregando informações do usuário...</p>;
+    }
+
+    if (isEditing) {
+      return <Edit />;
     }
 
     switch (filterScreen) {
       case "1":
-        return isEditing ? (
-          <Edit setIsEditing={setIsEditing} />
-        ) : (
-          <section id="info_section" className="flex w-full justify-between">
-            <div className="flex flex-col">
-              <h1 className="text-[42px]">
-                <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
-              </h1>
-              <ul className="flex flex-col mt-6 gap-2">
-                {isClient && (
-                  <li>
-                    <b>Tipo de Cliente: </b>{" "}
-                    {user?.clientType == "SINGLE" ? "Avulso" : "Mensal"}
-                  </li>
-                )}
-                <li>
-                  <b>E-mail: </b> {user?.email}
-                </li>
-                <li>
-                  <b>CPF: </b> {user?.cpf}
-                </li>
-                <li>
-                  <b>Contato: </b> {user?.contact}
-                </li>
-                <li>
-                  <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
-                </li>
-              </ul>
-            </div>
-            <div className="flex justify-between flex-col">
-              <PrimaryButton
-                id="button_edit"
-                text="Editar Usuário"
+        return (
+          <section>
+            <div className="flex justify-between items-center">
+              <h1 className="text-[42px] font-bold">Informações do Usuário</h1>
+              <SecondaryButton
+                id="button_edit_user"
+                text="Editar Informações"
                 onClick={() => setIsEditing(true)}
               />
             </div>
+            <ul className="mt-4 space-y-2">
+              <li>
+                <b>Nome:</b> {user.name}
+              </li>
+              <li>
+                <b>E-mail:</b> {user.email}
+              </li>
+              <li>
+                <b>CPF:</b> {user.cpf}
+              </li>
+              <li>
+                <b>Contato:</b> {user.contact}
+              </li>
+              {isClient && (
+                <li>
+                  <b>Tipo de Cliente:</b> {user.clientType}
+                </li>
+              )}
+              <li>
+                <b>Status:</b> {user.active ? "Ativo" : "Inativo"}
+              </li>
+            </ul>
           </section>
         );
-
       case "2":
         return (
-          <div>
+          <section>
             <div className="flex justify-between items-center">
-              <h1 className="text-[42px]">
-                <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
-              </h1>
-              <div className="flex justify-end">
-                <RegisterButton
-                  id="register_button"
-                  title="Registrar Serviço"
-                  text="+"
-                  onClick={() => registerRedirect(navigate, userParam)}
-                />
-              </div>
+              <h1 className="text-[42px] font-bold">Serviços Associados</h1>
+              <RegisterButton
+                id="register_job_button"
+                text="Registrar Serviço"
+                onClick={() => registerRedirect(navigate, userParam)}
+              />
             </div>
-            <section>
-              <div className="flex justify-center">
-                <Table headers={tableHeader} data={tableData} />
-              </div>
-            </section>
-          </div>
+            <Table headers={tableHeader} data={tableData} />
+          </section>
         );
-
       case "3":
         return (
-          <div className="flex justify-center mt-6 bg-[#1E1E1E90] p-4">
-            <div className="flex flex-col">
-              <h1 className="text-[42px]">
-                <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
-              </h1>
-              <ul className="flex flex-col mt-6 gap-2">
-                {isClient && (
-                  <li>
-                    <b>Tipo de Cliente: </b>{" "}
-                    {user?.clientType == "SINGLE" ? "Avulso" : "Mensal"}
-                  </li>
-                )}
-                <li>
-                  <b>E-mail: </b> {user?.email}
-                </li>
-                <li>
-                  <b>CPF: </b> {user?.cpf}
-                </li>
-                <li>
-                  <b>Contato: </b> {user?.contact}
-                </li>
-                <li>
-                  <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
-                </li>
-              </ul>
-            </div>
-            <FreqPagGraphic />
-          </div>
+          <section>
+            <h1 className="text-[42px] font-bold mb-4">
+              Frequência de Pagamentos
+            </h1>
+            <FreqPagGraphic userId={userParam} />
+          </section>
         );
-
       default:
-        return (
-          <p className="text-center text-gray-400">
-            Selecione um filtro válido.
-          </p>
-        );
+        return <p>Filtro não reconhecido.</p>;
     }
   };
 
   return (
-    <div className="w-full mt-3">
-      <ScreenFilter onFilterChange={setFilterScreen} />
+    <div className="flex flex-col gap-4">
+      <ScreenFilter
+        filterScreen={filterScreen}
+        setFilterScreen={setFilterScreen}
+      />
       {renderContent()}
     </div>
   );
