@@ -64,6 +64,13 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
     }
 
     if (
+      openCommands.some((command) => command.commandNumber === Number(numberCommand))
+    ) {
+      showToast.error("Este número de comanda já está em uso.");
+      return;
+    }
+
+    if (
       selectedClient &&
       openCommands.some(
         (command) => command.fkClient === parseInt(selectedClient)
@@ -93,12 +100,12 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
 
       const newCommand = {
         commandNumber: Number(numberCommand || null),
-        fkClient: selectedClient ? selectedClient : null,
+        fkClient: selectedClient.value == null ? null : selectedClient,
         fkEmployee: selectedEmployee,
         openingDateTime: openingDateTime,
         status: "OPEN",
-        discount: 0.00,
-        totalValue: 0.00,
+        discount: 0.0,
+        totalValue: 0.0,
       };
 
       console.log(newCommand)
@@ -135,7 +142,7 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
             text="Cliente"
             name="client"
             options={[
-              { id: null, value: "null", name: "Nenhum (Funcionário)" }, // Default option with explicit value
+              { id: null, value: null, name: "Nenhum (Funcionário)" }, // Default option with explicit value
               ...clients.map((client) => ({
                 id: client.id,
                 value: client.id,
