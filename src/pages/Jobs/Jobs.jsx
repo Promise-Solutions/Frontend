@@ -45,7 +45,7 @@ const Jobs = () => {
     setSearchTerm(term.toUpperCase().trim());
   };
 
-  const jobsElementsFiltereds = 
+  const filteredJobsElements = 
     allJobsElements.filter((job) => {
       const client = (job.client || "").toUpperCase().trim();
       const category = (getCategoryTranslated(job.category) || "").toUpperCase().trim();
@@ -102,11 +102,11 @@ const Jobs = () => {
               color={"#02AEBA"}
               speedMultiplier={2}
             />
-          ): jobsElementsFiltereds != [] ?(
+          ): filteredJobsElements != [] ?(
             <Table 
             headers={tableHeader}
             data={
-              jobsElementsFiltereds.map((job) => ({
+              filteredJobsElements.map((job) => ({
                 ...job,
                 category: getCategoryTranslated(job.category),
                 serviceType: getServiceTypeTranslated(job.serviceType),
