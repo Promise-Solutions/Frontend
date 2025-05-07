@@ -132,7 +132,7 @@ export const RenderCommandDetails = () => {
         );
         setClientName(client ? client.name : "Cliente não encontrado");
       } else {
-        setClientName("Cliente não associado");
+        setClientName("Funcionário");
       }
 
       // Fetch products related to the command
