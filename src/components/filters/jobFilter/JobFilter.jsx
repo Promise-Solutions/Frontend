@@ -66,6 +66,7 @@ const jobFilter = ({ id, placeholder, onSearch }) => {
         onChange={handleInputChange} // Define o evento de mudança
         onFocus={() => setIsFocused(true)} // Define o evento de foco
         onBlur={() => setIsFocused(false)} // Define o evento de desfoco
+        autoComplete="off"
       />
     </div>
   );

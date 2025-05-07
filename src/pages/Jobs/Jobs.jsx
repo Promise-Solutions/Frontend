@@ -12,7 +12,7 @@ import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } 
 
 // Representa a estrutura da página "Jobs", atualmente sem conteúdo
 const Jobs = () => {
-  const [jobsElements, setJobsElements] = useState([]); // Estado para armazenar os elementos renderizados
+  const [allJobsElements, setAllJobsElements] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
   const { findClientById } = useUserContext();
   const { findJobs } = useJobContext(); // Exportação do contexto
@@ -20,14 +20,14 @@ const Jobs = () => {
   const navigate = useNavigate(); //Navigate para navegatação, ele não atualiza a página
   
   const fetchAndRender = async () => {
-      const elements = await renderJobs(
-          findJobs,
-          navigate,
-          findClientById
-      );
+    const elements = await renderJobs(
+        findJobs,
+        navigate,
+        findClientById
+    );
 
-      console.log("elements", elements)
-    setJobsElements(elements);
+    console.log("elements", elements)
+    setAllJobsElements(elements);
     setIsLoading(false);
   };
   
@@ -42,9 +42,29 @@ const Jobs = () => {
   ] 
 
   const handleSearch = (term) => {
-    setSearchTerm(term.toUpperCase()); // Atualiza o termo de busca
+    setSearchTerm(term.toUpperCase().trim());
   };
-  
+
+  const jobsElementsFiltereds = 
+    allJobsElements.filter((job) => {
+      const client = (job.client || "").toUpperCase().trim();
+      const category = (getCategoryTranslated(job.category) || "").toUpperCase().trim();
+      const serviceType = (getServiceTypeTranslated(job.serviceType) || "").toUpperCase().trim();
+      const clientType = (job.clientType || "").toUpperCase().trim(); // Ensure clientType is included
+      const status = (getStatusTranslated(job.status) || "").toUpperCase().trim();
+      const valor = (job.totalValue.toFixed(2).replace(".", ",").toString() || "").trim();
+
+      const term = searchTerm.toUpperCase().trim();
+
+      return (
+        client.includes(term) ||
+        category.includes(term) ||
+        serviceType.includes(term) ||
+        status.includes(term) ||
+        clientType.includes(term) ||
+        valor.includes(term)
+      );
+    })
 
   useEffect(() => {
     fetchAndRender();
@@ -82,11 +102,11 @@ const Jobs = () => {
               color={"#02AEBA"}
               speedMultiplier={2}
             />
-          ): jobsElements != [] ?(
+          ): jobsElementsFiltereds != [] ?(
             <Table 
             headers={tableHeader}
             data={
-              jobsElements.map((job) => ({
+              jobsElementsFiltereds.map((job) => ({
                 ...job,
                 category: getCategoryTranslated(job.category),
                 serviceType: getServiceTypeTranslated(job.serviceType),
