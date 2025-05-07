@@ -47,6 +47,7 @@ const Jobs = () => {
 
   const filteredJobsElements = 
     allJobsElements.filter((job) => {
+      const title = (job.title || "").toUpperCase().trim();
       const client = (job.client || "").toUpperCase().trim();
       const category = (getCategoryTranslated(job.category) || "").toUpperCase().trim();
       const serviceType = (getServiceTypeTranslated(job.serviceType) || "").toUpperCase().trim();
@@ -57,6 +58,7 @@ const Jobs = () => {
       const term = searchTerm.toUpperCase().trim();
 
       return (
+        title.includes(term) ||
         client.includes(term) ||
         category.includes(term) ||
         serviceType.includes(term) ||
