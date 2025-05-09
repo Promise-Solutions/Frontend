@@ -100,7 +100,11 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
 
       const newCommand = {
         commandNumber: Number(numberCommand || null),
-        fkClient: selectedClient.value == null ? null : selectedClient,
+        fkClient:
+          selectedClient == null ||
+          selectedClient == "Nenhum (Funcionário)"
+            ? null
+            : selectedClient,
         fkEmployee: selectedEmployee,
         openingDateTime: openingDateTime,
         status: "OPEN",
