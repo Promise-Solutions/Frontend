@@ -400,7 +400,10 @@ export const RenderInfos = () => {
                 </li>
               </ul>
             </div>
-            <FreqPagGraphic />
+            <FreqPagGraphic
+              idClient={user.id}
+              title="Dados do Cliente"
+            />
           </div>
         );
 

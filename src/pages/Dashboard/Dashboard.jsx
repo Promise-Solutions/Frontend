@@ -1,6 +1,5 @@
 import FreqPagGraphic from "../../components/graphic/FreqPagGraphic";
 import Kpi from "../../components/graphic/Kpi";
-import Graphic from "../../components/graphic/Graphic";
 
 const Dashboard = () => {
   return (
@@ -14,8 +13,13 @@ const Dashboard = () => {
 
       {/* Gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <FreqPagGraphic width={500} height={300} />
-          <FreqPagGraphic width={500} height={300} />
+        <FreqPagGraphic
+          title="Frequência e Pagamento"
+        />
+        <FreqPagGraphic
+          title="Bar"
+          isBar={true}
+        />
       </div>
     </div>
   );
