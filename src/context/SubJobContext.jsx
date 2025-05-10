@@ -1,5 +1,4 @@
 import React, { createContext, useState, useContext } from "react";
-import toast from "react-hot-toast";
 import { axiosProvider } from "../provider/apiProvider";
 import { showToast, ToastStyle } from "../components/toastStyle/ToastStyle";
 
@@ -10,28 +9,32 @@ export function SubJobProvider({ children }) {
     try {
       const request = await axiosProvider.post(`/sub-jobs`, formData);
       if (request.status == 201) {
-        toast.success("Subservico Cadastrado!");
+        showToast.success("Subservico Cadastrado!");
         return request.status
       }
       return null;
     } catch (error) {
-      toast.error("Erro ao cadastrar subserviço!");
+      if(error && error.response.status == 409) {
+        showToast.error("Horários em conflito com outro subserviço registrado.")
+      } else {
+        showToast.error("Não foi possível cadastrar o subserviço");
+      }
     };
   };
   
-  const updateSubJobStatus = async (id, newStatus, currentDateTime) => {
+  const updateSubJobStatus = async (id, newStatus) => {
     if (!id) return;
     
     try {
-      const response = await axiosProvider.patch(`/sub-jobs/${id}/update-status`, { status: newStatus, endTime: currentDateTime })
+      const response = await axiosProvider.patch(`/sub-jobs/${id}/update-status`, { status: newStatus})
   
       if (response.status == 200) {
         return response.data;
       }
       return null;
     } catch (error) {
-      toast.error("Erro ao excluir subserviço")
-      console.log("Erro ao excluir subserviço", error)
+      showToast.error("Não foi possível atualizar o status do subserviço")
+      console.log("Não foi possível atualizar o status do subserviço", error)
       return null;
     }
   }
@@ -60,20 +63,25 @@ export function SubJobProvider({ children }) {
         description: subJobData.description,
         value: subJobData.value,
         date: subJobData.date,
+        needsRoom: subJobData.needsRoom,
         startTime: subJobData.startTime,
-        endTime: subJobData.endTime,
+        expectedEndTime: subJobData.expectedEndTime,
         status: subJobData.status,
         fkService: subJobData.fkService
       });
 
       if (request.status === 200) {
         console.log("Subserviço atualizado com sucesso!");
-        toast.success("Subserviço atualizado com sucesso!");
+        showToast.success("Subserviço atualizado com sucesso!");
         return request.data
       }
     } catch (error) {
-      toast.error("Erro ao atualizar o subserviço");
-      console.error("Erro ao atualizar o subserviço", error);
+      if(error && error.response.status == 409) {
+        showToast.error("Horários em conflito com outro subserviço registrado.")
+      } else {
+        showToast.error("Erro ao atualizar o subserviço");
+        console.error("Erro ao atualizar o subserviço", error);
+      }
     }
   };
 
@@ -90,7 +98,7 @@ export function SubJobProvider({ children }) {
         return null
       }
     } catch (error) {
-      toast.error("Erro ao excluir subserviço");
+      showToast.error("Erro ao excluir subserviço");
       console.log("Erro ao excluir subserviço", error);
     }
   };

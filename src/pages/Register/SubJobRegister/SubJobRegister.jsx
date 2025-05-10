@@ -2,9 +2,12 @@ import logo from "../../../assets/logo-branco-bg-sonoro.png";
 import Input from "../../../components/form/Input";
 import SubmitButton from "../../../components/form/SubmitButton";
 import { useSubJobContext } from "../../../context/SubJobContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { registrarSubServico } from "./SubJobRegister.script";
 import { useNavigate, useParams } from "react-router-dom";
+import Select from "../../../components/form/Select";
+import Checkbox from "../../../components/form/Checkbox";
+import { showToast } from "../../../components/toastStyle/ToastStyle";
 
 const SubJobRegister = () => {
     const { saveSubJob } = useSubJobContext();
@@ -15,23 +18,31 @@ const SubJobRegister = () => {
         description: "",
         value: "",
         date: "",
-        fkService: jobId
+        fkService: jobId,
+        needsRoom: false,
+        startTime: null,
+        expectedEndTime: null
       });
 
     const handleInputChange = (e) => {
       const { name, value } = e.target;
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
+    
+    const handleInputCheckboxChange = (e) => {
+      const { name } = e.target;
+      setFormData((prevData) => ({ ...prevData, [name]: e.target.checked }));
+    };
 
     const handleSubmit = async (e) => {
       e.preventDefault();
       
-
-
       const subJobDataToRegister = {
         ...formData,
         value: getNumericValue(formData.value)
       }
+
+      console.log(subJobDataToRegister)
 
       const responseCode = await registrarSubServico(subJobDataToRegister, saveSubJob)
 
@@ -39,7 +50,7 @@ const SubJobRegister = () => {
         setTimeout(() => {
           navigate(`/jobs/${jobId}`)
         }, 700)
-      }
+      } 
     };
 
     const handleValorChange = (e) => {
@@ -73,7 +84,7 @@ const SubJobRegister = () => {
           <section className="flex flex-col items-center justify-start gap-6 w-full px-4">
             <img src={logo} alt="logo-studio-zero-header" className="h-[250px]" />
             <h1 className="font-light text-4xl tracking-widest text-[#9A3379] text-center">
-              Registre um novo Subservico
+              Registre um novo Subserviço
             </h1>
           </section>
           <form
@@ -88,6 +99,7 @@ const SubJobRegister = () => {
                 <Input
                   type="text"
                   text="Titulo"
+                  required
                   name="title"
                   placeholder="Digite o titulo"
                   handleOnChange={handleInputChange}
@@ -97,32 +109,63 @@ const SubJobRegister = () => {
                 <Input
                   type="text"
                   text="Descrição"
+                  required
                   name="description"
                   placeholder="Digite a descrição"
                   handleOnChange={handleInputChange}
                   value={formData.description}
-                  maxLength="50"
+                  maxLength={200}
                 />
                 <Input
                   type="tel"
                   text="Valor (R$)"
+                  required
                   name="value"
                   placeholder="Digite o valor"
                   handleOnChange={handleValorChange}
                   value={formData.value === NaN ? null : formData.value}
                   maxLength="50"
                 />
+                <Checkbox
+                  text="Utilizará a Sala?"
+                  required
+                  name="needsRoom"
+                  handleOnChange={handleInputCheckboxChange}
+                  value={formData.needsRoom}
+                  />
                 <Input
                   type="date"
                   text="Data prevista para subserviço"
                   name="date"
                   placeholder="Digite o valor"
                   handleOnChange={handleInputChange}
-                  value={`${formData.date}`}
+                  value={formData.date}
                   min={new Date().toLocaleDateString("en-CA")}
                   max="2099-12-31"
                   className="custom-calendar"
                 />
+                <div className="flex items-center justify-between w-full gap-8">
+
+                  <Input
+                    type="time"
+                    text="Horário de início"
+                    name="startTime"
+                    placeholder="Digite o valor"
+                    handleOnChange={handleInputChange}
+                    value={formData.startTime}
+                    className="custom-calendar"
+                    />
+
+                  <Input
+                    type="time"
+                    text="Horário previsto de conclusão"
+                    name="expectedEndTime"
+                    placeholder="Digite o valor"
+                    handleOnChange={handleInputChange}
+                    value={formData.expectedEndTime}
+                    className="custom-calendar"
+                    />
+                </div>
               
               </section>
         

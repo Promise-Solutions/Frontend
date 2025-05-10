@@ -12,6 +12,7 @@ import Select from "../../../components/form/Select";
 import { handleInputChange, registerRedirect, saveChanges, deleteJob } from "./JobManagement.script";
 import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } from "../../../hooks/translateAttributes";
 import ModalEditSubJob from "../../../components/modals/modalEditSubJob/ModalEditSubJob";
+import CancelButton from "../../../components/modals/modalConfirmDelete/cancelButton";
 
 const JobManagement = () => {
   const { jobId } = useParams();
@@ -39,15 +40,11 @@ const JobManagement = () => {
     })();
   }, [jobId]);
 
-  useEffect(() => {
-    console.log("jobData", jobData)
-  },[jobData])
-
-  const handleChangeSubJobStatus = (response, date) => {
+  const handleChangeSubJobStatus = (response) => {
     setSubJobsData((prev) => 
       prev.map((subJob) => 
         (subJob.id === response.subJobId ? 
-          {...subJob, status: response.subJobStatus, endTime: date} 
+          {...subJob, status: response.subJobStatus} 
           : subJob))
     )
     
@@ -129,7 +126,10 @@ const JobManagement = () => {
                     <b>Tipo de Serviço: </b> {getServiceTypeTranslated(jobData?.serviceType)}
                   </li>
                   <li>
-                    <b>Valor Total do Serviço: </b> {typeof jobData?.totalValue === "number" ? `R$ ${jobData.totalValue.toFixed(2).replace(".", ",")}` : "Erro ao buscar valor total"}
+                    <b>Valor Total do Serviço: </b> 
+                      {typeof jobData?.totalValue === "number" 
+                      ? `R$ ${jobData.totalValue.toFixed(2).replace(".", ",")}` 
+                      : "Erro ao buscar valor total"}
                   </li>
                   <li>
                     <b>Status: </b> 
@@ -159,23 +159,26 @@ const JobManagement = () => {
                       text="Titulo"
                       type="text"
                       name="title"
+                      required
                       value={jobData.title}
                       handleOnChange={(e) => handleInputChange(e, setJobData)}
                     />
                   </li>
                   <li>
-                  <Select
-                    text="Categoria"
-                    name="category"
-                    options={categoryOptions}
-                    handleOnChange={(e) => handleInputChange(e, setJobData)}
-                    value={jobData.category}
-                  />
+                    <Select
+                      text="Categoria"
+                      name="category"
+                      required
+                      options={categoryOptions}
+                      handleOnChange={(e) => handleInputChange(e, setJobData)}
+                      value={jobData.category}
+                    />
                   </li>
                   <li>
                     <Select
                       text="Tipo do serviço"
                       name="serviceType"
+                      required
                       options={typeOptions}
                       handleOnChange={(e) => handleInputChange(e, setJobData)}
                       value={jobData.serviceType}
@@ -204,28 +207,28 @@ const JobManagement = () => {
                   text="Deletar Serviço"
                   onClick={() => setIsDeleteModalOpen(true)}
                 />
-                <PrimaryButton
+                <CancelButton
                   id="button_cancel_job_edit"
                   text="Cancelar Alterações"
                   onClick={() => {
                     setJobData(job)  
                     setIsEditing(!isEditing)
                   }}
-                  className="!border-[#C5C5C5] !text-[#C5C5C5] hover:!border-cyan-zero hover:!text-cyan-zero"
                   />
+                  
               </div>
             </section>
           )}
           <div className="self-end mr-15">
             <RegisterButton
               id="register_button"
-              title="Registrar subserviço"
+              title="Cadastrar subserviço"
               text="+"
               onClick={() => registerRedirect(navigate, jobId)} // Pass navigate to registerRedirect
             />
             </div>
-          <section className="dropdown_section">
-            <div className="gap-4 border-t-1 border-[#d9d9d91F] flex flex-wrap justify-center items-start mt-12 max-h-[330px] py-[35px] overflow-y-auto w-full h-auto">
+          <section className="dropdown_section flex items-center justify-center">
+            <div className="flex flex-row gap-4 border-x border-[#d9d9d91F] justify-center items-center mt-12 min-h-[15rem] px-[45px] py-[15px] max-h-[24rem] overflow-x-auto overflow-y-hidden w-[97%]">
             {subJobsData.length > 0 ? (
                 subJobsData.map((subJob) => (
                   <CardSubJob
@@ -240,7 +243,7 @@ const JobManagement = () => {
                   />
                 ))
               ) : (
-                <p>Nenhum subserviço</p>
+                <p className="text-center text-gray-400">Nenhum subserviço</p>
               )}
             </div>
           </section>

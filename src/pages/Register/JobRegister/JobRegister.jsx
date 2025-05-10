@@ -22,7 +22,6 @@ const JobRegister = () => {
     const renderClientOptions = async () => {
       const clients = await createClientsOptions(findClients);
 
-
        const nameClients = clients.map(client => {
           const clientObj = {
             id: client.id,
@@ -31,7 +30,6 @@ const JobRegister = () => {
           return clientObj
        });
 
-       console.log("clients", nameClients)
        setClientOptions(nameClients);
     }
 
@@ -74,7 +72,7 @@ const JobRegister = () => {
           <section className="flex flex-col items-center justify-start gap-6 w-full px-4">
             <img src={logo} alt="logo-studio-zero-header" className="h-[250px]" />
             <h1 className="font-light text-4xl tracking-widest text-[#9A3379] text-center">
-              Registre um novo Servico
+              Registre um novo Serviço
             </h1>
           </section>
           <form
@@ -90,6 +88,7 @@ const JobRegister = () => {
                   type="text"
                   text="Titulo"
                   name="title"
+                  required
                   placeholder="Digite o titulo"
                   handleOnChange={handleInputChange}
                   value={formData.title}
@@ -98,6 +97,7 @@ const JobRegister = () => {
                 <Select
                   text="Categoria de Servico"
                   name="category"
+                  required
                   options={categoryOptions}
                   handleOnChange={handleInputChange}
                   value={formData.category}
@@ -105,6 +105,7 @@ const JobRegister = () => {
                 <Select
                   text="Tipo de serviço"
                   name="serviceType"
+                  required
                   options={typeOptions}
                   handleOnChange={handleInputChange}
                   value={formData.serviceType}
@@ -112,6 +113,7 @@ const JobRegister = () => {
                 <Select
                   text="Cliente Desejado"
                   name="fkClient"
+                  required
                   options={clientOptions}
                   handleOnChange={handleInputChange}
                   value={formData.fkClient}

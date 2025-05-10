@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import CardHomePage from "../../components/cards/cardHomePage/CardHomePage.jsx";
 import { useNavigate } from "react-router-dom";
 import { handleButtonClick } from "../../components/cards/cardHomePage/CardHome.script.js";
-import UserIcon from "../../assets/icon-empresa.png";
-import JobIcon from "../../assets/icon-servicos.png";
-import BarIcon from "../../assets/icon-bar.png";
-import DashIcon from "../../assets/icon-dashboard.png";
-import RelatIcon from "../../assets/icon-report.png";
+import UserIcon from "../../assets/iconsHomePage/icon-empresa.png";
+import JobIcon from "../../assets/iconsHomePage/icon-servicos.png";
+import BarIcon from "../../assets/iconsHomePage/icon-bar.png";
+import DashIcon from "../../assets/iconsHomePage/icon-dashboard.png";
+import RelatIcon from "../../assets/iconsHomePage/icon-report.png";
+import TaskIcon from "../../assets/iconsHomePage/icon-tarefas.png";
 import Logo from "../../assets/logo-branco-bg-sonoro.png";
 import { handleLogout } from "./Home.script.js";
 import LogoutButton from "../../components/buttons/logoutButton/LogoutButton.jsx";
@@ -17,16 +18,18 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <main className="flex flex-col justify-center items-center h-[100vh] w-[100vw] relative">
-      <div className="flex w-full justify-end mx-4 pr-[64px] py-4 px-12">
-        <LogoutButton
-          id="logout_button_id"
-          text="Sair do Usuário"
-          onClick={() => handleLogout(navigate)}
-        />
+    <main className="flex flex-col justify-center items-center min-h-[100vh] h-full w-[100vw] relative">
+      <div className="flex items-center justify-center">
+        <img src={Logo} className="h-[130px]" />
+        <div className="absolute flex w-full justify-end  pr-[64px] py-4 px-12">
+          <LogoutButton
+            id="logout_button_id"
+            text="Sair do Usuário"
+            onClick={() => handleLogout(navigate)}
+            />
+        </div>
       </div>
-      <img src={Logo} className="h-[170px]" />
-      <section className="flex w-[95vw] h-[65%] gap-4 items-center justify-between mx-4">
+      <section className="flex flex-wrap w-auto max-w-[75vw] h-auto gap-4 items-center justify-center mx-4">
         <CardHomePage
           title="Usuários"
           text="Gerencie seus usuários, serviços e tarefas"
@@ -67,6 +70,15 @@ const Home = () => {
           title="Relatórios"
           text="Visualize seus relatórios mensais ou gere um novo quando quiser"
           url={RelatIcon}
+          idButton="reports"
+          className="text-[42px] text-transparent font-bold"
+          style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+          onClick={() => handleButtonClick("reports", navigate)}
+        />
+        <CardHomePage
+          title="Tarefas"
+          text="Obtenha uma visão de suas tarefas e gerencie seus status "
+          url={TaskIcon}
           idButton="reports"
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}

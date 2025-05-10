@@ -34,6 +34,7 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
             <Input
               type="text"
               name="name"
+              required
               text="Nome do Produto"
               placeholder="Digite o nome do produto"
               value={formData.name}
@@ -42,6 +43,7 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
             <Input
               type="number"
               name="quantity"
+              required
               text="Quantidade"
               placeholder="Digite a quantidade"
               value={formData.quantity}
@@ -51,6 +53,7 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
             <Input
               type="text"
               name="unitValue"
+              required
               text="Valor Unitário de Venda"
               placeholder="Digite o valor unitário"
               value={formData.unitValue}
@@ -59,6 +62,7 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
             <Input
               type="number"
               name="buyValue"
+              required
               text="Valor Total de Compra"
               placeholder="Digite o valor de compra"
               value={formData.buyValue}

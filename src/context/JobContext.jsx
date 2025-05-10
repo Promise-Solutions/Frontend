@@ -138,7 +138,7 @@ export function JobProvider({ children }) {
     } catch (error) {
       if(error.response && error.response.status == 409) {
         console.log("Erro! Não é possível excluir um serviço com subserviços associados");
-        showToast.error("Ainda há subserviços existentes associados");
+        showToast.error("Não é possível excluir um serviço com subserviços associados!");
 
       } else {
         showToast.error("Erro ao excluir serviço");

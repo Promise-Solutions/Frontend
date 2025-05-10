@@ -8,15 +8,17 @@ function Input({
   min,
   max,
   step,
+  required = false,
   maxLength,
   className = ""
 }) {
   return (
     <div className="flex flex-col justify-between w-full sm:w-[48%] md:w-full">
       <label htmlFor={name} className="text-[20px] text-white">
-        <b>{text}:</b>
+        <b>{text} {required ? <span className="text-red-zero">*</span> : ""} :</b>
       </label>
       <input
+        required={required}
         type={type}
         step={step || ""} // Default to "any" if not provided
         name={name}

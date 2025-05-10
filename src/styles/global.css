@@ -14,7 +14,7 @@
 /* Global scrollbar styling */
 * {
   scrollbar-width: thin; /* Aplica estilização personalizada */
-  scrollbar-color: var(--color-pink-zero) black; /* Fundo transparente */
+  scrollbar-color: var(--color-pink-zero) rgb(108, 85, 85); /* Fundo transparente */
   scroll-behavior: smooth; /* Adiciona suavidade ao scroll */
 }
 
@@ -24,8 +24,8 @@
 
 @layer utilities {
   .custom-calendar::-webkit-calendar-picker-indicator {
-    width: 27px;
-    height: 27px;
+    width: 25px;
+    height: 25px;
     /* transform: scale(1); Aumenta o tamanho */
     filter: invert(63%) sepia(42%) saturate(450%) hue-rotate(139deg) brightness(96%) contrast(93%);
     cursor: pointer;

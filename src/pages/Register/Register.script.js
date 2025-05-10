@@ -1,6 +1,6 @@
 import { axiosProvider } from "../../provider/apiProvider"; // Importando o axiosProvider
 import { toast } from "react-hot-toast";
-import { ToastStyle } from "../../components/toastStyle/ToastStyle.jsx"; // Import ToastStyle
+import { showToast, ToastStyle } from "../../components/toastStyle/ToastStyle.jsx"; // Import ToastStyle
 
 let isEventRegistered = false; // Variável de controle para evitar múltiplos registros
 
@@ -114,11 +114,11 @@ export function setupRegisterEvents(navigate) {
     const iptEmail = document.querySelector("#email"); // Buscar elemento atualizado
     const regex = /^[^\s]+@[^\s]+\.[^\s]+$/;
     if (!iptEmail || !iptEmail.value.trim()) {
-      toast.error("O campo de email está vazio.", { style: ToastStyle });
+      showToast.error("O campo de email está vazio.");
       return false;
     }
     if (!regex.test(iptEmail.value)) {
-      toast.error("O email inserido é inválido.", { style: ToastStyle });
+      showToast.error("O email inserido é inválido.");
       return false;
     }
     return true;
@@ -135,12 +135,12 @@ export function setupRegisterEvents(navigate) {
     const iptTipoCliente = document.querySelector("#tipoCliente");
 
     if (!iptNome || !iptNome.value.trim()) {
-      toast.error("O campo de nome está vazio.", { style: ToastStyle });
+      showToast.error("O campo de nome está vazio.");
       return false;
     }
 
     if (!iptCpf || iptCpf.value.length !== 14) {
-      toast.error("O CPF deve ter 14 caracteres.", { style: ToastStyle });
+      showToast.error("O CPF deve ter 14 caracteres.");
       return false;
     }
 
@@ -149,14 +149,14 @@ export function setupRegisterEvents(navigate) {
     }
 
     if (!iptContato || iptContato.value.length !== 15) {
-      toast.error("O contato deve ter 15 caracteres.", { style: ToastStyle });
+      showToast.error("O contato deve ter 15 caracteres.");
       return false;
     }
 
     if (iptType.value === "CLIENTE") {
       // Validação para cliente
       if (!iptTipoCliente || !iptTipoCliente.value.trim()) {
-        toast.error("O campo de tipo de cliente está vazio.", {
+        showToast.error("O campo de tipo de cliente está vazio.", {
           style: ToastStyle,
         });
         return false;
@@ -164,12 +164,12 @@ export function setupRegisterEvents(navigate) {
     } else if (iptType.value === "FUNCIONARIO") {
       // Validação para funcionário
       if (!iptSenha || iptSenha.value.length < 8) {
-        toast.error("A senha deve ter pelo menos 8 caracteres.", {
+        showToast.error("A senha deve ter pelo menos 8 caracteres.", {
           style: ToastStyle,
         });
       }
     } else {
-      toast.error("Tipo de usuário inválido.", { style: ToastStyle });
+      showToast.error("Tipo de usuário inválido.");
       return false;
     }
 
@@ -231,7 +231,7 @@ export function setupRegisterEvents(navigate) {
     try {
       const res = await axiosProvider.post(`/${endpoint}`, novoUsuario);
       if (res.status === 201) {
-        toast.success("Cadastro realizado com sucesso!", { style: ToastStyle });
+        showToast.success("Cadastro realizado com sucesso!");
         iptNome.value = "";
         iptCpf.value = "";
         iptEmail.value = "";
@@ -241,10 +241,10 @@ export function setupRegisterEvents(navigate) {
         if (iptTipoCliente) iptTipoCliente.value = "";
         navigate("/users"); // Use navigate passed as a parameter
       } else {
-        toast.error("Erro ao cadastrar usuário.", { style: ToastStyle });
+        showToast.error("Erro ao cadastrar usuário.");
       }
     } catch (error) {
-      toast.error("Erro ao cadastrar usuário.", { style: ToastStyle });
+      showToast.error("Erro ao cadastrar usuário.");
       console.error("Erro:", error);
     }
   };
