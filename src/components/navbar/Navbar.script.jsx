@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ROUTERS } from "../../constants/routers";
 
 // Tabs disponíveis
 export const tabs = [
@@ -27,7 +28,7 @@ export const useNavbarLogic = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/login");
+    navigate(ROUTERS.LOGIN);
   };
 
   return { activeTab, handleLogout };
@@ -62,5 +63,5 @@ const waitForLogo = (onLogoClick) => {
 };
 
 export const initializeLogoClick = (navigate) => {
-  waitForLogo(() => navigate("/"));
+  waitForLogo(() => navigate(ROUTERS.HOME));
 };

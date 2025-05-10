@@ -4,7 +4,7 @@ import {
   Navigate, // Redireciona para uma nova página
 } from "react-router-dom";
 
-// Importação das páginas
+import { ROUTERS } from "./constants/routers.js";
 import Register from "./pages/Register/Register";
 import Users from "./pages/Users/Users";
 import Login from "./pages/Login/Login";
@@ -25,24 +25,24 @@ import SubJobRegister from "./pages/Register/SubJobRegister/SubJobRegister.jsx";
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/users" element={<Users />} />
-      <Route path="/user/:userParam" element={<User />} />
-      <Route path="/jobs/:jobId" element={<JobManagement />} />
-      <Route path="/register/jobs" element={<JobRegister />} />
-      <Route path="/user/:userParam/register/jobs" element={<JobRegister />} />
-      <Route path="/jobs/:jobId/register/subjobs" element={<SubJobRegister />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/bar" element={<Bar />} />
-      <Route path="/bar/stock" element={<Stock />} />
-      <Route path="/command/:command" element={<Command />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/reports" element={<Reports />} />
-      <Route path="/projects" element={<Projects />} />
-      <Route path="/jobs" element={<Jobs />} />
-      <Route path="/tasks" element={<Tasks />} />
+      <Route path={ROUTERS.HOME} element={<Home />} />
+      <Route path={ROUTERS.HOME_ALIAS} element={<Home />} />
+      <Route path={ROUTERS.LOGIN} element={<Login />} />
+      <Route path={ROUTERS.USERS} element={<Users />} />
+      <Route path={ROUTERS.USER_DETAIL} element={<User />} />
+      <Route path={ROUTERS.JOB_DETAIL} element={<JobManagement />} />
+      <Route path={ROUTERS.JOB_REGISTER} element={<JobRegister />} />
+      <Route path={ROUTERS.USER_JOB_REGISTER} element={<JobRegister />} />
+      <Route path={ROUTERS.SUBJOB_REGISTER} element={<SubJobRegister />} />
+      <Route path={ROUTERS.REGISTER} element={<Register />} />
+      <Route path={ROUTERS.BAR} element={<Bar />} />
+      <Route path={ROUTERS.BAR_STOCK} element={<Stock />} />
+      <Route path={ROUTERS.COMMAND} element={<Command />} />
+      <Route path={ROUTERS.DASHBOARD} element={<Dashboard />} />
+      <Route path={ROUTERS.REPORTS} element={<Reports />} />
+      <Route path={ROUTERS.PROJECTS} element={<Projects />} />
+      <Route path={ROUTERS.JOBS} element={<Jobs />} />
+      <Route path={ROUTERS.TASKS} element={<Tasks />} />
     </Routes>
   );
 }

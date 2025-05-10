@@ -1,6 +1,7 @@
 import { axiosProvider } from "../../provider/apiProvider"; // Importando o axiosProvider
 import { toast } from "react-hot-toast";
 import { showToast, ToastStyle } from "../../components/toastStyle/ToastStyle.jsx"; // Import ToastStyle
+import { ROUTERS } from "../../constants/routers.js";
 
 let isEventRegistered = false; // Variável de controle para evitar múltiplos registros
 
@@ -239,7 +240,7 @@ export function setupRegisterEvents(navigate) {
         iptType.value = "";
         if (iptSenha) iptSenha.value = "";
         if (iptTipoCliente) iptTipoCliente.value = "";
-        navigate("/users"); // Use navigate passed as a parameter
+        navigate(ROUTERS.USERS); // Use navigate passed as a parameter
       } else {
         showToast.error("Erro ao cadastrar usuário.");
       }

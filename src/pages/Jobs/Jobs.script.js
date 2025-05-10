@@ -1,6 +1,7 @@
 import React from "react";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton.jsx";
 import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } from "../../hooks/translateAttributes.js";
+import { ROUTERS } from "../../constants/routers.js";
 
 export const registerRedirect = (navigate) => {
   navigate("/register/jobs");
@@ -37,7 +38,7 @@ export const renderJobs = async (
             id: "access_button",
             text: "Acessar",
             onClick: (() => {
-              navigate(`/jobs/${job.id}`)
+              navigate(ROUTERS.getJobDetail(job.id))
               sessionStorage.setItem("jobId", job.id)
             }) 
           })

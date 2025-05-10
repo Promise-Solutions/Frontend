@@ -14,7 +14,7 @@
 /* Global scrollbar styling */
 * {
   scrollbar-width: thin; /* Aplica estilização personalizada */
-  scrollbar-color: var(--color-pink-zero) rgb(108, 85, 85); /* Fundo transparente */
+  scrollbar-color: var(--color-pink-zero) transparent; /* Fundo transparente */
   scroll-behavior: smooth; /* Adiciona suavidade ao scroll */
 }
 

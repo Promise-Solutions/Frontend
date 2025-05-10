@@ -228,7 +228,7 @@ const JobManagement = () => {
             />
             </div>
           <section className="dropdown_section flex items-center justify-center">
-            <div className="flex flex-row gap-4 border-x border-[#d9d9d91F] justify-center items-center mt-12 min-h-[15rem] px-[45px] py-[15px] max-h-[24rem] overflow-x-auto overflow-y-hidden w-[97%]">
+            <div className="flex flex-row gap-4 justify-left items-center mt-12 min-h-[15rem] px-[45px] py-[15px] max-h-[27rem] w-auto overflow-r-auto overflow-y-hidden max-w-[97%]">
             {subJobsData.length > 0 ? (
                 subJobsData.map((subJob) => (
                   <CardSubJob

@@ -14,6 +14,7 @@ import { calcTotalWithDiscount, calcProductsTotal } from "../../hooks/Calc"; // 
 import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { comma } from "postcss/lib/list";
+import { ROUTERS } from "../../constants/routers.js";
 
 export const RenderCommandDetails = () => {
   const { command, setCommand, commandId, setCommandId } = useCommandContext(); // Usa o BarContext para obter a comanda
@@ -388,7 +389,7 @@ export const RenderCommandDetails = () => {
       setCommandId(null);
       sessionStorage.removeItem("commandId");
       console.log("Navigating to /bar after deleting command");
-      navigate("/bar"); // Usa navigate para redirecionar
+      navigate(ROUTERS.BAR); // Usa navigate para redirecionar
 
       showToast.success("Comanda e itens associados deletados com sucesso!");
     } catch (error) {

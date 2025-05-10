@@ -11,6 +11,7 @@ import TaskIcon from "../../assets/iconsHomePage/icon-tarefas.png";
 import Logo from "../../assets/logo-branco-bg-sonoro.png";
 import { handleLogout } from "./Home.script.js";
 import LogoutButton from "../../components/buttons/logoutButton/LogoutButton.jsx";
+import { ROUTERS } from "../../constants/routers.js";
 
 // Componente funcional para a página Home
 // Representa a estrutura da página inicial
@@ -34,55 +35,55 @@ const Home = () => {
           title="Usuários"
           text="Gerencie seus usuários, serviços e tarefas"
           url={UserIcon}
-          idButton="users"
+          idButton={ROUTERS.USERS}
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
-          onClick={() => handleButtonClick("users", navigate)}
+          onClick={() => handleButtonClick(ROUTERS.USERS, navigate)}
         />
         <CardHomePage
           title="Serviços"
           text="Gerencie seus serviços e Sub-serviços"
           url={JobIcon}
-          idButton="jobs"
+          idButton={ROUTERS.JOBS}
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
-          onClick={() => handleButtonClick("jobs", navigate)}
+          onClick={() => handleButtonClick(ROUTERS.JOBS, navigate)}
         />
         <CardHomePage
           title="Bar"
           text="Visualize e gerencie as comandas e pedidos dos seus clientes"
           url={BarIcon}
-          idButton="bar"
+          idButton={ROUTERS.BAR}
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
-          onClick={() => handleButtonClick("bar", navigate)}
+          onClick={() => handleButtonClick(ROUTERS.BAR, navigate)}
         />
         <CardHomePage
           title="Dashboard"
           text="Acompanhe dados, métricas e tendências em tempo real"
           url={DashIcon}
-          idButton="dashboard"
+          idButton={ROUTERS.DASHBOARD}
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
-          onClick={() => handleButtonClick("dashboard", navigate)}
+          onClick={() => handleButtonClick(ROUTERS.DASHBOARD, navigate)}
         />
         <CardHomePage
           title="Relatórios"
           text="Visualize seus relatórios mensais ou gere um novo quando quiser"
           url={RelatIcon}
-          idButton="reports"
+          idButton={ROUTERS.REPORTS}
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
-          onClick={() => handleButtonClick("reports", navigate)}
+          onClick={() => handleButtonClick(ROUTERS.REPORTS, navigate)}
         />
         <CardHomePage
           title="Tarefas"
           text="Obtenha uma visão de suas tarefas e gerencie seus status "
           url={TaskIcon}
-          idButton="reports"
+          idButton={ROUTERS.TASKS}
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
-          onClick={() => handleButtonClick("reports", navigate)}
+          onClick={() => handleButtonClick(ROUTERS.TASKS, navigate)}
         />
       </section>
     </main>

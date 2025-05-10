@@ -1,15 +1,16 @@
 import React from "react";
 import CardCommand from "../../components/cards/cardCommand/CardCommand.jsx";
 import { axiosProvider } from "../../provider/apiProvider.js";
+import { ROUTERS } from "../../constants/routers.js";
 
 export const registerRedirect = (navigate) => {
   console.log("Navigating to /register");
-  navigate("/register"); // Use navigate passed as an argument
+  navigate(ROUTERS.REGISTER); // Use navigate passed as an argument
 };
 
 export const stockRedirect = (navigate) => {
   console.log("Navigating to /bar/stock");
-  navigate("/bar/stock"); // Use navigate passed as an argument
+  navigate(ROUTERS.BAR_STOCK); // Use navigate passed as an argument
 };
 
 export const renderCommands = async (
@@ -67,7 +68,7 @@ export const renderCommands = async (
         onClick: () => {
           console.log(`Navigating to /command/${command.id}`);
           setCommandId(command.id);
-          navigate(`/command/${command.id}`);
+          navigate(ROUTERS.getCommand(command.id));
         },
       });
     });

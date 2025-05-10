@@ -18,7 +18,7 @@ const Bar = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
   const [isOpenCommandModalOpen, setIsOpenCommandModalOpen] = useState(false); // State to control the modal
 
-  const navigate = useNavigate(); // Inicializa a função navigate
+  const navigate = useNavigate();
 
   const refreshCommands = async () => {
     try {

@@ -20,6 +20,7 @@ import Table from "../../../components/tables/Table.jsx";
 import { axiosProvider } from "../../../provider/apiProvider";
 import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } from "../../../hooks/translateAttributes.js";
 import CancelButton from "../../../components/modals/modalConfirmDelete/cancelButton.jsx";
+import { ROUTERS } from "../../../constants/routers.js";
 
 export const RenderInfos = () => {
   const { userParam } = useParams();
@@ -39,7 +40,7 @@ export const RenderInfos = () => {
       const endpoint = isClient ? `/clients/${userId}` : `/employees/${userId}`;
       await axiosProvider.delete(endpoint);
       showToast.success("Usuário deletado com sucesso!", { style: ToastStyle });
-      navigate("/users");
+      navigate(ROUTERS.USERS);
     } catch (error) {
       showToast.error("Erro ao deletar usuário. Tente novamente.", {
         style: ToastStyle,
@@ -65,7 +66,7 @@ export const RenderInfos = () => {
   ];
 
   const registerRedirect = (navigate, userParam) => {
-    navigate(`/user/${userParam}/register/jobs`);
+    navigate(ROUTERS.getUserJobRegister(userParam));
   };
 
   useEffect(() => {
@@ -85,7 +86,7 @@ export const RenderInfos = () => {
           id: "access_button",
           text: "Acessar",
           onClick: () => {
-            navigate(`/jobs/${job.id}`);
+            navigate(ROUTERS.getJobDetail(job.id));
           },
         }),
       };

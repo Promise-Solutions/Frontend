@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Select from "../../../components/form/Select";
 import Checkbox from "../../../components/form/Checkbox";
 import { showToast } from "../../../components/toastStyle/ToastStyle";
+import { ROUTERS } from "../../../constants/routers";
 
 const SubJobRegister = () => {
     const { saveSubJob } = useSubJobContext();
@@ -48,7 +49,7 @@ const SubJobRegister = () => {
 
       if(responseCode == 201) {
         setTimeout(() => {
-          navigate(`/jobs/${jobId}`)
+          navigate(ROUTERS.getJobDetail(jobId))
         }, 700)
       } 
     };
