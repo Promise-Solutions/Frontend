@@ -31,7 +31,7 @@ const Table = ({ headers, data }) => {
                         row.status == "Pendente" ?
                           "text-yellow-zero font-semibold"
                           :
-                        row.status == "Em aberto" ?  
+                        row.status == "Em progresso" ?  
                             "text-pink-zero font-semibold" 
                             : ""
                       :

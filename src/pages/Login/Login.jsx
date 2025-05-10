@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import Input from "../../components/form/Input";
 import SubmitButton from "../../components/form/SubmitButton";
-import { ToastStyle } from "../../components/toastStyle/ToastStyle";
+import { showToast, ToastStyle } from "../../components/toastStyle/ToastStyle";
 import { useNavigate } from "react-router-dom";
 import { axiosProvider } from "../../provider/apiProvider";
 
@@ -19,17 +19,17 @@ const Login = () => {
     e.preventDefault();
 
     if (!formData.email.trim()) {
-      toast.error("O campo de email está vazio.", { style: ToastStyle });
+      showToast.error("O campo de email está vazio.");
       return;
     }
 
     if (!formData.password.trim()) {
-      toast.error("O campo de senha está vazio.", { style: ToastStyle });
+      showToast.error("O campo de senha está vazio.");
       return;
     }
 
     try {
-      await toast.promise(
+      await showToast.promise(
         axiosProvider
           .post("/employees/login", {
             email: formData.email,
@@ -54,7 +54,7 @@ const Login = () => {
         { style: ToastStyle }
       );
     } catch (error) {
-      toast.error("Erro ao autenticar. Verifique suas credenciais.", {
+      showToast.error("Erro ao autenticar. Verifique suas credenciais.", {
         style: ToastStyle,
       });
     }

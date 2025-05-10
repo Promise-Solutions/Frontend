@@ -74,6 +74,7 @@ function Register() {
               type="text"
               text="Nome"
               name="nome"
+              required
               placeholder="Digite o nome"
               handleOnChange={handleInputChange}
               value={formData.nome}
@@ -83,6 +84,7 @@ function Register() {
               type="email"
               text="E-mail"
               name="email"
+              required
               placeholder="Digite o e-mail"
               handleOnChange={handleInputChange}
               value={formData.email}
@@ -92,6 +94,7 @@ function Register() {
               type="text"
               text="CPF"
               name="cpf"
+              required
               placeholder="Digite o CPF"
               handleOnChange={handleInputChange}
               value={formData.cpf}
@@ -101,6 +104,7 @@ function Register() {
               type="text"
               text="Contato"
               name="contato"
+              required
               placeholder="Digite o contato"
               handleOnChange={handleInputChange}
               value={formData.contato}
@@ -109,6 +113,7 @@ function Register() {
             <Select
               text="Tipo de Cliente"
               name="tipoCliente"
+              required
               options={clienteOptions}
               handleOnChange={handleInputChange}
               value={formData.tipoCliente}
@@ -124,6 +129,7 @@ function Register() {
               type="text"
               text="Nome"
               name="nome"
+              required
               placeholder="Digite o nome"
               handleOnChange={handleInputChange}
               value={formData.nome}
@@ -133,6 +139,7 @@ function Register() {
               type="email"
               text="E-mail"
               name="email"
+              required
               placeholder="Digite o e-mail"
               handleOnChange={handleInputChange}
               value={formData.email}
@@ -142,6 +149,7 @@ function Register() {
               type="text"
               text="CPF"
               name="cpf"
+              required
               placeholder="Digite o CPF"
               handleOnChange={handleInputChange}
               value={formData.cpf}
@@ -151,6 +159,7 @@ function Register() {
               type="text"
               text="Contato"
               name="contato"
+              required
               placeholder="Digite o contato"
               handleOnChange={handleInputChange}
               value={formData.contato}
@@ -160,6 +169,7 @@ function Register() {
               type="password"
               text="Senha"
               name="senha"
+              required
               placeholder="Digite sua senha"
               handleOnChange={handleInputChange}
               value={formData.senha}

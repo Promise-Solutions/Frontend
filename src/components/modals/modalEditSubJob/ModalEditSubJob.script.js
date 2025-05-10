@@ -1,21 +1,34 @@
-import toast from "react-hot-toast";
-import { ToastStyle } from "../../toastStyle/ToastStyle";
+import { showToast, ToastStyle } from "../../toastStyle/ToastStyle";
 
 export const handleInputChange = (e, setSubJobsInfos) => {
     const { name, value } = e.target;
     setSubJobsInfos(prev => ({ ...prev, [name]: value }));
 }
 
- 
 export const changeSubJobData = async (infos, updateSubJobData) => {
-    if(!infos.title || !infos.description || infos.value == null  || !infos.date) {
-        toast.error("Todos os campos devem estar preenchidos!", { style: ToastStyle })
+    if(!infos.title || !infos.description || infos.value == null || infos.value == "") {
+        showToast.error("Todos os campos devem estar preenchidos!")
         return;
     } 
     if(infos.value < 0) {
-        toast.error("Não são aceitos valores negativos!", { style: ToastStyle })
+        showToast.error("Não são aceitos valores negativos!")
         return;
     } 
+    console
+    if(
+      infos.needsRoom 
+      && (
+           infos.date == null || infos.date == "" 
+        || infos.startTime == null || infos.startTime == "" 
+        || infos.expectedEndTime == null || infos.expectedEndTime == ""
+      )) {
+        showToast.error("Quando há o uso de sala, a data os horários precisam ser informados!")
+        return;
+    }
+    if(infos.startTime > infos.expectedEndTime) {
+        showToast.error("O horário de início não pode vir após ao de conclusão")
+        return;
+    }
     return await updateSubJobData(infos);
 }
 

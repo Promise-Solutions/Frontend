@@ -7,12 +7,19 @@ import CancelButton from "../modalConfirmDelete/cancelButton";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
 import DeleteButton from "../../buttons/deleteButton/DeleteButton";
 import { useParams } from "react-router-dom";
+import Select from "../../form/Select";
+import Checkbox from "../../form/Checkbox";
 
 const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
   const { updateSubJobData, deleteSubJobById } = useSubJobContext();
   const [subJobsInfos, setSubJobsInfos] = useState(subJobData);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { jobId } = useParams(); 
+
+   const handleInputCheckboxChange = (e) => {
+      const { name } = e.target;
+      setSubJobsInfos((prevData) => ({ ...prevData, [name]: e.target.checked }));
+    };
 
   const handleValorChange = (e, setSubJobsInfos) => {
     let { name, value } = e.target;
@@ -79,7 +86,7 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
             type="text"
             name="description"
             text="Descrição"
-            maxLength={320}
+            maxLength={200}
             placeholder="Digite a descrição"
             value={subJobsInfos?.description || ""}
             handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
@@ -93,17 +100,45 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
             value={String(subJobsInfos?.value).replace(".", ",") || ""}
             handleOnChange={(e) => handleValorChange(e, setSubJobsInfos)}
           />
-          <Input
-            type="date"
-            text="Data prevista para serviço"
-            name="date"
-            placeholder="Escolha a data"
-            handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
-            value={subJobsInfos?.date || ""}
-            min={new Date().toLocaleDateString("en-CA")}
-            max="2099-12-31"
-            className="custom-calendar"
+          <Checkbox
+            text="Utilizará a Sala?"
+            name="needsRoom"
+            handleOnChange={handleInputCheckboxChange}
+            value={subJobsInfos?.needsRoom || ""}
           />
+          <Input
+              type="date"
+              text="Data prevista para subserviço"
+              name="date"
+              placeholder="Digite o valor"
+              handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
+              value={subJobsInfos?.date ? subJobsInfos.date : ""  || ""}
+              min={new Date().toLocaleDateString("en-CA")}
+              max="2099-12-31"
+              className="custom-calendar"
+            />
+            <div className="flex items-end justify-between w-full gap-8">
+
+              <Input
+                type="time"
+                text="Horário de início"
+                name="startTime"
+                placeholder="Digite o valor"
+                handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
+                value={subJobsInfos?.startTime ? subJobsInfos.startTime : "" || ""}
+                className="custom-calendar"
+                />
+
+              <Input
+                type="time"
+                text="Previsão de conclusão"
+                name="expectedEndTime"
+                placeholder="Digite o valor"
+                handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
+                value={subJobsInfos?.expectedEndTime ? subJobsInfos.expectedEndTime : "" || ""}
+                className="custom-calendar"
+                />
+            </div>
         </div>
         <div className="flex justify-between items-center mt-4">
           <DeleteButton 

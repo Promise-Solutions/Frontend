@@ -134,6 +134,7 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
           <Input
             type="number"
             name="commandNumber"
+            required
             text="Número da Comanda"
             placeholder="Digite o número da comanda"
             handleOnChange={handleNumberCommandChange}
@@ -155,6 +156,7 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
           <Select
             text="Funcionário"
             name="employee"
+            required
             options={[
               ...employees.map((employee) => ({
                 id: employee.id,

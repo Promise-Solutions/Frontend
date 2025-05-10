@@ -68,6 +68,7 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
             type="text"
             text="Título"
             name="title"
+            required
             placeholder="Digite o título"
             handleOnChange={handleInputChange}
             value={formData.title}
@@ -76,6 +77,7 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
             type="text"
             text="Descrição"
             name="description"
+            required
             placeholder="Digite a descrição"
             handleOnChange={handleInputChange}
             value={formData.description}

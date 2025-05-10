@@ -1,9 +1,8 @@
-import toast from "react-hot-toast"
-import { ToastStyle } from "../../../components/toastStyle/ToastStyle";
+import { showToast, ToastStyle } from "../../../components/toastStyle/ToastStyle";
 
 export const registrarServico = async (formData, saveJob) => {
-    if(formData.title == "" || formData.serviceType == "" || formData.category == "" || formData.fkClient == null || formData.fkClient == "") {
-        toast.error("Preencha todos os campos!", { style: ToastStyle })
+    if(formData.title == "" || formData.serviceType == "" || formData.category == "" || formData.fkClient == null || formData.fkClient == "" || formData.needsRoom == "") {
+        showToast.error("Preencha todos os campos!", { style: ToastStyle })
         return;
     }
 

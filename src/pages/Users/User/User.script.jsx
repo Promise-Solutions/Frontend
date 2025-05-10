@@ -59,6 +59,7 @@ export const RenderInfos = () => {
     { label: "Titulo", key: "title" },
     { label: "Categoria", key: "category" },
     { label: "Tipo do Serviço", key: "serviceType" },
+    { label: "Valor Total (R$)", key: "totalValue"},
     { label: "Status", key: "status" },
     { label: "Ação", key: "action" },
   ];
@@ -78,6 +79,7 @@ export const RenderInfos = () => {
         title: job.title,
         category: getCategoryTranslated(job.category),
         serviceType: getServiceTypeTranslated(job.serviceType),
+        totalValue: `R$ ${job.totalValue.toFixed(2).replace(".", ",")}`,
         status: getStatusTranslated(job.status),
         action: React.createElement(PrimaryButton, {
           id: "access_button",
@@ -146,7 +148,7 @@ export const RenderInfos = () => {
     };
 
     const handleSaveChanges = async () => {
-      await toast.promise(
+      await showToast.promise(
         (async () => {
           try {
             const updatedFormData = {
@@ -168,7 +170,7 @@ export const RenderInfos = () => {
             setIsEditing(false);
             showToast.success("Informações atualizadas com sucesso!");
           } catch (error) {
-            toast.error("Erro ao salvar alterações:", error);
+            showToast.error("Erro ao salvar alterações:", error);
             throw new Error("Erro ao salvar alterações. Tente novamente.");
           }
         })(),
@@ -197,6 +199,7 @@ export const RenderInfos = () => {
                   <Select
                     text="Tipo de Cliente"
                     name="clientType"
+                    required
                     options={clienteOptions}
                     handleOnChange={handleInputChange}
                     value={formData.clientType} // Certificar-se de que o valor está correto
@@ -209,6 +212,7 @@ export const RenderInfos = () => {
                 text="Nome"
                 type="text"
                 name="name"
+                required
                 value={formData.name}
                 handleOnChange={handleInputChange}
               />
@@ -218,6 +222,7 @@ export const RenderInfos = () => {
                 text="E-mail"
                 type="email"
                 name="email"
+                required
                 value={formData.email}
                 handleOnChange={handleInputChange}
               />
@@ -227,6 +232,7 @@ export const RenderInfos = () => {
                 text="CPF"
                 type="text"
                 name="cpf"
+                required
                 value={formData.cpf}
                 handleOnChange={handleMaskedInputChange}
               />
@@ -236,6 +242,7 @@ export const RenderInfos = () => {
                 text="Contato"
                 type="text"
                 name="contact"
+                required
                 value={formData.contact}
                 handleOnChange={handleMaskedInputChange}
               />
@@ -246,6 +253,7 @@ export const RenderInfos = () => {
                   text="Senha"
                   type="text"
                   name="password"
+                  required
                   value={formData.password}
                   handleOnChange={handleInputChange}
                 />
@@ -255,6 +263,7 @@ export const RenderInfos = () => {
               <Select
                 text="Status"
                 name="active"
+                required
                 options={statusOptions}
                 handleOnChange={handleInputChange}
                 value={formData.active?.toString()} // Convert boolean to string for proper matching

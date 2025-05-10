@@ -1,15 +1,24 @@
-import toast from "react-hot-toast"
-import { ToastStyle } from "../../../components/toastStyle/ToastStyle";
+import { showToast, ToastStyle } from "../../../components/toastStyle/ToastStyle";
 
 export const registrarSubServico = async (formData, saveSubJob) => {
-    if(formData.title == "" || formData.description == "" || formData.value == "" || formData.date == "") {
-        toast.error("Preencha todos os campos!", { style: ToastStyle })
+    if(formData.title == "" || formData.description == "" || formData.value == "") {
+       showToast.error("Preencha todos os campos!")
+        return;
+    }
+    if(formData.value < 0) {
+       showToast.error("Não são aceitos valores negativos!")
+        return;
+    } 
+    if(formData.needsRoom && (formData.date == null || formData.startTime == null || formData.expectedEndTime == null)) {
+        showToast.error("Quando há o uso de sala, a data os horários precisam ser informados!")
+        return;
+    }
+    if(formData.startTime > formData.expectedEndTime) {
+        showToast.error("O horário de início não pode vir após ao de conclusão")
         return;
     }
     
-    const dataAtual = new Date();
-    
-    formData = {...formData, startTime: dataAtual, endTime: null,  status: "PENDING"}
+    formData = {...formData, endTime: null,  status: "PENDING"}
     const responseCode = await saveSubJob(formData)
     return responseCode
 }

@@ -455,6 +455,7 @@ export const RenderCommandDetails = () => {
                   <Select
                     text="Produto"
                     name="idProduto"
+                    required
                     options={allProducts.length != 0 ? allProducts.map((product) => ({
                       id: product.id,
                       name: `${product.name} (Estoque: ${product.quantity})`, // Display stock quantity
@@ -465,6 +466,7 @@ export const RenderCommandDetails = () => {
                   <Input
                     type="number"
                     name="quantity"
+                    required
                     text={`Quantidade ${
                       newProduct.stockQuantity
                         ? `(Disponível: ${newProduct.stockQuantity})`
@@ -479,6 +481,7 @@ export const RenderCommandDetails = () => {
                   <Input
                     type="text"
                     name="unitValue"
+                    required
                     text="Valor Unitário"
                     placeholder="Valor unitário"
                     handleOnChange={handleInputChange}

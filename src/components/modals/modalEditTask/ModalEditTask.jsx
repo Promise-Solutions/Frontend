@@ -103,6 +103,7 @@ const ModalEditTask = ({
               type="text"
               text="Título"
               name="title"
+              required
               placeholder="Digite o título"
               handleOnChange={handleInputChange}
               value={formData.title}
@@ -111,6 +112,7 @@ const ModalEditTask = ({
               type="text"
               text="Descrição"
               name="description"
+              required
               placeholder="Digite a descrição"
               handleOnChange={handleInputChange}
               value={formData.description}
@@ -118,6 +120,7 @@ const ModalEditTask = ({
             <Input
               type="date"
               text="Data de Início"
+              required
               name="startDate"
               handleOnChange={handleInputChange}
               value={formData.startDate}

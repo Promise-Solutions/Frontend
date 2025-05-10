@@ -82,6 +82,7 @@ const ModalEditCommandProduct = ({
             <Select
               text="Produto"
               name="idProduto"
+              required
               options={allProducts.map((product) => ({
                 id: product.id,
                 name: `${product.name} (Estoque: ${product.quantity})`,
@@ -92,6 +93,7 @@ const ModalEditCommandProduct = ({
             <Input
               type="number"
               name="qtdProduto"
+              required
               text={`Quantidade ${
                 formData.estoque ? `(Disponível: ${formData.estoque})` : ""
               }`}
@@ -104,6 +106,7 @@ const ModalEditCommandProduct = ({
             <Input
               type="text"
               name="valorUnitario"
+              required
               text="Valor Unitário"
               placeholder="Digite o valor unitário"
               handleOnChange={handleInputChange}
