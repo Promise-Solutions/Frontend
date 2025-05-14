@@ -18,7 +18,7 @@ export const useScreenFilterLogic = () => {
       setFilters([
         { label: "Informações", value: "1" },
         { label: "Serviços", value: "2" },
-        { label: "Dashboard", value: "3" },
+        { label: "Dados", value: "3" },
       ]);
     } else {
       setFilters([

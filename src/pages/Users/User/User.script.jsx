@@ -6,16 +6,12 @@ import { showToast, ToastStyle } from "../../../components/toastStyle/ToastStyle
 import Select from "../../../components/form/Select.jsx";
 import Input from "../../../components/form/Input.jsx";
 import DeleteButton from "../../../components/buttons/deleteButton/DeleteButton.jsx";
-import Dropdown from "../../../components/dropdown/Dropdown.jsx";
 import ModalConfirmDelete from "../../../components/modals/modalConfirmDelete/ModalConfirmDelete.jsx";
 import ScreenFilter from "../../../components/filters/screenFilter/ScreenFilter.jsx";
-import FreqPagGraphic from "../../../components/graphic/FreqPagGraphic.jsx";
+import Kpi from "../../../components/graphic/Kpi.jsx";
 import React from "react";
-import CardJob from "../../../components/cards/cardJob/CardJob.jsx";
-import toast from "react-hot-toast"; // Add this import
 import { useNavigate, useParams } from "react-router-dom";
 import RegisterButton from "../../../components/buttons/registerButton/RegisterButton.jsx";
-import SecondaryButton from "../../../components/buttons/secondaryButton/SecondaryButton.jsx";
 import Table from "../../../components/tables/Table.jsx";
 import { axiosProvider } from "../../../provider/apiProvider";
 import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } from "../../../hooks/translateAttributes.js";
@@ -30,7 +26,9 @@ export const RenderInfos = () => {
   const [filterScreen, setFilterScreen] = useState("1"); // Controla o filtro de tela
   const { findJobsByClientId } = useJobContext();
   const [tableData, setTableData] = useState({});
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
+
 
   // Função para deletar usuário
   const handleDeleteUser = async () => {
@@ -93,6 +91,37 @@ export const RenderInfos = () => {
 
     setTableData(dataFiltered);
   }, [filteredJobs]);
+
+  useEffect(() => {
+    if (userId) {
+      axiosProvider
+        .get(`dashboard/client-stats/${userId}`)
+        .then((response) => {
+          console.log("Estatísticas do usuário:", response.data);
+          if (response.data != null) {
+            setData([
+              {
+                name: "Frequência",
+                value: response.data.frequency
+              },
+              {
+                name: "ValorEmBar",
+                value: response.data.totalCommandsValue,
+              },
+              {
+                name: "ValorEmServiços",
+                value: response.data.totalValue,
+              },
+            ]);
+          } else {
+            toast.error("Nenhum dado encontrado para o usuário.");
+          }
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar estatísticas do usuário:", error);
+        });
+    }
+  }, [userId]);
 
   function Edit() {
     const [formData, setFormData] = useState({
@@ -383,8 +412,8 @@ export const RenderInfos = () => {
 
       case "3":
         return (
-          <div className="flex justify-center mt-6 bg-[#1E1E1E90] p-4">
-            <div className="flex flex-col">
+          <div className="flex justify-around mt-6 bg-[#1E1E1E90] p-4">
+            <div className="flex flex-col items-start">
               <h1 className="text-[42px]">
                 <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
               </h1>
@@ -409,10 +438,11 @@ export const RenderInfos = () => {
                 </li>
               </ul>
             </div>
-            <FreqPagGraphic
-              idClient={user.id}
-              title="Dados do Cliente"
-            />
+            <div className="flex h-28 gap-4 w-full">
+              <Kpi title={data[0].name && "Frequência"} value={data[0].value} />
+              <Kpi title={data[1].name && "Valor Em Bar"} value={data[0].value} />
+              <Kpi title={data[2].name && "Valor Em Serviços"} value={data[0].value} />
+            </div>
           </div>
         );
 
