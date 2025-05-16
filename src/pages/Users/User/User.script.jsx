@@ -143,6 +143,7 @@ export const RenderInfos = () => {
       clientType: user?.clientType || "", // Garantir que o valor inicial seja do banco
       active: user?.active, // Garantir que o valor inicial seja booleano
       password: "",
+      createdDate: user?.createdDate || "",
     });
 
     const clienteOptions = [
