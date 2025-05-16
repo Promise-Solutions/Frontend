@@ -23,6 +23,7 @@ import {
   getStatusTranslated,
 } from "../../../hooks/translateAttributes.js";
 import CancelButton from "../../../components/modals/modalConfirmDelete/cancelButton.jsx";
+import { formatDateWithoutTime } from "../../../hooks/formatUtils.js";
 
 export const RenderInfos = () => {
   const { userParam } = useParams();
@@ -387,6 +388,10 @@ export const RenderInfos = () => {
                   </li>
                   <li>
                     <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
+                  </li>
+                  <li>
+                    <b>Desde: </b>
+                    {user?.createdDate ? formatDateWithoutTime(user.createdDate) : "Não foi possível carregar a data"}
                   </li>
                 </ul>
               </div>
