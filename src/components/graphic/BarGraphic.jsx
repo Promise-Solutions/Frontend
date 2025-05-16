@@ -7,31 +7,69 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
+  ReferenceLine,
 } from "recharts";
+import { useState } from "react";
 
 const BarGraphic = ({ title }) => {
+  // Exemplo com possível valor negativo para ilustrar déficit
   const mockData = [
-    { name: "Total", Entrada: 24000, Saída: 11500, Lucro: 12500 },
+    { name: "Total", Entrada: 25000, Saída: 24000, Lucro: 1000 },
   ];
 
+  const [showInfo, setShowInfo] = useState(false);
+
   return (
-    <div className="bg-white/5 border-1 border-pink-zero p-6 shadow-md w-[100%] h-[100%]">
-      <h2 className="text-white text-xl font-semibold mb-4">
-        {title || "Bar"}
-      </h2>
-      <ResponsiveContainer width="100%" height={300}>
+    <div className="bg-white/5 border-1 border-pink-zero p-6 shadow-md w-[100%] h-[100%] relative">
+      <div className="flex items-center mb-4">
+        <h2 className="text-white text-xl font-semibold mr-2">
+          {title || "Bar"}
+        </h2>
+        <div
+          className="relative flex items-center"
+          onMouseEnter={() => setShowInfo(true)}
+          onMouseLeave={() => setShowInfo(false)}
+        >
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            className="cursor-pointer"
+            viewBox="0 0 20 20"
+          >
+            <circle cx="10" cy="10" r="10" fill="#7E57C2" />
+            <text
+              x="10"
+              y="15"
+              textAnchor="middle"
+              fontSize="13"
+              fill="white"
+              fontWeight="bold"
+            >
+              i
+            </text>
+          </svg>
+          {showInfo && (
+            <div className="absolute left-6 top-1 z-10 bg-[#1E1E1E] text-white text-xs rounded px-3 py-2 border border-pink-zero w-56 shadow-lg">
+              Mostra o total de entrada, saída e lucro do bar. Caso o valor seja
+              negativo, o gráfico mostra o déficit com a barra para baixo.
+            </div>
+          )}
+        </div>
+      </div>
+      <ResponsiveContainer width="100%" height={220}>
         <BarChart data={mockData}>
           <CartesianGrid stroke="#444" strokeDasharray="3 3" />
           <XAxis dataKey="name" stroke="#fff" />
-          <YAxis stroke="#fff" />
+          <YAxis stroke="#fff" domain={["auto", "auto"]} />
           <Tooltip
             formatter={(value, name) => [
               `R$ ${value.toLocaleString("pt-BR")}`,
               name,
             ]}
             contentStyle={{
-              backgroundColor: "#1E1E1E", // bg-[#1E1E1E] without opacity
-              border: "1px solid var(--color-pink-zero)", // border-pink-zero
+              backgroundColor: "#1E1E1E",
+              border: "1px solid var(--color-pink-zero)",
               color: "white",
               borderRadius: "8px",
               padding: "10px",
@@ -39,17 +77,18 @@ const BarGraphic = ({ title }) => {
           />
           <Legend
             verticalAlign="top"
-            align="right" // Changed to top-right
+            align="right"
             iconType="circle"
             wrapperStyle={{
               color: "white",
               fontSize: "14px",
-              paddingBottom: "16px", // Updated padding bottom
+              paddingBottom: "16px",
             }}
           />
-          <Bar dataKey="Entrada" fill="#4CAF50" />
-          <Bar dataKey="Saída" fill="#F44336" />
-          <Bar dataKey="Lucro" fill="#02AEBA" />
+          <ReferenceLine y={0} stroke="#fff" />
+          <Bar dataKey="Entrada" fill="#7E57C2" />
+          <Bar dataKey="Saída" fill="#9575CD" />
+          <Bar dataKey="Lucro" fill="#B39DDB" />
         </BarChart>
       </ResponsiveContainer>
     </div>

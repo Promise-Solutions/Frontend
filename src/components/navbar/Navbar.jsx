@@ -53,7 +53,7 @@ const Navbar = () => {
       <div className="hidden md:block">
         <LogoutButton
           id="logout_button_id"
-          text="Sair do Usuário"
+          text="Sair"
           onClick={handleLogout}
         />
       </div>

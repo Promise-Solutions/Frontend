@@ -9,8 +9,8 @@ export const useUserTypeFilterLogic = () => {
   const [activeFilter, setActiveFilter] = useState("1");
   // Define os filtros disponíveis como "Cliente" e "Interno"
   const filters = [
-    { label: "Cliente", value: "1" },
-    { label: "Interno", value: "2" },
+    { label: "Clientes", value: "1" },
+    { label: "Internos", value: "2" },
   ];
 
   // Função para atualizar o filtro ativo ao clicar em um botão
