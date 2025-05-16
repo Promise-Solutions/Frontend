@@ -35,12 +35,12 @@ const Dashboard = () => {
         {`Última atualização: ${lastDateUpdate ? lastDateUpdate : "Carregando..."}`}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <FrequencyGraphic title="Frequências" />
-        <ActiveUsersGraphic title="Clientes Ativos" />
-        <GoalGraphic title="Meta Geral" />
-        <PaymentGraphic title="Faturamento Por Categoria" />
-        <BarGraphic title="Finanças do Bar" />
-        <ProfitGraphic title="Finanças Geral" />
+        <FrequencyGraphic title="Frequências Totais" />
+        <ActiveUsersGraphic title="Clientes Ativos Totais" />
+        <GoalGraphic title="Meta Geral Total" />
+        <PaymentGraphic title="Total de Faturamento Por Categoria" />
+        <BarGraphic title="Finanças Totais do Bar" />
+        <ProfitGraphic title="Finanças Gerais Totais" />
       </div>
     </div>
   );

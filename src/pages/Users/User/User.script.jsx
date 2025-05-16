@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import { useUserContext } from "../../../context/UserContext.jsx";
 import PrimaryButton from "../../../components/buttons/primaryButton/PrimaryButton.jsx";
 import { useJobContext } from "../../../context/JobContext.jsx";
-import { showToast, ToastStyle } from "../../../components/toastStyle/ToastStyle.jsx";
+import {
+  showToast,
+  ToastStyle,
+} from "../../../components/toastStyle/ToastStyle.jsx";
 import Select from "../../../components/form/Select.jsx";
 import Input from "../../../components/form/Input.jsx";
 import DeleteButton from "../../../components/buttons/deleteButton/DeleteButton.jsx";
@@ -14,7 +17,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import RegisterButton from "../../../components/buttons/registerButton/RegisterButton.jsx";
 import Table from "../../../components/tables/Table.jsx";
 import { axiosProvider } from "../../../provider/apiProvider";
-import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } from "../../../hooks/translateAttributes.js";
+import {
+  getCategoryTranslated,
+  getServiceTypeTranslated,
+  getStatusTranslated,
+} from "../../../hooks/translateAttributes.js";
 import CancelButton from "../../../components/modals/modalConfirmDelete/cancelButton.jsx";
 
 export const RenderInfos = () => {
@@ -28,7 +35,6 @@ export const RenderInfos = () => {
   const [tableData, setTableData] = useState({});
   const [data, setData] = useState([]);
   const navigate = useNavigate();
-
 
   // Função para deletar usuário
   const handleDeleteUser = async () => {
@@ -57,7 +63,7 @@ export const RenderInfos = () => {
     { label: "Titulo", key: "title" },
     { label: "Categoria", key: "category" },
     { label: "Tipo do Serviço", key: "serviceType" },
-    { label: "Valor Total (R$)", key: "totalValue"},
+    { label: "Valor Total (R$)", key: "totalValue" },
     { label: "Status", key: "status" },
     { label: "Ação", key: "action" },
   ];
@@ -102,7 +108,7 @@ export const RenderInfos = () => {
             setData([
               {
                 name: "Frequência",
-                value: response.data.frequency
+                value: response.data.frequency,
               },
               {
                 name: "ValorEmBar",
@@ -111,6 +117,12 @@ export const RenderInfos = () => {
               {
                 name: "ValorEmServiços",
                 value: response.data.totalValue,
+              },
+              {
+                name: "TicketMédio",
+                value:
+                  response.data.frequency /
+                  (response.data.totalValue + response.data.totalCommandsValue),
               },
             ]);
           } else {
@@ -350,39 +362,75 @@ export const RenderInfos = () => {
         return isEditing ? (
           <Edit setIsEditing={setIsEditing} />
         ) : (
-          <section id="info_section" className="flex w-full justify-between">
-            <div className="flex flex-col">
-              <h1 className="text-[42px]">
-                <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
-              </h1>
-              <ul className="flex flex-col mt-6 gap-2">
-                {isClient && (
+          <section
+            id="info_section"
+            className="flex w-full flex-col justify-between"
+          >
+            <div className="flex justify-between">
+              <div>
+                <h1 className="text-[42px]">
+                  <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
+                </h1>
+                <ul className="flex flex-col mt-6 gap-2">
+                  {isClient && (
+                    <li>
+                      <b>Tipo de Cliente: </b>{" "}
+                      {user?.clientType == "SINGLE" ? "Avulso" : "Mensal"}
+                    </li>
+                  )}
                   <li>
-                    <b>Tipo de Cliente: </b>{" "}
-                    {user?.clientType == "SINGLE" ? "Avulso" : "Mensal"}
+                    <b>E-mail: </b> {user?.email}
                   </li>
-                )}
-                <li>
-                  <b>E-mail: </b> {user?.email}
-                </li>
-                <li>
-                  <b>CPF: </b> {user?.cpf}
-                </li>
-                <li>
-                  <b>Contato: </b> {user?.contact}
-                </li>
-                <li>
-                  <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
-                </li>
-              </ul>
+                  <li>
+                    <b>CPF: </b> {user?.cpf}
+                  </li>
+                  <li>
+                    <b>Contato: </b> {user?.contact}
+                  </li>
+                  <li>
+                    <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <PrimaryButton
+                  id="button_edit"
+                  text="Editar Usuário"
+                  onClick={() => setIsEditing(true)}
+                />
+              </div>
             </div>
-            <div className="flex justify-between flex-col">
-              <PrimaryButton
-                id="button_edit"
-                text="Editar Usuário"
-                onClick={() => setIsEditing(true)}
-              />
-            </div>
+
+            {data.length >= 4 && (
+              <div className="flex h-28 gap-4 justify-center mt-4 w-full">
+                <Kpi
+                  title={data[0].name && "Frequência Total"}
+                  value={
+                    data[0].value > 0 ? `${data[0].value}` : "Sem Frequência"
+                  }
+                />
+                <Kpi
+                  title={data[1].name && "Total Gasto em Bar"}
+                  value={
+                    data[1].value > 0 ? `R$ ${data[1].value}` : "Sem Gastos"
+                  }
+                />
+                <Kpi
+                  title={data[2].name && "Total Gasto em Serviços"}
+                  value={
+                    data[2].value > 0 ? `R$ ${data[2].value}` : "Sem Gastos"
+                  }
+                />
+                <Kpi
+                  title={data[3].name && "Ticket Médio"}
+                  value={
+                    data[3].value > 0
+                      ? `R$ ${data[3].value}`
+                      : "Sem Ticket Médio"
+                  }
+                />
+              </div>
+            )}
           </section>
         );
 
@@ -407,42 +455,6 @@ export const RenderInfos = () => {
                 <Table headers={tableHeader} data={tableData} />
               </div>
             </section>
-          </div>
-        );
-
-      case "3":
-        return (
-          <div className="flex justify-around mt-6 bg-[#1E1E1E90] p-4">
-            <div className="flex flex-col items-start">
-              <h1 className="text-[42px]">
-                <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
-              </h1>
-              <ul className="flex flex-col mt-6 gap-2">
-                {isClient && (
-                  <li>
-                    <b>Tipo de Cliente: </b>{" "}
-                    {user?.clientType == "SINGLE" ? "Avulso" : "Mensal"}
-                  </li>
-                )}
-                <li>
-                  <b>E-mail: </b> {user?.email}
-                </li>
-                <li>
-                  <b>CPF: </b> {user?.cpf}
-                </li>
-                <li>
-                  <b>Contato: </b> {user?.contact}
-                </li>
-                <li>
-                  <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
-                </li>
-              </ul>
-            </div>
-            <div className="flex h-28 gap-4 w-full">
-              <Kpi title={data[0].name && "Frequência"} value={data[0].value} />
-              <Kpi title={data[1].name && "Valor Em Bar"} value={data[0].value} />
-              <Kpi title={data[2].name && "Valor Em Serviços"} value={data[0].value} />
-            </div>
           </div>
         );
 

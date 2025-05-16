@@ -20,6 +20,10 @@ const ProfitGraphic = ({ title }) => {
 
   const [showInfo, setShowInfo] = useState(false);
 
+  // Define a cor do Lucro dinamicamente
+  const getLucroColor = (lucro) =>
+    lucro < 0 ? "var(--color-red-zero)" : "#90CAF9";
+
   return (
     <div className="bg-white/5 border-1 border-pink-zero p-6 shadow-md w-[100%] h-[100%] relative">
       <div className="flex items-center mb-4">
@@ -90,7 +94,7 @@ const ProfitGraphic = ({ title }) => {
           <ReferenceLine y={0} stroke="#fff" />
           <Bar dataKey="Entrada" fill="#1976D2" />
           <Bar dataKey="Saída" fill="#64B5F6" />
-          <Bar dataKey="Lucro" fill="#90CAF9" />
+          <Bar dataKey="Lucro" fill={getLucroColor(mockData[0].Lucro)} />
         </BarChart>
       </ResponsiveContainer>
     </div>
