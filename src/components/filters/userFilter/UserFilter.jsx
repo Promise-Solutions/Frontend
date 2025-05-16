@@ -7,7 +7,7 @@ const UserFilter = ({ id, placeholder, onSearch }) => {
   const [value, setValue] = useState("");
 
   const handleInputChange = (e) => {
-    const newValue = e.target.value;
+    let newValue = e.target.value;
     setValue(newValue);
     onSearch(newValue);
   };
@@ -16,6 +16,7 @@ const UserFilter = ({ id, placeholder, onSearch }) => {
     const inputSearchUser = document.getElementById("input_search_user");
     const handleInput = () => {
       const filter = inputSearchUser.value.toUpperCase();
+      const filterNumbers = inputSearchUser.value.replace(/\D/g, ""); // Remove tudo que não for número
       const cards = document.querySelectorAll(".card_user");
 
       cards.forEach((card) => {
@@ -26,18 +27,19 @@ const UserFilter = ({ id, placeholder, onSearch }) => {
           card.querySelector(".card_user_email")?.textContent.toUpperCase() ||
           "";
         const contact =
-          card.querySelector(".card_user_contact")?.textContent.toUpperCase() ||
-          "";
+          card
+            .querySelector(".card_user_contact")
+            ?.textContent.replace(/\D/g, "") || ""; // Remove tudo que não for número
         const clientType =
           card
             .querySelector(".card_user_clientType")
-            ?.textContent.toUpperCase() || ""; // Ensure clientType is included
+            ?.textContent.toUpperCase() || "";
 
         if (
           name.includes(filter) ||
           email.includes(filter) ||
-          contact.includes(filter) ||
-          clientType.includes(filter) // Ensure clientType is part of the filter
+          contact.includes(filterNumbers) ||
+          clientType.includes(filter)
         ) {
           card.style.display = "block";
         } else {
