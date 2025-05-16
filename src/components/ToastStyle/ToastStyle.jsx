@@ -1,3 +1,4 @@
+import { AlignJustify } from "lucide-react";
 import toast from "react-hot-toast";
 
 export const ToastStyle = {
@@ -8,8 +9,13 @@ export const ToastStyle = {
 };
 
 export const showToast = {
-  success: (message) => toast.success(message, { style: ToastStyle }),
-  error: (message) => toast.error(message, { style: ToastStyle }),
+  success: (message) =>
+    toast.success(message, { style: ToastStyle, position: "top-right" }),
+  error: (message) =>
+    toast.error(message, { style: ToastStyle, position: "top-right" }),
   promise: (promise, messages) =>
-    toast.promise(promise, messages, { style: ToastStyle }),
+    toast.promise(promise, messages, {
+      style: ToastStyle,
+      position: "top-right",
+    }),
 };
