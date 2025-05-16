@@ -117,7 +117,7 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
             id={`edit_${data.id}`}
             text="Editar"
             onClick={() => onEdit(data)}
-            className="h-6 px-[12px] py-[7px]"
+            className="!h-10 px-[12px] py-[6px]"
           />
         </div>
       </div>
