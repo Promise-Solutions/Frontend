@@ -34,7 +34,7 @@ const Home = () => {
       <section className="flex flex-wrap w-auto max-w-[75vw] h-auto gap-4 items-center justify-left mx-4">
         <CardHomePage
           title="Usuários"
-          text="Gerencie seus usuários, serviços e tarefas"
+          text="Gerencie seus usuários e visualize seus serviços e indicadores"
           url={UserIcon}
           idButton={ROUTERS.USERS}
           className="text-[42px] text-transparent font-bold"
@@ -43,7 +43,7 @@ const Home = () => {
         />
         <CardHomePage
           title="Serviços"
-          text="Gerencie seus serviços e Sub-serviços"
+          text="Gerencie seus serviços e subserviços registrados"
           url={JobIcon}
           idButton={ROUTERS.JOBS}
           className="text-[42px] text-transparent font-bold"
@@ -70,7 +70,7 @@ const Home = () => {
         />
         <CardHomePage
           title="Relatórios"
-          text="Visualize seus relatórios mensais ou gere um novo quando quiser"
+          text="Visualize seus relatórios existentes ou gere novos"
           url={RelatIcon}
           idButton={ROUTERS.REPORTS}
           className="text-[42px] text-transparent font-bold"
