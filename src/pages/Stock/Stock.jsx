@@ -54,6 +54,10 @@ const Stock = () => {
     }
   };
 
+  const handleAddExistingProduct = () => {
+      
+  }
+
   const handleEdit = (product) => {
     setEditingProduct(product);
     setIsEditModalOpen(true);
@@ -119,6 +123,7 @@ const Stock = () => {
       </div>
       <StockTable
         products={products}
+        onSave={handleAddExistingProduct}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
