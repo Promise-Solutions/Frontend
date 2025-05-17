@@ -25,6 +25,7 @@ import {
 import CancelButton from "../../../components/modals/modalConfirmDelete/cancelButton.jsx";
 import { ROUTERS } from "../../../constants/routers.js";
 import { formatDateWithoutTime } from "../../../hooks/formatUtils.js";
+import { SyncLoader } from "react-spinners";
 
 export const RenderInfos = () => {
   const { userParam } = useParams();
@@ -36,6 +37,7 @@ export const RenderInfos = () => {
   const { findJobsByClientId } = useJobContext();
   const [tableData, setTableData] = useState({});
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   // Função para deletar usuário
@@ -98,6 +100,7 @@ export const RenderInfos = () => {
     });
 
     setTableData(dataFiltered);
+    setIsLoading(false);
   }, [filteredJobs]);
 
   useEffect(() => {
@@ -457,7 +460,7 @@ export const RenderInfos = () => {
             </div>
             <section>
               <div className="flex justify-center">
-                <Table headers={tableHeader} data={tableData} />
+                <Table headers={tableHeader} data={tableData} elementMessageNotFound="serviço" />
               </div>
             </section>
           </div>
@@ -475,7 +478,20 @@ export const RenderInfos = () => {
   return (
     <div className="w-full mt-3">
       <ScreenFilter onFilterChange={setFilterScreen} />
-      {renderContent()}
+      {
+        isLoading ? (
+          <div className="flex items-center justify-center w-full h-full mt-[8rem]">
+            <SyncLoader
+              size={8}
+              loading={true}
+              color={"#02AEBA"}
+              speedMultiplier={2}
+            />
+          </div>
+        ) : (
+          renderContent()
+        )
+      }
     </div>
   );
 };

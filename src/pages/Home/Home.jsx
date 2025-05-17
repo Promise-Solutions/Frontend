@@ -8,6 +8,7 @@ import BarIcon from "../../assets/iconsHomePage/icon-bar.png";
 import DashIcon from "../../assets/iconsHomePage/icon-dashboard.png";
 import RelatIcon from "../../assets/iconsHomePage/icon-report.png";
 import TaskIcon from "../../assets/iconsHomePage/icon-tarefas.png";
+import StockIcon from '../../assets/iconsHomePage/icon-estoque.png';
 import Logo from "../../assets/logo-branco-bg-sonoro.png";
 import { handleLogout } from "./Home.script.js";
 import LogoutButton from "../../components/buttons/logoutButton/LogoutButton.jsx";
@@ -30,7 +31,7 @@ const Home = () => {
             />
         </div>
       </div>
-      <section className="flex flex-wrap w-auto max-w-[75vw] h-auto gap-4 items-center justify-center mx-4">
+      <section className="flex flex-wrap w-auto max-w-[75vw] h-auto gap-4 items-center justify-left mx-4">
         <CardHomePage
           title="Usuários"
           text="Gerencie seus usuários, serviços e tarefas"
@@ -59,7 +60,7 @@ const Home = () => {
           onClick={() => handleButtonClick(ROUTERS.BAR, navigate)}
         />
         <CardHomePage
-          title="Dashboard"
+          title="Análise"
           text="Acompanhe dados, métricas e tendências em tempo real"
           url={DashIcon}
           idButton={ROUTERS.DASHBOARD}
@@ -78,12 +79,21 @@ const Home = () => {
         />
         <CardHomePage
           title="Tarefas"
-          text="Obtenha uma visão de suas tarefas e gerencie seus status "
+          text="Obtenha uma visão de suas tarefas e gerencie seus status"
           url={TaskIcon}
           idButton={ROUTERS.TASKS}
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
           onClick={() => handleButtonClick(ROUTERS.TASKS, navigate)}
+        />
+        <CardHomePage
+          title="Estoque"
+          text="Visualize e gerencie os produtos presentes em seu estoque"
+          url={StockIcon}
+          idButton={ROUTERS.BAR_STOCK}
+          className="text-[42px] text-transparent font-bold"
+          style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+          onClick={() => handleButtonClick(ROUTERS.BAR_STOCK, navigate)}
         />
       </section>
     </main>

@@ -25,8 +25,6 @@ const Jobs = () => {
         navigate,
         findClientById
     );
-
-    console.log("elements", elements)
     setAllJobsElements(elements);
     setIsLoading(false);
   };
@@ -53,7 +51,7 @@ const Jobs = () => {
       const serviceType = (getServiceTypeTranslated(job.serviceType) || "").toUpperCase().trim();
       const clientType = (job.clientType || "").toUpperCase().trim(); // Ensure clientType is included
       const status = (getStatusTranslated(job.status) || "").toUpperCase().trim();
-      const valor = (job.totalValue.toFixed(2).replace(".", ",").toString() || "").trim();
+      const valor = (`R$${job.totalValue.toFixed(2).replace(".", ",").toString()}` || "").trim();
 
       const term = searchTerm.toUpperCase().trim();
 
@@ -104,23 +102,20 @@ const Jobs = () => {
               color={"#02AEBA"}
               speedMultiplier={2}
             />
-          ): filteredJobsElements != [] ?(
+          ): (
             <Table 
-            headers={tableHeader}
-            data={
-              filteredJobsElements.map((job) => ({
-                ...job,
-                category: getCategoryTranslated(job.category),
-                serviceType: getServiceTypeTranslated(job.serviceType),
-                status: getStatusTranslated(job.status),
-                totalValue: `R$ ${job.totalValue.toFixed(2).replace(".", ",")}` 
-              }))}
+              headers={tableHeader}
+              data={
+                filteredJobsElements.map((job) => ({
+                  ...job,
+                  category: getCategoryTranslated(job.category),
+                  serviceType: getServiceTypeTranslated(job.serviceType),
+                  status: getStatusTranslated(job.status),
+                  totalValue: `R$ ${job.totalValue.toFixed(2).replace(".", ",")}` 
+                }))}
+              elementMessageNotFound="serviço"
             />
-          ) : (
-            <p className="text-center text-gray-400">
-                Nenhum serviço registrado.
-            </p>
-          )
+            )
         }
         </div>
       </section>

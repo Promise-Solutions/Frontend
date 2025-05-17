@@ -23,6 +23,7 @@ const CardJob = React.memo(({ id, title, category, jobType, client, isDone, onCl
       <Table 
         headers={tableHeader}
         data={{id, title, category, jobType, client, isDone}}
+        elementMessageNotFound={"serviço"}
       />
       <div>
         <div

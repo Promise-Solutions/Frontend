@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { comma } from "postcss/lib/list";
 import { ROUTERS } from "../../constants/routers.js";
+import { SyncLoader } from "react-spinners";
 
 export const RenderCommandDetails = () => {
   const { command, setCommand, commandId, setCommandId } = useCommandContext(); // Usa o BarContext para obter a comanda
@@ -34,6 +35,7 @@ export const RenderCommandDetails = () => {
   const [isDiscountModalOpen, setIsDiscountModalOpen] = useState(false);
   const [employeeName, setEmployeeName] = useState(""); // Nome do funcionário
   const [clientName, setClientName] = useState(""); // Nome do cliente
+  const [isLoading, setIsLoading] = useState(true);
   const [isDeleteCommandModalOpen, setIsDeleteCommandModalOpen] =
     useState(false);
   const navigate = useNavigate(); // Inicializa a função navigate
@@ -105,6 +107,7 @@ export const RenderCommandDetails = () => {
     };
 
     fetchCommandDetails();
+    setIsLoading(false);
   }, [commandId]); // Observa apenas commandId
 
   const fetchAllProducts = async () => {
@@ -223,10 +226,12 @@ export const RenderCommandDetails = () => {
       };
 
       await axiosProvider.post("/command-products", productToAdd);
-
+      
+      setIsLoading(true);
       // Refetch command details and all products
       await fetchCommandDetails();
       await fetchAllProducts(); // Update stock information
+      setIsLoading(false);
 
       // Clear inputs
       setNewProduct({
@@ -262,10 +267,12 @@ export const RenderCommandDetails = () => {
   const confirmDelete = async () => {
     try {
       await axiosProvider.delete(`/command-products/${productToDelete.id}`);
-
+      
+      setIsLoading(true);
       // Refetch command details and all products
       await fetchCommandDetails();
       await fetchAllProducts(); // Update stock information
+      setIsLoading(false);
 
       setIsDeleteModalOpen(false);
       setProductToDelete(null);
@@ -295,9 +302,11 @@ export const RenderCommandDetails = () => {
         productToUpdate
       );
 
+      setIsLoading(true);
       // Refetch command details and all products
       await fetchCommandDetails();
       await fetchAllProducts(); // Update stock information
+      setIsLoading(false);
 
       setEditingCommandProduct(null);
       setIsEditCommandProductModalOpen(false);
@@ -329,7 +338,9 @@ export const RenderCommandDetails = () => {
         });
 
         // Refetch command details
+        setIsLoading(true);
         await fetchCommandDetails();
+        setIsLoading(false);
 
         showToast.success("Comanda reaberta com sucesso!");
       }
@@ -358,8 +369,10 @@ export const RenderCommandDetails = () => {
         fkClient: command.fkClient, // Keep the client associated
       });
 
+      setIsLoading(true);
       // Refetch command details
       await fetchCommandDetails();
+      setIsLoading(false);
 
       showToast.success("Desconto aplicado com sucesso!");
     } catch (error) {
@@ -410,136 +423,169 @@ export const RenderCommandDetails = () => {
     <div className="flex flex-col w-full overflow-y-hidden">
       <div className="flex justify-between">
         <div className="shadow-[8px_0_15px_rgba(255,255,255,0.1)] pr-8 max-w-[400px]">
-          <h1 className="text-[42px]">
-            <b>Comanda:</b> {command.commandNumber}
-          </h1>
-          <ul className="mt-4 border-b-1 border-b-gray-400 pb-8">
-            <li>
-              <b>Cliente:</b> {clientName}
-            </li>
-            <li>
-              <b>Funcionário:</b> {employeeName}
-            </li>
-            <li>
-              <b>Data Abertura:</b> {formatDateTime(command.openingDateTime)}
-            </li>
-            <li>
-              <b>Data Fechamento:</b> {formatDateTime(command.closingDateTime)}
-            </li>
-            <li>
-              <b>Desconto:</b> {command.discount}%
-            </li>
-            <li>
-              <b>Valor Total:</b> R$ {calculateTotalValue()}
-            </li>
-            <li>
-              <b>Status:</b> {command.status == "OPEN" ? "Aberta" : "Fechada"}
-            </li>
-            <div className="flex mt-6 gap-4">
-              <PrimaryButton
-                text={
-                  command.status === "OPEN"
-                    ? "Fechar Comanda"
-                    : "Reabrir Comanda"
-                }
-                onClick={handleToggleCommandStatus}
+          {
+            isLoading ? (
+              <div className="w-[400px] h-full flex justify-center items-center">
+              <SyncLoader 
+                size={8}
+                loading={true}
+                color={"#02AEBA"}
+                speedMultiplier={2}
               />
-            </div>
-          </ul>
-          <div className="flex flex-col w-full flex-1">
-            <div className="mt-4">
-              {command.status !== "CLOSED" ? (
-                <form
-                  onSubmit={handleAddProduct}
-                  className="flex flex-col gap-4"
-                >
-                  <Select
-                    text="Produto"
-                    name="idProduto"
-                    required
-                    options={allProducts.length != 0 ? allProducts.map((product) => ({
-                      id: product.id,
-                      name: `${product.name} (Estoque: ${product.quantity})`, // Display stock quantity
-                    })) : []}
-                    handleOnChange={handleProductSelect}
-                    value={newProduct.idProduto || ""}
+              </div>  
+            
+            ) 
+            : (
+            <>
+              <h1 className="text-[42px]">
+                <b>Comanda:</b> {command.commandNumber}
+              </h1>
+              <ul className="mt-4 border-b-1 border-b-gray-400 pb-8">
+                <li>
+                  <b>Cliente:</b> {clientName}
+                </li>
+                <li>
+                  <b>Funcionário:</b> {employeeName}
+                </li>
+                <li>
+                  <b>Data Abertura:</b> {formatDateTime(command.openingDateTime)}
+                </li>
+                <li>
+                  <b>Data Fechamento:</b> {formatDateTime(command.closingDateTime)}
+                </li>
+                <li>
+                  <b>Desconto:</b> {command.discount}%
+                </li>
+                <li>
+                  <b>Valor Total:</b> R$ {calculateTotalValue()}
+                </li>
+                <li>
+                  <b>Status:</b> {command.status == "OPEN" ? "Aberta" : "Fechada"}
+                </li>
+                <div className="flex mt-6 gap-4">
+                  <PrimaryButton
+                    text={
+                      command.status === "OPEN"
+                        ? "Fechar Comanda"
+                        : "Reabrir Comanda"
+                    }
+                    onClick={handleToggleCommandStatus}
                   />
-                  <Input
-                    type="number"
-                    name="quantity"
-                    required
-                    text={`Quantidade ${
-                      newProduct.stockQuantity
-                        ? `(Disponível: ${newProduct.stockQuantity})`
-                        : ""
-                    }`} // Display available stock
-                    placeholder="Digite a quantidade"
-                    handleOnChange={handleInputChange}
-                    value={newProduct.quantity}
-                    min={1} // Prevent negative values
-                    max={newProduct.stockQuantity || ""} // Prevent exceeding stock
-                  />
-                  <Input
-                    type="text"
-                    name="unitValue"
-                    required
-                    text="Valor Unitário"
-                    placeholder="Valor unitário"
-                    handleOnChange={handleInputChange}
-                    value={newProduct.unitValue}
-                    disabled
-                  />
-                  <ConfirmButton type="submit" text="Adicionar Produto" />
-                </form>
-              ) : (
-                <p className="text-gray-500 flex flex-wrap">
-                  A comanda está fechada. Não é possível adicionar produtos.
-                </p>
-              )}
-              <div className="flex mt-6">
-                {command.status === "CLOSED" && (
-                  <DeleteButton
-                    text="Deletar Comanda"
-                    onClick={handleRemoveCommand} // Usa o estado correto para deletar a comanda
-                  />
-                )}
+                </div>
+              </ul>
+              <div className="flex flex-col w-full flex-1">
+                <div className="mt-4">
+                  {command.status !== "CLOSED" ? (
+                    <form
+                      onSubmit={handleAddProduct}
+                      className="flex flex-col gap-4"
+                    >
+                      <Select
+                        text="Produto"
+                        name="idProduto"
+                        required
+                        options={allProducts.length != 0 ? allProducts.map((product) => ({
+                          id: product.id,
+                          name: `${product.name} (Estoque: ${product.quantity})`, // Display stock quantity
+                        })) : []}
+                        handleOnChange={handleProductSelect}
+                        value={newProduct.idProduto || ""}
+                      />
+                      <Input
+                        type="number"
+                        name="quantity"
+                        required
+                        text={`Quantidade ${
+                          newProduct.stockQuantity
+                            ? `(Disponível: ${newProduct.stockQuantity})`
+                            : ""
+                        }`} // Display available stock
+                        placeholder="Digite a quantidade"
+                        handleOnChange={handleInputChange}
+                        value={newProduct.quantity}
+                        min={1} // Prevent negative values
+                        max={newProduct.stockQuantity || ""} // Prevent exceeding stock
+                      />
+                      <Input
+                        type="text"
+                        name="unitValue"
+                        required
+                        text="Valor Unitário"
+                        placeholder="Valor unitário"
+                        handleOnChange={handleInputChange}
+                        value={newProduct.unitValue}
+                        disabled
+                      />
+                      <ConfirmButton type="submit" text="Adicionar Produto" />
+                    </form>
+                  ) : (
+                    <p className="text-gray-500 flex flex-wrap">
+                      A comanda está fechada. Não é possível adicionar produtos.
+                    </p>
+                  )}
+                  <div className="flex mt-6">
+                    {command.status === "CLOSED" && (
+                      <DeleteButton
+                        text="Deletar Comanda"
+                        onClick={handleRemoveCommand} // Usa o estado correto para deletar a comanda
+                      />
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+              
+              </>
+            )
+          }
+
         </div>
         <div className="mt-6 w-full flex-1 ml-12">
           <h2 className="text-[32px] font-thin">Produtos na Comanda</h2>
-          <Table
-            headers={[
-              { label: "ID", key: "idProduto" },
-              { label: "Nome", key: "name" },
-              { label: "Quantidade", key: "productQuantity" },
-              { label: "Valor Unitário", key: "unitValue" },
-              { label: "Valor Total", key: "totalValue" },
-              { label: "Ações", key: "actions" },
-            ]}
-            data={products.map((product) => ({
-              ...product,
-              unitValue: `R$ ${parseFloat(product.unitValue).toFixed(2)}`,
-              totalValue: `R$ ${parseFloat(
-                product.productQuantity * product.unitValue
-              ).toFixed(2)}`,
-              actions: (
-                <div className="flex gap-2">
-                  <PrimaryButton
-                    text="Editar"
-                    onClick={() => handleEditCommandProduct(product)}
-                    disabled={command.status === "CLOSED"} // Disable if command is closed
-                  />
-                  <DeleteButton
-                    text="Excluir"
-                    onClick={() => handleRemoveProduct(product)}
-                    disabled={command.status === "CLOSED"} // Disable if command is closed
-                  />
-                </div>
-              ),
-            }))}
-          />
+          {
+            isLoading ? 
+            (
+              <SyncLoader 
+                size={8}
+                loading={true}
+                color={"#02AEBA"}
+                speedMultiplier={2}
+              />
+            ) :
+            (
+              <Table
+                headers={[
+                  { label: "ID", key: "idProduto" },
+                  { label: "Nome", key: "name" },
+                  { label: "Quantidade", key: "productQuantity" },
+                  { label: "Valor Unitário", key: "unitValue" },
+                  { label: "Valor Total", key: "totalValue" },
+                  { label: "Ações", key: "actions" },
+                ]}
+                data={products.map((product) => ({
+                  ...product,
+                  unitValue: `R$ ${parseFloat(product.unitValue).toFixed(2)}`,
+                  totalValue: `R$ ${parseFloat(
+                    product.productQuantity * product.unitValue
+                  ).toFixed(2)}`,
+                  actions: (
+                    <div className="flex gap-2">
+                      <PrimaryButton
+                        text="Editar"
+                        onClick={() => handleEditCommandProduct(product)}
+                        disabled={command.status === "CLOSED"} // Disable if command is closed
+                      />
+                      <DeleteButton
+                        text="Excluir"
+                        onClick={() => handleRemoveProduct(product)}
+                        disabled={command.status === "CLOSED"} // Disable if command is closed
+                      />
+                    </div>
+                  ),
+                }))}
+                elementMessageNotFound="produto"
+              />
+            )
+          }
           <ModalEditCommandProduct
             isOpen={isEditCommandProductModalOpen}
             onClose={() => setIsEditCommandProductModalOpen(false)}
