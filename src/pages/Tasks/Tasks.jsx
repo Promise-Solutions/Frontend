@@ -6,6 +6,7 @@ import ModalAddTask from "../../components/modals/modalAddTask/ModalAddTask";
 import ModalEditTask from "../../components/modals/modalEditTask/ModalEditTask";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 import { axiosProvider } from "../../provider/apiProvider";
+import { formatDateBR } from "../../hooks/formatUtils.js";
 
 const statuses = ["Pendente", "Fazendo", "Concluído"];
 
@@ -20,6 +21,7 @@ const mapStatusToFrontend = {
   WORKING: "Fazendo",
   COMPLETED: "Concluído",
 };
+
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -59,6 +61,9 @@ const Tasks = () => {
           status: mapStatusToFrontend[task.status] || task.status,
           responsibleName: employeesMap[task.fkEmployee] || "Não atribuído",
           assignedName: employeesMap[task.fkAssigned] || "Não atribuído",
+          // Formata as datas para dd/mm/yyyy
+          limitDate: formatDateBR(task.limitDate),
+          startDate: formatDateBR(task.startDate),
         }));
 
         setTasks(tasksWithNames);
@@ -99,6 +104,9 @@ const Tasks = () => {
           assignedName:
             employees.find((emp) => emp.id === res.data.fkAssigned)?.name ||
             "Não atribuído",
+          // Formata as datas para dd/mm/yyyy
+          limitDate: formatDateBR(res.data.limitDate),
+          startDate: formatDateBR(res.data.startDate),
         };
         setTasks([...tasks, taskWithNames]);
         setIsAddModalOpen(false);
@@ -131,6 +139,9 @@ const Tasks = () => {
           assignedName:
             employees.find((emp) => emp.id === res.data.fkAssigned)?.name ||
             "Não atribuído", // Atualiza o campo responsibleName
+          // Formata as datas para dd/mm/yyyy
+          limitDate: formatDateBR(res.data.limitDate),
+          startDate: formatDateBR(res.data.startDate),
         };
 
         setTasks((prev) =>
