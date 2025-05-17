@@ -177,17 +177,6 @@ export function setupRegisterEvents(navigate) {
     return true;
   };
 
-  // Gerando Token, isso vai ser passado pro backend dps
-  const generateToken = () => {
-    const chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let token = "";
-    for (let i = 0; i < 16; i++) {
-      token += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return token;
-  };
-
   // Função de registrar usuário
   const registrarUsuario = async () => {
     // Buscar elementos atualizados
@@ -214,6 +203,7 @@ export function setupRegisterEvents(navigate) {
         contact: iptContato.value,
         clientType: iptTipoCliente?.value === "AVULSO" ? "SINGLE" : "MONTHLY", // Map values for backend
         active: true, // Default to active
+        createdDate: new Date().toISOString(),
       };
       endpoint = "clients";
     } else if (iptType.value === "FUNCIONARIO") {

@@ -75,23 +75,23 @@ const Bar = () => {
         {/* Filtro de busca de comandas */}
         <div className="flex justify-center flex-col">
           {/* Filtro por tipo de comanda (Abertas ou Fechadas) */}
-          <div className="flex w-full justify-between">
-            <div className="flex items-center w-[30%] gap-4">
-              <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-thin">Gerencie seu Bar</h1>
-              </div>
-              <PrimaryButton
-                id="stock_button"
-                text="Gerenciar Estoque"
-                onClick={() => stockRedirect(navigate)} // Passa navigate para a função stockRedirect
-              />
+          <div className="flex w-full items-center gap-4 justify-between">
+            <div>
+              <h1 className="text-2xl font-thin">Gerencie seu Bar</h1>
             </div>
-            <div className="flex justify-center w-full pr-30 flex-1">
+            <PrimaryButton
+              id="stock_button"
+              text="Gerenciar Estoque"
+              onClick={() => stockRedirect(navigate)} // Passa navigate para a função stockRedirect
+            />
+          </div>
+          <div className="flex justify-between mt-4 border-t-1 pt-4 border-gray-600">
+            <div className="flex w-full flex-1 justify-center pl-75">
               <BarTypeFilter
                 onFilterChange={handleFilterChange} // Passa a função corrigida
               />
             </div>
-            <div className="flex gap-2 justify-end text-gray-400">
+            <div className="flex gap-2 text-gray-400">
               <CommandFilter
                 id="input_search_command" // Updated ID
                 placeholder="Busque uma Comanda"

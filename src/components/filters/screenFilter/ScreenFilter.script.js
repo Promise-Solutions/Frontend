@@ -17,8 +17,7 @@ export const useScreenFilterLogic = () => {
     if (isClient) {
       setFilters([
         { label: "Informações", value: "1" },
-        { label: "Serviços", value: "2" },
-        { label: "Dashboard", value: "3" },
+        { label: "Histórico de Serviços", value: "2" },
       ]);
     } else {
       setFilters([

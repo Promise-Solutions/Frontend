@@ -25,7 +25,7 @@ const Home = () => {
         <div className="absolute flex w-full justify-end  pr-[64px] py-4 px-12">
           <LogoutButton
             id="logout_button_id"
-            text="Sair do Usuário"
+            text="Sair"
             onClick={() => handleLogout(navigate)}
             />
         </div>

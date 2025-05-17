@@ -8,7 +8,7 @@ export const tabs = [
   { id: "users", name: "Usuários" },
   { id: "jobs", name: "Serviços" },
   { id: "bar", name: "Bar" },
-  { id: "dashboard", name: "Dashboard" },
+  { id: "dashboard", name: "Análise" },
   { id: "reports", name: "Relatórios" },
   { id: "tasks", name: "Tarefas" },
 ];
