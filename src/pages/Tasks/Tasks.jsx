@@ -58,6 +58,7 @@ const Tasks = () => {
           ...task,
           status: mapStatusToFrontend[task.status] || task.status,
           responsibleName: employeesMap[task.fkEmployee] || "Não atribuído",
+          assignedName: employeesMap[task.fkAssigned] || "Não atribuído",
         }));
 
         setTasks(tasksWithNames);
@@ -95,6 +96,9 @@ const Tasks = () => {
           responsibleName:
             employees.find((emp) => emp.id === res.data.fkEmployee)?.name ||
             "Não atribuído",
+          assignedName:
+            employees.find((emp) => emp.id === res.data.fkAssigned)?.name ||
+            "Não atribuído",
         };
         setTasks([...tasks, taskWithNames]);
         setIsAddModalOpen(false);
@@ -109,6 +113,7 @@ const Tasks = () => {
       id, // Adiciona o campo id explicitamente
       ...rest,
       fkEmployee: fkEmployee || null, // Certifica-se de enviar fkEmployee corretamente
+      fkAssigned: fkAssigned || null, // Certifica-se de enviar fkEmployee corretamente
       limitDate: limitDate || null, // Envia null se limitDate estiver vazio
       startDate,
       status: mapStatusToBackend[status],
@@ -122,6 +127,9 @@ const Tasks = () => {
           status: mapStatusToFrontend[res.data.status],
           responsibleName:
             employees.find((emp) => emp.id === res.data.fkEmployee)?.name ||
+            "Não atribuído", // Atualiza o campo responsibleName
+          assignedName:
+            employees.find((emp) => emp.id === res.data.fkAssigned)?.name ||
             "Não atribuído", // Atualiza o campo responsibleName
         };
 

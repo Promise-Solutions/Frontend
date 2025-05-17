@@ -12,6 +12,7 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
     startDate: "",
     limitDate: "",
     fkEmployee: "",
+    fkAssigned: "",
     status: "",
   });
 
@@ -43,6 +44,7 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
       startDate: new Date().toISOString(),
       limitDate: formData.limitDate || null,
       fkEmployee: formData.fkEmployee || null,
+      fkAssigned: formData.fkAssigned || null,
       status: "PENDING",
     };
     console.log("Payload for new task:", newTask);
@@ -53,6 +55,7 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
       startDate: "",
       limitDate: "",
       fkEmployee: "",
+      fkAssigned: "",
       status: "",
     });
   };
@@ -98,6 +101,16 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
             }))}
             handleOnChange={handleInputChange}
             value={formData.fkEmployee}
+          />
+          <Select
+            text="Autor"
+            name="fkAssigned"
+            options={employees.map((emp) => ({
+              id: emp.id,
+              name: emp.name,
+            }))}
+            handleOnChange={handleInputChange}
+            value={formData.fkAssigned}
           />
         </div>
         <div className="mt-4 flex justify-end gap-4">

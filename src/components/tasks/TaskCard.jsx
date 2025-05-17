@@ -110,6 +110,10 @@ const TaskCard = ({ task, onClick, dragDisabled }) => {
           <span className="text-sm font-bold text-cyan-zero">Responsável:</span>{" "}
           {task.responsibleName || "Não atribuído"}
         </p>
+        <p className="text-xs">
+          <span className="text-sm font-bold text-cyan-zero">Autor:</span>{" "}
+          {task.assignedName || "Não atribuído"}
+        </p>
       </div>
     </div>
   );
