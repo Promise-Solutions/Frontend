@@ -125,7 +125,7 @@ export const RenderInfos = () => {
               },
               {
                 name: "TicketMédio",
-                value: (response.data.totalValue + response.data.totalCommandsValue) / response.data.frequency, 
+                value: (response.data.totalValue + response.data.totalCommandsValue) / response.data.frequency,
               },
             ]);
           } else {
@@ -192,43 +192,77 @@ export const RenderInfos = () => {
       setFormData((prevData) => ({ ...prevData, [name]: maskedValue }));
     };
 
-    const handleSaveChanges = async () => {
-      await showToast.promise(
-        (async () => {
-          try {
-            const updatedFormData = {
-              ...formData,
-              name: formData.name.toUpperCase(),
-              contact: formData.contact,
-            };
-
-            if (!formData.password) delete updatedFormData.password;
-            if (!isClient) delete updatedFormData.clientType;
-
-            const endpoint = isClient
-              ? `/clients/${userId}`
-              : `/employees/${userId}`;
-            console.log("Dados atualizados:", updatedFormData);
-            await axiosProvider.patch(endpoint, updatedFormData);
-
-            setUser({ ...user, ...updatedFormData });
-            setIsEditing(false);
-            showToast.success("Informações atualizadas com sucesso!");
-          } catch (error) {
-            showToast.error("Erro ao salvar alterações:", error);
-            throw new Error("Erro ao salvar alterações. Tente novamente.");
-          }
-        })(),
-        {
-          loading: "Salvando alterações...",
-          success: "Informações atualizadas com sucesso!",
-          error: "Erro ao salvar alterações.",
-        },
-        {
-          style: ToastStyle,
-        }
-      );
+    const validarEmail = () => {
+      const iptEmail = formData.email;
+      const regex = /^[^\s]+@[^\s]+\.[^\s]+$/;
+      if (!iptEmail || !iptEmail.value.trim()) {
+        showToast.error("O campo de email está vazio.");
+        return false;
+      }
+      if (!regex.test(iptEmail.value)) {
+        showToast.error("O email inserido é inválido.");
+        return false;
+      }
+      return true;
     };
+
+    const handleSaveChanges = async () => {
+      let cpf = formData.cpf;
+      let contact = formData.contact;
+
+      if (!formData.name) {
+        showToast.error("Nome é obrigatório.");
+        return;
+      } else if (!validarEmail()) {
+        showToast.error("E-mail é obrigatório.");
+        return;
+      } else if (!formData.cpf || cpf.length < 14) {
+        showToast.error("CPF deve ter 14 caracteres.");
+        return;
+      } else if (!formData.contact || contact.length < 15) {
+        showToast.error("Contato deve ter 15 caracteres.");
+        return;
+      } else {
+
+        await showToast.promise(
+          (async () => {
+            try {
+              const updatedFormData = {
+                ...formData,
+                name: formData.name.toUpperCase(),
+                contact: formData.contact,
+              };
+
+              if (!formData.password) delete updatedFormData.password;
+              if (!isClient) delete updatedFormData.clientType;
+
+              const endpoint = isClient
+                ? `/clients/${userId}`
+                : `/employees/${userId}`;
+              console.log("Dados atualizados:", updatedFormData);
+              await axiosProvider.patch(endpoint, updatedFormData);
+
+              setUser({ ...user, ...updatedFormData });
+              setIsEditing(false);
+              showToast.success("Informações atualizadas com sucesso!");
+            } catch (error) {
+              showToast.error("Erro ao salvar alterações:", error);
+              throw new Error("Erro ao salvar alterações. Tente novamente.");
+            }
+          })(),
+          {
+            loading: "Salvando alterações...",
+            success: "Informações atualizadas com sucesso!",
+            error: "Erro ao salvar alterações.",
+          },
+          {
+            style: ToastStyle,
+          }
+        );
+      };
+    }
+
+
 
     return (
       <section id="edit_section" className="flex w-full justify-between">
