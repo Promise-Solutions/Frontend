@@ -6,7 +6,6 @@ import ModalAddTask from "../../components/modals/modalAddTask/ModalAddTask";
 import ModalEditTask from "../../components/modals/modalEditTask/ModalEditTask";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 import { axiosProvider } from "../../provider/apiProvider";
-import { formatDateBR } from "../../hooks/formatUtils.js";
 import { SyncLoader } from "react-spinners";
 
 const statuses = ["Pendente", "Fazendo", "Concluído"];
@@ -22,7 +21,6 @@ const mapStatusToFrontend = {
   WORKING: "Fazendo",
   COMPLETED: "Concluído",
 };
-
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -62,10 +60,6 @@ const Tasks = () => {
           ...task,
           status: mapStatusToFrontend[task.status] || task.status,
           responsibleName: employeesMap[task.fkEmployee] || "Não atribuído",
-          assignedName: employeesMap[task.fkAssigned] || "Não atribuído",
-          // Formata as datas para dd/mm/yyyy
-          limitDate: formatDateBR(task.limitDate),
-          startDate: formatDateBR(task.startDate),
         }));
 
         setTasks(tasksWithNames);
@@ -104,12 +98,6 @@ const Tasks = () => {
           responsibleName:
             employees.find((emp) => emp.id === res.data.fkEmployee)?.name ||
             "Não atribuído",
-          assignedName:
-            employees.find((emp) => emp.id === res.data.fkAssigned)?.name ||
-            "Não atribuído",
-          // Formata as datas para dd/mm/yyyy
-          limitDate: formatDateBR(res.data.limitDate),
-          startDate: formatDateBR(res.data.startDate),
         };
         setTasks([...tasks, taskWithNames]);
         setIsAddModalOpen(false);
@@ -124,7 +112,6 @@ const Tasks = () => {
       id, // Adiciona o campo id explicitamente
       ...rest,
       fkEmployee: fkEmployee || null, // Certifica-se de enviar fkEmployee corretamente
-      fkAssigned: fkAssigned || null, // Certifica-se de enviar fkEmployee corretamente
       limitDate: limitDate || null, // Envia null se limitDate estiver vazio
       startDate,
       status: mapStatusToBackend[status],
@@ -139,12 +126,6 @@ const Tasks = () => {
           responsibleName:
             employees.find((emp) => emp.id === res.data.fkEmployee)?.name ||
             "Não atribuído", // Atualiza o campo responsibleName
-          assignedName:
-            employees.find((emp) => emp.id === res.data.fkAssigned)?.name ||
-            "Não atribuído", // Atualiza o campo responsibleName
-          // Formata as datas para dd/mm/yyyy
-          limitDate: formatDateBR(res.data.limitDate),
-          startDate: formatDateBR(res.data.startDate),
         };
 
         setTasks((prev) =>
@@ -197,62 +178,60 @@ const Tasks = () => {
             />
           </div>
 
-          {
-            isLoading ? (
-              <SyncLoader
-                size={8}
-                loading={true}
-                color={"#02AEBA"}
-                speedMultiplier={2}
-              />
-            ) : (
-              <div className="w-full flex flex-col items-center space-y-10">
-                <DndContext
-                  collisionDetection={closestCenter}
-                  onDragEnd={handleDragEnd}
-                >
-                  <div className="w-full overflow-auto">
-                    <div className="flex gap-6 justify-center items-start min-w-[1000px] mx-auto">
-                      {statuses.map((status) => (
-                        <div
-                          key={status}
-                          className="flex flex-col items-center w-[320px]"
-                        >
-                          <h2 className="text-xl font-bold text-white mb-4 text-center bg-white/10 px-4 py-2 rounded-md w-full">
-                            {status === "Pendente"
-                              ? "📌 Pendente"
-                              : status === "Fazendo"
-                              ? "⚙️ Fazendo"
-                              : "✅ Concluído"}
-                          </h2>
-                          <TaskColumn
-                            status={status}
-                            tasks={tasks}
-                            employees={employees}
-                            editTask={handleEditTask}
-                            deleteTask={(id) => {
-                              axiosProvider
-                                .delete(`tasks/${id}`)
-                                .then(() =>
-                                  setTasks((prev) =>
-                                    prev.filter((t) => t.id !== id)
-                                  )
+          {isLoading ? (
+            <SyncLoader
+              size={8}
+              loading={true}
+              color={"#02AEBA"}
+              speedMultiplier={2}
+            />
+          ) : (
+            <div className="w-full flex flex-col items-center space-y-10">
+              <DndContext
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <div className="w-full overflow-auto">
+                  <div className="flex gap-6 justify-center items-start min-w-[1000px] mx-auto">
+                    {statuses.map((status) => (
+                      <div
+                        key={status}
+                        className="flex flex-col items-center w-[320px]"
+                      >
+                        <h2 className="text-xl font-bold text-white mb-4 text-center bg-white/10 px-4 py-2 rounded-md w-full">
+                          {status === "Pendente"
+                            ? "📌 Pendente"
+                            : status === "Fazendo"
+                            ? "⚙️ Fazendo"
+                            : "✅ Concluído"}
+                        </h2>
+                        <TaskColumn
+                          status={status}
+                          tasks={tasks}
+                          employees={employees}
+                          editTask={handleEditTask}
+                          deleteTask={(id) => {
+                            axiosProvider
+                              .delete(`tasks/${id}`)
+                              .then(() =>
+                                setTasks((prev) =>
+                                  prev.filter((t) => t.id !== id)
                                 )
-                                .catch((err) => console.error(err));
-                            }}
-                            onTaskClick={(task) => {
-                              setSelectedTask(task);
-                              setIsEditModalOpen(true);
-                            }}
-                          />
-                        </div>
-                      ))}
-                    </div>
+                              )
+                              .catch((err) => console.error(err));
+                          }}
+                          onTaskClick={(task) => {
+                            setSelectedTask(task);
+                            setIsEditModalOpen(true);
+                          }}
+                        />
+                      </div>
+                    ))}
                   </div>
-                </DndContext>
-              </div>
-            )
-          }
+                </div>
+              </DndContext>
+            </div>
+          )}
         </>
       ) : isAddModalOpen ? (
         <ModalAddTask
