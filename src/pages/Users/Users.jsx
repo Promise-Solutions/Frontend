@@ -7,13 +7,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserContext } from "../../context/UserContext";
+import { SyncLoader } from "react-spinners";
 
 // Componente funcional para a página de gerenciamento de usuários
 const Users = () => {
   const [userElements, setUserElements] = useState([]); // Estado para armazenar os elementos renderizados
   const [filterType, setFilterType] = useState("CLIENTE"); // Default to "Cliente"
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
-
+  const [isLoading, setIsLoading] = useState(true);
   const { findUsers, setUserId, setIsClient } = useUserContext(); // Adicionado setIsClient
   const navigate = useNavigate(); //Navigate para navegatação, ele não atualiza a página
 
@@ -34,6 +35,7 @@ const Users = () => {
     };
 
     fetchAndRender();
+    setIsLoading(false);
   }, [filterType]); // Atualiza quando filterType muda
 
   const handleSearch = (term) => {
@@ -99,20 +101,35 @@ const Users = () => {
             </div>
           </div>
           {/* Espaço reservado para os cards de usuários */}
-          <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
-            {filteredUserElements.length > 0
-              ? filteredUserElements // Ensure filtered elements are rendered
-              : noResultsMessage ||
-                (filterType === "CLIENTE" ? (
-                  <p className="text-center text-gray-400">
-                    Nenhum cliente encontrado.
-                  </p>
-                ) : (
-                  <p className="text-center text-gray-400">
-                    Nenhum interno encontrado.
-                  </p>
-                ))}
-          </div>
+            {
+              isLoading ? (
+                <div className="flex items-center justify-center h-full w-full mt-[5rem]">
+                  <SyncLoader
+                    size={8}
+                    loading={true}
+                    color={"#02AEBA"}
+                    speedMultiplier={2}
+                  />
+                </div>
+              ) : (
+                <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
+                  {
+                    filteredUserElements.length > 0
+                      ? filteredUserElements // Ensure filtered elements are rendered
+                      : noResultsMessage ||
+                        (filterType === "CLIENTE" ? (
+                          <p className="text-center text-gray-400">
+                            Nenhum cliente encontrado.
+                          </p>
+                        ) : (
+                          <p className="text-center text-gray-400">
+                            Nenhum interno encontrado.
+                          </p>
+                        ))  
+                    }
+                </div>
+              )
+            }
         </div>
       </section>
     </div>

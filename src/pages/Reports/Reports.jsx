@@ -2,7 +2,7 @@ const Reports = () => {
   const reports = new Array(12).fill("Relatório - 00/00/0000");
 
   return (
-    <div className="min-h-screen p-10 bg-black text-white">
+    <div className="p-10 bg-black text-white">
       {/* Título e instruções */}
       <div className="text-center space-y-4 mb-10">
         <div className="flex justify-center">

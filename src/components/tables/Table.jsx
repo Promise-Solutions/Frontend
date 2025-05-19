@@ -1,6 +1,6 @@
 import React from "react";
 
-const Table = ({ headers, data }) => {
+const Table = ({ headers, data, elementMessageNotFound }) => {
   return (
     <div
       className="overflow-y-auto max-h-[500px] h-auto 2xl:max-h-[670px] mt-4"
@@ -49,8 +49,8 @@ const Table = ({ headers, data }) => {
           ))}
         </tbody>
       </table>
-      ): (
-        <span className="text-center text-gray-400">Nenhum serviço encontrado</span>
+      ) : (
+        <span className="text-center text-gray-400">Nenhum {elementMessageNotFound || "item"} encontrado</span>
       )}
     </div>
   );

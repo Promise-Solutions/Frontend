@@ -5,6 +5,7 @@ import SubmitButton from "../../components/form/SubmitButton";
 import { showToast, ToastStyle } from "../../components/toastStyle/ToastStyle";
 import { useNavigate } from "react-router-dom";
 import { axiosProvider } from "../../provider/apiProvider";
+import { ROUTERS } from "../../constants/routers";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -41,7 +42,7 @@ const Login = () => {
 
             if (token) {
               localStorage.setItem("token", token);
-              navigate("/home");
+              navigate(ROUTERS.HOME_ALIAS);
             } else {
               throw new Error("Token não recebido.");
             }

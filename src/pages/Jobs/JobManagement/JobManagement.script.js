@@ -1,4 +1,5 @@
 import { showToast } from "../../../components/toastStyle/ToastStyle";
+import { ROUTERS } from "../../../constants/routers";
 
 export const handleInputChange = (e, setJobData) => {
   const { name, value } = e.target;
@@ -6,7 +7,7 @@ export const handleInputChange = (e, setJobData) => {
 }
 
 export const registerRedirect = (navigate, jobId) => {
-  navigate(`/jobs/${jobId}/register/subjobs`)
+  navigate(ROUTERS.getSubJobRegister(jobId))
 }
 
 export const saveChanges = async (updateJobData, job) => {
@@ -23,7 +24,7 @@ export const deleteJob = async (deleteJobById, id, navigate, setIsDeleteModalOpe
         
     setIsDeleteModalOpen(false)
     if (response == 200) {
-      navigate("/jobs");
+      navigate(ROUTERS.JOBS);
     } else if(response == 409) {
       console.log("Erro! Não é possível excluir um serviço com subserviços associados");
       showToast.error("Não é possível excluir um serviço com subserviços associados");

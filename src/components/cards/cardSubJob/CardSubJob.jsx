@@ -24,7 +24,7 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
   return (
     <div
       id={`job_${data.id}`}
-      className={`card_subjob relative overflow-visible flex flex-col justify-center border-1 text-[#d9d9d9] max-h-[23rem]  min-h-[12rem] w-auto max-w-[27rem] min-w-[20rem] rounded-[5px] duration-100 pb-1 h-auto bg-[#1E1E1E90]
+      className={`card_subjob relative overflow-visible flex flex-col justify-center border-1 text-[#d9d9d9] max-h-[25rem]  min-h-[12rem] w-auto max-w-[27rem] min-w-[20rem] rounded-[5px] duration-100 pb-1 h-auto bg-[#1E1E1E90]
           ${
             data.status === "CLOSED" ? "border-cyan-zero" : "border-pink-zero"
           } `}
@@ -99,7 +99,7 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
           className={`h-8 duration-100  
               ${data.status === "CLOSED" ? "opacity-100" : "opacity-0"}`}
         />
-        <div className="flex justify-end w-[70%] max-h-[12rem] gap-2 mr-2">
+        <div className="flex justify-end w-[70%] max-h-[12rem] mb-1 gap-2 mr-2">
           <button
             onClick={handleChangeStatus}
             className={`text-center w-[7rem] text-[14px]  hover:text-[#B9B9B9]

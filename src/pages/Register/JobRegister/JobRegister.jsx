@@ -8,15 +8,18 @@ import { useEffect, useState } from "react";
 import { registrarServico, createClientsOptions } from "./JobRegister.script";
 import { useUserContext } from "../../../context/UserContext";
 import { useNavigate, useParams } from "react-router-dom";
+import { SyncLoader } from "react-spinners";
 
 const JobRegister = () => {
     const { userParam } = useParams();
-    const [clientOptions, setClientOptions] = useState([]);
+    const [ clientOptions, setClientOptions ] = useState([]);
     const { findClients } = useUserContext();
+    const [ isLoading, setIsLoading ] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
       renderClientOptions();
+      setIsLoading(false);
     },[])
 
     const renderClientOptions = async () => {
@@ -75,53 +78,68 @@ const JobRegister = () => {
               Registre um novo Serviço
             </h1>
           </section>
-          <form
-            onSubmit={handleSubmit}
-            autoComplete="off"
-            className="flex flex-col items-center justify-center gap-10 w-full h-full px-4"
-          >
-              <section
-                id="form_cliente"
-                className="flex flex-wrap items-center justify-between w-full gap-4"
+
+          {
+            isLoading ? (
+              <div className="flex items-center justify-center w-full h-full">
+                <SyncLoader
+                  size={8}
+                  loading={true}
+                  color={"#02AEBA"}
+                  speedMultiplier={2}
+                  />
+              </div>  
+            ) : (
+              <form
+                onSubmit={handleSubmit}
+                autoComplete="off"
+                className="flex flex-col items-center justify-center gap-10 w-full h-full px-4"
               >
-                <Input
-                  type="text"
-                  text="Titulo"
-                  name="title"
-                  required
-                  placeholder="Digite o titulo"
-                  handleOnChange={handleInputChange}
-                  value={formData.title}
-                  maxLength="50"
-                />
-                <Select
-                  text="Categoria de Servico"
-                  name="category"
-                  required
-                  options={categoryOptions}
-                  handleOnChange={handleInputChange}
-                  value={formData.category}
-                />
-                <Select
-                  text="Tipo de serviço"
-                  name="serviceType"
-                  required
-                  options={typeOptions}
-                  handleOnChange={handleInputChange}
-                  value={formData.serviceType}
-                />
-                <Select
-                  text="Cliente Desejado"
-                  name="fkClient"
-                  required
-                  options={clientOptions}
-                  handleOnChange={handleInputChange}
-                  value={formData.fkClient}
-                />
-              </section>
-        
-          <SubmitButton text="Confirmar" />
-        </form>
+                  <section
+                    id="form_cliente"
+                    className="flex flex-wrap items-center justify-between w-full gap-4"
+                  >
+                    <Input
+                      type="text"
+                      text="Titulo"
+                      name="title"
+                      required
+                      placeholder="Digite o titulo"
+                      handleOnChange={handleInputChange}
+                      value={formData.title}
+                      maxLength="50"
+                    />
+                    <Select
+                      text="Categoria de Servico"
+                      name="category"
+                      required
+                      options={categoryOptions}
+                      handleOnChange={handleInputChange}
+                      value={formData.category}
+                    />
+                    <Select
+                      text="Tipo de serviço"
+                      name="serviceType"
+                      required
+                      options={typeOptions}
+                      handleOnChange={handleInputChange}
+                      value={formData.serviceType}
+                    />
+                    <Select
+                      text="Cliente Desejado"
+                      name="fkClient"
+                      required
+                      options={clientOptions}
+                      handleOnChange={handleInputChange}
+                      value={formData.fkClient}
+                    />
+                  </section>
+            
+              <SubmitButton text="Confirmar" />
+            </form>
+            )
+          }
+
       </main>
     );
 }

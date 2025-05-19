@@ -1,5 +1,6 @@
 import React from "react";
 import CardUser from "../../components/cards/cardUser/CardUser.jsx";
+import { ROUTERS } from "../../constants/routers.js";
 
 export const registerRedirect = (navigate) => {
   navigate("/register"); // Use navigate passed as an argument
@@ -28,7 +29,7 @@ export const renderUsers = async (
           setUserId(user.id);
           const isClient = filterType === "CLIENTE";
           setIsClient(isClient);
-          navigate(`/user/${user.id}`); // Navega para a página do usuário
+          navigate(ROUTERS.getUserDetail(user.id)); // Navega para a página do usuário
         },
       });
     });

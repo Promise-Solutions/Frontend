@@ -7,6 +7,7 @@ import ModalAddProduct from "../../components/modals/modalAddProduct/ModalAddPro
 import ModalEditProduct from "../../components/modals/modalEditProduct/ModalEditProduct.jsx";
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { axiosProvider } from "../../provider/apiProvider.js";
+import { SyncLoader } from "react-spinners";
 
 const Stock = () => {
   const [products, setProducts] = useState([]);
@@ -21,9 +22,11 @@ const Stock = () => {
   const [productToDelete, setProductToDelete] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchProducts();
+    setIsLoading(false);
   }, []);
 
   const fetchProducts = async () => {
@@ -117,11 +120,24 @@ const Stock = () => {
           onClick={() => setIsAddModalOpen(true)}
         />
       </div>
-      <StockTable
-        products={products}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      {
+        isLoading ? (
+          <SyncLoader 
+              size={8}
+              loading={true}
+              color={"#02AEBA"}
+              speedMultiplier={2}
+          />
+        ) 
+        : (
+          <StockTable
+            products={products}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        )
+      }
+      
       <ModalAddProduct
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
