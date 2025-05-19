@@ -190,8 +190,6 @@ export function setupRegisterEvents(navigate) {
 
     if (!validarCampos()) return;
 
-    const token = generateToken(); // Gerar token sem verificar unicidade
-
     let novoUsuario;
     let endpoint;
 
