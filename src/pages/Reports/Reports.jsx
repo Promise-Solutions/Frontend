@@ -1,8 +1,17 @@
+import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
+
 const Reports = () => {
   const reports = new Array(12).fill("Relatório - 00/00/0000");
 
   return (
-    <div className="p-10 bg-black text-white">
+    <div className="mx-16 my-6 text-white">
+      <div className="flex justify-end">
+        <PrimaryButton
+          id="generate_report_button_id"
+          text="Gerar Relatório"
+          onClick={() => {}}
+        />
+      </div>
       {/* Título e instruções */}
       <div className="text-center space-y-4 mb-10">
         <div className="flex justify-center">
@@ -24,13 +33,9 @@ const Reports = () => {
           </div>
         </div>
         <h1 className="text-3xl font-bold">Gerar Relatório</h1>
-        <p className="text-xl">
-          Seu próximo relatório será gerado em{" "}
-          <span className="text-pink-zero font-semibold">00/00/0000</span>.
-        </p>
         <p className="text-zinc-400 text-sm">
-          Você pode gerar um relatório agora: isso não afetará a geração
-          automática de relatórios.
+          Você pode gerar um relatório agora ou visualizar os relatórios já
+          existentes.
         </p>
       </div>
 
@@ -46,9 +51,6 @@ const Reports = () => {
           placeholder="Período até: 00/00/0000"
           className="bg-black border border-pink-zero text-white px-4 py-2 rounded-md w-[200px] focus:outline-none"
         />
-        <button className="border border-pink-zero text-pink-zero px-4 py-2 rounded-md hover:bg-pink-zero hover:text-white transition">
-          Gerar Relatório
-        </button>
       </div>
 
       {/* Lista de relatórios */}

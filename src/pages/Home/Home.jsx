@@ -34,7 +34,7 @@ const Home = () => {
       <section className="flex flex-wrap w-auto max-w-[75vw] h-auto gap-4 items-center justify-left mx-4">
         <CardHomePage
           title="Usuários"
-          text="Gerencie seus usuários e visualize seus serviços e indicadores"
+          text="Gerencie seus usuários e visualize seus serviços e indicadores."
           url={UserIcon}
           idButton={ROUTERS.USERS}
           className="text-[42px] text-transparent font-bold"
@@ -43,7 +43,7 @@ const Home = () => {
         />
         <CardHomePage
           title="Serviços"
-          text="Gerencie seus serviços e subserviços registrados"
+          text="Gerencie seus serviços e subserviços registrados."
           url={JobIcon}
           idButton={ROUTERS.JOBS}
           className="text-[42px] text-transparent font-bold"
@@ -52,7 +52,7 @@ const Home = () => {
         />
         <CardHomePage
           title="Bar"
-          text="Visualize e gerencie as comandas e pedidos dos seus clientes"
+          text="Visualize e gerencie as comandas e pedidos dos seus clientes."
           url={BarIcon}
           idButton={ROUTERS.BAR}
           className="text-[42px] text-transparent font-bold"
@@ -61,7 +61,7 @@ const Home = () => {
         />
         <CardHomePage
           title="Análise"
-          text="Acompanhe dados, métricas e tendências em tempo real"
+          text="Acompanhe dados, métricas e tendências em tempo real."
           url={DashIcon}
           idButton={ROUTERS.DASHBOARD}
           className="text-[42px] text-transparent font-bold"
@@ -70,7 +70,7 @@ const Home = () => {
         />
         <CardHomePage
           title="Relatórios"
-          text="Visualize seus relatórios existentes ou gere novos"
+          text="Visualize seus relatórios existentes ou gere novos."
           url={RelatIcon}
           idButton={ROUTERS.REPORTS}
           className="text-[42px] text-transparent font-bold"
@@ -79,7 +79,7 @@ const Home = () => {
         />
         <CardHomePage
           title="Tarefas"
-          text="Obtenha uma visão de suas tarefas e gerencie seus status"
+          text="Obtenha uma visão de suas tarefas e gerencie seus status."
           url={TaskIcon}
           idButton={ROUTERS.TASKS}
           className="text-[42px] text-transparent font-bold"
@@ -88,12 +88,21 @@ const Home = () => {
         />
         <CardHomePage
           title="Estoque"
-          text="Visualize e gerencie os produtos presentes em seu estoque"
+          text="Visualize e gerencie os produtos presentes em seu estoque."
           url={StockIcon}
           idButton={ROUTERS.BAR_STOCK}
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
           onClick={() => handleButtonClick(ROUTERS.BAR_STOCK, navigate)}
+        />
+        <CardHomePage
+          title="Despesas"
+          text="Visualize e gerencie suas despesas."
+          url={StockIcon}
+          idButton={ROUTERS.EXPENSES}
+          className="text-[42px] text-transparent font-bold"
+          style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+          onClick={() => handleButtonClick(ROUTERS.EXPENSES, navigate)}
         />
       </section>
     </main>

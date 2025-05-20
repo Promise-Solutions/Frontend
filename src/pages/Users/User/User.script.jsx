@@ -125,7 +125,10 @@ export const RenderInfos = () => {
               },
               {
                 name: "TicketMédio",
-                value: (response.data.totalValue + response.data.totalCommandsValue) / response.data.frequency, 
+                value:
+                  (response.data.totalValue +
+                    response.data.totalCommandsValue) /
+                  response.data.frequency,
               },
             ]);
           } else {
@@ -144,8 +147,8 @@ export const RenderInfos = () => {
       cpf: user?.cpf || "",
       email: user?.email || "",
       contact: user?.contact || "",
-      clientType: user?.clientType || "", // Garantir que o valor inicial seja do banco
-      active: user?.active, // Garantir que o valor inicial seja booleano
+      clientType: user?.clientType || "",
+      active: user?.active,
       password: "",
       createdDate: user?.createdDate || "",
     });
@@ -156,78 +159,101 @@ export const RenderInfos = () => {
     ];
 
     const statusOptions = [
-      { id: "true", name: "Ativo" }, // Use strings "true" and "false" for consistency
+      { id: "true", name: "Ativo" },
       { id: "false", name: "Inativo" },
     ];
 
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      const parsedValue = name === "active" ? value === "true" : value; // Convert "ativo" to boolean
-      setFormData((prevData) => ({ ...prevData, [name]: parsedValue }));
-    };
-
-    const applyCpfMask = (value) => {
-      value = value.replace(/\D/g, "").slice(0, 11); // Limit to 11 digits
+    // Máscara de CPF
+    const handleCpfChange = (e) => {
+      let value = e.target.value.replace(/\D/g, "").slice(0, 11);
       if (value.length > 3) value = value.slice(0, 3) + "." + value.slice(3);
       if (value.length > 7) value = value.slice(0, 7) + "." + value.slice(7);
       if (value.length > 11) value = value.slice(0, 11) + "-" + value.slice(11);
-      return value;
+      setFormData((prev) => ({ ...prev, cpf: value }));
     };
 
-    const applyContatoMask = (value) => {
-      value = value.replace(/\D/g, "").slice(0, 11); // Limit to 11 digits
+    // Máscara de contato
+    const handleContatoChange = (e) => {
+      let value = e.target.value.replace(/\D/g, "").slice(0, 11);
       if (value.length > 0) value = "(" + value;
       if (value.length > 3) value = value.slice(0, 3) + ") " + value.slice(3);
       if (value.length > 10) value = value.slice(0, 10) + "-" + value.slice(10);
-      return value;
+      setFormData((prev) => ({ ...prev, contact: value }));
     };
 
-    const handleMaskedInputChange = (e) => {
+    const handleInputChange = (e) => {
       const { name, value } = e.target;
-      let maskedValue = value;
+      const parsedValue = name === "active" ? value === "true" : value;
+      setFormData((prevData) => ({ ...prevData, [name]: parsedValue }));
+    };
 
-      if (name === "cpf") maskedValue = applyCpfMask(value);
-      if (name === "contato") maskedValue = applyContatoMask(value);
-
-      setFormData((prevData) => ({ ...prevData, [name]: maskedValue }));
+    const validarEmail = () => {
+      const email = formData.email;
+      const regex = /^[^\s]+@[^\s]+\.[^\s]+$/;
+      if (!email.trim()) {
+        showToast.error("O campo de email está vazio.");
+        return false;
+      }
+      if (!regex.test(email)) {
+        showToast.error("O email inserido é inválido.");
+        return false;
+      }
+      return true;
     };
 
     const handleSaveChanges = async () => {
-      await showToast.promise(
-        (async () => {
-          try {
-            const updatedFormData = {
-              ...formData,
-              name: formData.name.toUpperCase(),
-              contact: formData.contact,
-            };
+      let cpf = formData.cpf;
+      let contact = formData.contact;
 
-            if (!formData.password) delete updatedFormData.password;
-            if (!isClient) delete updatedFormData.clientType;
+      if (!formData.name) {
+        showToast.error("Nome é obrigatório.");
+        return;
+      } else if (!validarEmail()) {
+        showToast.error("E-mail é obrigatório.");
+        return;
+      } else if (!formData.cpf || cpf.length < 14) {
+        showToast.error("CPF deve ter 14 caracteres.");
+        return;
+      } else if (!formData.contact || contact.length < 15) {
+        showToast.error("Contato deve ter 15 caracteres.");
+        return;
+      } else {
+        await showToast.promise(
+          (async () => {
+            try {
+              const updatedFormData = {
+                ...formData,
+                name: formData.name.toUpperCase(),
+                contact: formData.contact,
+              };
 
-            const endpoint = isClient
-              ? `/clients/${userId}`
-              : `/employees/${userId}`;
-            console.log("Dados atualizados:", updatedFormData);
-            await axiosProvider.patch(endpoint, updatedFormData);
+              if (!formData.password) delete updatedFormData.password;
+              if (!isClient) delete updatedFormData.clientType;
 
-            setUser({ ...user, ...updatedFormData });
-            setIsEditing(false);
-            showToast.success("Informações atualizadas com sucesso!");
-          } catch (error) {
-            showToast.error("Erro ao salvar alterações:", error);
-            throw new Error("Erro ao salvar alterações. Tente novamente.");
+              const endpoint = isClient
+                ? `/clients/${userId}`
+                : `/employees/${userId}`;
+              console.log("Dados atualizados:", updatedFormData);
+              await axiosProvider.patch(endpoint, updatedFormData);
+
+              setUser({ ...user, ...updatedFormData });
+              setIsEditing(false);
+              showToast.success("Informações atualizadas com sucesso!");
+            } catch (error) {
+              showToast.error("Erro ao salvar alterações:", error);
+              throw new Error("Erro ao salvar alterações. Tente novamente.");
+            }
+          })(),
+          {
+            loading: "Salvando alterações...",
+            success: "Informações atualizadas com sucesso!",
+            error: "Erro ao salvar alterações.",
+          },
+          {
+            style: ToastStyle,
           }
-        })(),
-        {
-          loading: "Salvando alterações...",
-          success: "Informações atualizadas com sucesso!",
-          error: "Erro ao salvar alterações.",
-        },
-        {
-          style: ToastStyle,
-        }
-      );
+        );
+      }
     };
 
     return (
@@ -239,18 +265,16 @@ export const RenderInfos = () => {
           <span className="text-[18px]">Altere as informações</span>
           <ul className="flex flex-col mt-6 gap-2">
             {isClient ? (
-              <>
-                <li>
-                  <Select
-                    text="Tipo de Cliente"
-                    name="clientType"
-                    required
-                    options={clienteOptions}
-                    handleOnChange={handleInputChange}
-                    value={formData.clientType} // Certificar-se de que o valor está correto
-                  />
-                </li>
-              </>
+              <li>
+                <Select
+                  text="Tipo de Cliente"
+                  name="clientType"
+                  required
+                  options={clienteOptions}
+                  handleOnChange={handleInputChange}
+                  value={formData.clientType}
+                />
+              </li>
             ) : null}
             <li>
               <Input
@@ -279,7 +303,8 @@ export const RenderInfos = () => {
                 name="cpf"
                 required
                 value={formData.cpf}
-                handleOnChange={handleMaskedInputChange}
+                handleOnChange={handleCpfChange}
+                maxLength="14"
               />
             </li>
             <li>
@@ -289,7 +314,8 @@ export const RenderInfos = () => {
                 name="contact"
                 required
                 value={formData.contact}
-                handleOnChange={handleMaskedInputChange}
+                handleOnChange={handleContatoChange}
+                maxLength="15"
               />
             </li>
             {!isClient ? (
@@ -311,7 +337,7 @@ export const RenderInfos = () => {
                 required
                 options={statusOptions}
                 handleOnChange={handleInputChange}
-                value={formData.active?.toString()} // Convert boolean to string for proper matching
+                value={formData.active?.toString()}
               />
             </li>
           </ul>
@@ -396,7 +422,9 @@ export const RenderInfos = () => {
                   </li>
                   <li>
                     <b>Desde: </b>
-                    {user?.createdDate ? formatDateWithoutTime(user.createdDate) : "Não foi possível carregar a data"}
+                    {user?.createdDate
+                      ? formatDateWithoutTime(user.createdDate)
+                      : "Não foi possível carregar a data"}
                   </li>
                 </ul>
               </div>
@@ -460,7 +488,11 @@ export const RenderInfos = () => {
             </div>
             <section>
               <div className="flex justify-center">
-                <Table headers={tableHeader} data={tableData} elementMessageNotFound="serviço" />
+                <Table
+                  headers={tableHeader}
+                  data={tableData}
+                  elementMessageNotFound="serviço"
+                />
               </div>
             </section>
           </div>
@@ -478,20 +510,18 @@ export const RenderInfos = () => {
   return (
     <div className="w-full mt-3">
       <ScreenFilter onFilterChange={setFilterScreen} />
-      {
-        isLoading ? (
-          <div className="flex items-center justify-center w-full h-full mt-[8rem]">
-            <SyncLoader
-              size={8}
-              loading={true}
-              color={"#02AEBA"}
-              speedMultiplier={2}
-            />
-          </div>
-        ) : (
-          renderContent()
-        )
-      }
+      {isLoading ? (
+        <div className="flex items-center justify-center w-full h-full mt-[8rem]">
+          <SyncLoader
+            size={8}
+            loading={true}
+            color={"#02AEBA"}
+            speedMultiplier={2}
+          />
+        </div>
+      ) : (
+        renderContent()
+      )}
     </div>
   );
 };

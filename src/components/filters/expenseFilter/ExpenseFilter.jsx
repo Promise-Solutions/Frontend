@@ -1,14 +1,15 @@
+// ExpenseFilter.jsx
 import { useState } from "react";
 import icon from "../../../assets/icone-busca.png";
 
-const CommandFilter = ({ id, placeholder, onSearch }) => {
+const ExpenseFilter = ({ id, placeholder, onSearch }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState("");
 
   const handleInputChange = (e) => {
-    const newValue = e.target.value;
+    let newValue = e.target.value;
     setValue(newValue);
-    onSearch(newValue);
+    onSearch(newValue); // onSearch deve ser responsável por filtrar os cards no componente pai
   };
 
   return (
@@ -19,7 +20,7 @@ const CommandFilter = ({ id, placeholder, onSearch }) => {
     >
       <img src={icon} alt="Buscar" className="mx-2 w-[24px] h-[24px]" />
       <input
-        id={id || "input_search_command"}
+        id={id}
         type="text"
         placeholder={placeholder}
         className="outline-none"
@@ -32,4 +33,4 @@ const CommandFilter = ({ id, placeholder, onSearch }) => {
   );
 };
 
-export default CommandFilter;
+export default ExpenseFilter;
