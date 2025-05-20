@@ -11,6 +11,7 @@ export const tabs = [
   { id: "dashboard", name: "Análise" },
   { id: "reports", name: "Relatórios" },
   { id: "tasks", name: "Tarefas" },
+  { id: "expenses", name: "Despesas" },
 ];
 
 // Hook da lógica da navbar

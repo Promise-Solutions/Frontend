@@ -1,8 +1,8 @@
-// UserFilter.jsx
+// ExpenseFilter.jsx
 import { useState } from "react";
 import icon from "../../../assets/icone-busca.png";
 
-const UserFilter = ({ id, placeholder, onSearch }) => {
+const ExpenseFilter = ({ id, placeholder, onSearch }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState("");
 
@@ -33,4 +33,4 @@ const UserFilter = ({ id, placeholder, onSearch }) => {
   );
 };
 
-export default UserFilter;
+export default ExpenseFilter;

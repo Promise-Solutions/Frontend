@@ -21,6 +21,7 @@ import Command from "./pages/Command/Command";
 import Tasks from "./pages/Tasks/Tasks";
 import JobRegister from "./pages/Register/JobRegister/JobRegister.jsx";
 import SubJobRegister from "./pages/Register/SubJobRegister/SubJobRegister.jsx";
+import Expenses from "./pages/Expenses/Expenses.jsx";
 
 function AppRoutes() {
   return (
@@ -43,6 +44,7 @@ function AppRoutes() {
       <Route path={ROUTERS.PROJECTS} element={<Projects />} />
       <Route path={ROUTERS.JOBS} element={<Jobs />} />
       <Route path={ROUTERS.TASKS} element={<Tasks />} />
+      <Route path={ROUTERS.EXPENSES} element={<Expenses />} />
     </Routes>
   );
 }
