@@ -8,10 +8,10 @@ export const tabs = [
   { id: "users", name: "Usuários" },
   { id: "jobs", name: "Serviços" },
   { id: "bar", name: "Bar" },
+  { id: "expenses", name: "Despesas" },
+  { id: "tasks", name: "Tarefas" },
   { id: "dashboard", name: "Análise" },
   { id: "reports", name: "Relatórios" },
-  { id: "tasks", name: "Tarefas" },
-  { id: "expenses", name: "Despesas" },
 ];
 
 // Hook da lógica da navbar
