@@ -31,13 +31,13 @@ const TaskCard = ({ task, onClick, dragDisabled }) => {
     textOverflow: "ellipsis",
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return `${String(date.getUTCDate()).padStart(2, "0")}/${String(
-      date.getUTCMonth() + 1
-    ).padStart(2, "0")}/${date.getUTCFullYear()}`; // Formata a data no formato DD/MM/YYYY sem ajustes de fuso horário
-  };
+    const formatDate = (dateString) => {
+      if (!dateString) return "";
+      const date = new Date(dateString);
+      return `${String(date.getUTCDate()).padStart(2, "0")}/${String(
+        date.getUTCMonth() + 1
+      ).padStart(2, "0")}/${date.getUTCFullYear()}`; // Formata a data no formato DD/MM/YYYY sem ajustes de fuso horário
+    };
 
   const handlePointerDown = (e) => {
     pointerStart.current = { x: e.clientX, y: e.clientY };

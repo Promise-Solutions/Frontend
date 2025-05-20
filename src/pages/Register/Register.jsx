@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { data, useNavigate } from "react-router-dom"; // Import useNavigate
 import { setupRegisterEvents } from "./Register.script.js";
 import Input from "../../components/form/Input.jsx";
 import SubmitButton from "../../components/form/SubmitButton.jsx";
@@ -16,6 +16,7 @@ function Register() {
     contato: "",
     tipoCliente: "",
     tipo: "",
+    dataNascimento: "",
     senha: "",
   });
 
@@ -106,6 +107,15 @@ function Register() {
               name="contato"
               required
               placeholder="Digite o contato"
+              handleOnChange={handleInputChange}
+              value={formData.contato}
+              maxLength="15"
+            />
+            <Input
+              type="date"
+              text="Data de Nascimento"
+              name="dataNascimento"
+              required
               handleOnChange={handleInputChange}
               value={formData.contato}
               maxLength="15"
