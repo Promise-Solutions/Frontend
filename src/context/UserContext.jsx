@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { axiosProvider } from "../provider/apiProvider";
+import { ENDPOINTS } from "../constants/endpoints";
 
 const UserContext = createContext({});
 
@@ -53,7 +54,7 @@ export function UserProvider({ children }) {
 
   async function findUsers(filterType) {
     try {
-      const endpoint = filterType === "CLIENTE" ? "/clients" : "/employees";
+      const endpoint = filterType === "CLIENTE" ? ENDPOINTS.CLIENTS : ENDPOINTS.EMPLOYEES;
       const response = await axiosProvider.get(endpoint);
 
       // Verifique se response.data é um array antes de usar .map()
@@ -85,7 +86,7 @@ export function UserProvider({ children }) {
 
   const findClients = async () => {
     try {
-      const response = await axiosProvider.get("/clients");
+      const response = await axiosProvider.get(ENDPOINTS.CLIENTS);
       return response.data.map((client) => ({
         ...client,
         clientType: client.clientType === "SINGLE" ? "Avulso" : "Mensal",
@@ -99,7 +100,7 @@ export function UserProvider({ children }) {
 
   const findEmployees = async () => {
     try {
-      const response = await axiosProvider.get("/employees");
+      const response = await axiosProvider.get(ENDPOINTS.EMPLOYEES);
       return response.data.map((employee) => ({
         ...employee,
         active: employee.active ? "Ativo" : "Inativo",

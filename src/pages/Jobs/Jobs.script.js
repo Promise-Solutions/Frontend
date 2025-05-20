@@ -4,7 +4,7 @@ import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } 
 import { ROUTERS } from "../../constants/routers.js";
 
 export const registerRedirect = (navigate) => {
-  navigate("/register/jobs");
+  navigate(ROUTERS.JOB_REGISTER);
 };
 
 export const renderJobs = async (

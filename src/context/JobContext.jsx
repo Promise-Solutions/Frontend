@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext } from "react";
 import toast from "react-hot-toast";
 import { axiosProvider } from "../provider/apiProvider";
 import { showToast, ToastStyle } from "../components/toastStyle/ToastStyle";
+import { ENDPOINTS } from "../constants/endpoints";
 
 const JobContext = createContext({});
 
@@ -10,7 +11,7 @@ export function JobProvider({ children }) {
 
   const saveJob = async (formData) => {
     try {
-      const response = await axiosProvider.post(`/jobs`, formData);
+      const response = await axiosProvider.post(ENDPOINTS.JOBS, formData);
 
       if (response.status == 201) {
         showToast.success("Servico Cadastrado!", { style: ToastStyle })
@@ -58,7 +59,7 @@ export function JobProvider({ children }) {
 
   const findJobs = async () => {
     try {
-      const response = await axiosProvider.get("/jobs");
+      const response = await axiosProvider.get(ENDPOINTS.JOBS);
       const jobs = response.data;
       console.log("jobs", jobs)
       return jobs;

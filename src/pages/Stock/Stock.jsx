@@ -7,6 +7,7 @@ import ModalAddProduct from "../../components/modals/modalAddProduct/ModalAddPro
 import ModalEditProduct from "../../components/modals/modalEditProduct/ModalEditProduct.jsx";
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { axiosProvider } from "../../provider/apiProvider.js";
+import { ENDPOINTS } from "../../constants/endpoints.js";
 
 const Stock = () => {
   const [products, setProducts] = useState([]);
@@ -28,7 +29,7 @@ const Stock = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axiosProvider.get("/products");
+      const response = await axiosProvider.get(ENDPOINTS.PRODUCTS);
       setProducts(response.data);
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
@@ -44,7 +45,7 @@ const Stock = () => {
         buyValue: parseFloat(newProduct.buyValue).toFixed(2),
       };
       const response = await axiosProvider.post(
-        "/products",
+        ENDPOINTS.PRODUCTS,
         productToAdd
       );
       setProducts((prevProducts) => [...prevProducts, response.data]);

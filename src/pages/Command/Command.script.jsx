@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { comma } from "postcss/lib/list";
 import { ROUTERS } from "../../constants/routers.js";
+import { ENDPOINTS } from "../../constants/endpoints.js";
 
 export const RenderCommandDetails = () => {
   const { command, setCommand, commandId, setCommandId } = useCommandContext(); // Usa o BarContext para obter a comanda
@@ -64,7 +65,7 @@ export const RenderCommandDetails = () => {
   useEffect(() => {
     const fetchAllProducts = async () => {
       try {
-        const response = await axiosProvider.get("/products");
+        const response = await axiosProvider.get(ENDPOINTS.PRODUCTS);
         setAllProducts(response.data);
       } catch (error) {
         console.error("Erro ao buscar todos os produtos:", error);
@@ -109,7 +110,7 @@ export const RenderCommandDetails = () => {
 
   const fetchAllProducts = async () => {
     try {
-      const response = await axiosProvider.get("/products");
+      const response = await axiosProvider.get(ENDPOINTS.PRODUCTS);
       setAllProducts(response.data);
     } catch (error) {
       console.error("Erro ao buscar todos os produtos:", error);
@@ -127,7 +128,7 @@ export const RenderCommandDetails = () => {
 
       // Fetch client details
       if (command.fkClient) {
-        const clientResponse = await axiosProvider.get(`/clients`);
+        const clientResponse = await axiosProvider.get(ENDPOINTS.CLIENTS);
         const client = clientResponse.data.find(
           (cli) => cli.id === command.fkClient
         );
@@ -140,7 +141,7 @@ export const RenderCommandDetails = () => {
       const productsResponse = await axiosProvider.get(
         `/command-products?fkComanda=${command.id}`
       );
-      const allProductsResponse = await axiosProvider.get("/products");
+      const allProductsResponse = await axiosProvider.get(ENDPOINTS.PRODUCTS);
 
       const productsData = Array.isArray(productsResponse.data)
         ? productsResponse.data
@@ -222,7 +223,7 @@ export const RenderCommandDetails = () => {
         unitValue: parseFloat(newProduct.unitValue).toFixed(2),
       };
 
-      await axiosProvider.post("/command-products", productToAdd);
+      await axiosProvider.post(ENDPOINTS.COMMAND_PRODUCTS, productToAdd);
 
       // Refetch command details and all products
       await fetchCommandDetails();

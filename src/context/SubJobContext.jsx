@@ -1,13 +1,14 @@
 import React, { createContext, useState, useContext } from "react";
 import { axiosProvider } from "../provider/apiProvider";
 import { showToast, ToastStyle } from "../components/toastStyle/ToastStyle";
+import { ENDPOINTS } from "../constants/endpoints";
 
 const SubJobContext = createContext({});
 
 export function SubJobProvider({ children }) {
   const saveSubJob = async (formData) => {
     try {
-      const request = await axiosProvider.post(`/sub-jobs`, formData);
+      const request = await axiosProvider.post(ENDPOINTS.SUBJOBS, formData);
       if (request.status == 201) {
         showToast.success("Subservico Cadastrado!");
         return request.status
