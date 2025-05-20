@@ -21,6 +21,7 @@ function Register() {
     contato: "",
     tipoCliente: "",
     tipo: "",
+    dataNascimento: "",
     senha: "",
   });
 
