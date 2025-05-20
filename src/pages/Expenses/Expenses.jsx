@@ -4,12 +4,41 @@ import { SyncLoader } from "react-spinners";
 import ExpenseFilter from "../../components/filters/expenseFilter/ExpenseFilter";
 
 function Expenses() {
+
+// ! Tem que fazer a requisição para pegar as despesas e os modais para adicionar e editar
+
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
+  const [expenseElements, setExpenseElements] = useState([]); // Estado para armazenar os elementos renderizados
 
   const handleSearch = (term) => {
     setSearchTerm(term.toUpperCase().trim());
   };
+
+  const noResultsMessage =
+    searchTerm && filteredExpenseElements.length === 0 ? (
+      <p className="text-center text-gray-400">
+        Nenhum resultado encontrado para "{searchTerm}".
+      </p>
+    ) : null;
+  
+    const filteredExpenseElements = expenseElements.filter((element) => {
+      const visibleFields = [
+        // coloque os campos que aparecerem no card aqui
+
+        //exemplo:
+        element.props.title,
+        
+      ].map((field) =>
+        String(field ?? "")
+          .toUpperCase()
+          .trim()
+      );
+
+      const term = searchTerm.toUpperCase().trim();
+
+      return visibleFields.some((field) => field.includes(term));
+    });
 
   return (
     <div className="min-w-full min-h-full text-white overflow-y-hidden">
@@ -47,7 +76,9 @@ function Expenses() {
             </div>
           ) : (
             <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
-              texto de não encontrado
+              {filteredCommandElements.length > 0
+                ? filteredCommandElements // Renderiza os elementos filtrados
+                : noResultsMessage}
             </div>
           )}
         </div>

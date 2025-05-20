@@ -10,8 +10,6 @@ import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
 import { SyncLoader } from "react-spinners";
 
-// Componente funcional para a página Bar
-// Representa a estrutura da página "Bar", atualmente sem conteúdo
 const Bar = () => {
   const { setCommandId, findCommands } = useCommandContext(); // Obtém o setCommandId do contexto
   const [commandElements, setCommandElements] = useState([]); // Estado para armazenar os elementos renderizados
