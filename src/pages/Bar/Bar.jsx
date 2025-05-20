@@ -57,7 +57,12 @@ const Bar = () => {
       element.props.discount,
       element.props.dateHourOpen,
       element.props.dateHourClose,
-    ].map((field) => (field || "").toUpperCase().trim());
+      element.props.commandNumber,
+    ].map((field) =>
+      String(field ?? "")
+        .toUpperCase()
+        .trim()
+    );
 
     const term = searchTerm.toUpperCase().trim();
 
@@ -110,34 +115,32 @@ const Bar = () => {
             </div>
           </div>
 
-          {
-            isLoading ? (
-              <div className="flex w-full h-full items-center justify-center mt-[5rem]">
-                <SyncLoader
-                  size={8}
-                  loading={true}
-                  color={"#02AEBA"}
-                  speedMultiplier={2}
-                />
-              </div>
-            ) : (
-              /* Espaço reservado para os cards de comandas */
-              <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
-                {filteredCommandElements.length > 0
-                  ? filteredCommandElements // Renderiza os elementos filtrados
-                  : noResultsMessage ||
-                    (filterType === "ABERTAS" ? (
-                      <p className="text-center text-gray-400">
-                        Nenhuma comanda aberta encontrada.
-                      </p>
-                    ) : (
-                      <p className="text-center text-gray-400">
-                        Nenhuma comanda fechada encontrada.
-                      </p>
-                    ))}
-              </div>
-            )
-          }
+          {isLoading ? (
+            <div className="flex w-full h-full items-center justify-center mt-[5rem]">
+              <SyncLoader
+                size={8}
+                loading={true}
+                color={"#02AEBA"}
+                speedMultiplier={2}
+              />
+            </div>
+          ) : (
+            /* Espaço reservado para os cards de comandas */
+            <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
+              {filteredCommandElements.length > 0
+                ? filteredCommandElements // Renderiza os elementos filtrados
+                : noResultsMessage ||
+                  (filterType === "ABERTAS" ? (
+                    <p className="text-center text-gray-400">
+                      Nenhuma comanda aberta encontrada.
+                    </p>
+                  ) : (
+                    <p className="text-center text-gray-400">
+                      Nenhuma comanda fechada encontrada.
+                    </p>
+                  ))}
+            </div>
+          )}
         </div>
       </section>
       {/* Modal for opening a new command */}
