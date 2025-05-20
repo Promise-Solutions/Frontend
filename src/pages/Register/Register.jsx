@@ -99,6 +99,12 @@ function Register() {
         });
         return false;
       }
+      if (!formData.dataNascimento) {
+        showToast.error("O campo de data de nascimento está vazio.", {
+          style: ToastStyle,
+        });
+        return false;
+      }
     } else if (selectedType === "FUNCIONARIO") {
       if (!formData.senha || formData.senha.length < 8) {
         showToast.error("A senha deve ter pelo menos 8 caracteres.", {
@@ -234,6 +240,18 @@ function Register() {
               value={formData.contato}
               maxLength="15"
               id="contato"
+            />
+            <Input
+              type="date"
+              text="Data de Nascimento"
+              name="dataNascimento"
+              required
+              placeholder="Digite o valor"
+              handleOnChange={handleInputChange}
+              value={formData.date}
+              min="1900-12-31"
+              max={new Date().toLocaleDateString("en-CA")}
+              className="custom-calendar"
             />
             <Select
               text="Tipo de Cliente"

@@ -418,6 +418,9 @@ export const RenderInfos = () => {
                     <b>Contato: </b> {user?.contact}
                   </li>
                   <li>
+                    <b>Data de Nascimento </b> {user?.dataNascimento}
+                  </li>
+                  <li>
                     <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
                   </li>
                   <li>
