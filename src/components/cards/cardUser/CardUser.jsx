@@ -1,5 +1,6 @@
 // CardUser.jsx
 import React from "react";
+import { IoMdMusicalNote } from "react-icons/io";
 
 const CardUser = ({
   id,
@@ -22,10 +23,11 @@ const CardUser = ({
       >
         <h1 className="card_user_name">{name}</h1>
         <div
-          className={`w-2 h-2 rounded-[50%] ${
+          className={clientType ? `w-2 h-2 rounded-[50%] ${
             active ? "bg-green-zero" : "bg-red-zero"
-          }`}
-        ></div>
+          }` : ""   
+          }
+        >{clientType ? "" : <IoMdMusicalNote />}</div>
       </div>
       <div>
         <div className={`border-1 ${clientType ? "border-pink-zero" : "border-cyan-zero"}`}></div>
