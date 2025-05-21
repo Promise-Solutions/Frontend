@@ -1,4 +1,4 @@
-import { CiFileOn } from "react-icons/ci";
+import { CiEraser, CiFileOn } from "react-icons/ci";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 import CardReport from "../../components/cards/cardReport/CardReport";
 import { useState } from "react";
@@ -96,6 +96,11 @@ const Reports = () => {
         </p>
       </div>
       <div className="flex flex-wrap justify-start items-end gap-4 mb-10">
+        <PrimaryButton
+          id="filter_report_button_id"
+          text="Filtrar"
+          onClick={handleFilter}
+        />
         <label className="flex flex-col">
           <span>Período de: 00/00/0000</span>
           <input
@@ -114,13 +119,6 @@ const Reports = () => {
             onChange={(e) => setDateTo(e.target.value)}
           />
         </label>
-
-        <PrimaryButton
-          id="filter_report_button_id"
-          text="Filtrar"
-          onClick={handleFilter}
-        />
-        <div className="flex items-center w-[53%] justify-end gap-2">
           <button
             id="clear_filter_report_button_id"
             className="flex items-center justify-center gap-2 cursor-pointer text-pink-zero hover:text-cyan-zero transition text-3xl p-2"
@@ -128,12 +126,8 @@ const Reports = () => {
             title="Remover Filtros"
             style={{ lineHeight: 0 }}
           >
-            <span className="text-base text-gray-400 hidden sm:inline">
-              Remover Filtros
-            </span>
-            <FiXCircle />
+            <CiEraser size={"40px"} />
           </button>
-        </div>
       </div>
       <div className="max-h-[450px] overflow-y-auto pr-2">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
