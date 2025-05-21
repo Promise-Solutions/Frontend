@@ -23,6 +23,9 @@ const BarGraphic = ({ title }) => {
   const getLucroColor = (lucro) =>
     lucro < 0 ? "var(--color-red-zero)" : "#B39DDB";
 
+  // Define o label do Lucro dinamicamente
+  const getLucroLabel = (lucro) => (lucro < 0 ? "Perda" : "Lucro");
+
   return (
     <div className="bg-white/5 border-1 border-pink-zero p-6 shadow-md w-[100%] h-[100%] relative">
       <div className="flex items-center mb-4">
@@ -67,10 +70,12 @@ const BarGraphic = ({ title }) => {
           <XAxis dataKey="name" stroke="#fff" />
           <YAxis stroke="#fff" domain={["auto", "auto"]} />
           <Tooltip
-            formatter={(value, name) => [
-              `R$ ${value.toLocaleString("pt-BR")}`,
-              name,
-            ]}
+            formatter={(value, name) => {
+              if (name === "Lucro" && mockData[0].Lucro < 0) {
+                return [`R$ ${value.toLocaleString("pt-BR")}`, "Perda"];
+              }
+              return [`R$ ${value.toLocaleString("pt-BR")}`, name];
+            }}
             contentStyle={{
               backgroundColor: "#1E1E1E",
               border: "1px solid var(--color-pink-zero)",
@@ -88,11 +93,30 @@ const BarGraphic = ({ title }) => {
               fontSize: "14px",
               paddingBottom: "16px",
             }}
+            payload={[
+              {
+                value: "Entrada",
+                type: "circle",
+                color: "#7E57C2",
+                id: "Entrada",
+              },
+              { value: "Saída", type: "circle", color: "#9575CD", id: "Saída" },
+              {
+                value: getLucroLabel(mockData[0].Lucro),
+                type: "circle",
+                color: getLucroColor(mockData[0].Lucro),
+                id: "Lucro",
+              },
+            ]}
           />
           <ReferenceLine y={0} stroke="#fff" />
           <Bar dataKey="Entrada" fill="#7E57C2" />
           <Bar dataKey="Saída" fill="#9575CD" />
-          <Bar dataKey="Lucro" fill={getLucroColor(mockData[0].Lucro)} />
+          <Bar
+            dataKey="Lucro"
+            fill={getLucroColor(mockData[0].Lucro)}
+            name={getLucroLabel(mockData[0].Lucro)}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

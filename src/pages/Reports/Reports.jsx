@@ -90,7 +90,7 @@ const Reports = () => {
           </div>
         </div>
         <h1 className="text-3xl font-bold">Gerar Relatório</h1>
-        <p className="text-zinc-400 text-sm">
+        <p className="text-gray-400 text-sm">
           Você pode gerar um relatório agora ou visualizar os relatórios já
           existentes.
         </p>
@@ -101,7 +101,7 @@ const Reports = () => {
           text="Filtrar"
           onClick={handleFilter}
         />
-        <label className="flex flex-col">
+        <label className="flex flex-col text-gray-400">
           <span>Período de: 00/00/0000</span>
           <input
             type="date"
@@ -110,7 +110,7 @@ const Reports = () => {
             onChange={(e) => setDateFrom(e.target.value)}
           />
         </label>
-        <label className="flex flex-col">
+        <label className="flex flex-col text-gray-400">
           <span>Período até: 00/00/0000</span>
           <input
             type="date"
@@ -119,15 +119,15 @@ const Reports = () => {
             onChange={(e) => setDateTo(e.target.value)}
           />
         </label>
-          <button
-            id="clear_filter_report_button_id"
-            className="flex items-center justify-center gap-2 cursor-pointer text-pink-zero hover:text-cyan-zero transition text-3xl p-2"
-            onClick={handleClearFilters}
-            title="Remover Filtros"
-            style={{ lineHeight: 0 }}
-          >
-            <CiEraser size={"40px"} />
-          </button>
+        <button
+          id="clear_filter_report_button_id"
+          className="flex items-center justify-center gap-2 cursor-pointer text-pink-zero hover:text-cyan-zero transition text-3xl p-2"
+          onClick={handleClearFilters}
+          title="Remover Filtros"
+          style={{ lineHeight: 0 }}
+        >
+          <CiEraser size={"40px"} />
+        </button>
       </div>
       <div className="max-h-[450px] overflow-y-auto pr-2">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
