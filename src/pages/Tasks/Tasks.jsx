@@ -167,7 +167,7 @@ const Tasks = () => {
   };
 
   return (
-    <div className="flex flex-col items-center text-white overflow-x-hidden mx-16 my-4">
+    <div className="flex flex-col items-center text-white overflow-x-hidden mx-16 my-6">
       {!isAddModalOpen && !isEditModalOpen ? (
         <>
           <div className="flex justify-between items-center w-full mb-4">

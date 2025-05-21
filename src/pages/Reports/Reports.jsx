@@ -1,3 +1,4 @@
+import { CiFileOn } from "react-icons/ci";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 import CardReport from "../../components/cards/cardReport/CardReport";
 
@@ -17,20 +18,7 @@ const Reports = () => {
       <div className="text-center space-y-2 mb-10">
         <div className="flex justify-center">
           <div className="bg-white/10 p-4 rounded-full">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-10 w-10 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12h6m2 8H7a2 2 0 01-2-2V6a2 2 0 012-2h5l5 5v11a2 2 0 01-2 2z"
-              />
-            </svg>
+            <CiFileOn size={"70px"} />
           </div>
         </div>
         <h1 className="text-3xl font-bold">Gerar Relatório</h1>
