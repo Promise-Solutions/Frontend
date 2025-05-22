@@ -26,6 +26,7 @@ const Select = ({ text, name, options, handleOnChange, value, required }) => {
             value={option.id}
             key={option.id}
             className="bg-[#1E1E1E] border border-pink-zero text-white rounded-none hover:bg-pink-zero"
+            disabled={option.disabled}
           >
             {option.name}
           </option>

@@ -9,13 +9,13 @@ import DashIcon from "../../assets/iconsHomePage/icon-dashboard.png";
 import RelatIcon from "../../assets/iconsHomePage/icon-report.png";
 import TaskIcon from "../../assets/iconsHomePage/icon-tarefas.png";
 import StockIcon from '../../assets/iconsHomePage/icon-estoque.png';
+import ExpenseIcon from '../../assets/iconsHomePage/icon-despesas.png'
 import Logo from "../../assets/logo-branco-bg-sonoro.png";
 import { handleLogout } from "./Home.script.js";
 import LogoutButton from "../../components/buttons/logoutButton/LogoutButton.jsx";
 import { ROUTERS } from "../../constants/routers.js";
 
-// Componente funcional para a página Home
-// Representa a estrutura da página inicial
+
 const Home = () => {
   const navigate = useNavigate();
 
@@ -98,7 +98,7 @@ const Home = () => {
         <CardHomePage
           title="Despesas"
           text="Visualize e gerencie suas despesas."
-          url={StockIcon}
+          url={ExpenseIcon}
           idButton={ROUTERS.EXPENSES}
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}

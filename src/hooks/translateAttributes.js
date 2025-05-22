@@ -24,3 +24,25 @@ export function getServiceTypeTranslated(serviceType) {
         default: return serviceType
     }
 }
+
+export function getPaymentTypeTranslated(paymentType) {
+    switch (paymentType) {
+        case "CREDIT_CARD": return "Cartão de crédito"
+        case "DEBIT_CARD": return "Cartão de débito"
+        case "BILLET": return "Boleto"
+        case "MONEY": return "Em espécie"
+        case "PIX": return "Pix"
+        case "TRANSFER": return "Transferência"
+        default: return paymentType
+    }
+}
+
+export function getExpenseCategoryTranslated(expenseCategory) {
+    switch (expenseCategory) {
+        case "BILLS": return "Contas"
+        case "STOCK": return "Estoque"
+        case "MAINTENANCE": return "Manutenção"
+        case "OTHERS": return "Outros"
+        default: return paymentType
+    }
+}

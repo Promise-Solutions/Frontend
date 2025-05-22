@@ -12,10 +12,25 @@ import { SyncLoader } from "react-spinners";
 
 const JobRegister = () => {
     const { userParam } = useParams();
-    const [ clientOptions, setClientOptions ] = useState([]);
     const { findClients } = useUserContext();
-    const [ isLoading, setIsLoading ] = useState(true);
     const navigate = useNavigate();
+    const [ clientOptions, setClientOptions ] = useState([]);
+    const [ isLoading, setIsLoading ] = useState(true);
+    const [formData, setFormData] = useState({
+      title: "",
+      category: "",
+      serviceType: "",
+      fkClient: userParam? userParam : null
+    });
+    const categoryOptions = [
+      {id: "MUSIC_REHEARSAL", name: "Ensaio Musical"},
+      {id: "PODCAST", name: "Podcast"},
+      {id: "PHOTO_VIDEO_STUDIO", name: "Estúdio Fotográfico"}
+    ] 
+    const typeOptions = [
+      {id: "SINGLE", name: "Avulso"},
+      {id: "MONTHLY", name: "Mensal"}
+    ]
 
     useEffect(() => {
       renderClientOptions();
@@ -50,25 +65,6 @@ const JobRegister = () => {
         }
       };
 
-      const { saveJob } = useJobContext();
-
-      const [formData, setFormData] = useState({
-          title: "",
-          category: "",
-          serviceType: "",
-          fkClient: userParam? userParam : null
-        });
-
-      const categoryOptions = [
-        {id: "MUSIC_REHEARSAL", name: "Ensaio Musical"},
-        {id: "PODCAST", name: "Podcast"},
-        {id: "PHOTO_VIDEO_STUDIO", name: "Estúdio Fotográfico"}
-      ] 
-
-      const typeOptions = [
-        {id: "SINGLE", name: "Avulso"},
-        {id: "MONTHLY", name: "Mensal"}
-      ]
 
     return(
         <main className="flex items-center justify-center h-[600px] my-6 w-full px-16">

@@ -28,7 +28,7 @@ const Navbar = () => {
   }, [activeTab]);
 
   return (
-    <nav className="navbar bg-transparent px-6 md:px-16 w-full flex justify-between items-center shadow-md shadow-white/5 text-white font-medium relative">
+    <nav className="navbar bg-transparent px-6 md:px-16 w-full rixed flex justify-between items-center shadow-md shadow-white/5 text-white font-medium relative">
       {/* Logo */}
       <img
         id="logo_id"
