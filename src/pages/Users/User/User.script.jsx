@@ -318,6 +318,18 @@ export const RenderInfos = () => {
                 maxLength="15"
               />
             </li>
+            <Input
+              type="date"
+              text="Data de Nascimento"
+              name="dataNascimento"
+              required
+              placeholder="Digite o valor"
+              handleOnChange={handleInputChange}
+              value={formData.date}
+              min="1900-12-31"
+              max={new Date().toLocaleDateString("en-CA")}
+              className="custom-calendar"
+            />
             {!isClient ? (
               <li>
                 <Input
@@ -416,6 +428,9 @@ export const RenderInfos = () => {
                   </li>
                   <li>
                     <b>Contato: </b> {user?.contact}
+                  </li>
+                  <li>
+                    <b>Data de Nascimento: </b> {formatDateWithoutTime(user?.birthDay)}
                   </li>
                   <li>
                     <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
