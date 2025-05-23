@@ -14,6 +14,7 @@ axiosProvider.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     } else if (token && !isTokenValid(token)) {
       localStorage.removeItem("token");
+      localStorage.removeItem("userLogged");
       // redirecionamento programático
       window.location.href = "/login";
       showToast.error("Para sua segurança. Faça login novamente.");

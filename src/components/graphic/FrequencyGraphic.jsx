@@ -65,8 +65,8 @@ const FrequencyGraphic = ({ title }) => {
           </svg>
           {showInfo && (
             <div className="absolute left-6 top-1 z-10 bg-[#1E1E1E] text-white text-xs rounded px-3 py-2 border border-pink-zero w-60 shadow-lg">
-              O primeiro gráfico mostra a frequência de uso do espaço por
-              clientes mensais e avulsos. O segundo mostra a frequência por
+              O primeiro gráfico mostra a quantidade de atendimentos realizados por
+              clientes mensais e avulsos. O segundo mostra os atendimentos por
               categoria de serviço.
             </div>
           )}
