@@ -1,5 +1,6 @@
 import axios from "axios";
 import { isTokenValid } from "../hooks/tokenUtils";
+import { showToast } from "../components/toastStyle/ToastStyle";
 
 export const axiosProvider = axios.create({
   baseURL: import.meta.env.VITE_URL_API,
@@ -15,6 +16,7 @@ axiosProvider.interceptors.request.use(
       localStorage.removeItem("token");
       // redirecionamento programático
       window.location.href = "/login";
+      showToast.error("Para sua segurança. Faça login novamente.");
     }
 
     return config;

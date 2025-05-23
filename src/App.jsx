@@ -43,7 +43,7 @@ function App() {
           <button
             title="Pausar Video de Fundo"
             onClick={toggleVideo}
-            className="fixed bottom-4 cursor-pointer right-4 z-20 bg-black/50 text-white px-4 py-2 border-1 border-pink-zero hover:bg-black/70 transition"
+            className="fixed bottom-4 cursor-pointer left-4 z-20 bg-black/50 text-white px-4 py-2 border-1 border-pink-zero hover:bg-black/70 transition"
           >
             <img
               src={isPlaying ? Pause : Play} // Alterna entre os ícones

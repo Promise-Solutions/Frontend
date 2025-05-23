@@ -43,15 +43,15 @@ export const RenderInfos = () => {
   // Função para deletar usuário
   const handleDeleteUser = async () => {
     try {
-      // Proceed with deletion
-      const endpoint = isClient ? `/clients/${userId}` : `/employees/${userId}`;
+      const endpoint = isClient ? `/clients/${userId}` : `/employees/${userId}/${localStorage.getItem("userLogged")}`;
       await axiosProvider.delete(endpoint);
       showToast.success("Usuário deletado com sucesso!", { style: ToastStyle });
       navigate(ROUTERS.USERS);
     } catch (error) {
-      showToast.error("Erro ao deletar usuário. Tente novamente.", {
-        style: ToastStyle,
-      });
+      if (error.response?.status === 428) {
+        showToast.error("Você não pode deletar seu próprio usuário.");
+      }
+      showToast.error("Erro ao deletar usuário. Tente novamente.")
     } finally {
       setIsDeleteModalOpen(false);
     }
