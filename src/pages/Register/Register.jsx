@@ -182,7 +182,7 @@ function Register() {
       </section>
       <form
         autoComplete="off"
-        className="flex flex-col items-center gap-10 w-full h-full px-4"
+        className="flex flex-col items-center gap-3 w-full  px-4"
         onSubmit={handleSubmit}
       >
         <SelectTypeUser

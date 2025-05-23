@@ -258,11 +258,8 @@ export const RenderInfos = () => {
 
     return (
       <section id="edit_section" className="flex w-full justify-between">
-        <div className="flex flex-col">
-          <h1 className="text-[42px]">
-            <b>Editar Informações</b>
-          </h1>
-          <span className="text-[18px]">Altere as informações</span>
+        <div className="flex flex-col w-[500px]">
+          <h2 className="text-[42px] font-bold">Editar informações</h2>
           <ul className="flex flex-col mt-6 gap-2">
             {isClient ? (
               <li>
@@ -318,18 +315,23 @@ export const RenderInfos = () => {
                 maxLength="15"
               />
             </li>
-            <Input
-              type="date"
-              text="Data de Nascimento"
-              name="dataNascimento"
-              required
-              placeholder="Digite o valor"
-              handleOnChange={handleInputChange}
-              value={formData.date}
-              min="1900-12-31"
-              max={new Date().toLocaleDateString("en-CA")}
-              className="custom-calendar"
-            />
+            {isClient ? (
+              <li>
+                <Input
+                  type="date"
+                  text="Data de Nascimento"
+                  name="dataNascimento"
+                  required
+                  placeholder="Digite o valor"
+                  handleOnChange={handleInputChange}
+                  value={formData.date}
+                  min="1900-12-31"
+                  max={new Date().toLocaleDateString("en-CA")}
+                  className="custom-calendar"
+                />
+              </li>
+            ) : null}
+
             {!isClient ? (
               <li>
                 <Input
@@ -429,18 +431,23 @@ export const RenderInfos = () => {
                   <li>
                     <b>Contato: </b> {user?.contact}
                   </li>
-                  <li>
-                    <b>Data de Nascimento: </b> {formatDateWithoutTime(user?.birthDay)}
-                  </li>
+                  {isClient && (
+                    <li>
+                      <b>Data de Nascimento: </b>{" "}
+                      {formatDateWithoutTime(user?.birthDay)}
+                    </li>
+                  )}
                   <li>
                     <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
                   </li>
-                  <li>
-                    <b>Desde: </b>
-                    {user?.createdDate
-                      ? formatDateWithoutTime(user.createdDate)
-                      : "Não foi possível carregar a data"}
-                  </li>
+                  {isClient && (
+                    <li>
+                      <b>Desde: </b>
+                      {user?.createdDate
+                        ? formatDateWithoutTime(user.createdDate)
+                        : "Não foi possível carregar a data"}
+                    </li>
+                  )}
                 </ul>
               </div>
               <div>
