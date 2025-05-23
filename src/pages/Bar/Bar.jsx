@@ -91,7 +91,7 @@ const Bar = () => {
               onClick={() => stockRedirect(navigate)} // Passa navigate para a função stockRedirect
             />
           </div>
-          <div className="flex justify-between mt-4 border-t-1 pt-4 border-gray-600">
+          <div className="flex justify-between mt-4 pt-4 border-t-1 border-gray-600">
             <div className="flex w-full flex-1 justify-center pl-75">
               <BarTypeFilter
                 onFilterChange={handleFilterChange} // Passa a função corrigida

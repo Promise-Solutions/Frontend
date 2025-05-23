@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../constants/routers";
 
@@ -8,6 +7,7 @@ export const tabs = [
   { id: "users", name: "Usuários" },
   { id: "jobs", name: "Serviços" },
   { id: "bar", name: "Bar" },
+  { id: "bar/stock", name: "Estoque" },
   { id: "expenses", name: "Despesas" },
   { id: "tasks", name: "Tarefas" },
   { id: "dashboard", name: "Análise" },

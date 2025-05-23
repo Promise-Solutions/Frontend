@@ -77,59 +77,58 @@ const Users = () => {
         <div className="flex justify-center flex-col">
           {/* Filtro por tipo de usuário (Clientes ou Internos) */}
           <div className="flex w-full justify-between">
-            <div className="flex items-center">
+            <div className="flex pt-3 items-center">
               <h1 className="text-2xl font-thin">Gerencie seus usuários</h1>
             </div>
-            <div className="flex pl-14 justify-center w-[50%]">
-              <UserTypeFilter
-                onFilterChange={handleFilterChange} // Pass updated callback
-              />
-            </div>
-            <div className="flex gap-2 justify-end text-gray-400">
-              <UserFilter
-                id="input_search_user"
-                placeholder="Busque um Usuário"
-                onSearch={handleSearch} // Passa a função de busca
-              />
-              {/* Botão para cadastrar um novo usuário */}
-              <RegisterButton
-                id="register_button"
-                title="Cadastrar Usuário"
-                text="+"
-                onClick={() => registerRedirect(navigate)} // Pass navigate to registerRedirect
-              />
-            </div>
           </div>
-          {/* Espaço reservado para os cards de usuários */}
-            {
-              isLoading ? (
-                <div className="flex items-center justify-center h-full w-full mt-[5rem]">
-                  <SyncLoader
-                    size={8}
-                    loading={true}
-                    color={"#02AEBA"}
-                    speedMultiplier={2}
-                  />
-                </div>
-              ) : (
-                <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
-                  {
-                    filteredUserElements.length > 0
-                      ? filteredUserElements // Ensure filtered elements are rendered
-                      : noResultsMessage ||
-                        (filterType === "CLIENTE" ? (
-                          <p className="text-center text-gray-400">
-                            Nenhum cliente encontrado.
-                          </p>
-                        ) : (
-                          <p className="text-center text-gray-400">
-                            Nenhum interno encontrado.
-                          </p>
-                        ))  
-                    }
-                </div>
-              )
-            }
+          <div className="border-t-1 border-gray-600 mt-7 pt-4">
+            <div className="flex w-full items-center">
+              <div className="flex justify-center w-[100%] pl-75">
+                <UserTypeFilter
+                  onFilterChange={handleFilterChange} // Pass updated callback
+                />
+              </div>
+              <div className="flex gap-2 justify-end text-gray-400">
+                <UserFilter
+                  id="input_search_user"
+                  placeholder="Busque um Usuário"
+                  onSearch={handleSearch} // Passa a função de busca
+                />
+                {/* Botão para cadastrar um novo usuário */}
+                <RegisterButton
+                  id="register_button"
+                  title="Cadastrar Usuário"
+                  text="+"
+                  onClick={() => registerRedirect(navigate)} // Pass navigate to registerRedirect
+                />
+              </div>
+            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-full w-full mt-[5rem]">
+                <SyncLoader
+                  size={8}
+                  loading={true}
+                  color={"#02AEBA"}
+                  speedMultiplier={2}
+                />
+              </div>
+            ) : (
+              <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
+                {filteredUserElements.length > 0
+                  ? filteredUserElements // Ensure filtered elements are rendered
+                  : noResultsMessage ||
+                    (filterType === "CLIENTE" ? (
+                      <p className="text-center text-gray-400">
+                        Nenhum cliente encontrado.
+                      </p>
+                    ) : (
+                      <p className="text-center text-gray-400">
+                        Nenhum interno encontrado.
+                      </p>
+                    ))}
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </div>
