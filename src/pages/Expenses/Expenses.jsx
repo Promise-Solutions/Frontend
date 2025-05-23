@@ -5,13 +5,12 @@ import ExpenseFilter from "../../components/filters/expenseFilter/ExpenseFilter"
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 
 function Expenses() {
-
-// ! Tem que fazer a requisição para pegar as despesas e os modais para adicionar e editar
+  // ! Tem que fazer a requisição para pegar as despesas e os modais para adicionar e editar
 
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
   const [expenseElements, setExpenseElements] = useState([]); // Estado para armazenar os elementos renderizados
-  
+
   const goalModal = () => {
     //deve abrir o modal de metas
     alert("abrindo modal de metas");
@@ -27,26 +26,25 @@ function Expenses() {
         Nenhum resultado encontrado para "{searchTerm}".
       </p>
     ) : null;
-  
-    const filteredExpenseElements = expenseElements.filter((element) => {
-      const visibleFields = [
-        // coloque os campos que aparecerem no card aqui
 
-        //exemplo:
-        element.props.title,
-        
-      ].map((field) =>
-        String(field ?? "")
-          .toUpperCase()
-          .trim()
-      );
+  const filteredExpenseElements = expenseElements.filter((element) => {
+    const visibleFields = [
+      // coloque os campos que aparecerem no card aqui
 
-      const term = searchTerm.toUpperCase().trim();
+      //exemplo:
+      element.props.title,
+    ].map((field) =>
+      String(field ?? "")
+        .toUpperCase()
+        .trim()
+    );
 
-      return visibleFields.some((field) => field.includes(term));
-    });
+    const term = searchTerm.toUpperCase().trim();
+
+    return visibleFields.some((field) => field.includes(term));
+  });
   return (
-    <div className="min-w-full min-h-full text-white overflow-y-hidden">
+    <div className="slide-in-ltr min-w-full min-h-full text-white overflow-y-hidden">
       <section className="mx-16 my-6">
         <div className="flex justify-center flex-col">
           <div className="flex w-full items-center gap-4 justify-between">
@@ -85,9 +83,9 @@ function Expenses() {
             </div>
           ) : (
             <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
-                {filteredCommandElements.length > 0
-                  ? filteredCommandElements // Renderiza os elementos filtrados
-                  : noResultsMessage}
+              {filteredCommandElements.length > 0
+                ? filteredCommandElements // Renderiza os elementos filtrados
+                : noResultsMessage}
             </div>
           )}
         </div>
