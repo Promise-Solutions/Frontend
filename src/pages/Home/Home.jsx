@@ -8,7 +8,7 @@ import BarIcon from "../../assets/iconsHomePage/icon-bar.png";
 import DashIcon from "../../assets/iconsHomePage/icon-dashboard.png";
 import RelatIcon from "../../assets/iconsHomePage/icon-report.png";
 import TaskIcon from "../../assets/iconsHomePage/icon-tarefas.png";
-import StockIcon from '../../assets/iconsHomePage/icon-estoque.png';
+import StockIcon from "../../assets/iconsHomePage/icon-estoque.png";
 import Logo from "../../assets/logo-branco-bg-sonoro.png";
 import { handleLogout } from "./Home.script.js";
 import LogoutButton from "../../components/buttons/logoutButton/LogoutButton.jsx";
@@ -20,7 +20,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <main className="flex flex-col justify-center items-center min-h-[100vh] h-full w-[100vw] relative">
+    <main className="slide-in-ltr flex flex-col justify-center items-center min-h-[100vh] h-full w-[100vw] relative">
       <div className="flex items-center justify-center">
         <img src={Logo} className="h-[130px]" />
         <div className="absolute flex w-full justify-end  pr-[64px] py-4 px-12">

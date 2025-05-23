@@ -173,7 +173,7 @@ function Register() {
   };
 
   return (
-    <main className="flex items-center justify-center h-[600px] my-6 w-full px-16">
+    <main className="slide-in-ltr flex items-center justify-center h-[600px] my-6 w-full px-16">
       <section className="flex flex-col items-center justify-start gap-6 w-full px-4">
         <img src={logo} alt="logo-studio-zero-header" className="h-[250px]" />
         <h1 className="font-light text-4xl tracking-widest text-[#9A3379] text-center">

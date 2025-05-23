@@ -46,10 +46,7 @@ const Stock = () => {
         unitValue: parseFloat(newProduct.unitValue).toFixed(2),
         buyValue: parseFloat(newProduct.buyValue).toFixed(2),
       };
-      const response = await axiosProvider.post(
-        "/products",
-        productToAdd
-      );
+      const response = await axiosProvider.post("/products", productToAdd);
       setProducts((prevProducts) => [...prevProducts, response.data]);
       setIsAddModalOpen(false);
     } catch (error) {
@@ -94,9 +91,7 @@ const Stock = () => {
 
   const confirmDelete = async () => {
     try {
-      await axiosProvider.delete(
-        `/products/${productToDelete.id}`
-      );
+      await axiosProvider.delete(`/products/${productToDelete.id}`);
       setProducts((prevProducts) =>
         prevProducts.filter((product) => product.id !== productToDelete.id)
       );
@@ -105,14 +100,16 @@ const Stock = () => {
       showToast.success("Produto deletado com sucesso!");
     } catch (error) {
       console.error("Erro ao excluir produto:", error);
-      showToast.error("Erro ao excluir produto. Verifique se o produto está em uso.");
+      showToast.error(
+        "Erro ao excluir produto. Verifique se o produto está em uso."
+      );
       setIsDeleteModalOpen(false);
       setProductToDelete(null);
     }
   };
 
   return (
-    <div className="text-white my-6 mx-16">
+    <div className="slide-in-ltr text-white my-6 mx-16">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-thin">Gerencie seu estoque</h1>
         <PrimaryButton
@@ -120,24 +117,21 @@ const Stock = () => {
           onClick={() => setIsAddModalOpen(true)}
         />
       </div>
-      {
-        isLoading ? (
-          <SyncLoader 
-              size={8}
-              loading={true}
-              color={"#02AEBA"}
-              speedMultiplier={2}
-          />
-        ) 
-        : (
-          <StockTable
-            products={products}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        )
-      }
-      
+      {isLoading ? (
+        <SyncLoader
+          size={8}
+          loading={true}
+          color={"#02AEBA"}
+          speedMultiplier={2}
+        />
+      ) : (
+        <StockTable
+          products={products}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      )}
+
       <ModalAddProduct
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}

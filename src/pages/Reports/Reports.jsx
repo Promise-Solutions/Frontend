@@ -75,7 +75,7 @@ const Reports = () => {
 
   return (
     <>
-      <div className="mx-16 my-6 text-white">
+      <div className="slide-in-ltr mx-16 my-6 text-white">
         <div className="flex pb-4 justify-between items-center">
           <h1 className="text-2xl font-thin">Gerencie seus Relatórios</h1>
           <div className="flex">
@@ -87,10 +87,10 @@ const Reports = () => {
           </div>
         </div>
         <div className="flex bmt-4 pt-4 border-t-1 border-gray-600 justify-between mb-4"></div>
-          <p className="text-yellow-zero">
-            Você pode gerar um relatório agora ou visualizar os relatórios já
-            existentes.
-          </p>
+        <p className="text-yellow-zero">
+          Você pode gerar um relatório agora ou visualizar os relatórios já
+          existentes.
+        </p>
         <div className="flex flex-wrap justify-end items-end gap-4 mb-10">
           <button
             id="clear_filter_report_button_id"

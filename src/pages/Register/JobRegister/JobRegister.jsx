@@ -11,137 +11,134 @@ import { useNavigate, useParams } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
 
 const JobRegister = () => {
-    const { userParam } = useParams();
-    const [ clientOptions, setClientOptions ] = useState([]);
-    const { findClients } = useUserContext();
-    const [ isLoading, setIsLoading ] = useState(true);
-    const navigate = useNavigate();
+  const { userParam } = useParams();
+  const [clientOptions, setClientOptions] = useState([]);
+  const { findClients } = useUserContext();
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-      renderClientOptions();
-      setIsLoading(false);
-    },[])
+  useEffect(() => {
+    renderClientOptions();
+    setIsLoading(false);
+  }, []);
 
-    const renderClientOptions = async () => {
-      const clients = await createClientsOptions(findClients);
+  const renderClientOptions = async () => {
+    const clients = await createClientsOptions(findClients);
 
-       const nameClients = clients.map(client => {
-          const clientObj = {
-            id: client.id,
-            name: client.name
-          }
-          return clientObj
-       });
+    const nameClients = clients.map((client) => {
+      const clientObj = {
+        id: client.id,
+        name: client.name,
+      };
+      return clientObj;
+    });
 
-       setClientOptions(nameClients);
+    setClientOptions(nameClients);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const responseCode = await registrarServico(formData, saveJob);
+
+    if (responseCode == 201) {
+      navigate(-1);
     }
+  };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-      };
+  const { saveJob } = useJobContext();
 
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-        const responseCode = await registrarServico(formData, saveJob);
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "",
+    serviceType: "",
+    fkClient: userParam ? userParam : null,
+  });
 
-        if(responseCode == 201) {
-          navigate(-1);
-        }
-      };
+  const categoryOptions = [
+    { id: "MUSIC_REHEARSAL", name: "Ensaio Musical" },
+    { id: "PODCAST", name: "Podcast" },
+    { id: "PHOTO_VIDEO_STUDIO", name: "Estúdio Fotográfico" },
+  ];
 
-      const { saveJob } = useJobContext();
+  const typeOptions = [
+    { id: "SINGLE", name: "Avulso" },
+    { id: "MONTHLY", name: "Mensal" },
+  ];
 
-      const [formData, setFormData] = useState({
-          title: "",
-          category: "",
-          serviceType: "",
-          fkClient: userParam? userParam : null
-        });
+  return (
+    <main className="slide-in-ltr flex items-center justify-center h-[600px] my-6 w-full px-16">
+      <section className="flex flex-col items-center justify-start gap-6 w-full px-4">
+        <img src={logo} alt="logo-studio-zero-header" className="h-[250px]" />
+        <h1 className="font-light text-4xl tracking-widest text-[#9A3379] text-center">
+          Registre um novo Serviço
+        </h1>
+      </section>
 
-      const categoryOptions = [
-        {id: "MUSIC_REHEARSAL", name: "Ensaio Musical"},
-        {id: "PODCAST", name: "Podcast"},
-        {id: "PHOTO_VIDEO_STUDIO", name: "Estúdio Fotográfico"}
-      ] 
-
-      const typeOptions = [
-        {id: "SINGLE", name: "Avulso"},
-        {id: "MONTHLY", name: "Mensal"}
-      ]
-
-    return(
-        <main className="flex items-center justify-center h-[600px] my-6 w-full px-16">
-          <section className="flex flex-col items-center justify-start gap-6 w-full px-4">
-            <img src={logo} alt="logo-studio-zero-header" className="h-[250px]" />
-            <h1 className="font-light text-4xl tracking-widest text-[#9A3379] text-center">
-              Registre um novo Serviço
-            </h1>
+      {isLoading ? (
+        <div className="flex items-center justify-center w-full h-full">
+          <SyncLoader
+            size={8}
+            loading={true}
+            color={"#02AEBA"}
+            speedMultiplier={2}
+          />
+        </div>
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          autoComplete="off"
+          className="flex flex-col items-center justify-center gap-10 w-full h-full px-4"
+        >
+          <section
+            id="form_cliente"
+            className="flex flex-wrap items-center justify-between w-full gap-4"
+          >
+            <Input
+              type="text"
+              text="Titulo"
+              name="title"
+              required
+              placeholder="Digite o titulo"
+              handleOnChange={handleInputChange}
+              value={formData.title}
+              maxLength="50"
+            />
+            <Select
+              text="Categoria de Servico"
+              name="category"
+              required
+              options={categoryOptions}
+              handleOnChange={handleInputChange}
+              value={formData.category}
+            />
+            <Select
+              text="Tipo de serviço"
+              name="serviceType"
+              required
+              options={typeOptions}
+              handleOnChange={handleInputChange}
+              value={formData.serviceType}
+            />
+            <Select
+              text="Cliente Desejado"
+              name="fkClient"
+              required
+              options={clientOptions}
+              handleOnChange={handleInputChange}
+              value={formData.fkClient}
+            />
           </section>
 
-          {
-            isLoading ? (
-              <div className="flex items-center justify-center w-full h-full">
-                <SyncLoader
-                  size={8}
-                  loading={true}
-                  color={"#02AEBA"}
-                  speedMultiplier={2}
-                  />
-              </div>  
-            ) : (
-              <form
-                onSubmit={handleSubmit}
-                autoComplete="off"
-                className="flex flex-col items-center justify-center gap-10 w-full h-full px-4"
-              >
-                  <section
-                    id="form_cliente"
-                    className="flex flex-wrap items-center justify-between w-full gap-4"
-                  >
-                    <Input
-                      type="text"
-                      text="Titulo"
-                      name="title"
-                      required
-                      placeholder="Digite o titulo"
-                      handleOnChange={handleInputChange}
-                      value={formData.title}
-                      maxLength="50"
-                    />
-                    <Select
-                      text="Categoria de Servico"
-                      name="category"
-                      required
-                      options={categoryOptions}
-                      handleOnChange={handleInputChange}
-                      value={formData.category}
-                    />
-                    <Select
-                      text="Tipo de serviço"
-                      name="serviceType"
-                      required
-                      options={typeOptions}
-                      handleOnChange={handleInputChange}
-                      value={formData.serviceType}
-                    />
-                    <Select
-                      text="Cliente Desejado"
-                      name="fkClient"
-                      required
-                      options={clientOptions}
-                      handleOnChange={handleInputChange}
-                      value={formData.fkClient}
-                    />
-                  </section>
-            
-              <SubmitButton text="Confirmar" />
-            </form>
-            )
-          }
+          <SubmitButton text="Confirmar" />
+        </form>
+      )}
+    </main>
+  );
+};
 
-      </main>
-    );
-}
-
-export default JobRegister
+export default JobRegister;

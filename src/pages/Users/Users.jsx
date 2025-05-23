@@ -69,7 +69,7 @@ const Users = () => {
     ) : null;
 
   return (
-    <div className="min-w-full min-h-full text-white overflow-y-hidden">
+    <div className="slide-in-ltr min-w-full min-h-full text-white overflow-y-hidden">
       {/* Seção principal com filtros e cards */}
       <section className="mx-16 my-6">
         {/* Filtro de busca de usuários */}
