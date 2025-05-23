@@ -83,7 +83,7 @@ const Bar = () => {
           {/* Filtro por tipo de comanda (Abertas ou Fechadas) */}
           <div className="flex w-full items-center gap-4 justify-between">
             <div>
-              <h1 className="text-2xl font-thin">Gerencie seu Bar</h1>
+              <h1 className="text-2xl font-thin">Gerencie seu bar</h1>
             </div>
             <PrimaryButton
               id="stock_button"

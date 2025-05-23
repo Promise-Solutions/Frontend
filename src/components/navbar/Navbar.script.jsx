@@ -21,7 +21,9 @@ export const useNavbarLogic = () => {
   const [activeTab, setActiveTab] = useState("");
 
   useEffect(() => {
-    const matchedTab = tabs.find((tab) =>
+    // Ordena as tabs por tamanho decrescente do id para garantir que subrotas sejam priorizadas
+    const sortedTabs = [...tabs].sort((a, b) => b.id.length - a.id.length);
+    const matchedTab = sortedTabs.find((tab) =>
       location.pathname.startsWith(`/${tab.id}`)
     );
     setActiveTab(matchedTab ? `/${matchedTab.id}` : "");

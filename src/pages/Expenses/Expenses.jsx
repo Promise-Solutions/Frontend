@@ -51,7 +51,7 @@ function Expenses() {
         <div className="flex justify-center flex-col">
           <div className="flex w-full items-center gap-4 justify-between">
             <div>
-              <h1 className="text-2xl font-thin">Gerencie suas Despesas</h1>
+              <h1 className="text-2xl font-thin">Gerencie suas despesas</h1>
             </div>
             <PrimaryButton
               id="goal_button"

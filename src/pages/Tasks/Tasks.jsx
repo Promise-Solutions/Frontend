@@ -171,7 +171,7 @@ const Tasks = () => {
       {!isAddModalOpen && !isEditModalOpen ? (
         <>
           <div className="flex justify-between items-center w-full mb-4">
-            <h1 className="text-2xl font-thin">Tarefas</h1>
+            <h1 className="text-2xl font-thin">Gerencie suas tarefas</h1>
             <PrimaryButton
               onClick={() => setIsAddModalOpen(true)}
               text="Adicionar Tarefa"

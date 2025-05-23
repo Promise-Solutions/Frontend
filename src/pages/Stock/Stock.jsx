@@ -114,7 +114,7 @@ const Stock = () => {
   return (
     <div className="text-white my-6 mx-16">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-thin">Gerenciar Estoque</h1>
+        <h1 className="text-2xl font-thin">Gerencie seu estoque</h1>
         <PrimaryButton
           text="Adicionar Produto"
           onClick={() => setIsAddModalOpen(true)}
