@@ -10,10 +10,8 @@ import ModalEditCommandProduct from "../../components/modals/modalEditCommandPro
 import ModalAddDiscount from "../../components/modals/modalAddDiscount/ModalAddDiscount.jsx"; // Importa o novo modal
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
-import { calcTotalWithDiscount, calcProductsTotal } from "../../hooks/Calc"; // Importa funções de cálculo
 import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { axiosProvider } from "../../provider/apiProvider.js";
-import { comma } from "postcss/lib/list";
 import { ROUTERS } from "../../constants/routers.js";
 import { SyncLoader } from "react-spinners";
 
@@ -423,19 +421,16 @@ export const RenderCommandDetails = () => {
     <div className="flex flex-col w-full overflow-y-hidden">
       <div className="flex justify-between">
         <div className="shadow-[8px_0_15px_rgba(255,255,255,0.1)] pr-8 max-w-[400px]">
-          {
-            isLoading ? (
-              <div className="w-[400px] h-full flex justify-center items-center">
-              <SyncLoader 
+          {isLoading ? (
+            <div className="w-[400px] h-full flex justify-center items-center">
+              <SyncLoader
                 size={8}
                 loading={true}
                 color={"#02AEBA"}
                 speedMultiplier={2}
               />
-              </div>  
-            
-            ) 
-            : (
+            </div>
+          ) : (
             <>
               <h1 className="text-[42px]">
                 <b>Comanda:</b> {command.commandNumber}
@@ -448,10 +443,12 @@ export const RenderCommandDetails = () => {
                   <b>Funcionário:</b> {employeeName}
                 </li>
                 <li>
-                  <b>Data Abertura:</b> {formatDateTime(command.openingDateTime)}
+                  <b>Data Abertura:</b>{" "}
+                  {formatDateTime(command.openingDateTime)}
                 </li>
                 <li>
-                  <b>Data Fechamento:</b> {formatDateTime(command.closingDateTime)}
+                  <b>Data Fechamento:</b>{" "}
+                  {formatDateTime(command.closingDateTime)}
                 </li>
                 <li>
                   <b>Desconto:</b> {command.discount}%
@@ -460,18 +457,9 @@ export const RenderCommandDetails = () => {
                   <b>Valor Total:</b> R$ {calculateTotalValue()}
                 </li>
                 <li>
-                  <b>Status:</b> {command.status == "OPEN" ? "Aberta" : "Fechada"}
+                  <b>Status:</b>{" "}
+                  {command.status == "OPEN" ? "Aberta" : "Fechada"}
                 </li>
-                <div className="flex mt-6 gap-4">
-                  <PrimaryButton
-                    text={
-                      command.status === "OPEN"
-                        ? "Fechar Comanda"
-                        : "Reabrir Comanda"
-                    }
-                    onClick={handleToggleCommandStatus}
-                  />
-                </div>
               </ul>
               <div className="flex flex-col w-full flex-1">
                 <div className="mt-4">
@@ -484,10 +472,14 @@ export const RenderCommandDetails = () => {
                         text="Produto"
                         name="idProduto"
                         required
-                        options={allProducts.length != 0 ? allProducts.map((product) => ({
-                          id: product.id,
-                          name: `${product.name} (Estoque: ${product.quantity})`, // Display stock quantity
-                        })) : []}
+                        options={
+                          allProducts.length != 0
+                            ? allProducts.map((product) => ({
+                                id: product.id,
+                                name: `${product.name} (Estoque: ${product.quantity})`, // Display stock quantity
+                              }))
+                            : []
+                        }
                         handleOnChange={handleProductSelect}
                         value={newProduct.idProduto || ""}
                       />
@@ -533,59 +525,60 @@ export const RenderCommandDetails = () => {
                   </div>
                 </div>
               </div>
-              
-              </>
-            )
-          }
-
+            </>
+          )}
         </div>
         <div className="mt-6 w-full flex-1 ml-12">
+          <div className="flex justify-between items-center mb-4">
           <h2 className="text-[32px] font-thin">Produtos na Comanda</h2>
-          {
-            isLoading ? 
-            (
-              <SyncLoader 
-                size={8}
-                loading={true}
-                color={"#02AEBA"}
-                speedMultiplier={2}
-              />
-            ) :
-            (
-              <Table
-                headers={[
-                  { label: "ID", key: "idProduto" },
-                  { label: "Nome", key: "name" },
-                  { label: "Quantidade", key: "productQuantity" },
-                  { label: "Valor Unitário", key: "unitValue" },
-                  { label: "Valor Total", key: "totalValue" },
-                  { label: "Ações", key: "actions" },
-                ]}
-                data={products.map((product) => ({
-                  ...product,
-                  unitValue: `R$ ${parseFloat(product.unitValue).toFixed(2)}`,
-                  totalValue: `R$ ${parseFloat(
-                    product.productQuantity * product.unitValue
-                  ).toFixed(2)}`,
-                  actions: (
-                    <div className="flex gap-2">
-                      <PrimaryButton
-                        text="Editar"
-                        onClick={() => handleEditCommandProduct(product)}
-                        disabled={command.status === "CLOSED"} // Disable if command is closed
-                      />
-                      <DeleteButton
-                        text="Excluir"
-                        onClick={() => handleRemoveProduct(product)}
-                        disabled={command.status === "CLOSED"} // Disable if command is closed
-                      />
-                    </div>
-                  ),
-                }))}
-                elementMessageNotFound="produto"
-              />
-            )
-          }
+            <PrimaryButton
+              text={
+                command.status === "OPEN" ? "Fechar Comanda" : "Reabrir Comanda"
+              }
+              onClick={handleToggleCommandStatus}
+            />
+          </div>
+          {isLoading ? (
+            <SyncLoader
+              size={8}
+              loading={true}
+              color={"#02AEBA"}
+              speedMultiplier={2}
+            />
+          ) : (
+            <Table
+              headers={[
+                { label: "ID", key: "idProduto" },
+                { label: "Nome", key: "name" },
+                { label: "Quantidade", key: "productQuantity" },
+                { label: "Valor Unitário", key: "unitValue" },
+                { label: "Valor Total", key: "totalValue" },
+                { label: "Ações", key: "actions" },
+              ]}
+              data={products.map((product) => ({
+                ...product,
+                unitValue: `R$ ${parseFloat(product.unitValue).toFixed(2)}`,
+                totalValue: `R$ ${parseFloat(
+                  product.productQuantity * product.unitValue
+                ).toFixed(2)}`,
+                actions: (
+                  <div className="flex gap-2">
+                    <PrimaryButton
+                      text="Editar"
+                      onClick={() => handleEditCommandProduct(product)}
+                      disabled={command.status === "CLOSED"} // Disable if command is closed
+                    />
+                    <DeleteButton
+                      text="Excluir"
+                      onClick={() => handleRemoveProduct(product)}
+                      disabled={command.status === "CLOSED"} // Disable if command is closed
+                    />
+                  </div>
+                ),
+              }))}
+              elementMessageNotFound="produto"
+            />
+          )}
           <ModalEditCommandProduct
             isOpen={isEditCommandProductModalOpen}
             onClose={() => setIsEditCommandProductModalOpen(false)}
