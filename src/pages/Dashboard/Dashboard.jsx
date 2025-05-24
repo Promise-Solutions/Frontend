@@ -7,7 +7,7 @@ import ProfitGraphic from "../../components/graphic/ProfitGraphic";
 import { useEffect, useState } from "react";
 import { axiosProvider } from "../../provider/apiProvider";
 import { SyncLoader } from "react-spinners";
-import { formatDateWithoutTime } from "../../hooks/formatUtils";
+import { extractDateOnly, formatDateWithoutTime } from "../../hooks/formatUtils";
 import { IoMdRefresh } from "react-icons/io";
 import { showToast } from "../../components/toastStyle/ToastStyle";
 
@@ -20,7 +20,7 @@ const Dashboard = () => {
     setIsLoading(true);
     axiosProvider.get("/dashboard/recent-time").then((response) => {
       const lastUpdate = response.data;
-      setLastDateUpdate(formatDateWithoutTime(lastUpdate));
+      setLastDateUpdate(extractDateOnly(lastUpdate));
     });
     setIsLoading(false);
   }
@@ -29,7 +29,7 @@ const Dashboard = () => {
     setIsLoading(true);
     axiosProvider.get("/dashboard/recent-time").then((response) => {
       const lastUpdate = response.data;
-      setLastDateUpdate(formatDateWithoutTime(lastUpdate));
+      setLastDateUpdate(extractDateOnly(lastUpdate));
     });
     axiosProvider.delete("/tracing");
     setIsLoading(false);
