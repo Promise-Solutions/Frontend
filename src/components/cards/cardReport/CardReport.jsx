@@ -1,15 +1,7 @@
 import { CiFileOn } from "react-icons/ci";
-import { IoMdMore } from "react-icons/io";
 import { FiDownload, FiTrash2 } from "react-icons/fi";
 
-function CardReport({
-  id,
-  item,
-  isMenuOpen,
-  onMenuOpen,
-  onDownload,
-  onDelete,
-}) {
+function CardReport({ id, item, onDownload, onDelete }) {
   return (
     <div
       key={id}
@@ -19,36 +11,21 @@ function CardReport({
         <CiFileOn size={"30px"} />
         <span>{item}</span>
       </div>
-      <div className="relative">
+      <div className="flex gap-2">
         <button
-          className="text-white hover:text-pink-zero transition rounded-full border border-white/20 p-1 hover:border-pink-zero cursor-pointer"
-          onClick={onMenuOpen}
+          className="flex items-center gap-1 px-3 py-2 rounded-md text-white hover:text-pink-zero border border-white/20 hover:border-pink-zero transition text-sm"
+          onClick={onDownload}
+          title="Baixar"
         >
-          <IoMdMore size={"20px"} />
+          <FiDownload /> Baixar
         </button>
-        {isMenuOpen && (
-          <div
-            className="absolute z-20 w-36 bg-zinc-900 border border-white/20 rounded-md shadow-lg flex flex-col"
-            style={{
-              top: "50%",
-              left: "calc(100% + 12px)",
-              transform: "translateY(-50%)",
-            }}
-          >
-            <button
-              className="flex items-center gap-2 px-4 py-2 hover:bg-pink-zero/20 text-white text-sm"
-              onClick={onDownload}
-            >
-              <FiDownload /> Baixar
-            </button>
-            <button
-              className="flex items-center gap-2 px-4 py-2 hover:bg-pink-zero/20 text-red-400 text-sm"
-              onClick={onDelete}
-            >
-              <FiTrash2 /> Excluir
-            </button>
-          </div>
-        )}
+        <button
+          className="flex items-center gap-1 px-3 py-2 rounded-md text-red-400 hover:text-white border border-white/20 hover:border-pink-zero transition text-sm"
+          onClick={onDelete}
+          title="Excluir"
+        >
+          <FiTrash2 /> Excluir
+        </button>
       </div>
     </div>
   );

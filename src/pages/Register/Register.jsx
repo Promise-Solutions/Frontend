@@ -136,7 +136,8 @@ function Register() {
         contact: formData.contato,
         clientType: formData.tipoCliente === "AVULSO" ? "SINGLE" : "MONTHLY",
         active: true,
-        birthDay: formatDateWithoutTime( formData.dataNascimento),
+        birthDay: formData.dataNascimento,
+        createdDate: new Date().toISOString(),
       };
       endpoint = "clients";
     } else if (selectedType === "FUNCIONARIO") {
@@ -154,6 +155,7 @@ function Register() {
     console.log(novoUsuario)
 
     try {
+      console.log("Novo usuário:", novoUsuario);
       const res = await axiosProvider.post(`/${endpoint}`, novoUsuario);
       if (res.status === 201) {
         showToast.success("Cadastro realizado com sucesso!");

@@ -44,8 +44,9 @@ export const RenderInfos = () => {
   // Função para deletar usuário
   const handleDeleteUser = async () => {
     try {
-      // Proceed with deletion 
-      const endpoint = isClient ? ENDPOINTS.getClientById(userId) : ENDPOINTS.getEmployeeById(userId) ;
+      const endpoint = isClient
+        ? `/clients/${userId}`
+        : `/employees/${userId}/${localStorage.getItem("userLogged")}`;
       await axiosProvider.delete(endpoint);
       showToast.success("Usuário deletado com sucesso!", { style: ToastStyle });
       navigate(ROUTERS.USERS);
@@ -53,7 +54,7 @@ export const RenderInfos = () => {
       if (error.response?.status === 428) {
         showToast.error("Você não pode deletar seu próprio usuário.");
       }
-      showToast.error("Erro ao deletar usuário. Tente novamente.")
+      showToast.error("Erro ao deletar usuário. Tente novamente.");
     } finally {
       setIsDeleteModalOpen(false);
     }
@@ -153,6 +154,7 @@ export const RenderInfos = () => {
       birthDay: user?.birthDay || "",
       active: user?.active,
       password: "",
+      birthDay: user?.birthDay || "",
       createdDate: user?.createdDate || "",
     });
 
@@ -220,6 +222,9 @@ export const RenderInfos = () => {
       } else if (!formData.contact || contact.length < 15) {
         showToast.error("Contato deve ter 15 caracteres.");
         return;
+      } else if (!formData.birthDay || !formData.birthDay == null) {
+        showToast.error("Data de nascimento vazia.");
+        return;
       } else {
         await showToast.promise(
           (async () => {
@@ -233,18 +238,16 @@ export const RenderInfos = () => {
               if (!formData.password) delete updatedFormData.password;
               if (!isClient) delete updatedFormData.clientType;
 
-            const endpoint = isClient
-              ? ENDPOINTS.getClientById(userId)
-              : ENDPOINTS.getEmployeeById(userId); 
-            console.log("Dados atualizados:", updatedFormData);
-            await axiosProvider.patch(endpoint, updatedFormData);
-
+              const endpoint = isClient
+                ? `/clients/${userId}`
+                : `/employees/${userId}`;
+              console.log("Dados atualizados:", updatedFormData);
+              await axiosProvider.patch(endpoint, updatedFormData);
               setUser({ ...user, ...updatedFormData });
               setIsEditing(false);
               showToast.success("Informações atualizadas com sucesso!");
             } catch (error) {
               showToast.error("Erro ao salvar alterações:", error);
-              throw new Error("Erro ao salvar alterações. Tente novamente.");
             }
           })(),
           {
