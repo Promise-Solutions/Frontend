@@ -113,7 +113,7 @@ const Jobs = () => {
                   status: getStatusTranslated(job.status),
                   totalValue: `R$ ${job.totalValue.toFixed(2).replace(".", ",")}` 
                 }))}
-              elementMessageNotFound="serviço"
+              messageNotFound="Nenhum serviço encontrado"
             />
             )
         }

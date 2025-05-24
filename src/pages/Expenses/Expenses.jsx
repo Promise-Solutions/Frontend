@@ -7,11 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../constants/routers";
 import { axiosProvider } from "../../provider/apiProvider";
 import Table from "../../components/tables/Table";
+import ModalEditGoal from "../../components/modals/modalEditGoal/ModalEditGoal";
 
 function Expenses() {
-
-// ! Tem que fazer a requisição para pegar as despesas e os modais para adicionar e editar
-
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
   const [expenseElements, setExpenseElements] = useState([]); 
@@ -61,11 +59,6 @@ function Expenses() {
   }
   ]
 
-  const goalModal = () => {
-    //deve abrir o modal de metas
-    alert("abrindo modal de metas");
-  };
-
   useEffect(() => {
     // function buscarDespesas() {
     //   axiosProvider.get("/expenses")
@@ -89,12 +82,6 @@ function Expenses() {
     setSearchTerm(term.toUpperCase().trim());
   };
 
-  const noResultsMessage =
-    searchTerm && filteredExpenseElements.length === 0 ? (
-      <p className="text-center text-gray-400">
-        Nenhum resultado encontrado para "{searchTerm}".
-      </p>
-    ) : null;
   
     const filteredExpenseElements = expenseElements.filter((element) => {
       const visibleFields = [ 
@@ -116,21 +103,21 @@ function Expenses() {
     });
   return (
     <div className="min-w-full min-h-full text-white overflow-y-hidden">
-      {/* {
-        isGoalModalOpen ? (
-          // <ModalEditGoal />
-        )
-      } */}
+      <ModalEditGoal
+        isOpen={isGoalModalOpen}
+        onClose={() => setIsGoalModalOpen(false)}
+        goal={expenseElements.goal}
+      />
       <section className="mx-16 my-6">
         <div className="flex justify-center flex-col">
           <div className="flex w-full items-center gap-4 justify-between">
             <div>
-              <h1 className="text-2xl font-thin">Gerencie suas Despesas</h1>
+              <h1 className="text-2xl font-thin">Gerencie suas despesas</h1>
             </div>
             <PrimaryButton
               id="goal_button"
               text="Gerenciar Meta"
-              onClick={() => setIsGoalModalOpen(!isGoalModalOpen)} // Passa navigate para a função stockRedirect
+              onClick={() => setIsGoalModalOpen(true)} // Passa navigate para a função stockRedirect
             />
           </div>
           <div className="flex justify-between mt-4 border-t-1 pt-4 border-gray-600">
@@ -180,10 +167,10 @@ function Expenses() {
                       //    paymentType: getPaymentTypeTranslated(expense.paymentType)
                       //    quantity: expense.quantity? : "n/a" 
                       //   }))}
-                      elementMessageNotFound="despesas"
+                      messageNotFound="Nenhuma despesa encontrada"
                     />
                     )
-                }
+                  }
             </div>
           )}
         </div>

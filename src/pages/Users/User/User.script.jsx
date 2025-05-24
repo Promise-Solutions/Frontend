@@ -491,7 +491,7 @@ export const RenderInfos = () => {
                 <Table
                   headers={tableHeader}
                   data={tableData}
-                  elementMessageNotFound="serviço"
+                  messageNotFound="Nenhum serviço encontrado"
                 />
               </div>
             </section>

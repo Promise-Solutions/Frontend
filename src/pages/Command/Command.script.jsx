@@ -582,7 +582,7 @@ export const RenderCommandDetails = () => {
                     </div>
                   ),
                 }))}
-                elementMessageNotFound="produto"
+                messageNotFound="Nenhum produto encontrado"
               />
             )
           }
