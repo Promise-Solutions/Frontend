@@ -7,23 +7,16 @@ import ProfitGraphic from "../../components/graphic/ProfitGraphic";
 import { useEffect, useState } from "react";
 import { axiosProvider } from "../../provider/apiProvider";
 import { SyncLoader } from "react-spinners";
+import { formatDateWithoutTime } from "../../hooks/formatUtils";
 
 const Dashboard = () => {
   const [lastDateUpdate, setLastDateUpdate] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axiosProvider.get("/dashboard/last-update").then((response) => {
-      const lastUpdate = response.data.lastUpdate;
-      const formattedDate = new Date(lastUpdate).toLocaleString("pt-BR", {
-        timeZone: "America/Sao_Paulo",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      setLastDateUpdate(formattedDate);
+    axiosProvider.get("/dashboard/recent-time").then((response) => {
+      const lastUpdate = response.data;
+      setLastDateUpdate(formatDateWithoutTime(lastUpdate));
     });
 
     setIsLoading(false);

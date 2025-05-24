@@ -135,6 +135,7 @@ function Register() {
         contact: formData.contato,
         clientType: formData.tipoCliente === "AVULSO" ? "SINGLE" : "MONTHLY",
         active: true,
+        birthDay: formData.dataNascimento,
         createdDate: new Date().toISOString(),
       };
       endpoint = "clients";
@@ -151,6 +152,7 @@ function Register() {
     }
 
     try {
+      console.log("Novo usuário:", novoUsuario);
       const res = await axiosProvider.post(`/${endpoint}`, novoUsuario);
       if (res.status === 201) {
         showToast.success("Cadastro realizado com sucesso!");

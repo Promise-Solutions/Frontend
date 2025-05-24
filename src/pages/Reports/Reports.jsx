@@ -1,8 +1,7 @@
-import { CiEraser, CiFileOn } from "react-icons/ci";
+import { CiEraser} from "react-icons/ci";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 import CardReport from "../../components/cards/cardReport/CardReport";
 import { useState } from "react";
-import { FiXCircle } from "react-icons/fi";
 
 const Reports = () => {
   const allReports = [
