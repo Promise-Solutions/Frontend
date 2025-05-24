@@ -125,6 +125,7 @@ const ModalEditTask = ({
               name="startDate"
               handleOnChange={handleInputChange}
               value={formData.startDate}
+              className="custom-calendar"
             />
             <Input
               type="date"
@@ -132,6 +133,7 @@ const ModalEditTask = ({
               name="limitDate"
               handleOnChange={handleInputChange}
               value={formData.limitDate}
+              className="custom-calendar"
             />
             <Select
               text="Responsável"

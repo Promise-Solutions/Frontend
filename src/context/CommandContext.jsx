@@ -1,7 +1,7 @@
 // context/CommandContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { axiosProvider } from "../provider/apiProvider";
-import { ENDPOINTS, ENDPOINTS } from "../constants/endpoints";
+import { ENDPOINTS } from "../constants/endpoints";
 
 const CommandContext = createContext();
 

@@ -9,7 +9,7 @@ export const ENDPOINTS = {
     DASHBOARD_GENERAL_STATS: "/dashboard/general-stats",
     REPORTS: "/reports",
     TASKS: "/tasks",
-    DASHBOARD_BAR_FINANCES:`dashboard/bar-finances`,
+    DASHBOARD_BAR_FINANCES:`/dashboard/bar-finances`,
 
     getClientById: (id) => `/clients/${id}`,
     getEmployeeById: (id) => `/employees/${id}`,
@@ -19,7 +19,7 @@ export const ENDPOINTS = {
     getJobsByClient: (clientId) => `/jobs/client?fkClient=${clientId}`,
     getCommandById: (id) => `/commands/${id}`,
     getProductById: (id) => `/products/${id}`,
-    getDashboardClientStats: (idClient) => `dashboard/client-stats/${idClient}`,
+    getDashboardClientStats: (idClient) => `/dashboard/client-stats/${idClient}`,
     getCommandProductsByCommand: (commandId) => `/command-products?fkComanda=${commandId}`,
     getCommandProductsByProduct: (productId) => `/command-products/${productId}`,
     getCommandByStatus: (status) => `/commands?status=${status}`,

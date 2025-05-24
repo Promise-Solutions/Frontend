@@ -11,6 +11,7 @@ import SubmitButton from "../../components/form/SubmitButton.jsx";
 import logo from "../../assets/logo-branco-bg-sonoro.png";
 import SelectTypeUser from "../../components/form/SelectTypeUser.jsx";
 import Select from "../../components/form/Select.jsx";
+import { formatDateWithoutTime } from "../../hooks/formatUtils.js";
 
 function Register() {
   const navigate = useNavigate();
@@ -135,7 +136,7 @@ function Register() {
         contact: formData.contato,
         clientType: formData.tipoCliente === "AVULSO" ? "SINGLE" : "MONTHLY",
         active: true,
-        createdDate: new Date().toISOString(),
+        birthDay: formatDateWithoutTime( formData.dataNascimento),
       };
       endpoint = "clients";
     } else if (selectedType === "FUNCIONARIO") {
@@ -149,6 +150,8 @@ function Register() {
       };
       endpoint = "employees";
     }
+
+    console.log(novoUsuario)
 
     try {
       const res = await axiosProvider.post(`/${endpoint}`, novoUsuario);
