@@ -109,14 +109,15 @@ const Jobs = () => {
           ) : (
             <Table
               headers={tableHeader}
-              data={filteredJobsElements.map((job) => ({
-                ...job,
-                category: getCategoryTranslated(job.category),
-                serviceType: getServiceTypeTranslated(job.serviceType),
-                status: getStatusTranslated(job.status),
-                totalValue: `R$ ${job.totalValue.toFixed(2).replace(".", ",")}`,
-              }))}
-              elementMessageNotFound="serviço"
+              data={
+                filteredJobsElements.map((job) => ({
+                  ...job,
+                  category: getCategoryTranslated(job.category),
+                  serviceType: getServiceTypeTranslated(job.serviceType),
+                  status: getStatusTranslated(job.status),
+                  totalValue: `R$ ${job.totalValue.toFixed(2).replace(".", ",")}` 
+                }))}
+              messageNotFound="Nenhum serviço encontrado"
             />
           )}
         </div>

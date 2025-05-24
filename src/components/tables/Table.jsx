@@ -1,6 +1,6 @@
 import React from "react";
 
-const Table = ({ headers, data, elementMessageNotFound }) => {
+const Table = ({ headers, data, messageNotFound }) => {
   return (
     <div
       className="overflow-y-auto max-h-[500px] h-auto 2xl:max-h-[670px] mt-4"
@@ -50,7 +50,7 @@ const Table = ({ headers, data, elementMessageNotFound }) => {
         </tbody>
       </table>
       ) : (
-        <span className="text-center text-gray-400">Nenhum {elementMessageNotFound || "item"} encontrado</span>
+        <span className="text-center text-gray-400">{messageNotFound || "Nenhum elemento encontrado"}</span>
       )}
     </div>
   );
