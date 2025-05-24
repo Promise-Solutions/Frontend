@@ -21,6 +21,7 @@ import { axiosProvider } from "../../../provider/apiProvider";
 import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } from "../../../hooks/translateAttributes.js";
 import CancelButton from "../../../components/modals/modalConfirmDelete/cancelButton.jsx";
 import { ROUTERS } from "../../../constants/routers.js";
+import { ENDPOINTS, ENDPOINTS } from "../../../constants/endpoints.js";
 
 export const RenderInfos = () => {
   const { userParam } = useParams();
@@ -36,8 +37,8 @@ export const RenderInfos = () => {
   // Função para deletar usuário
   const handleDeleteUser = async () => {
     try {
-      // Proceed with deletion
-      const endpoint = isClient ? `/clients/${userId}` : `/employees/${userId}`;
+      // Proceed with deletion 
+      const endpoint = isClient ? ENDPOINTS.getClientById(userId) : ENDPOINTS.getEmployeeById(userId) ;
       await axiosProvider.delete(endpoint);
       showToast.success("Usuário deletado com sucesso!", { style: ToastStyle });
       navigate(ROUTERS.USERS);
@@ -162,8 +163,8 @@ export const RenderInfos = () => {
             if (!isClient) delete updatedFormData.clientType;
 
             const endpoint = isClient
-              ? `/clients/${userId}`
-              : `/employees/${userId}`;
+              ? ENDPOINTS.getClientById(userId)
+              : ENDPOINTS.getEmployeeById(userId); 
             console.log("Dados atualizados:", updatedFormData);
             await axiosProvider.patch(endpoint, updatedFormData);
 

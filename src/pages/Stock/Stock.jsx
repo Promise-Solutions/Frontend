@@ -70,7 +70,7 @@ const Stock = () => {
         buyValue: parseFloat(updatedProduct.buyValue).toFixed(2),
       };
       await axiosProvider.patch(
-        `/products/${editingProduct.id}`,
+        ENDPOINTS.getProductById(editingProduct.id),
         productToUpdate
       );
       setProducts((prevProducts) =>
@@ -93,7 +93,7 @@ const Stock = () => {
   const confirmDelete = async () => {
     try {
       await axiosProvider.delete(
-        `/products/${productToDelete.id}`
+        ENDPOINTS.getProductById(productToDelete.id)
       );
       setProducts((prevProducts) =>
         prevProducts.filter((product) => product.id !== productToDelete.id)

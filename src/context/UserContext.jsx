@@ -23,10 +23,10 @@ export function UserProvider({ children }) {
         return;
       }
 
-      try {
-        const endpoint = isClient
-          ? `/clients/${userId}`
-          : `/employees/${userId}`;
+      try { 
+        const endpoint = isClient 
+          ? ENDPOINTS.getClientById(userId)
+          : ENDPOINTS.getEmployeeById(userId);
         const response = await axiosProvider.get(endpoint);
 
         if (response.data) {
@@ -111,11 +111,11 @@ export function UserProvider({ children }) {
     }
   };
 
-  const findClientById = async (ClientId) => {
-    if (!ClientId) return;
+  const findClientById = async (clientId) => {
+    if (!clientId) return;
 
     try {
-      const response = await axiosProvider.get(`/clients/${ClientId}`);
+      const response = await axiosProvider.get(ENDPOINTS.getClientById(clientId));
 
       if (response.status == 200) {
         return response.data;

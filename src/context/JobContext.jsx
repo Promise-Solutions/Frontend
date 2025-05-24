@@ -27,7 +27,7 @@ export function JobProvider({ children }) {
     if (!jobId) return;
 
     try {
-      const response = await axiosProvider.get(`/jobs/${jobId}`)
+      const response = await axiosProvider.get(ENDPOINTS.getJobById(jobId))
       const jobData = response.data || null;
 
       if (jobData) {
@@ -71,7 +71,7 @@ export function JobProvider({ children }) {
 
   const findJobsByClientId = async (clientId) => {
     try {
-      const response = await axiosProvider.get(`/jobs/client?fkClient=${clientId}`);
+      const response = await axiosProvider.get(ENDPOINTS.getJobsByClient(clientId));
 
       if(response.status == 200) {
         return response.data;
@@ -84,31 +84,10 @@ export function JobProvider({ children }) {
     }
   };
 
-  const updateStatusJob = async (idServico) => {
-    try {
-
-      const response = await axiosProvider.get(
-        `/subservicos?fkServico=${idServico}`
-      );
-
-      const verifyAllDone = response.data.every((subJob) => subJob.concluido);
-      const request = await axiosProvider.patch(`/jobs/${idServico}`, {
-        concluido: verifyAllDone,
-      });
-
-      if (request.status === 200) {
-        console.log("Status atualizado com sucesso");
-      }
-    } catch (error) {
-      showToast.error("Erro ao atualizar o status do serviço:");
-      console.error("Erro ao atualizar o status do serviço:", error);
-    }
-  };
-
   const updateJobData = async (id, jobData) => {
     if (!id) return;
     try { 
-      const response = await axiosProvider.patch(`/jobs/${id}`, {
+      const response = await axiosProvider.patch(ENDPOINTS.getJobById(id), {
         title: jobData.title,
         category: jobData.category,
         totalValue: jobData.totalValue,
@@ -131,7 +110,7 @@ export function JobProvider({ children }) {
   const deleteJobById = async (id) => {
     if (!id) return;
     try {
-      const request = await axiosProvider.delete(`/jobs/${id}`);
+      const request = await axiosProvider.delete(ENDPOINTS.getJobById(id));
       if (request.status) {
         showToast.success("Serviço excluído com sucesso");
       }
@@ -154,7 +133,6 @@ export function JobProvider({ children }) {
         job,
         setJob,
         findJobs,
-        updateStatusJob,
         fetchJobData,
         updateJobData,
         deleteJobById,

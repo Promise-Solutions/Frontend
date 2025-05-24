@@ -21,7 +21,7 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
         const clientsResponse = await axiosProvider.get(ENDPOINTS.CLIENTS);
         const employeesResponse = await axiosProvider.get(ENDPOINTS.EMPLOYEES);
         const commandsResponse = await axiosProvider.get(
-          "/commands?status=OPEN"
+           ENDPOINTS.getCommandByStatus("OPEN")
         );
 
         setClients(clientsResponse.data || []); // Ensure data is an array

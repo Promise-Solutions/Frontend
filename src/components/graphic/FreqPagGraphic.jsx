@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import { axiosProvider } from "../../provider/apiProvider";
 import toast from "react-hot-toast";
+import { ENDPOINTS } from "../../constants/endpoints";
 
 const FreqPagGraphic = ({ idClient, title, isBar }) => {
   const [data, setData] = useState([]);
@@ -19,7 +20,7 @@ const FreqPagGraphic = ({ idClient, title, isBar }) => {
   useEffect(() => {
     if (idClient) {
       axiosProvider
-        .get(`dashboard/client-stats/${idClient}`)
+        .get(ENDPOINTS.getDashboardClientStats(idClient))
         .then((response) => {
           console.log("Estatísticas do usuário:", response.data);
           if (response.data != null) {
@@ -48,7 +49,7 @@ const FreqPagGraphic = ({ idClient, title, isBar }) => {
         });
     } else if (isBar) {
       axiosProvider
-        .get(`dashboard/bar-finances`)
+        .get(ENDPOINTS.DASHBOARD_BAR_FINANCES)
         .then((response) => {
           console.log("Estatísticas do bar:", response.data);
           if (response.data != null) {
@@ -65,7 +66,7 @@ const FreqPagGraphic = ({ idClient, title, isBar }) => {
         });
     } else {
       axiosProvider
-        .get(`dashboard/general-stats`)
+        .get(ENDPOINTS.DASHBOARD_GENERAL_STATS)
         .then((response) => {
           console.log("Estatísticas gerais:", response.data);
           if (response.data != null) {

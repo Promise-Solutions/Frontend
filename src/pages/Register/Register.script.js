@@ -2,6 +2,7 @@ import { axiosProvider } from "../../provider/apiProvider"; // Importando o axio
 import { toast } from "react-hot-toast";
 import { showToast, ToastStyle } from "../../components/toastStyle/ToastStyle.jsx"; // Import ToastStyle
 import { ROUTERS } from "../../constants/routers.js";
+import { ENDPOINTS } from "../../constants/endpoints.js";
 
 let isEventRegistered = false; // Variável de controle para evitar múltiplos registros
 
@@ -215,7 +216,7 @@ export function setupRegisterEvents(navigate) {
         clientType: iptTipoCliente?.value === "AVULSO" ? "SINGLE" : "MONTHLY", // Map values for backend
         active: true, // Default to active
       };
-      endpoint = "clients";
+      endpoint = ENDPOINTS.CLIENTS;
     } else if (iptType.value === "FUNCIONARIO") {
       novoUsuario = {
         name: iptNome.value.toUpperCase(),
@@ -226,11 +227,11 @@ export function setupRegisterEvents(navigate) {
         active: true, // Default to active
         token: token,
       };
-      endpoint = "employees";
+      endpoint = ENDPOINTS.EMPLOYEES;
     }
 
     try {
-      const res = await axiosProvider.post(`/${endpoint}`, novoUsuario);
+      const res = await axiosProvider.post(endpoint, novoUsuario);
       if (res.status === 201) {
         showToast.success("Cadastro realizado com sucesso!");
         iptNome.value = "";

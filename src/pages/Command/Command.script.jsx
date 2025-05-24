@@ -89,7 +89,7 @@ export const RenderCommandDetails = () => {
           return;
         }
 
-        const endpoint = `/commands/${commandId}`;
+        const endpoint = ENDPOINTS.getCommandById(commandId); 
         const response = await axiosProvider.get(endpoint);
         const commandData = response.data;
 
@@ -120,7 +120,7 @@ export const RenderCommandDetails = () => {
   const fetchCommandDetails = async () => {
     try {
       // Fetch employee details
-      const employeeResponse = await axiosProvider.get(`/employees`);
+      const employeeResponse = await axiosProvider.get(ENDPOINTS.EMPLOYEES); 
       const employee = employeeResponse.data.find(
         (emp) => emp.id === command.fkEmployee
       );
@@ -139,7 +139,7 @@ export const RenderCommandDetails = () => {
 
       // Fetch products related to the command
       const productsResponse = await axiosProvider.get(
-        `/command-products?fkComanda=${command.id}`
+        ENDPOINTS.getCommandProductsByCommand(command.id)
       );
       const allProductsResponse = await axiosProvider.get(ENDPOINTS.PRODUCTS);
 
@@ -161,7 +161,7 @@ export const RenderCommandDetails = () => {
       setProducts(enrichedProducts);
 
       // Fetch updated command details
-      const updatedCommand = await axiosProvider.get(`/commands/${command.id}`);
+      const updatedCommand = await axiosProvider.get(ENDPOINTS.getCommandById(command.id)); 
       setCommand(updatedCommand.data);
     } catch (error) {
       console.error("Erro ao buscar detalhes da comanda:", error);
@@ -262,7 +262,7 @@ export const RenderCommandDetails = () => {
 
   const confirmDelete = async () => {
     try {
-      await axiosProvider.delete(`/command-products/${productToDelete.id}`);
+      await axiosProvider.delete(ENDPOINTS.getCommandProductsByProduct(productToDelete.id));
 
       // Refetch command details and all products
       await fetchCommandDetails();
@@ -292,7 +292,7 @@ export const RenderCommandDetails = () => {
       };
 
       await axiosProvider.patch(
-        `/command-products/${editingCommandProduct.id}`,
+        ENDPOINTS.getCommandProductsByProduct(editingCommandProduct.id),
         productToUpdate
       );
 
@@ -318,7 +318,7 @@ export const RenderCommandDetails = () => {
       if (command.status === "OPEN") {
         setIsDiscountModalOpen(true);
       } else {
-        await axiosProvider.patch(`/commands/${command.id}`, {
+        await axiosProvider.patch(ENDPOINTS.getCommandById(command.id), {
           status: "OPEN",
           commandNumber: command.commandNumber,
           closingDateTime: null,
@@ -348,7 +348,7 @@ export const RenderCommandDetails = () => {
         now.getTime() + offset * 60 * 60 * 1000
       ).toISOString();
 
-      await axiosProvider.patch(`/commands/${command.id}`, {
+      await axiosProvider.patch(ENDPOINTS.getCommandById(command.id), {
         status: "CLOSED",
         commandNumber: command.commandNumber,
         closingDateTime: closingDateTime,
@@ -373,17 +373,17 @@ export const RenderCommandDetails = () => {
     try {
       // Fetch all items associated with the command
       const commandProductsResponse = await axiosProvider.get(
-        `/command-products?fkComanda=${command.id}`
+        ENDPOINTS.getCommandProductsByCommand(command.id) 
       );
       const commandProducts = commandProductsResponse.data;
 
       // Delete each item in commandProduct associated with the command
       for (const product of commandProducts) {
-        await axiosProvider.delete(`/command-products/${product.id}`);
+        await axiosProvider.delete(ENDPOINTS.getCommandProductsByProduct(product.id));
       }
 
       // Delete the command itself
-      await axiosProvider.delete(`/commands/${command.id}`);
+      await axiosProvider.delete(ENDPOINTS.getCommandById(command.id));
 
       // Clear the command context and redirect
       setCommand(null);

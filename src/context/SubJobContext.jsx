@@ -27,7 +27,7 @@ export function SubJobProvider({ children }) {
     if (!id) return;
     
     try {
-      const response = await axiosProvider.patch(`/sub-jobs/${id}/update-status`, { status: newStatus})
+      const response = await axiosProvider.patch(`/${ENDPOINTS.getSubJobById(id)}/update-status`, { status: newStatus})
   
       if (response.status == 200) {
         return response.data;
@@ -44,7 +44,7 @@ export function SubJobProvider({ children }) {
     if (!jobId) return;
 
     try {
-      const response = await axiosProvider.get(`/sub-jobs/job?fkService=${jobId}`)
+      const response = await axiosProvider.get(ENDPOINTS.getSubJobByJob(jobId))
       const subJobData = response.data
       return subJobData;
     } catch (error) {
@@ -59,7 +59,7 @@ export function SubJobProvider({ children }) {
 
     try {
       console.log("subJobDAta",  subJobData)
-      const request = await axiosProvider.patch(`/sub-jobs/${id}`, {
+      const request = await axiosProvider.patch(ENDPOINTS.getSubJobById(id), {
         title: subJobData.title,
         description: subJobData.description,
         value: subJobData.value,
@@ -90,7 +90,7 @@ export function SubJobProvider({ children }) {
     if (!subJobId) return;
 
     try {
-      const request = await axiosProvider.delete(`/sub-jobs/${subJobId}`);
+      const request = await axiosProvider.delete(ENDPOINTS.getSubJobById(subJobId));
       if(request.status == 200) {
         showToast.success("Subserviço excluído com sucesso!")
         return request.data

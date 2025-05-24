@@ -1,6 +1,7 @@
 // context/CommandContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { axiosProvider } from "../provider/apiProvider";
+import { ENDPOINTS, ENDPOINTS } from "../constants/endpoints";
 
 const CommandContext = createContext();
 
@@ -18,7 +19,7 @@ export const CommandProvider = ({ children }) => {
       }
 
       try {
-        const endpoint = `/commands/${commandId}`;
+        const endpoint = ENDPOINTS.getCommandById(commandId);
         const response = await axiosProvider.get(endpoint);
         const commandData = response.data || null;
 
@@ -52,10 +53,10 @@ export const CommandProvider = ({ children }) => {
 
   const findCommands = async (filterType) => {
     try {
-      const endpoint =
+      const endpoint = 
         filterType === "ABERTAS"
-          ? "/commands?status=OPEN"
-          : "/commands?status=CLOSED";
+          ? ENDPOINTS.getCommandByStatus("OPEN")
+          : ENDPOINTS.getCommandByStatus("CLOSED")
       const response = await axiosProvider.get(endpoint);
 
       if (Array.isArray(response.data)) {
