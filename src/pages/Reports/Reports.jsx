@@ -1,4 +1,4 @@
-import { CiEraser} from "react-icons/ci";
+import { CiEraser } from "react-icons/ci";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 import CardReport from "../../components/cards/cardReport/CardReport";
 import { useState } from "react";
@@ -19,23 +19,16 @@ const Reports = () => {
     "Relatório Gerado em - 20/07/2024",
   ];
   const [reports, setReports] = useState(allReports);
-  const [openMenuIndex, setOpenMenuIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
 
-  const handleMenuOpen = (index) => {
-    setOpenMenuIndex(openMenuIndex === index ? null : index);
-  };
-
   const handleDownload = (index) => {
     alert(`Download do relatório ${index + 1}`);
-    setOpenMenuIndex(null);
   };
 
   const handleDelete = (index) => {
     alert(`Deletar relatório ${index + 1}`);
-    setOpenMenuIndex(null);
   };
 
   const parseDate = (str) => {
@@ -126,21 +119,11 @@ const Reports = () => {
         </div>
         <div className="max-h-[450px] overflow-y-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {/* Overlay para fechar o menu ao clicar fora */}
-            {openMenuIndex !== null && (
-              <div
-                className="fixed inset-0 z-0"
-                onClick={() => setOpenMenuIndex(null)}
-                style={{ cursor: "default" }}
-              />
-            )}
             {reports.map((item, index) => (
               <CardReport
                 key={index}
                 id={index}
                 item={item}
-                isMenuOpen={openMenuIndex === index}
-                onMenuOpen={() => handleMenuOpen(index)}
                 onDownload={() => handleDownload(index)}
                 onDelete={() => handleDelete(index)}
               />
