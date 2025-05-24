@@ -29,8 +29,13 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
             data.status === "CLOSED" ? "border-cyan-zero" : "border-pink-zero"
           } `}
     >
-      <div className="flex py-4 px-3 text-3xl font-bold items-center gap-[4px]">
+      <div className="flex py-4 px-3 text-3xl font-bold items-center justify-between gap-[4px]">
         <h1 className="card_subjob_title">{data?.title}</h1>
+        <img
+          src={ImageDone}
+          className={`h-8 duration-100  
+              ${data.status === "CLOSED" ? "opacity-100" : "opacity-0"}`}
+        />
       </div>
       <div
         className={`border-1 transition duration-100 ${
@@ -75,31 +80,36 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
           </li>
           <li>
             <b>Utiliza a sala?: </b>
-            {data?.needsRoom ? <span className="text-cyan-200">Sim</span> : <span className="text-orange-300">Não</span> || "" }
+            {data?.needsRoom ? (
+              <span className="text-cyan-200">Sim</span>
+            ) : (
+              <span className="text-orange-300">Não</span> || ""
+            )}
           </li>
           <li>
             <b>Data Prevista: </b>
             <span className="breakable-text overflow-y-auto max-h-[3rem]">
-              {data?.date ? formatDateWithoutTime(data.date) : <span className="text-gray-400"> n/a</span>  || ""}
+              {data?.date
+                ? formatDateWithoutTime(data.date)
+                : <span className="text-gray-400"> n/a</span> || ""}
             </span>
           </li>
           <li>
             <b>Horário de início: </b>
-            {data?.startTime ? formatTimeWithoutSeconds(data.startTime) : <span className="text-gray-400"> n/a</span> || ""}
+            {data?.startTime
+              ? formatTimeWithoutSeconds(data.startTime)
+              : <span className="text-gray-400"> n/a</span> || ""}
           </li>
           <li>
             <b>Previsão de conclusão: </b>
-            {data?.expectedEndTime ? formatTimeWithoutSeconds(data.expectedEndTime) : <span className="text-gray-400"> n/a</span> || ""}
+            {data?.expectedEndTime
+              ? formatTimeWithoutSeconds(data.expectedEndTime)
+              : <span className="text-gray-400"> n/a</span> || ""}
           </li>
         </ul>
       </div>
       <div className="flex justify-between w-[100%] pr-1 px-3 border-t-[#ccc] items-center">
-        <img
-          src={ImageDone}
-          className={`h-8 duration-100  
-              ${data.status === "CLOSED" ? "opacity-100" : "opacity-0"}`}
-        />
-        <div className="flex justify-end w-[70%] max-h-[12rem] mb-1 gap-2 mr-2">
+        <div className="flex justify-end w-full max-h-[12rem] mb-1 gap-2 mr-2">
           <button
             onClick={handleChangeStatus}
             className={`text-center w-[7rem] text-[14px]  hover:text-[#B9B9B9]
