@@ -7,6 +7,7 @@ import ModalEditTask from "../../components/modals/modalEditTask/ModalEditTask";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 import { axiosProvider } from "../../provider/apiProvider";
 import { SyncLoader } from "react-spinners";
+import { ENDPOINTS } from "../../constants/endpoints";
 
 const statuses = ["Pendente", "Fazendo", "Concluído"];
 
@@ -34,8 +35,8 @@ const Tasks = () => {
     const fetchTasksAndEmployees = async () => {
       try {
         const [tasksResponse, employeesResponse] = await Promise.all([
-          axiosProvider.get("/tasks"),
-          axiosProvider.get("/employees"),
+          axiosProvider.get(ENDPOINTS.TASKS),
+          axiosProvider.get(ENDPOINTS.EMPLOYEES),
         ]);
 
         if (
@@ -90,7 +91,7 @@ const Tasks = () => {
     };
     console.log("Payload for adding task:", payload); // Log the payload
     axiosProvider
-      .post(`/tasks`, payload)
+      .post(ENDPOINTS.TASKS, payload)
       .then((res) => {
         const taskWithNames = {
           ...res.data,
@@ -118,7 +119,7 @@ const Tasks = () => {
     };
 
     axiosProvider
-      .patch(`tasks/${id}`, payload)
+      .patch(ENDPOINTS.getTaskById(id), payload)
       .then((res) => {
         const updatedTaskWithNames = {
           ...res.data,

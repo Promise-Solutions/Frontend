@@ -7,6 +7,7 @@ import Input from "../../form/Input";
 import Select from "../../form/Select";
 import { axiosProvider } from "../../../provider/apiProvider";
 import { showToast } from "../../toastStyle/ToastStyle";
+import { ENDPOINTS } from "../../../constants/endpoints";
 
 const mapStatusToFrontend = {
   PENDING: "Pendente",
@@ -68,7 +69,7 @@ const ModalEditTask = ({
       };
       console.log("Payload for editing task:", updatedTask);
       const response = await axiosProvider.patch(
-        `/tasks/${task.id}`,
+        ENDPOINTS.getTaskById(task.id),
         updatedTask
       );
       onEdit(task.id, {

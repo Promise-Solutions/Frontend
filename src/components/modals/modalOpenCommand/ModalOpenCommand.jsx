@@ -5,6 +5,7 @@ import CancelButton from "../modalConfirmDelete/cancelButton";
 import { showToast } from "../../toastStyle/ToastStyle";
 import { axiosProvider } from "../../../provider/apiProvider";
 import Input from "../../form/Input";
+import { ENDPOINTS } from "../../../constants/endpoints";
 
 const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
   const [clients, setClients] = useState([]);
@@ -17,10 +18,10 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const clientsResponse = await axiosProvider.get("/clients");
-        const employeesResponse = await axiosProvider.get("/employees");
+        const clientsResponse = await axiosProvider.get(ENDPOINTS.CLIENTS);
+        const employeesResponse = await axiosProvider.get(ENDPOINTS.EMPLOYEES);
         const commandsResponse = await axiosProvider.get(
-          "/commands?status=OPEN"
+           ENDPOINTS.getCommandByStatus("OPEN")
         );
 
         setClients(clientsResponse.data || []); // Ensure data is an array
@@ -113,7 +114,7 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
       };
 
       console.log(newCommand)
-      await axiosProvider.post("/commands", newCommand);
+      await axiosProvider.post(ENDPOINTS.COMMANDS, newCommand);
       showToast.success("Comanda aberta com sucesso!");
       onClose();
       onCommandAdded(); // Notify parent to refresh the command list

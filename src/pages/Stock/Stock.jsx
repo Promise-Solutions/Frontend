@@ -8,6 +8,7 @@ import ModalEditProduct from "../../components/modals/modalEditProduct/ModalEdit
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { SyncLoader } from "react-spinners";
+import { ENDPOINTS } from "../../constants/endpoints.js";
 
 const Stock = () => {
   const [products, setProducts] = useState([]);
@@ -31,7 +32,7 @@ const Stock = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axiosProvider.get("/products");
+      const response = await axiosProvider.get(ENDPOINTS.PRODUCTS);
       setProducts(response.data);
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
@@ -46,7 +47,10 @@ const Stock = () => {
         unitValue: parseFloat(newProduct.unitValue).toFixed(2),
         buyValue: parseFloat(newProduct.buyValue).toFixed(2),
       };
-      const response = await axiosProvider.post("/products", productToAdd);
+      const response = await axiosProvider.post(
+        ENDPOINTS.PRODUCTS,
+        productToAdd
+      );
       setProducts((prevProducts) => [...prevProducts, response.data]);
       setIsAddModalOpen(false);
     } catch (error) {
@@ -69,7 +73,7 @@ const Stock = () => {
         buyValue: parseFloat(updatedProduct.buyValue).toFixed(2),
       };
       await axiosProvider.patch(
-        `/products/${editingProduct.id}`,
+        ENDPOINTS.getProductById(editingProduct.id),
         productToUpdate
       );
       setProducts((prevProducts) =>
@@ -91,7 +95,9 @@ const Stock = () => {
 
   const confirmDelete = async () => {
     try {
-      await axiosProvider.delete(`/products/${productToDelete.id}`);
+      await axiosProvider.delete(
+        ENDPOINTS.getProductById(productToDelete.id)
+      );
       setProducts((prevProducts) =>
         prevProducts.filter((product) => product.id !== productToDelete.id)
       );

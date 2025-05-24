@@ -24,6 +24,7 @@ import {
 } from "../../../hooks/translateAttributes.js";
 import CancelButton from "../../../components/modals/modalConfirmDelete/cancelButton.jsx";
 import { ROUTERS } from "../../../constants/routers.js";
+import { ENDPOINTS } from "../../../constants/endpoints.js";
 import { formatDateWithoutTime } from "../../../hooks/formatUtils.js";
 import { SyncLoader } from "react-spinners";
 
@@ -43,7 +44,8 @@ export const RenderInfos = () => {
   // Função para deletar usuário
   const handleDeleteUser = async () => {
     try {
-      const endpoint = isClient ? `/clients/${userId}` : `/employees/${userId}/${localStorage.getItem("userLogged")}`;
+      // Proceed with deletion 
+      const endpoint = isClient ? ENDPOINTS.getClientById(userId) : ENDPOINTS.getEmployeeById(userId) ;
       await axiosProvider.delete(endpoint);
       showToast.success("Usuário deletado com sucesso!", { style: ToastStyle });
       navigate(ROUTERS.USERS);
@@ -106,7 +108,7 @@ export const RenderInfos = () => {
   useEffect(() => {
     if (userId) {
       axiosProvider
-        .get(`dashboard/client-stats/${userId}`)
+        .get(ENDPOINTS.getDashboardClientStats(userId))
         .then((response) => {
           console.log("Estatísticas do usuário:", response.data);
           if (response.data != null) {
@@ -148,6 +150,7 @@ export const RenderInfos = () => {
       email: user?.email || "",
       contact: user?.contact || "",
       clientType: user?.clientType || "",
+      birthDay: user?.birthDay || "",
       active: user?.active,
       password: "",
       createdDate: user?.createdDate || "",
@@ -230,11 +233,11 @@ export const RenderInfos = () => {
               if (!formData.password) delete updatedFormData.password;
               if (!isClient) delete updatedFormData.clientType;
 
-              const endpoint = isClient
-                ? `/clients/${userId}`
-                : `/employees/${userId}`;
-              console.log("Dados atualizados:", updatedFormData);
-              await axiosProvider.patch(endpoint, updatedFormData);
+            const endpoint = isClient
+              ? ENDPOINTS.getClientById(userId)
+              : ENDPOINTS.getEmployeeById(userId); 
+            console.log("Dados atualizados:", updatedFormData);
+            await axiosProvider.patch(endpoint, updatedFormData);
 
               setUser({ ...user, ...updatedFormData });
               setIsEditing(false);
@@ -320,11 +323,11 @@ export const RenderInfos = () => {
                 <Input
                   type="date"
                   text="Data de Nascimento"
-                  name="dataNascimento"
+                  name="birthDay"
                   required
                   placeholder="Digite o valor"
                   handleOnChange={handleInputChange}
-                  value={formData.date}
+                  value={formData.birthDay}
                   min="1900-12-31"
                   max={new Date().toLocaleDateString("en-CA")}
                   className="custom-calendar"

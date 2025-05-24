@@ -1,15 +1,16 @@
 import axios from "axios";
+import { ENDPOINTS } from "../../constants/endpoints";
 
 // Example logic for managing stock data
 export const fetchStockData = async () => {
   // Fetch stock data from an API or database
-  const response = await axios.get("/products");
+  const response = await axios.get(ENDPOINTS.PRODUCTS);
   return response.data;
 };
 
 export const addStockItem = async (item) => {
   // Add a new stock item
-  const response = await axios.post("/products", item, {
+  const response = await axios.post(ENDPOINTS.PRODUCTS, item, {
     headers: { "Content-Type": "application/json" },
   });
   return response.data;
