@@ -1,5 +1,6 @@
 // CardUser.jsx
 import React from "react";
+import { IoMdMusicalNote } from "react-icons/io";
 
 const CardUser = ({
   id,
@@ -13,7 +14,7 @@ const CardUser = ({
   return (
     <div
       id={`user_${id}`}
-      className={`card_user border-1 border-pink-zero text-[#d9d9d9] w-[17rem] h-auto rounded-[5px] bg-[#1E1E1E90] cursor-pointer hover:border-cyan-zero transition duration-100 ease-in-out`}
+      className={`card_user border-1 border-pink-zero hover:border-cyan-zero  text-[#d9d9d9] w-[17rem] h-auto rounded-[5px] bg-[#1E1E1E90] cursor-pointer`}
       onClick={onClick}
     >
       <div
@@ -22,13 +23,14 @@ const CardUser = ({
       >
         <h1 className="card_user_name">{name}</h1>
         <div
-          className={`w-2 h-2 rounded-[50%] ${
+          className={clientType ? `w-2 h-2 rounded-[50%] ${
             active ? "bg-green-zero" : "bg-red-zero"
-          }`}
-        ></div>
+          }` : ""   
+          }
+        >{clientType ? "" : <IoMdMusicalNote />}</div>
       </div>
       <div>
-        <div className="border-1 border-pink-zero hover:border-cyan-zero transition duration-100"></div>
+        <div className={`border-1 ${clientType ? "border-pink-zero" : "border-cyan-zero"}`}></div>
         <ul className="px-8 py-6 text-[16px] list-disc marker:text-cyan-zero ease-in-out">
           {clientType && (
             <li>
