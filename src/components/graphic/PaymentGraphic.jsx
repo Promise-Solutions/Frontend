@@ -8,16 +8,37 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { axiosProvider } from "../../provider/apiProvider";
 
 const PaymentGraphic = ({ title }) => {
-  const mockData = [
-    { name: "Ensaio Musical", Entrada: 5000 },
-    { name: "Podcast", Entrada: 3000 },
-    { name: "Estúdio Fotográfico", Entrada: 2000 },
-  ];
-
+  const [data, setData] = useState([]);
   const [showInfo, setShowInfo] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosProvider.get("/dashboard/balances");
+        const dataObj = response.data;
+        const formattedData = [
+          {
+            name: "Ensaio Musical",
+            Entrada: dataObj.musicRehearsalBalance || 0,
+          },
+          { name: "Podcast", Entrada: dataObj.podcastBalance || 0 },
+          {
+            name: "Estúdio Fotográfico",
+            Entrada: dataObj.photoVideoStudioBalance || 0,
+          },
+        ];
+        setData(formattedData);
+      } catch (error) {
+        console.error("Error fetching payment data:", error);
+        setData([]);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="bg-white/5 border-1 border-pink-zero p-6 shadow-md w-[100%] h-[100%] relative">
@@ -57,35 +78,41 @@ const PaymentGraphic = ({ title }) => {
         </div>
       </div>
       <ResponsiveContainer width="100%" height={220}>
-        <BarChart data={mockData}>
-          <CartesianGrid stroke="#444" strokeDasharray="3 3" />
-          <XAxis dataKey="name" stroke="#fff" />
-          <YAxis stroke="#fff" />
-          <Tooltip
-            formatter={(value, name) => [
-              `R$ ${value.toLocaleString("pt-BR")}`,
-              name,
-            ]}
-            contentStyle={{
-              backgroundColor: "#1E1E1E",
-              border: "1px solid var(--color-pink-zero)",
-              color: "white",
-              borderRadius: "8px",
-              padding: "10px",
-            }}
-          />
-          <Legend
-            verticalAlign="top"
-            align="right"
-            iconType="circle"
-            wrapperStyle={{
-              color: "white",
-              fontSize: "14px",
-              paddingBottom: "16px",
-            }}
-          />
-          <Bar dataKey="Entrada" fill="#388E3C" />
-        </BarChart>
+        {data.length > 0 ? (
+          <BarChart data={data}>
+            <CartesianGrid stroke="#444" strokeDasharray="3 3" />
+            <XAxis dataKey="name" stroke="#fff" />
+            <YAxis stroke="#fff" />
+            <Tooltip
+              formatter={(value, name) => [
+                `R$ ${Number(value).toLocaleString("pt-BR")}`,
+                name,
+              ]}
+              contentStyle={{
+                backgroundColor: "#1E1E1E",
+                border: "1px solid var(--color-pink-zero)",
+                color: "white",
+                borderRadius: "8px",
+                padding: "10px",
+              }}
+            />
+            <Legend
+              verticalAlign="top"
+              align="right"
+              iconType="circle"
+              wrapperStyle={{
+                color: "white",
+                fontSize: "14px",
+                paddingBottom: "16px",
+              }}
+            />
+            <Bar dataKey="Entrada" fill="#388E3C" />
+          </BarChart>
+        ) : (
+          <div className="text-white text-center pt-16">
+            Sem dados para exibir
+          </div>
+        )}
       </ResponsiveContainer>
     </div>
   );

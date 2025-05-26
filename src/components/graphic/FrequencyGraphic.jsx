@@ -6,10 +6,54 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getCategoryTranslated } from "../../hooks/translateAttributes";
+import { axiosProvider } from "../../provider/apiProvider";
 
 const FrequencyGraphic = ({ title }) => {
+  const [data, setData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axiosProvider.get("/dashboard/frequencys");
+      const dataObj = response.data;
+
+      // Monta os dados para o gráfico geral
+      const formattedData = [
+        { name: "Mensal", value: dataObj.frequencyMonthly || 0 },
+        { name: "Avulso", value: dataObj.frequencySingle || 0 },
+      ];
+
+      // Monta os dados para o gráfico por categoria
+      const formattedCategoryData = [
+        {
+          name: getCategoryTranslated("MR"),
+          value: dataObj.frequencyByMr || 0,
+        },
+        {
+          name: getCategoryTranslated("PC"),
+          value: dataObj.frequencyByPc || 0,
+        },
+        {
+          name: getCategoryTranslated("PV"),
+          value: dataObj.frequencyByPv || 0,
+        },
+      ];
+
+      setData(formattedData);
+      setCategoryData(formattedCategoryData);
+    } catch (error) {
+      console.error("Error fetching frequency data:", error);
+      setData([]);
+      setCategoryData([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   // Frequência geral: monocromático cyan-zero
   const COLORS = [
     "var(--color-cyan-zero)",
@@ -21,15 +65,6 @@ const FrequencyGraphic = ({ title }) => {
     "var(--color-pink-zero)",
     "#c05a9e", // pink-zero + lighten
     "#e6b3d6", // pink-zero + much lighter
-  ];
-  const mockData = [
-    { name: "Mensais", value: 120 },
-    { name: "Avulsos", value: 80 },
-  ];
-  const categoryData = [
-    { name: getCategoryTranslated("MUSIC_REHEARSAL"), value: 50 },
-    { name: getCategoryTranslated("PODCAST"), value: 70 },
-    { name: getCategoryTranslated("PHOTO_VIDEO_STUDIO"), value: 80 },
   ];
   const [showInfo, setShowInfo] = useState(false);
 
@@ -65,9 +100,9 @@ const FrequencyGraphic = ({ title }) => {
           </svg>
           {showInfo && (
             <div className="absolute left-6 top-1 z-10 bg-[#1E1E1E] text-white text-xs rounded px-3 py-2 border border-pink-zero w-60 shadow-lg">
-              O primeiro gráfico mostra a quantidade de atendimentos realizados por
-              clientes mensais e avulsos. O segundo mostra os atendimentos por
-              categoria de serviço.
+              O primeiro gráfico mostra a quantidade de atendimentos realizados
+              por clientes mensais e avulsos. O segundo mostra os atendimentos
+              por categoria de serviço.
             </div>
           )}
         </div>
@@ -75,106 +110,118 @@ const FrequencyGraphic = ({ title }) => {
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex-1">
           <ResponsiveContainer width="100%" height={220}>
-            <PieChart>
-              <Pie
-                data={mockData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                innerRadius="60%"
-                outerRadius="80%"
-                fill="#8884d8"
-                label
-              >
-                {mockData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip
-                formatter={(value, name, props) => [
-                  <span
-                    style={{ color: props.payload?.fill }}
-                  >{`${value} usuários`}</span>,
-                  name,
-                ]}
-                contentStyle={{
-                  backgroundColor: "#1E1E1E",
-                  border: "1px solid var(--color-pink-zero)",
-                  color: "white",
-                  borderRadius: "8px",
-                  padding: "10px",
-                }}
-                itemStyle={{
-                  color: "white",
-                }}
-              />
-              <Legend
-                verticalAlign="top"
-                align="right"
-                iconType="circle"
-                wrapperStyle={{
-                  color: "white",
-                  fontSize: "14px",
-                  paddingBottom: "16px",
-                }}
-              />
-            </PieChart>
+            {data.length > 0 ? (
+              <PieChart>
+                <Pie
+                  data={data}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius="60%"
+                  outerRadius="80%"
+                  fill="#8884d8"
+                  label
+                >
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip
+                  formatter={(value, name, props) => [
+                    <span
+                      style={{ color: props.payload?.fill }}
+                    >{`${value} usuários`}</span>,
+                    name,
+                  ]}
+                  contentStyle={{
+                    backgroundColor: "#1E1E1E",
+                    border: "1px solid var(--color-pink-zero)",
+                    color: "white",
+                    borderRadius: "8px",
+                    padding: "10px",
+                  }}
+                  itemStyle={{
+                    color: "white",
+                  }}
+                />
+                <Legend
+                  verticalAlign="top"
+                  align="right"
+                  iconType="circle"
+                  wrapperStyle={{
+                    color: "white",
+                    fontSize: "14px",
+                    paddingBottom: "16px",
+                  }}
+                />
+              </PieChart>
+            ) : (
+              <div className="text-white text-center pt-16">
+                Sem dados para exibir
+              </div>
+            )}
           </ResponsiveContainer>
         </div>
         <div className="flex-1">
           <ResponsiveContainer width="100%" height={220}>
-            <PieChart>
-              <Pie
-                data={categoryData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                innerRadius="60%"
-                outerRadius="80%"
-                fill="#8884d8"
-                label
-              >
-                {categoryData.map((entry, index) => (
-                  <Cell
-                    key={`cell-category-${index}`}
-                    fill={CATEGORY_COLORS[index % CATEGORY_COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip
-                formatter={(value, name, props) => [
-                  <span
-                    style={{ color: props.payload?.fill }}
-                  >{`${value} usuários`}</span>,
-                  name,
-                ]}
-                contentStyle={{
-                  backgroundColor: "#1E1E1E",
-                  border: "1px solid var(--color-pink-zero)",
-                  color: "white",
-                  borderRadius: "8px",
-                  padding: "10px",
-                }}
-                itemStyle={{
-                  color: "white",
-                }}
-              />
-              <Legend
-                verticalAlign="top"
-                align="right"
-                iconType="circle"
-                wrapperStyle={{
-                  color: "white",
-                  fontSize: "14px",
-                  paddingBottom: "16px",
-                }}
-              />
-            </PieChart>
+            {categoryData.length > 0 ? (
+              <PieChart>
+                <Pie
+                  data={categoryData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius="60%"
+                  outerRadius="80%"
+                  fill="#8884d8"
+                  label
+                >
+                  {categoryData.map((entry, index) => (
+                    <Cell
+                      key={`cell-category-${index}`}
+                      fill={CATEGORY_COLORS[index % CATEGORY_COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip
+                  formatter={(value, name, props) => [
+                    <span
+                      style={{ color: props.payload?.fill }}
+                    >{`${value} usuários`}</span>,
+                    name,
+                  ]}
+                  contentStyle={{
+                    backgroundColor: "#1E1E1E",
+                    border: "1px solid var(--color-pink-zero)",
+                    color: "white",
+                    borderRadius: "8px",
+                    padding: "10px",
+                  }}
+                  itemStyle={{
+                    color: "white",
+                  }}
+                />
+                <Legend
+                  verticalAlign="top"
+                  align="right"
+                  iconType="circle"
+                  wrapperStyle={{
+                    color: "white",
+                    fontSize: "14px",
+                    paddingBottom: "16px",
+                  }}
+                />
+              </PieChart>
+            ) : (
+              <div className="text-white text-center pt-16">
+                Sem dados para exibir
+              </div>
+            )}
           </ResponsiveContainer>
         </div>
       </div>
