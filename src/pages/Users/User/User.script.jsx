@@ -522,6 +522,8 @@ export const RenderInfos = () => {
     }
   };
 
+  const showBalloons = isBirthday(user?.birthDay);
+  {showBalloons && <BalloonsAnimation />}
   return (
     <div className="w-full mt-3">
       <ScreenFilter onFilterChange={setFilterScreen} />
@@ -539,4 +541,27 @@ export const RenderInfos = () => {
       )}
     </div>
   );
+
+  // Função para verificar se hoje é aniversário do usuário
+function isBirthday(birthDateString) {
+  if (!birthDateString) return false;
+  const today = new Date();
+  const birthDate = new Date(birthDateString);
+  return (
+    today.getDate() === birthDate.getDate() &&
+    today.getMonth() === birthDate.getMonth()
+  );
+}
+
+// Componente de animação de balões
+function BalloonsAnimation() {
+  return (
+    <div className="balloons-container">
+      {[...Array(10)].map((_, i) => (
+        <div key={i} className={`balloon balloon-${i % 5}`}></div>
+      ))}
+      <div className="birthday-message">🎉 Feliz Aniversário! 🎈</div>
+    </div>
+  );
+}
 };
