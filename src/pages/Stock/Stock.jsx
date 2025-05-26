@@ -15,8 +15,8 @@ const Stock = () => {
   const [formData, setFormData] = useState({
     productName: "",
     quantity: 0,
-    unitValue: "",
-    buyValue: 0.0,
+    clientValue: "",
+    employeeValue: "",
   });
   const [editingProduct, setEditingProduct] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -44,8 +44,8 @@ const Stock = () => {
       const productToAdd = {
         ...newProduct,
         quantity: parseInt(newProduct.quantity),
-        unitValue: parseFloat(newProduct.unitValue).toFixed(2),
-        buyValue: parseFloat(newProduct.buyValue).toFixed(2),
+        clientValue: parseFloat(newProduct.clientValue).toFixed(2),
+        employeeValue: parseFloat(newProduct.employeeValue).toFixed(2),
       };
       const response = await axiosProvider.post(
         ENDPOINTS.PRODUCTS,
@@ -69,8 +69,8 @@ const Stock = () => {
         ...editingProduct,
         ...updatedProduct,
         quantity: parseInt(updatedProduct.quantity),
-        unitValue: parseFloat(updatedProduct.unitValue).toFixed(2),
-        buyValue: parseFloat(updatedProduct.buyValue).toFixed(2),
+        clientValue: parseFloat(updatedProduct.clientValue).toFixed(2),
+        employeeValue: parseFloat(updatedProduct.employeeValue).toFixed(2),
       };
       await axiosProvider.patch(
         ENDPOINTS.getProductById(editingProduct.id),

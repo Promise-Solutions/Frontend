@@ -104,16 +104,6 @@ const ExpenseRegister = () => {
                     handleOnChange={handleInputChange}
                     value={formData.expenseCategory}
                 />
-                <Input
-                    type="text"
-                    text="Valor"
-                    name="amountExpend"
-                    required
-                    placeholder="Digite o valor"
-                    handleOnChange={handleValorChange}
-                    value={formData.amountExpend}
-                    maxLength="50"
-                />
                 {
                     formData.expenseCategory === "STOCK" ? (
                         <div className="flex gap-3 items-center justify-center w-full">
@@ -183,8 +173,6 @@ const ExpenseRegister = () => {
         
             <SubmitButton text="Confirmar" />
         </form>
-            
-
       </main>
     )
 }

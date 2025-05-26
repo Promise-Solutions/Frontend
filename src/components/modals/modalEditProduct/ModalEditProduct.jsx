@@ -24,15 +24,11 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
       showToast.error("Por favor, insira o nome do produto.");
       return;
     }
-    if (!formData.quantity || formData.quantity < 0) {
-      showToast.error("Por favor, insira uma quantidade válida.");
-      return;
-    }
-    if (!formData.unitValue || parseFloat(formData.unitValue) <= 0) {
+    if (!formData.clientValue || parseFloat(formData.clientValue) <= 0) {
       showToast.error("Por favor, insira um valor unitário válido.");
       return;
     }
-    if (!formData.buyValue || parseFloat(formData.buyValue) < 0) {
+    if (!formData.employeeValue || parseFloat(formData.employeeValue) < 0) {
       showToast.error("Por favor, insira um valor unitário válido.");
       return;
     }
@@ -59,31 +55,21 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
               disabled
             />
             <Input
-              type="number"
-              name="quantity"
-              required
-              text="Quantidade"
-              placeholder="Digite a quantidade"
-              value={formData.quantity || ""}
-              handleOnChange={handleInputChange}
-              min="0"
-            />
-            <Input
               type="text"
-              name="unitValue"
+              name="clientValue"
               required
-              text="Valor Unitário de Venda"
-              placeholder="Digite o valor unitário"
-              value={formData.unitValue || ""}
+              text="Valor Unitário para Clientes"
+              placeholder="Digite o valor para clientes"
+              value={formData.clientValue || ""}
               handleOnChange={handleInputChange}
             />
             <Input
               type="number"
-              name="buyValue"
+              name="employeeValue"
               required
-              text="Valor Total de Compra"
-              placeholder="Digite o valor de compra"
-              value={formData.buyValue || ""}
+              text="Valor para Funcionários"
+              placeholder="Digite o valor para funcionário"
+              value={formData.employeeValue || ""}
               handleOnChange={handleInputChange}
               min="0"
               step="any"

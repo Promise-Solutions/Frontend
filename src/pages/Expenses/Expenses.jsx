@@ -8,11 +8,16 @@ import { ROUTERS } from "../../constants/routers";
 import { axiosProvider } from "../../provider/apiProvider";
 import Table from "../../components/tables/Table";
 import ModalEditGoal from "../../components/modals/modalEditGoal/ModalEditGoal";
+import DeleteButton from "../../components/buttons/deleteButton/DeleteButton";
+import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete";
+import { deleteExpense } from "./Expenses";
 
 function Expenses() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
   const [expenseElements, setExpenseElements] = useState([]); 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
   const navigate = useNavigate();
   const tableHeader = [
@@ -21,7 +26,8 @@ function Expenses() {
     { label:"Valor", key: "amountExpend"},
     { label:"Data do pagamento", key: "date"},
     { label:"Quantidade", key: "quantity"},
-    { label:"Forma de pagamento", key: "paymentType"}
+    { label:"Forma de pagamento", key: "paymentType"},
+    { label: "Ações", key: "actions"}
   ]
 
   const mockTableData = [
@@ -31,7 +37,21 @@ function Expenses() {
     amountExpend: 250.75,
     date: "2025-05-15",
     quantity: 10,
-    paymentType: "Cartão de crédito"
+    paymentType: "Cartão de crédito",
+    actions: [
+      <div className="flex gap-2">
+        <PrimaryButton
+          id="2"
+          text="Editar"
+          onClick={() => setIsEditing(true)}
+        />
+        <DeleteButton 
+          id="1"
+          text="Deletar"
+          onClick={() => setIsDeleteModalOpen(true)}
+        />
+      </div>
+    ]
   },
   {
     expenseDetail: "Almoço com cliente",
@@ -39,7 +59,21 @@ function Expenses() {
     amountExpend: 89.90,
     date: "2025-05-14",
     quantity: 1,
-    paymentType: "Dinheiro"
+    paymentType: "Dinheiro",
+    actions: [
+      <div className="flex gap-2">
+        <PrimaryButton
+          id="2"
+          text="Editar"
+          onClick={() => setIsEditing(true)}
+        />
+        <DeleteButton 
+          id="1"
+          text="Deletar"
+          onClick={() => setIsDeleteModalOpen(true)}
+        />
+      </div>
+    ]
   },
   {
     expenseDetail: "Assinatura de software",
@@ -47,7 +81,21 @@ function Expenses() {
     amountExpend: 129.99,
     date: "2025-05-01",
     quantity: 1,
-    paymentType: "Débito automático"
+    paymentType: "Débito automático",
+    actions: [
+      <div className="flex gap-2">
+        <PrimaryButton
+          id="2"
+          text="Editar"
+          onClick={() => setIsEditing(true)}
+        />
+        <DeleteButton 
+          id="1"
+          text="Deletar"
+          onClick={() => setIsDeleteModalOpen(true)}
+        />
+      </div>
+    ]
   },
   {
     expenseDetail: "Transporte para reunião",
@@ -55,7 +103,21 @@ function Expenses() {
     amountExpend: 45.00,
     date: "2025-05-10",
     quantity: 1,
-    paymentType: "Cartão de débito"
+    paymentType: "Cartão de débito",
+    actions: [
+      <div className="flex gap-2">
+        <PrimaryButton
+          id="2"
+          text="Editar"
+          onClick={() => setIsEditing(true)}
+        />
+        <DeleteButton 
+          id="1"
+          text="Deletar"
+          onClick={() => setIsDeleteModalOpen(true)}
+        />
+      </div>
+    ]
   }
   ]
 
@@ -81,6 +143,15 @@ function Expenses() {
   const handleSearch = (term) => {
     setSearchTerm(term.toUpperCase().trim());
   };
+
+  const handleDelete = () => {
+  //   const responseCode = deleteExpense(1)
+
+    // if(responseCode) {
+      setIsDeleteModalOpen(false);
+    // } 
+    alert("Despesa deletada")
+  }
 
   
     const filteredExpenseElements = expenseElements.filter((element) => {
@@ -175,6 +246,19 @@ function Expenses() {
           )}
         </div>
       </section>
+      {
+        isDeleteModalOpen ? (
+          <ModalConfirmDelete
+              isOpen={isDeleteModalOpen}
+              onClose={() => setIsDeleteModalOpen(false)}
+              onConfirm={handleDelete}
+              title={"Deletar Despesa"}
+              description={<span className="text-yellow-zero font-semibold">Tem certeza de que deseja deletar essa despesa? <br/> Não será possível recuperar!</span>}
+          />
+        ): (
+          null
+        )
+      }
     </div>
   );
 }

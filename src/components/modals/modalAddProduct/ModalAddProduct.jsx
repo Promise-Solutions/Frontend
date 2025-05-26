@@ -6,21 +6,19 @@ import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
 const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
     name: "",
-    quantity: 0,
-    unitValue: "",
-    buyValue: 0.0,
+    clientValue: "",
+    employeeValue: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const sanitizedValue = name === "quantity" && value < 0 ? 0 : value;
-    setFormData((prevData) => ({ ...prevData, [name]: sanitizedValue }));
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onAdd(formData);
-    setFormData({ name: "", quantity: 0, unitValue: "", buyValue: 0.0 });
+    setFormData({ name: "", clientValue: "", employeeValue: "" });
   };
 
   if (!isOpen) return null;
@@ -42,30 +40,22 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
             />
             <Input
               type="number"
-              name="quantity"
+              name="clientValue"
               required
-              text="Quantidade"
-              placeholder="Digite a quantidade"
-              value={formData.quantity}
+              text="Valor Unitário para Clientes"
+              placeholder="Digite o valor para clientes"
+              value={formData.clientValue}
               handleOnChange={handleInputChange}
               min="0"
-            />
-            <Input
-              type="text"
-              name="unitValue"
-              required
-              text="Valor Unitário de Venda"
-              placeholder="Digite o valor unitário"
-              value={formData.unitValue}
-              handleOnChange={handleInputChange}
+              step="any"
             />
             <Input
               type="number"
-              name="buyValue"
+              name="employeeValue"
               required
-              text="Valor Total de Compra"
-              placeholder="Digite o valor de compra"
-              value={formData.buyValue}
+              text="Valor Unitário para Funcionários"
+              placeholder="Digite o valor para funcionários"
+              value={formData.employeeValue}
               handleOnChange={handleInputChange}
               min="0"
               step="any"

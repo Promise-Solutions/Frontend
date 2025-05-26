@@ -10,6 +10,7 @@ export const ENDPOINTS = {
     REPORTS: "/reports",
     TASKS: "/tasks",
     DASHBOARD_BAR_FINANCES:`/dashboard/bar-finances`,
+    EXPENSES: "/expenses",
 
     getClientById: (id) => `/clients/${id}`,
     getEmployeeById: (id) => `/employees/${id}`,
@@ -23,5 +24,6 @@ export const ENDPOINTS = {
     getCommandProductsByCommand: (commandId) => `/command-products?fkComanda=${commandId}`,
     getCommandProductsByProduct: (productId) => `/command-products/${productId}`,
     getCommandByStatus: (status) => `/commands?status=${status}`,
-    getTaskById: (taskId) => `/tasks/${taskId}`
+    getTaskById: (taskId) => `/tasks/${taskId}`,    
+    getExpenseById: (expenseId) => `/expenses/${expenseId}`
 };

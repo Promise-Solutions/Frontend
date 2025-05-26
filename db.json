@@ -522,31 +522,31 @@
       "id": 1,
       "name": "Coca-Cola",
       "quantity": 0,
-      "unitValue": 7
+      "clientValue": 7
     },
     {
       "id": 2,
       "name": "Guaraná",
       "quantity": 0,
-      "unitValue": 7
+      "clientValue": 7
     },
     {
       "id": 5,
       "name": "Ruffles",
       "quantity": 10,
-      "unitValue": 6.5
+      "clientValue": 6.5
     },
     {
       "id": 6,
       "name": "Chocolate",
       "quantity": 10,
-      "unitValue": 5.6
+      "clientValue": 5.6
     },
     {
       "id": 7,
       "name": "Bala Halls",
       "quantity": 2,
-      "unitValue": 2
+      "clientValue": 2
     }
   ],
   "commands": [
@@ -576,7 +576,7 @@
       "fkProduct": 1,
       "fkCommand": 1,
       "productQuantity": 2,
-      "unitValue": 7
+      "clientValue": 7
     }
   ]
 }

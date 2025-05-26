@@ -20,7 +20,7 @@ const ModalEditCommandProduct = ({
         idProduto: initialData.idProduto,
         nomeProduto: initialData.name, // Map initial product name
         qtdProduto: initialData.productQuantity, // Map initial quantity
-        valorUnitario: initialData.unitValue, // Map initial unit value
+        valorUnitario: initialData.clientValue, // Map initial unit value
         estoque: initialData.stockQuantity, // Map initial stock quantity
       });
     }
@@ -42,7 +42,7 @@ const ModalEditCommandProduct = ({
         ...formData,
         idProduto: selectedProduct.id,
         nomeProduto: selectedProduct.name, // Correct field for product name
-        valorUnitario: selectedProduct.unitValue, // Correct field for unit value
+        valorUnitario: selectedProduct.clientValue, // Correct field for unit value
         estoque: selectedProduct.quantity, // Correct field for stock quantity
       });
     }

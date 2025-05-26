@@ -22,10 +22,10 @@ const StockTable = ({ products, onEdit, onDelete }) => {
                 Quantidade
               </th>
               <th className="border border-gray-700 text-center px-7 py-2">
-                Valor Unitário
+                R$ Valor (Clientes)
               </th>
               <th className="border border-gray-700 text-center px-7 py-2">
-                Valor Compra
+                R$ Valor (Funcionários)
               </th>
               <th className="border border-gray-700 text-center px-7 py-2">
                 Ações
@@ -45,10 +45,10 @@ const StockTable = ({ products, onEdit, onDelete }) => {
                   {product.quantity}
                 </td>
                 <td className="border border-gray-700 text-center px-4 py-2">
-                  R$ {Number(product.unitValue).toFixed(2)}
+                  R$ {Number(product.clientValue).toFixed(2)}
                 </td>
                 <td className="border border-gray-700 text-center px-4 py-2">
-                  R$ {Number(product.buyValue).toFixed(2)}
+                  R$ {Number(product.employeeValue).toFixed(2)}
                 </td>
                 <td className="border border-gray-700 text-center px-4 py-2">
                   <div className="flex gap-2">

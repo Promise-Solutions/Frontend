@@ -22,7 +22,7 @@ export const RenderCommandDetails = () => {
   const [newProduct, setNewProduct] = useState({
     name: "",
     productQuantity: 0,
-    unitValue: "",
+    clientValue: "",
     idProduct: null,
   });
   const [allProducts, setAllProducts] = useState([]); // State to store all available products
@@ -194,7 +194,7 @@ export const RenderCommandDetails = () => {
       setNewProduct({
         name: selectedProduct.name,
         quantity: 0,
-        unitValue: selectedProduct.unitValue,
+        clientValue: selectedProduct.clientValue,
         stockQuantity: selectedProduct.quantity, // Set stock quantity
         idProduto: selectedProduct.id,
       });
@@ -221,7 +221,7 @@ export const RenderCommandDetails = () => {
         fkProduct: newProduct.idProduto,
         fkCommand: command.id,
         productQuantity: parseInt(newProduct.quantity),
-        unitValue: parseFloat(newProduct.unitValue).toFixed(2),
+        clientValue: parseFloat(newProduct.clientValue).toFixed(2),
       };
 
       await axiosProvider.post(ENDPOINTS.COMMAND_PRODUCTS, productToAdd);
@@ -236,7 +236,7 @@ export const RenderCommandDetails = () => {
       setNewProduct({
         name: "",
         quantity: 0,
-        unitValue: "",
+        clientValue: "",
         stockQuantity: 0,
         idProduto: null,
       });
@@ -293,7 +293,7 @@ export const RenderCommandDetails = () => {
         fkCommand: command.id,
         fkProduct: updatedProduct.idProduto,
         productQuantity: parseInt(updatedProduct.qtdProduto),
-        unitValue: parseFloat(updatedProduct.valorUnitario),
+        clientValue: parseFloat(updatedProduct.valorUnitario),
       };
 
       await axiosProvider.patch(
@@ -501,12 +501,12 @@ export const RenderCommandDetails = () => {
                       />
                       <Input
                         type="text"
-                        name="unitValue"
+                        name="clientValue"
                         required
                         text="Valor Unitário"
                         placeholder="Valor unitário"
                         handleOnChange={handleInputChange}
-                        value={newProduct.unitValue}
+                        value={newProduct.clientValue}
                         disabled
                       />
                       <ConfirmButton type="submit" text="Adicionar Produto" />
@@ -552,15 +552,15 @@ export const RenderCommandDetails = () => {
                 { label: "ID", key: "idProduto" },
                 { label: "Nome", key: "name" },
                 { label: "Quantidade", key: "productQuantity" },
-                { label: "Valor Unitário", key: "unitValue" },
+                { label: "Valor Unitário", key: "clientValue" },
                 { label: "Valor Total", key: "totalValue" },
                 { label: "Ações", key: "actions" },
               ]}
               data={products.map((product) => ({
                 ...product,
-                unitValue: `R$ ${parseFloat(product.unitValue).toFixed(2)}`,
+                clientValue: `R$ ${parseFloat(product.clientValue).toFixed(2)}`,
                 totalValue: `R$ ${parseFloat(
-                  product.productQuantity * product.unitValue
+                  product.productQuantity * product.clientValue
                 ).toFixed(2)}`,
                 actions: (
                   <div className="flex gap-2">
