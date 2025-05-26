@@ -9,18 +9,18 @@ import DashIcon from "../../assets/iconsHomePage/icon-dashboard.png";
 import RelatIcon from "../../assets/iconsHomePage/icon-report.png";
 import TaskIcon from "../../assets/iconsHomePage/icon-tarefas.png";
 import StockIcon from '../../assets/iconsHomePage/icon-estoque.png';
+import ExpenseIcon from '../../assets/iconsHomePage/icon-despesas.png'
 import Logo from "../../assets/logo-branco-bg-sonoro.png";
 import { handleLogout } from "./Home.script.js";
 import LogoutButton from "../../components/buttons/logoutButton/LogoutButton.jsx";
 import { ROUTERS } from "../../constants/routers.js";
 
-// Componente funcional para a página Home
-// Representa a estrutura da página inicial
+
 const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <main className="flex flex-col justify-center items-center min-h-[100vh] h-full w-[100vw] relative">
+    <main className="slide-in-ltr flex flex-col justify-center items-center min-h-[100vh] h-full w-[100vw] relative">
       <div className="flex items-center justify-center">
         <img src={Logo} className="h-[130px]" />
         <div className="absolute flex w-full justify-end  pr-[64px] py-4 px-12">
@@ -28,7 +28,7 @@ const Home = () => {
             id="logout_button_id"
             text="Sair"
             onClick={() => handleLogout(navigate)}
-            />
+          />
         </div>
       </div>
       <section className="flex flex-wrap w-auto max-w-[75vw] h-auto gap-4 items-center justify-left mx-4">
@@ -69,24 +69,6 @@ const Home = () => {
           onClick={() => handleButtonClick(ROUTERS.DASHBOARD, navigate)}
         />
         <CardHomePage
-          title="Relatórios"
-          text="Visualize seus relatórios existentes ou gere novos."
-          url={RelatIcon}
-          idButton={ROUTERS.REPORTS}
-          className="text-[42px] text-transparent font-bold"
-          style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
-          onClick={() => handleButtonClick(ROUTERS.REPORTS, navigate)}
-        />
-        <CardHomePage
-          title="Tarefas"
-          text="Obtenha uma visão de suas tarefas e gerencie seus status."
-          url={TaskIcon}
-          idButton={ROUTERS.TASKS}
-          className="text-[42px] text-transparent font-bold"
-          style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
-          onClick={() => handleButtonClick(ROUTERS.TASKS, navigate)}
-        />
-        <CardHomePage
           title="Estoque"
           text="Visualize e gerencie os produtos presentes em seu estoque."
           url={StockIcon}
@@ -98,11 +80,29 @@ const Home = () => {
         <CardHomePage
           title="Despesas"
           text="Visualize e gerencie suas despesas."
-          url={StockIcon}
+          url={ExpenseIcon}
           idButton={ROUTERS.EXPENSES}
           className="text-[42px] text-transparent font-bold"
           style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
           onClick={() => handleButtonClick(ROUTERS.EXPENSES, navigate)}
+        />
+        <CardHomePage
+          title="Tarefas"
+          text="Obtenha uma visão de suas tarefas e gerencie seus status."
+          url={TaskIcon}
+          idButton={ROUTERS.TASKS}
+          className="text-[42px] text-transparent font-bold"
+          style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+          onClick={() => handleButtonClick(ROUTERS.TASKS, navigate)}
+        />
+        <CardHomePage
+          title="Relatórios"
+          text="Visualize seus relatórios existentes ou gere novos."
+          url={RelatIcon}
+          idButton={ROUTERS.REPORTS}
+          className="text-[42px] text-transparent font-bold"
+          style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+          onClick={() => handleButtonClick(ROUTERS.REPORTS, navigate)}
         />
       </section>
     </main>

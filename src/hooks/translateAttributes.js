@@ -1,8 +1,8 @@
 export function getCategoryTranslated(category) {
     switch (category) {
-        case  "MUSIC_REHEARSAL": return "Ensaio Musical";
-        case "PODCAST": return "Podcast";
-        case "PHOTO_VIDEO_STUDIO": return "Estúdio Fotográfico";
+        case  "MR": return "Ensaio Musical";
+        case "PC": return "Podcast";
+        case "PV": return "Estúdio Fotográfico";
         default: return category;  
     }
 }
@@ -22,5 +22,27 @@ export function getServiceTypeTranslated(serviceType) {
         case "SINGLE": return "Avulso"
         case "MONTHLY": return "Mensal"
         default: return serviceType
+    }
+}
+
+export function getPaymentTypeTranslated(paymentType) {
+    switch (paymentType) {
+        case "CREDIT_CARD": return "Cartão de crédito"
+        case "DEBIT_CARD": return "Cartão de débito"
+        case "BILLET": return "Boleto"
+        case "MONEY": return "Em espécie"
+        case "PIX": return "Pix"
+        case "TRANSFER": return "Transferência"
+        default: return paymentType
+    }
+}
+
+export function getExpenseCategoryTranslated(expenseCategory) {
+    switch (expenseCategory) {
+        case "BILLS": return "Contas"
+        case "STOCK": return "Estoque"
+        case "MAINTENANCE": return "Manutenção"
+        case "OTHERS": return "Outros"
+        default: return paymentType
     }
 }

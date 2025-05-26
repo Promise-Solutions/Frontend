@@ -8,6 +8,7 @@ import ModalEditProduct from "../../components/modals/modalEditProduct/ModalEdit
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { SyncLoader } from "react-spinners";
+import { ENDPOINTS } from "../../constants/endpoints.js";
 
 const Stock = () => {
   const [products, setProducts] = useState([]);
@@ -31,7 +32,7 @@ const Stock = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axiosProvider.get("/products");
+      const response = await axiosProvider.get(ENDPOINTS.PRODUCTS);
       setProducts(response.data);
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
@@ -47,7 +48,7 @@ const Stock = () => {
         buyValue: parseFloat(newProduct.buyValue).toFixed(2),
       };
       const response = await axiosProvider.post(
-        "/products",
+        ENDPOINTS.PRODUCTS,
         productToAdd
       );
       setProducts((prevProducts) => [...prevProducts, response.data]);
@@ -72,7 +73,7 @@ const Stock = () => {
         buyValue: parseFloat(updatedProduct.buyValue).toFixed(2),
       };
       await axiosProvider.patch(
-        `/products/${editingProduct.id}`,
+        ENDPOINTS.getProductById(editingProduct.id),
         productToUpdate
       );
       setProducts((prevProducts) =>
@@ -95,7 +96,7 @@ const Stock = () => {
   const confirmDelete = async () => {
     try {
       await axiosProvider.delete(
-        `/products/${productToDelete.id}`
+        ENDPOINTS.getProductById(productToDelete.id)
       );
       setProducts((prevProducts) =>
         prevProducts.filter((product) => product.id !== productToDelete.id)
@@ -105,39 +106,38 @@ const Stock = () => {
       showToast.success("Produto deletado com sucesso!");
     } catch (error) {
       console.error("Erro ao excluir produto:", error);
-      showToast.error("Erro ao excluir produto. Verifique se o produto está em uso.");
+      showToast.error(
+        "Erro ao excluir produto. Verifique se o produto está em uso."
+      );
       setIsDeleteModalOpen(false);
       setProductToDelete(null);
     }
   };
 
   return (
-    <div className="text-white my-6 mx-16">
+    <div className="slide-in-ltr text-white my-6 mx-16">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-thin">Gerenciar Estoque</h1>
+        <h1 className="text-2xl font-thin">Gerencie seu estoque</h1>
         <PrimaryButton
           text="Adicionar Produto"
           onClick={() => setIsAddModalOpen(true)}
         />
       </div>
-      {
-        isLoading ? (
-          <SyncLoader 
-              size={8}
-              loading={true}
-              color={"#02AEBA"}
-              speedMultiplier={2}
-          />
-        ) 
-        : (
-          <StockTable
-            products={products}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        )
-      }
-      
+      {isLoading ? (
+        <SyncLoader
+          size={8}
+          loading={true}
+          color={"#02AEBA"}
+          speedMultiplier={2}
+        />
+      ) : (
+        <StockTable
+          products={products}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      )}
+
       <ModalAddProduct
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}

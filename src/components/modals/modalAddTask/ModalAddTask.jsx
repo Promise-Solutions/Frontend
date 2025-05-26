@@ -91,6 +91,7 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
             name="limitDate"
             handleOnChange={handleInputChange}
             value={formData.limitDate}
+            className="custom-calendar"
           />
           <Select
             text="Responsável"

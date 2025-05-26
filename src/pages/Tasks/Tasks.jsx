@@ -7,6 +7,7 @@ import ModalEditTask from "../../components/modals/modalEditTask/ModalEditTask";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 import { axiosProvider } from "../../provider/apiProvider";
 import { SyncLoader } from "react-spinners";
+import { ENDPOINTS } from "../../constants/endpoints";
 
 const statuses = ["Pendente", "Fazendo", "Concluído"];
 
@@ -34,8 +35,8 @@ const Tasks = () => {
     const fetchTasksAndEmployees = async () => {
       try {
         const [tasksResponse, employeesResponse] = await Promise.all([
-          axiosProvider.get("/tasks"),
-          axiosProvider.get("/employees"),
+          axiosProvider.get(ENDPOINTS.TASKS),
+          axiosProvider.get(ENDPOINTS.EMPLOYEES),
         ]);
 
         if (
@@ -90,7 +91,7 @@ const Tasks = () => {
     };
     console.log("Payload for adding task:", payload); // Log the payload
     axiosProvider
-      .post(`/tasks`, payload)
+      .post(ENDPOINTS.TASKS, payload)
       .then((res) => {
         const taskWithNames = {
           ...res.data,
@@ -118,7 +119,7 @@ const Tasks = () => {
     };
 
     axiosProvider
-      .patch(`tasks/${id}`, payload)
+      .patch(ENDPOINTS.getTaskById(id), payload)
       .then((res) => {
         const updatedTaskWithNames = {
           ...res.data,
@@ -167,11 +168,11 @@ const Tasks = () => {
   };
 
   return (
-    <div className="flex flex-col items-center text-white overflow-x-hidden mx-16 my-4">
+    <div className="slide-in-ltr flex flex-col items-center text-white overflow-x-hidden mx-16 my-6">
       {!isAddModalOpen && !isEditModalOpen ? (
         <>
           <div className="flex justify-between items-center w-full mb-4">
-            <h1 className="text-2xl font-thin">Tarefas</h1>
+            <h1 className="text-2xl font-thin">Gerencie suas tarefas</h1>
             <PrimaryButton
               onClick={() => setIsAddModalOpen(true)}
               text="Adicionar Tarefa"

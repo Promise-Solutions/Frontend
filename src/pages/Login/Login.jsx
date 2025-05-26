@@ -39,9 +39,11 @@ const Login = () => {
           .then((response) => {
             const data = response.data;
             const token = data.token;
+            const userLogged = data.id;
 
             if (token) {
               localStorage.setItem("token", token);
+              localStorage.setItem("userLogged", userLogged);
               navigate(ROUTERS.HOME_ALIAS);
             } else {
               throw new Error("Token não recebido.");

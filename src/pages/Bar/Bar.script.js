@@ -2,6 +2,7 @@ import React from "react";
 import CardCommand from "../../components/cards/cardCommand/CardCommand.jsx";
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { ROUTERS } from "../../constants/routers.js";
+import { ENDPOINTS } from "../../constants/endpoints.js";
 
 export const registerRedirect = (navigate) => {
   console.log("Navigating to /register");
@@ -23,10 +24,10 @@ export const renderCommands = async (
     const commands = await findCommands(filterType); // Busca comandas já filtradas
     console.log("Comandas filtradas:", commands);
 
-    const clientsResponse = await axiosProvider.get("/clients");
+    const clientsResponse = await axiosProvider.get(ENDPOINTS.CLIENTS);
     const clients = clientsResponse.data;
 
-    const employeesResponse = await axiosProvider.get("/employees");
+    const employeesResponse = await axiosProvider.get(ENDPOINTS.EMPLOYEES);
     const employees = employeesResponse.data;
 
     const formatDateTime = (dateTime) => {

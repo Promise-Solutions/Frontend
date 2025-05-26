@@ -75,7 +75,7 @@ const Bar = () => {
     ) : null;
 
   return (
-    <div className="min-w-full min-h-full text-white overflow-y-hidden">
+    <div className="slide-in-ltr min-w-full min-h-full text-white overflow-y-hidden">
       {/* Seção principal com filtros e cards */}
       <section className="mx-16 my-6">
         {/* Filtro de busca de comandas */}
@@ -83,7 +83,7 @@ const Bar = () => {
           {/* Filtro por tipo de comanda (Abertas ou Fechadas) */}
           <div className="flex w-full items-center gap-4 justify-between">
             <div>
-              <h1 className="text-2xl font-thin">Gerencie seu Bar</h1>
+              <h1 className="text-2xl font-thin">Gerencie seu bar</h1>
             </div>
             <PrimaryButton
               id="stock_button"
@@ -91,7 +91,7 @@ const Bar = () => {
               onClick={() => stockRedirect(navigate)} // Passa navigate para a função stockRedirect
             />
           </div>
-          <div className="flex justify-between mt-4 border-t-1 pt-4 border-gray-600">
+          <div className="flex justify-between mt-4 pt-4 border-t-1 border-gray-600">
             <div className="flex w-full flex-1 justify-center pl-75">
               <BarTypeFilter
                 onFilterChange={handleFilterChange} // Passa a função corrigida

@@ -11,6 +11,7 @@ import SubmitButton from "../../components/form/SubmitButton.jsx";
 import logo from "../../assets/logo-branco-bg-sonoro.png";
 import SelectTypeUser from "../../components/form/SelectTypeUser.jsx";
 import Select from "../../components/form/Select.jsx";
+import { formatDateWithoutTime } from "../../hooks/formatUtils.js";
 
 function Register() {
   const navigate = useNavigate();
@@ -135,6 +136,7 @@ function Register() {
         contact: formData.contato,
         clientType: formData.tipoCliente === "AVULSO" ? "SINGLE" : "MONTHLY",
         active: true,
+        birthDay: formData.dataNascimento,
         createdDate: new Date().toISOString(),
       };
       endpoint = "clients";
@@ -150,7 +152,10 @@ function Register() {
       endpoint = "employees";
     }
 
+    console.log(novoUsuario)
+
     try {
+      console.log("Novo usuário:", novoUsuario);
       const res = await axiosProvider.post(`/${endpoint}`, novoUsuario);
       if (res.status === 201) {
         showToast.success("Cadastro realizado com sucesso!");
@@ -173,7 +178,7 @@ function Register() {
   };
 
   return (
-    <main className="flex items-center justify-center h-[600px] my-6 w-full px-16">
+    <main className="slide-in-ltr flex items-center justify-center h-[600px] my-6 w-full px-16">
       <section className="flex flex-col items-center justify-start gap-6 w-full px-4">
         <img src={logo} alt="logo-studio-zero-header" className="h-[250px]" />
         <h1 className="font-light text-4xl tracking-widest text-[#9A3379] text-center">
@@ -182,7 +187,7 @@ function Register() {
       </section>
       <form
         autoComplete="off"
-        className="flex flex-col items-center gap-10 w-full h-full px-4"
+        className="flex flex-col items-center gap-3 w-full  px-4"
         onSubmit={handleSubmit}
       >
         <SelectTypeUser

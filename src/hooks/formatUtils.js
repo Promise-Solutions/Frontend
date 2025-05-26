@@ -64,3 +64,15 @@ export function formatDateBR(dateString) {
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 }
+
+export function extractDateOnly(dateStr) {
+  if (!dateStr || typeof dateStr !== "string") return "";
+
+  const [datePart] = dateStr.split("T");
+  if (!datePart) return "";
+
+  const [year, month, day] = datePart.split("-");
+  if (!year || !month || !day) return "";
+
+  return `${day.padStart(2, "0")}/${month.padStart(2, "0")}/${year}`;
+}

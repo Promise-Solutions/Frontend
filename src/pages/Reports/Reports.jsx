@@ -1,96 +1,137 @@
+import { CiEraser } from "react-icons/ci";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
+import CardReport from "../../components/cards/cardReport/CardReport";
+import { useState } from "react";
 
 const Reports = () => {
-  const reports = new Array(12).fill("Relatório - 00/00/0000");
+  const allReports = [
+    "Relatório Gerado em - 01/01/2024",
+    "Relatório Gerado em - 10/01/2024",
+    "Relatório Gerado em - 15/02/2024",
+    "Relatório Gerado em - 20/03/2024",
+    "Relatório Gerado em - 05/04/2024",
+    "Relatório Gerado em - 10/05/2024",
+    "Relatório Gerado em - 25/05/2024",
+    "Relatório Gerado em - 01/06/2024",
+    "Relatório Gerado em - 15/06/2024",
+    "Relatório Gerado em - 30/06/2024",
+    "Relatório Gerado em - 10/07/2024",
+    "Relatório Gerado em - 20/07/2024",
+  ];
+  const [reports, setReports] = useState(allReports);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+
+  const handleDownload = (index) => {
+    alert(`Download do relatório ${index + 1}`);
+  };
+
+  const handleDelete = (index) => {
+    alert(`Deletar relatório ${index + 1}`);
+  };
+
+  const parseDate = (str) => {
+    const [day, month, year] = str.split("/");
+    return new Date(`${year}-${month}-${day}`);
+  };
+
+  const handleFilter = () => {
+    // Se ambos os campos estiverem vazios, retorna todos
+    if (!dateFrom && !dateTo) {
+      setReports(allReports);
+      return;
+    }
+    setReports(
+      allReports.filter((item) => {
+        const dateStr = item.split(" - ")[1];
+        const reportDate = parseDate(dateStr);
+        let fromValid = true;
+        let toValid = true;
+        if (dateFrom) {
+          fromValid = reportDate >= new Date(dateFrom);
+        }
+        if (dateTo) {
+          toValid = reportDate <= new Date(dateTo);
+        }
+        return fromValid && toValid;
+      })
+    );
+  };
+
+  const handleClearFilters = () => {
+    setDateFrom("");
+    setDateTo("");
+    setReports(allReports);
+  };
 
   return (
-    <div className="mx-16 my-6 text-white">
-      <div className="flex justify-end">
-        <PrimaryButton
-          id="generate_report_button_id"
-          text="Gerar Relatório"
-          onClick={() => {}}
-        />
-      </div>
-      {/* Título e instruções */}
-      <div className="text-center space-y-4 mb-10">
-        <div className="flex justify-center">
-          <div className="bg-white/10 p-4 rounded-full">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-10 w-10 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12h6m2 8H7a2 2 0 01-2-2V6a2 2 0 012-2h5l5 5v11a2 2 0 01-2 2z"
-              />
-            </svg>
+    <>
+      <div className="slide-in-ltr mx-16 my-6 text-white">
+        <div className="flex pb-4 justify-between items-center">
+          <h1 className="text-2xl font-thin">Gerencie seus Relatórios</h1>
+          <div className="flex">
+            <PrimaryButton
+              id="generate_report_button_id"
+              text="Gerar Relatório"
+              onClick={() => {}}
+            />
           </div>
         </div>
-        <h1 className="text-3xl font-bold">Gerar Relatório</h1>
-        <p className="text-zinc-400 text-sm">
+        <div className="flex bmt-4 pt-4 border-t-1 border-gray-600 justify-between mb-4"></div>
+        <p className="text-yellow-zero">
           Você pode gerar um relatório agora ou visualizar os relatórios já
           existentes.
         </p>
-      </div>
-
-      {/* Campos de data e botão */}
-      <div className="flex flex-wrap justify-center gap-4 mb-10">
-        <input
-          type="text"
-          placeholder="Período de: 00/00/0000"
-          className="bg-black border border-pink-zero text-white px-4 py-2 rounded-md w-[200px] focus:outline-none"
-        />
-        <input
-          type="text"
-          placeholder="Período até: 00/00/0000"
-          className="bg-black border border-pink-zero text-white px-4 py-2 rounded-md w-[200px] focus:outline-none"
-        />
-      </div>
-
-      {/* Lista de relatórios */}
-      <div className="max-h-[400px] overflow-y-auto pr-2">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {reports.map((item, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between border border-white/20 px-4 py-3 rounded-md bg-white/5"
-            >
-              <div className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-pink-zero"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 12h6m2 8H7a2 2 0 01-2-2V6a2 2 0 012-2h5l5 5v11a2 2 0 01-2 2z"
-                  />
-                </svg>
-                <span>{item}</span>
-              </div>
-              <button className="text-white hover:text-pink-zero transition">
-                ...
-              </button>
-            </div>
-          ))}
+        <div className="flex flex-wrap justify-end items-end gap-4 mb-10">
+          <button
+            id="clear_filter_report_button_id"
+            className="flex items-center justify-center cursor-pointer text-pink-zero hover:text-cyan-zero transition text-3xl"
+            onClick={handleClearFilters}
+            title="Remover Filtros"
+            style={{ lineHeight: 0 }}
+          >
+            <CiEraser size={"40px"} />
+          </button>
+          <label className="flex flex-col text-gray-400">
+            <span>Período de: 00/00/0000</span>
+            <input
+              type="date"
+              className="bg-black border border-pink-zero text-white px-4 py-2 w-[250px] focus:outline-none"
+              value={dateFrom}
+              onChange={(e) => setDateFrom(e.target.value)}
+            />
+          </label>
+          <label className="flex flex-col text-gray-400">
+            <span>Período até: 00/00/0000</span>
+            <input
+              type="date"
+              className="bg-black border border-pink-zero text-white px-4 py-2 w-[250px] focus:outline-none"
+              value={dateTo}
+              onChange={(e) => setDateTo(e.target.value)}
+            />
+          </label>
+          <PrimaryButton
+            id="filter_report_button_id"
+            text="Filtrar"
+            onClick={handleFilter}
+          />
+        </div>
+        <div className="max-h-[450px] overflow-y-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {reports.map((item, index) => (
+              <CardReport
+                key={index}
+                id={index}
+                item={item}
+                onDownload={() => handleDownload(index)}
+                onDelete={() => handleDelete(index)}
+              />
+            ))}
+          </div>
         </div>
       </div>
-
-      {/* Rodapé com ano */}
-      <div className="text-right mt-4 text-sm text-white/60">
-        <span>2025</span>
-      </div>
-    </div>
+    </>
   );
 };
 

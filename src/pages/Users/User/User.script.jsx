@@ -24,6 +24,7 @@ import {
 } from "../../../hooks/translateAttributes.js";
 import CancelButton from "../../../components/modals/modalConfirmDelete/cancelButton.jsx";
 import { ROUTERS } from "../../../constants/routers.js";
+import { ENDPOINTS } from "../../../constants/endpoints.js";
 import { formatDateWithoutTime } from "../../../hooks/formatUtils.js";
 import { SyncLoader } from "react-spinners";
 
@@ -43,15 +44,17 @@ export const RenderInfos = () => {
   // Função para deletar usuário
   const handleDeleteUser = async () => {
     try {
-      // Proceed with deletion
-      const endpoint = isClient ? `/clients/${userId}` : `/employees/${userId}`;
+      const endpoint = isClient
+        ? `/clients/${userId}`
+        : `/employees/${userId}/${localStorage.getItem("userLogged")}`;
       await axiosProvider.delete(endpoint);
       showToast.success("Usuário deletado com sucesso!", { style: ToastStyle });
       navigate(ROUTERS.USERS);
     } catch (error) {
-      showToast.error("Erro ao deletar usuário. Tente novamente.", {
-        style: ToastStyle,
-      });
+      if (error.response?.status === 428) {
+        showToast.error("Você não pode deletar seu próprio usuário.");
+      }
+      showToast.error("Erro ao deletar usuário. Tente novamente.");
     } finally {
       setIsDeleteModalOpen(false);
     }
@@ -106,7 +109,7 @@ export const RenderInfos = () => {
   useEffect(() => {
     if (userId) {
       axiosProvider
-        .get(`dashboard/client-stats/${userId}`)
+        .get(ENDPOINTS.getDashboardClientStats(userId))
         .then((response) => {
           console.log("Estatísticas do usuário:", response.data);
           if (response.data != null) {
@@ -148,8 +151,10 @@ export const RenderInfos = () => {
       email: user?.email || "",
       contact: user?.contact || "",
       clientType: user?.clientType || "",
+      birthDay: user?.birthDay || "",
       active: user?.active,
       password: "",
+      birthDay: user?.birthDay || "",
       createdDate: user?.createdDate || "",
     });
 
@@ -217,6 +222,9 @@ export const RenderInfos = () => {
       } else if (!formData.contact || contact.length < 15) {
         showToast.error("Contato deve ter 15 caracteres.");
         return;
+      } else if (!formData.birthDay || !formData.birthDay == null) {
+        showToast.error("Data de nascimento vazia.");
+        return;
       } else {
         await showToast.promise(
           (async () => {
@@ -235,13 +243,11 @@ export const RenderInfos = () => {
                 : `/employees/${userId}`;
               console.log("Dados atualizados:", updatedFormData);
               await axiosProvider.patch(endpoint, updatedFormData);
-
               setUser({ ...user, ...updatedFormData });
               setIsEditing(false);
               showToast.success("Informações atualizadas com sucesso!");
             } catch (error) {
               showToast.error("Erro ao salvar alterações:", error);
-              throw new Error("Erro ao salvar alterações. Tente novamente.");
             }
           })(),
           {
@@ -258,11 +264,8 @@ export const RenderInfos = () => {
 
     return (
       <section id="edit_section" className="flex w-full justify-between">
-        <div className="flex flex-col">
-          <h1 className="text-[42px]">
-            <b>Editar Informações</b>
-          </h1>
-          <span className="text-[18px]">Altere as informações</span>
+        <div className="flex flex-col w-[500px]">
+          <h2 className="text-[42px] font-bold">Editar informações</h2>
           <ul className="flex flex-col mt-6 gap-2">
             {isClient ? (
               <li>
@@ -318,18 +321,23 @@ export const RenderInfos = () => {
                 maxLength="15"
               />
             </li>
-            <Input
-              type="date"
-              text="Data de Nascimento"
-              name="dataNascimento"
-              required
-              placeholder="Digite o valor"
-              handleOnChange={handleInputChange}
-              value={formData.date}
-              min="1900-12-31"
-              max={new Date().toLocaleDateString("en-CA")}
-              className="custom-calendar"
-            />
+            {isClient ? (
+              <li>
+                <Input
+                  type="date"
+                  text="Data de Nascimento"
+                  name="birthDay"
+                  required
+                  placeholder="Digite o valor"
+                  handleOnChange={handleInputChange}
+                  value={formData.birthDay}
+                  min="1900-12-31"
+                  max={new Date().toLocaleDateString("en-CA")}
+                  className="custom-calendar"
+                />
+              </li>
+            ) : null}
+
             {!isClient ? (
               <li>
                 <Input
@@ -429,18 +437,23 @@ export const RenderInfos = () => {
                   <li>
                     <b>Contato: </b> {user?.contact}
                   </li>
-                  <li>
-                    <b>Data de Nascimento: </b> {formatDateWithoutTime(user?.birthDay)}
-                  </li>
+                  {isClient && (
+                    <li>
+                      <b>Data de Nascimento: </b>{" "}
+                      {formatDateWithoutTime(user?.birthDay)}
+                    </li>
+                  )}
                   <li>
                     <b>Status: </b> {user?.active ? "Ativo" : "Inativo"}
                   </li>
-                  <li>
-                    <b>Desde: </b>
-                    {user?.createdDate
-                      ? formatDateWithoutTime(user.createdDate)
-                      : "Não foi possível carregar a data"}
-                  </li>
+                  {isClient && (
+                    <li>
+                      <b>Desde: </b>
+                      {user?.createdDate
+                        ? formatDateWithoutTime(user.createdDate)
+                        : "Não foi possível carregar a data"}
+                    </li>
+                  )}
                 </ul>
               </div>
               <div>
@@ -506,7 +519,7 @@ export const RenderInfos = () => {
                 <Table
                   headers={tableHeader}
                   data={tableData}
-                  elementMessageNotFound="serviço"
+                  messageNotFound="Nenhum serviço encontrado"
                 />
               </div>
             </section>
