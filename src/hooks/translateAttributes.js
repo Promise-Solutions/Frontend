@@ -1,8 +1,8 @@
 export function getCategoryTranslated(category) {
     switch (category) {
-        case  "MUSIC_REHEARSAL": return "Ensaio Musical";
-        case "PODCAST": return "Podcast";
-        case "PHOTO_VIDEO_STUDIO": return "Estúdio Fotográfico";
+        case  "MR": return "Ensaio Musical";
+        case "PC": return "Podcast";
+        case "PV": return "Estúdio Fotográfico";
         default: return category;  
     }
 }
