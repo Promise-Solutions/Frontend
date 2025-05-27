@@ -23,6 +23,7 @@ import {
 import ModalEditSubJob from "../../../components/modals/modalEditSubJob/ModalEditSubJob";
 import CancelButton from "../../../components/modals/modalConfirmDelete/cancelButton";
 import { SyncLoader } from "react-spinners";
+import ModalEditGeneric from "../../../components/modals/ModalEditGeneric";
 
 const JobManagement = () => {
   const { jobId } = useParams();
@@ -36,6 +37,16 @@ const JobManagement = () => {
   const [editingSubJob, setEditingSubJob] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const categoryOptions = [
+    { id: "MUSIC_REHEARSAL", name: "Ensaio Musical" },
+    { id: "PODCAST", name: "Podcast" },
+    { id: "PHOTO_VIDEO_STUDIO", name: "Estúdio Fotográfico" },
+  ];
+
+  const typeOptions = [
+    { id: "SINGLE", name: "Avulso" },
+    { id: "MONTHLY", name: "Mensal" },
+  ];
 
   useEffect(() => {
     const loadJobData = async () => {
@@ -103,16 +114,6 @@ const JobManagement = () => {
     setEditingSubJob(null);
   };
 
-  const categoryOptions = [
-    { id: "MUSIC_REHEARSAL", name: "Ensaio Musical" },
-    { id: "PODCAST", name: "Podcast" },
-    { id: "PHOTO_VIDEO_STUDIO", name: "Estúdio Fotográfico" },
-  ];
-
-  const typeOptions = [
-    { id: "SINGLE", name: "Avulso" },
-    { id: "MONTHLY", name: "Mensal" },
-  ];
 
   return (
     <div
@@ -126,6 +127,11 @@ const JobManagement = () => {
           onSave={handleSubJobUpdated}
           onDelete={handleSubJobDeleted}
         />
+
+        // <ModalEditGeneric
+        //   onClose={() => setEditingSubJob(false)}
+        //   onSave={handleSubJobUpdated}
+        // />
       )}
       {isLoading ? (
         <div className="flex items-center justify-center w-full h-[40vh]">

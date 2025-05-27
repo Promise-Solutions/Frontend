@@ -1,5 +1,3 @@
-// CardUser.jsx
-import React from "react";
 import { IoMdMusicalNote } from "react-icons/io";
 
 const CardUser = ({

@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
 import { axiosProvider } from "../../../provider/apiProvider";
+import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../../hooks/translateAttributes";
+import { registrarDespesa } from "./ExpenseRegister";
 
 const ExpenseRegister = () => {
     const navigate = useNavigate();
@@ -21,21 +23,19 @@ const ExpenseRegister = () => {
     const [productOptions, setProductOptions] = useState([{id: null, name: "<Não encontrado>", disabled: true}]);
         
     const expenseCategoryOptions = [
-        {id:"BILLS", name:"Contas"},
-        {id:"STOCK", name:"Estoque"},
-        {id:"MAINTENANCE", name:"Manutenção"},
-        {id:"OTHERS", name:"Outros"}
-
+        {id:"BILLS", name: getExpenseCategoryTranslated("Contas")},
+        {id:"STOCK", name: getExpenseCategoryTranslated("Estoque")},
+        {id:"MAINTENANCE", name: getExpenseCategoryTranslated("Manutenção")},
+        {id:"OTHERS", name: getExpenseCategoryTranslated("Outros")}
     ]
 
     const paymentTypeOptions = [
-        {id:"CREDIT_CARD", name:"Cartão de crédito"},
-        {id:"DEBIT_CARD", name:"Cartão de débito"},
-        {id:"BILLET", name:"Boleto"},
-        {id:"MONEY", name:"Dinheiro em Espécie"},
-        {id:"PIX", name:"Pix"},
-        {id:"TRANSFER", name:"Transferência"},
-
+        {id:"CREDIT_CARD", name: getPaymentTypeTranslated("Cartão de crédito")},
+        {id:"DEBIT_CARD", name: getPaymentTypeTranslated("Cartão de débito")},
+        {id:"BILLET", name: getPaymentTypeTranslated("Boleto")},
+        {id:"MONEY", name: getPaymentTypeTranslated("Dinheiro em Espécie")},
+        {id:"PIX", name: getPaymentTypeTranslated("Pix")},
+        {id:"TRANSFER", name: getPaymentTypeTranslated("Transferência")}
     ]
 
     useEffect(() => {
@@ -52,11 +52,11 @@ const ExpenseRegister = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // const responseCode = await registrarServico(formData, saveJob);
+        const responseCode = await registrarDespesa(formData);
 
-        if(responseCode == 201) {
-            navigate(-1);
-        }
+        // if(responseCode == 201) {
+        //     navigate(-1);
+        // }
     };
 
     const handleInputChange = (e) => {

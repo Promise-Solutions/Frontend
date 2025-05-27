@@ -10,7 +10,8 @@ import Table from "../../components/tables/Table";
 import ModalEditGoal from "../../components/modals/modalEditGoal/ModalEditGoal";
 import DeleteButton from "../../components/buttons/deleteButton/DeleteButton";
 import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete";
-import { deleteExpense } from "./Expenses";
+import { deleteExpense, saveExpenseChanges } from "./Expenses";
+import ModalEditExpense from "../../components/modals/ModalEditExpense";
 
 function Expenses() {
   const [isLoading, setIsLoading] = useState(true);
@@ -152,7 +153,6 @@ function Expenses() {
     // } 
     alert("Despesa deletada")
   }
-
   
     const filteredExpenseElements = expenseElements.filter((element) => {
       const visibleFields = [ 
@@ -179,6 +179,17 @@ function Expenses() {
         onClose={() => setIsGoalModalOpen(false)}
         goal={expenseElements.goal}
       />
+      {
+        isEditing ? (
+          <ModalEditExpense 
+            idExpense={1} 
+            onClose={() => setIsEditing(false)} 
+            onSave={saveExpenseChanges}
+          />
+        ) : (
+          null
+        ) 
+      }
       <section className="mx-16 my-6">
         <div className="flex justify-center flex-col">
           <div className="flex w-full items-center gap-4 justify-between">
