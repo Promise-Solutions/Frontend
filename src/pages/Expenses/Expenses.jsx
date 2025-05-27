@@ -11,7 +11,7 @@ import ModalEditGoal from "../../components/modals/modalEditGoal/ModalEditGoal";
 import DeleteButton from "../../components/buttons/deleteButton/DeleteButton";
 import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete";
 import { deleteExpense, saveExpenseChanges } from "./Expenses";
-import ModalEditExpense from "../../components/modals/ModalEditExpense";
+import ModalEditExpense from "../../components/modals/modalEditExpense/ModalEditExpense";
 
 function Expenses() {
   const [isLoading, setIsLoading] = useState(true);

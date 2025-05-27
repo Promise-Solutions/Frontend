@@ -1,12 +1,12 @@
-import ModalEditGeneric from "./ModalEditGeneric";
+import ModalEditGeneric from "../ModalEditGeneric";
 import { useEffect, useState } from "react";
-import { axiosProvider } from "../../provider/apiProvider";
-import { ENDPOINTS } from "../../constants/endpoints";
-import Select from "../form/Select";
-import CancelButton from "./modalConfirmDelete/cancelButton";
-import ConfirmButton from "../buttons/confirmButton/ConfirmButton";
-import Input from "../form/Input";
-import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../hooks/translateAttributes";
+import { axiosProvider } from "../../../provider/apiProvider";
+import { ENDPOINTS } from "../../../constants/endpoints";
+import Select from "../../form/Select";
+import CancelButton from "../modalConfirmDelete/cancelButton";
+import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
+import Input from "../../form/Input";
+import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../../hooks/translateAttributes";
 
 const ModalEditExpense = ({
     idExpense, onClose, onSave
