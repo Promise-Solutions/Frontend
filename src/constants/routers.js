@@ -14,6 +14,7 @@ export const ROUTERS = {
   TASKS: '/tasks',
   EXPENSES: '/expenses',
   EXPENSE_REGISTER: '/register/expenses',
+  CALENDAR: '/calendar',
 
   USER_DETAIL: '/user/:userParam',
   JOB_DETAIL: '/jobs/:jobId',
