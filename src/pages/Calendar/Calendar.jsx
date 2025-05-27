@@ -14,18 +14,27 @@ const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [subJobsForDay, setSubJobsForDay] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentMonth, setCurrentMonth] = useState(dayjs().month());
+  const [currentYear, setCurrentYear] = useState(dayjs().year());
   const navigate = useNavigate();
 
-  // Busca os subjobs do mês atual
+  // Busca os subjobs do mês selecionado
   useEffect(() => {
     const fetchCalendarData = async () => {
       setIsLoading(true);
       try {
-        const response = await axiosProvider.get(`/sub-jobs`);
+        // Monta o mês no formato YYYY-MM
+        const monthStr = String(currentMonth + 1).padStart(2, "0");
+        const yearMonth = `${currentYear}-${monthStr}`;
+        // Supondo que a API aceite filtro por mês, senão busque todos e filtre manualmente
+        const response = await axiosProvider.get(
+          `/sub-jobs?month=${yearMonth}`
+        );
         // Agrupa por data
         const grouped = {};
         (response.data || []).forEach((item) => {
-          console.log(response.data);
+          // Filtra manualmente se necessário:
+          if (!item.date.startsWith(yearMonth)) return;
           if (!grouped[item.date]) grouped[item.date] = [];
           grouped[item.date].push(item);
         });
@@ -41,7 +50,7 @@ const Calendar = () => {
       setIsLoading(false);
     };
     fetchCalendarData();
-  }, []);
+  }, [currentMonth, currentYear]);
 
   // Função para saber se o dia tem subjob que usa sala e não está concluído
   const hasRoomSubJob = (dateStr) => {
@@ -58,9 +67,8 @@ const Calendar = () => {
     setSelectedDate(dateStr);
     const found = calendarData.find((d) => d.date === dateStr);
     setSubJobsForDay(
-      found?.subjobs?.filter(
-        (sj) => sj.needsRoom && sj.status !== "CLOSED"
-      ) || []
+      found?.subjobs?.filter((sj) => sj.needsRoom && sj.status !== "CLOSED") ||
+        []
     );
   };
 
@@ -100,6 +108,14 @@ const Calendar = () => {
               calendarData={calendarData}
               selectedDate={selectedDate}
               onDayClick={handleDayClick}
+              month={currentMonth}
+              year={currentYear}
+              setMonth={setCurrentMonth}
+              setYear={setCurrentYear}
+              resetSelection={() => {
+                setSelectedDate(null);
+                setSubJobsForDay([]);
+              }}
             />
             <div className="flex-1 min-w-[350px]">
               {selectedDate ? (

@@ -1,7 +1,19 @@
 import dayjs from "dayjs";
+import "dayjs/locale/pt-br";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-const CalendarMonth = ({ calendarData, selectedDate, onDayClick }) => {
-  const today = dayjs();
+const CalendarMonth = ({
+  calendarData,
+  selectedDate,
+  onDayClick,
+  month,
+  year,
+  setMonth,
+  setYear,
+  resetSelection,
+}) => {
+  dayjs.locale("pt-br");
+  const today = dayjs(`${year}-${String(month + 1).padStart(2, "0")}-01`);
   const startOfMonth = today.startOf("month");
   const endOfMonth = today.endOf("month");
   const daysInMonth = endOfMonth.date();
@@ -33,8 +45,48 @@ const CalendarMonth = ({ calendarData, selectedDate, onDayClick }) => {
     );
   };
 
+  // Navegação de mês minimalista
+  const handlePrevMonth = () => {
+    if (month === 0) {
+      setMonth(11);
+      setYear((y) => y - 1);
+    } else {
+      setMonth((m) => m - 1);
+    }
+    resetSelection && resetSelection();
+  };
+
+  const handleNextMonth = () => {
+    if (month === 11) {
+      setMonth(0);
+      setYear((y) => y + 1);
+    } else {
+      setMonth((m) => m + 1);
+    }
+    resetSelection && resetSelection();
+  };
+
   return (
     <div className="bg-white/5 border-1 border-pink-zero rounded-lg p-6 shadow-md">
+      <div className="flex items-center justify-between mb-2">
+        <button
+          className="px-2 py-1 rounded bg-pink-zero text-white font-bold hover:bg-pink-700 flex items-center justify-center"
+          onClick={handlePrevMonth}
+          aria-label="Mês anterior"
+        >
+          <FiChevronLeft size={20} />
+        </button>
+        <span className="text-lg font-semibold select-none">
+          {today.format("MMMM [de] YYYY")}
+        </span>
+        <button
+          className="px-2 py-1 rounded bg-pink-zero text-white font-bold hover:bg-pink-700 flex items-center justify-center"
+          onClick={handleNextMonth}
+          aria-label="Próximo mês"
+        >
+          <FiChevronRight size={20} />
+        </button>
+      </div>
       <table className="w-full text-center">
         <thead>
           <tr>
@@ -66,6 +118,7 @@ const CalendarMonth = ({ calendarData, selectedDate, onDayClick }) => {
                               : ""
                           }
                           ${isRoomDay ? "border-2 border-pink-zero" : ""}
+                          cursor-pointer
                         `}
                         onClick={() => onDayClick(dateStr)}
                       >
