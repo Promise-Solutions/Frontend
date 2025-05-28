@@ -23,6 +23,7 @@ import JobRegister from "./pages/Register/JobRegister/JobRegister.jsx";
 import SubJobRegister from "./pages/Register/SubJobRegister/SubJobRegister.jsx";
 import Expenses from "./pages/Expenses/Expenses.jsx";
 import ExpenseRegister from "./pages/Register/ExpenseRegister/ExpenseRegister.jsx";
+import Calendar from "./pages/Calendar/Calendar.jsx";
 
 function AppRoutes() {
   return (
@@ -47,6 +48,8 @@ function AppRoutes() {
       <Route path={ROUTERS.TASKS} element={<Tasks />} />
       <Route path={ROUTERS.EXPENSES} element={<Expenses />} />
       <Route path={ROUTERS.EXPENSE_REGISTER} element={<ExpenseRegister />} />
+      <Route path={ROUTERS.CALENDAR} element={<Calendar />} />
+
     </Routes>
   );
 }
