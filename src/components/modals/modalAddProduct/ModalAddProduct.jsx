@@ -7,7 +7,7 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
     name: "",
     clientValue: "",
-    employeeValue: "",
+    internalValue: "",
   });
 
   const handleInputChange = (e) => {
@@ -18,7 +18,7 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onAdd(formData);
-    setFormData({ name: "", clientValue: "", employeeValue: "" });
+    setFormData({ name: "", clientValue: "", internalValue: "" });
   };
 
   if (!isOpen) return null;
@@ -51,11 +51,11 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
             />
             <Input
               type="number"
-              name="employeeValue"
+              name="internalValue"
               required
               text="Valor Unitário para Funcionários"
               placeholder="Digite o valor para funcionários"
-              value={formData.employeeValue}
+              value={formData.internalValue}
               handleOnChange={handleInputChange}
               min="0"
               step="any"

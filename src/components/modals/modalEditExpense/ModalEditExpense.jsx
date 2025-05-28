@@ -156,7 +156,7 @@ const ModalEditExpense = ({
 
 
     return (
-        <ModalEditGeneric title={"Editar despesa"} inputs={inputs} buttons={buttons} initialData={expenseData} widthModal={"[600px]"} />
+        <ModalEditGeneric title={"Editar despesa"} inputs={inputs} buttons={buttons} initialData={expenseData} widthModal={"w-[600px]"} />
     );
 }
 

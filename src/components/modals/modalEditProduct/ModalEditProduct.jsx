@@ -3,6 +3,7 @@ import Input from "../../form/Input.jsx";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton.jsx";
 import CancelButton from "../modalConfirmDelete/cancelButton.jsx";
 import { showToast } from "../../toastStyle/ToastStyle";
+import ModalEditGeneric from "../ModalEditGeneric.jsx";
 
 const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
   const [formData, setFormData] = useState(initialData || {});
@@ -28,7 +29,7 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
       showToast.error("Por favor, insira um valor unitário válido.");
       return;
     }
-    if (!formData.employeeValue || parseFloat(formData.employeeValue) < 0) {
+    if (!formData.internalValue || parseFloat(formData.internalValue) < 0) {
       showToast.error("Por favor, insira um valor unitário válido.");
       return;
     }
@@ -38,50 +39,46 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
 
   if (!isOpen) return null;
 
+  const inputs = [
+    <Input
+      type="text"
+      name="name"
+      required
+      text="Nome do Produto"
+      placeholder="Digite o nome do produto"
+      value={formData.name || ""}
+      handleOnChange={handleInputChange}
+      disabled
+    />,
+    <Input
+      type="text"
+      name="clientValue"
+      required
+      text="Valor Unitário para Clientes"
+      placeholder="Digite o valor para clientes"
+      value={formData.clientValue || ""}
+      handleOnChange={handleInputChange}
+    />,
+    <Input
+      type="number"
+      name="internalValue"
+      required
+      text="Valor para Funcionários"
+      placeholder="Digite o valor para funcionário"
+      value={formData.internalValue || ""}
+      handleOnChange={handleInputChange}
+      min="0"
+      step="any"
+    />,
+  ]
+
+  const buttons = [
+    <CancelButton text="Cancelar" type="button" onClick={onClose} />,
+    <ConfirmButton onClick={handleSubmit} text="Salvar" />
+  ]
+
   return (
-    <div className="fixed inset-0 bg-black/90 flex justify-center items-center z-10">
-      <div className="bg-[#1E1E1E98] border-1 border-pink-zero text-white p-6 shadow-lg w-[400px]">
-        <h2 className="text-xl font-bold mb-4">Editar Produto</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-4">
-            <Input
-              type="text"
-              name="name"
-              required
-              text="Nome do Produto"
-              placeholder="Digite o nome do produto"
-              value={formData.name || ""}
-              handleOnChange={handleInputChange}
-              disabled
-            />
-            <Input
-              type="text"
-              name="clientValue"
-              required
-              text="Valor Unitário para Clientes"
-              placeholder="Digite o valor para clientes"
-              value={formData.clientValue || ""}
-              handleOnChange={handleInputChange}
-            />
-            <Input
-              type="number"
-              name="employeeValue"
-              required
-              text="Valor para Funcionários"
-              placeholder="Digite o valor para funcionário"
-              value={formData.employeeValue || ""}
-              handleOnChange={handleInputChange}
-              min="0"
-              step="any"
-            />
-          </div>
-          <div className="mt-4 flex justify-end gap-4">
-            <CancelButton text="Cancelar" type="button" onClick={onClose} />
-            <ConfirmButton type="submit" text="Salvar" />
-          </div>
-        </form>
-      </div>
-    </div>
+    <ModalEditGeneric title="Editar Produto" inputs={inputs} buttons={buttons}/>
   );
 };
 

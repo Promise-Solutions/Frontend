@@ -16,7 +16,7 @@ const Stock = () => {
     productName: "",
     quantity: 0,
     clientValue: "",
-    employeeValue: "",
+    internalValue: "",
   });
   const [editingProduct, setEditingProduct] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -45,7 +45,7 @@ const Stock = () => {
         ...newProduct,
         quantity: parseInt(newProduct.quantity),
         clientValue: parseFloat(newProduct.clientValue).toFixed(2),
-        employeeValue: parseFloat(newProduct.employeeValue).toFixed(2),
+        internalValue: parseFloat(newProduct.internalValue).toFixed(2),
       };
       const response = await axiosProvider.post(
         ENDPOINTS.PRODUCTS,
@@ -70,7 +70,7 @@ const Stock = () => {
         ...updatedProduct,
         quantity: parseInt(updatedProduct.quantity),
         clientValue: parseFloat(updatedProduct.clientValue).toFixed(2),
-        employeeValue: parseFloat(updatedProduct.employeeValue).toFixed(2),
+        internalValue: parseFloat(updatedProduct.internalValue).toFixed(2),
       };
       await axiosProvider.patch(
         ENDPOINTS.getProductById(editingProduct.id),
@@ -82,8 +82,10 @@ const Stock = () => {
         )
       );
       setEditingProduct(null);
+      showToast.success("Produto atualizado com sucesso!")
       setIsEditModalOpen(false);
     } catch (error) {
+      showToast.error("Erro ao atualizar produto!")
       console.error("Erro ao atualizar produto:", error);
     }
   };

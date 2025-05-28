@@ -244,7 +244,6 @@ const Tasks = () => {
       ) : (
         <ModalEditTask
           task={selectedTask}
-          isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
           onEdit={handleEditTask}
           onDelete={(id) => {

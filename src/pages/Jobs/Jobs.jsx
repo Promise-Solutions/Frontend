@@ -14,14 +14,13 @@ import {
   getStatusTranslated,
 } from "../../hooks/translateAttributes";
 
-// Representa a estrutura da página "Jobs", atualmente sem conteúdo
 const Jobs = () => {
   const [allJobsElements, setAllJobsElements] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
+  const [searchTerm, setSearchTerm] = useState("");
   const { findClientById } = useUserContext();
-  const { findJobs } = useJobContext(); // Exportação do contexto
+  const { findJobs } = useJobContext();
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate(); //Navigate para navegatação, ele não atualiza a página
+  const navigate = useNavigate();
 
   const fetchAndRender = async () => {
     const elements = await renderJobs(findJobs, navigate, findClientById);
@@ -52,7 +51,7 @@ const Jobs = () => {
     const serviceType = (getServiceTypeTranslated(job.serviceType) || "")
       .toUpperCase()
       .trim();
-    const clientType = (job.clientType || "").toUpperCase().trim(); // Ensure clientType is included
+    const clientType = (job.clientType || "").toUpperCase().trim();
     const status = (getStatusTranslated(job.status) || "").toUpperCase().trim();
     const valor = (
       `R$${job.totalValue.toFixed(2).replace(".", ",").toString()}` || ""
@@ -77,7 +76,6 @@ const Jobs = () => {
 
   return (
     <div className="slide-in-ltr min-w-full min-h-full text-white">
-      {/* Seção de cabeçalho com título e botão */}
       <section className="flex flex-col justify-around items-center mx-16 mt-6">
         <div className="flex flex-col md:flex-row w-full justify-between">
           <div className="flex items-center">
@@ -87,14 +85,13 @@ const Jobs = () => {
             <JobsFilter
               id="input_search_job"
               placeholder="Busque um Serviço"
-              onSearch={handleSearch} // Passa a função de busca
+              onSearch={handleSearch}
             />
-            {/* Botão para cadastrar um novo usuário */}
             <RegisterButton
               id="register_button"
               title="Cadastrar Serviço"
               text="+"
-              onClick={() => registerRedirect(navigate)} // Pass navigate to registerRedirect
+              onClick={() => registerRedirect(navigate)}
             />
           </div>
         </div>
@@ -126,6 +123,4 @@ const Jobs = () => {
   );
 };
 
-// Exportando o componente Jobs para uso em rotas ou outras partes da aplicação
-// Permite que o componente seja utilizado em outros arquivos
 export default Jobs;

@@ -1,9 +1,13 @@
 export function getCategoryTranslated(category) {
     switch (category) {
-        case "MR" || "MUSIC_REHEARSAL" : return "Ensaio Musical";
-        case "PC" || "PODCAST" : return "Podcast";
-        case "PV" || "PHOTO_VIDEO_STUDIO" : return "Estúdio Fotográfico";
-        default: return category;  
+        case "MR": case "MUSIC_REHEARSAL": 
+            return "Ensaio Musical";
+        case "PC": case "PODCAST" 
+            : return "Podcast";
+        case "PV": case "PHOTO_VIDEO_STUDIO"
+             : return "Estúdio Fotográfico";
+        default
+            : return category;  
     }
 }
 

@@ -8,6 +8,7 @@ import Select from "../../form/Select";
 import { axiosProvider } from "../../../provider/apiProvider";
 import { showToast } from "../../toastStyle/ToastStyle";
 import { ENDPOINTS } from "../../../constants/endpoints";
+import ModalEditGeneric from "../ModalEditGeneric";
 
 const mapStatusToFrontend = {
   PENDING: "Pendente",
@@ -23,7 +24,6 @@ const mapStatusToBackend = {
 
 const ModalEditTask = ({
   task,
-  isOpen,
   onClose,
   onEdit,
   onDelete,
@@ -92,74 +92,72 @@ const ModalEditTask = ({
     onClose();
   };
 
-  if (!isOpen) return null;
+  const inputs = [
+    <Input
+      type="text"
+      text="Título"
+      name="title"
+      required
+      placeholder="Digite o título"
+      handleOnChange={handleInputChange}
+      value={formData.title}
+    />,
+    <Input
+      type="text"
+      text="Descrição"
+      name="description"
+      required
+      placeholder="Digite a descrição"
+      handleOnChange={handleInputChange}
+      value={formData.description}
+    />,
+    <Input
+      type="date"
+      text="Data de Início"
+      required
+      name="startDate"
+      handleOnChange={handleInputChange}
+      value={formData.startDate}
+      className="custom-calendar"
+    />,
+    <Input
+      type="date"
+      text="Data Limite"
+      name="limitDate"
+      handleOnChange={handleInputChange}
+      value={formData.limitDate}
+      className="custom-calendar"
+    />,
+    <Select
+      text="Responsável"
+      name="fkEmployee"
+      options={employees.map((emp) => ({
+        id: emp.id,
+        name: emp.name,
+      }))}
+      handleOnChange={handleInputChange}
+      value={formData.fkEmployee}
+    />
+  ]
 
-  return (
+  const buttons = [
+    <DeleteButton text="Deletar" onClick={handleDelete} />,
+    <div className="flex justify-end gap-4 ">
+      <CancelButton text="Cancelar" onClick={onClose} />
+      <ConfirmButton text="Salvar" onClick={handleEdit} />
+    </div>
+  ]
+  
+  return(
     <>
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div className="bg-[#1E1E1E98] border-1 border-pink-zero text-white p-6 shadow-lg w-[500px]">
-          <h2 className="text-xl font-bold mb-4 text-center">Editar Tarefa</h2>
-          <div className="flex flex-col gap-4">
-            <Input
-              type="text"
-              text="Título"
-              name="title"
-              required
-              placeholder="Digite o título"
-              handleOnChange={handleInputChange}
-              value={formData.title}
-            />
-            <Input
-              type="text"
-              text="Descrição"
-              name="description"
-              required
-              placeholder="Digite a descrição"
-              handleOnChange={handleInputChange}
-              value={formData.description}
-            />
-            <Input
-              type="date"
-              text="Data de Início"
-              required
-              name="startDate"
-              handleOnChange={handleInputChange}
-              value={formData.startDate}
-              className="custom-calendar"
-            />
-            <Input
-              type="date"
-              text="Data Limite"
-              name="limitDate"
-              handleOnChange={handleInputChange}
-              value={formData.limitDate}
-              className="custom-calendar"
-            />
-            <Select
-              text="Responsável"
-              name="fkEmployee"
-              options={employees.map((emp) => ({
-                id: emp.id,
-                name: emp.name,
-              }))}
-              handleOnChange={handleInputChange}
-              value={formData.fkEmployee}
-            />
-          </div>
-          <div className="mt-4 flex justify-between gap-4">
-            <CancelButton text="Cancelar" onClick={onClose} />
-            <DeleteButton text="Deletar" onClick={handleDelete} />
-            <ConfirmButton text="Salvar" onClick={handleEdit} />
-          </div>
-        </div>
-      </div>
+      <ModalEditGeneric title="Editar Tarefa" inputs={inputs} buttons={buttons}/>
       <ModalConfirmDelete
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={confirmDelete}
-        title="Confirmar Deleção"
-        description="Tem certeza de que deseja deletar esta tarefa?"
-      />
+         isOpen={isDeleteModalOpen}
+         onClose={() => setIsDeleteModalOpen(false)}
+         onConfirm={confirmDelete}
+         title="Confirmar Deleção"
+         description="Tem certeza de que deseja deletar esta tarefa?"
+       />
     </>
   );
 };

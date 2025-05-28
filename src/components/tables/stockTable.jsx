@@ -48,7 +48,7 @@ const StockTable = ({ products, onEdit, onDelete }) => {
                   R$ {Number(product.clientValue).toFixed(2)}
                 </td>
                 <td className="border border-gray-700 text-center px-4 py-2">
-                  R$ {Number(product.employeeValue).toFixed(2)}
+                  R$ {Number(product.internalValue).toFixed(2)}
                 </td>
                 <td className="border border-gray-700 text-center px-4 py-2">
                   <div className="flex gap-2">
