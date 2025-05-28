@@ -58,20 +58,14 @@ const Home = () => {
 
   return (
     <main className="slide-in-ltr flex flex-col justify-center items-center min-h-[100vh] h-full w-[100vw] gap-30">
-      {/* Adicione este bloco para customizar as setas do slider */}
       <style>
         {`
           .slick-prev:before, .slick-next:before {
             color: var(--color-cyan-zero) !important;
             font-size: 36px !important;
           }
-          .slick-dots li button:before {
-            color: #fff !important;
-            opacity: 1 !important;
-          }
-          .slick-dots li.slick-active button:before {
-            color: #fff !important;
-            opacity: 1 !important;
+          .slick-dots {
+            display: none !important;
           }
         `}
       </style>
@@ -87,7 +81,7 @@ const Home = () => {
       </div>
       {/* Slider usando react-slick */}
       <div className="w-full max-w-[90vw] px-4 py-2" onWheel={handleWheel}>
-        <Slider ref={sliderRef} {...sliderSettings} className="pl-6">
+        <Slider ref={sliderRef} {...sliderSettings} className="pl-14">
           <CardHomePage
             title="Usuários"
             text="Gerencie seus usuários e visualize seus serviços e indicadores."
