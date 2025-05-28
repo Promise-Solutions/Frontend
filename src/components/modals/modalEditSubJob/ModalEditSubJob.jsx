@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSubJobContext } from "../../../context/SubJobContext";
-import { handleInputChange, changeSubJobData, getNumericValue } from "./ModalEditSubJob.script";
+import { handleInputChange, changeSubJobData } from "./ModalEditSubJob.script";
 import ModalConfirmDelete from "../modalConfirmDelete/ModalConfirmDelete";
 import Input from '../../form/Input'
 import CancelButton from "../modalConfirmDelete/cancelButton";
@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import Select from "../../form/Select";
 import Checkbox from "../../form/Checkbox";
 import ModalEditGeneric from "../ModalEditGeneric";
+import { getNumericValue } from "../../../hooks/formatUtils";
 
 const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
   const { updateSubJobData, deleteSubJobById } = useSubJobContext();

@@ -13,9 +13,9 @@ const ModalEditExpense = ({
 }) => {
     const [productOptions, setProductOptions] = useState([{id: null, name: "<Não encontrado>", disabled: true}]);
     const [expenseData, setExpenseData] = useState({
-        expenseDetail: "Compra de materiais de escritório",
+        description: "Compra de materiais de escritório",
         expenseCategory: "Suprimentos",
-        amountExpend: 250.75,
+        amountSpend: 250.75,
         date: "2025-05-15",
         quantity: 10,
         paymentType: "Cartão de crédito"
@@ -70,11 +70,11 @@ const ModalEditExpense = ({
             <div className="flex gap-3 items-end justify-center w-full">
                 <Select
                     text="Item da despesa"
-                    name="expenseDetail"
+                    name="description"
                     required
                     options={productOptions}
                     handleOnChange={handleInputChange}
-                    value={expenseData.expenseDetail}
+                    value={expenseData.description}
                 />  
                 <Input
                     type="text"
@@ -91,22 +91,22 @@ const ModalEditExpense = ({
             <Input
                 type="text"
                 text="Item da despesa"
-                name="expenseDetail"
+                name="description"
                 required
                 placeholder="Digite o item da despesa"
                 handleOnChange={handleInputChange}
-                value={expenseData.expenseDetail}
+                value={expenseData.description}
                 maxLength="50"
             />
         ),
         <Input
             type="text"
             text="Valor"
-            name="amountExpend"
+            name="amountSpend"
             required
             placeholder="Digite o valor"
             handleOnChange={handleValorChange}
-            value={expenseData.amountExpend}
+            value={expenseData.amountSpend}
             maxLength="50"
         />,
         <Input

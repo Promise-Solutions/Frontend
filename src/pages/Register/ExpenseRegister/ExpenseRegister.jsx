@@ -8,42 +8,48 @@ import { SyncLoader } from "react-spinners";
 import { axiosProvider } from "../../../provider/apiProvider";
 import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../../hooks/translateAttributes";
 import { registrarDespesa } from "./ExpenseRegister";
+import { showToast } from "../../../components/toastStyle/ToastStyle";
+import { getNumericValue } from "../../../hooks/formatUtils";
 
 const ExpenseRegister = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-            expenseDetail: "",
-            amountExpend: "",
+            descriptionDefault: "",
+            descriptionStock: "",
+            amountSpend: "",
             date: "",
             expenseCategory: "",
             paymentType: "",
-            quantity: ""
+            quantity: "",
+            fkProduct: null
     });
 
     const [productOptions, setProductOptions] = useState([{id: null, name: "<Não encontrado>", disabled: true}]);
         
     const expenseCategoryOptions = [
-        {id:"BILLS", name: getExpenseCategoryTranslated("Contas")},
-        {id:"STOCK", name: getExpenseCategoryTranslated("Estoque")},
-        {id:"MAINTENANCE", name: getExpenseCategoryTranslated("Manutenção")},
-        {id:"OTHERS", name: getExpenseCategoryTranslated("Outros")}
+        {id:"BILLS", name: getExpenseCategoryTranslated("BILLS")},
+        {id:"STOCK", name: getExpenseCategoryTranslated("STOCK")},
+        {id:"MAINTENANCE", name: getExpenseCategoryTranslated("MAINTENANCE")},
+        {id:"OTHERS", name: getExpenseCategoryTranslated("OTHERS")}
     ]
 
     const paymentTypeOptions = [
-        {id:"CREDIT_CARD", name: getPaymentTypeTranslated("Cartão de crédito")},
-        {id:"DEBIT_CARD", name: getPaymentTypeTranslated("Cartão de débito")},
-        {id:"BILLET", name: getPaymentTypeTranslated("Boleto")},
-        {id:"MONEY", name: getPaymentTypeTranslated("Dinheiro em Espécie")},
-        {id:"PIX", name: getPaymentTypeTranslated("Pix")},
-        {id:"TRANSFER", name: getPaymentTypeTranslated("Transferência")}
+        {id:"CREDIT_CARD", name: getPaymentTypeTranslated("CREDIT_CARD")},
+        {id:"DEBIT_CARD", name: getPaymentTypeTranslated("DEBIT_CARD")},
+        {id:"BILLET", name: getPaymentTypeTranslated("BILLET")},
+        {id:"MONEY", name: getPaymentTypeTranslated("MONEY")},
+        {id:"PIX", name: getPaymentTypeTranslated("PIX")},
+        {id:"TRANSFER", name: getPaymentTypeTranslated("TRANSFER")}
     ]
 
     useEffect(() => {
         axiosProvider.get("/products")
             .then((response) => {
+                console.log(response.data[0].name)
+                
                 setProductOptions(
                     response.data.map((product) => (
-                        {id: product.id, name:product.name}  
+                        {id:JSON.stringify({id: product.id, name: product.name}), name:product.name}  
                     ))
                 )
             })
@@ -52,11 +58,65 @@ const ExpenseRegister = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const responseCode = await registrarDespesa(formData);
+        let description = formData.descriptionDefault
 
-        // if(responseCode == 201) {
-        //     navigate(-1);
-        // }
+        
+        console.log(formData)
+        
+        const formDataToSave = {
+            ...formData,
+            description: formData.descriptionDefault,
+            amountSpend: getNumericValue(formData.amountSpend)
+        };
+
+        if(formData.expenseCategory === "STOCK") {
+            formDataToSave.description = formData.descriptionStock
+        } else {
+            formDataToSave.fkProduct = null
+            formDataToSave.quantity = null
+        }
+
+        delete formDataToSave.descriptionDefault;
+        delete formDataToSave.descriptionStock;
+
+        if(
+            !formDataToSave.date || formDataToSave.date == ""
+            || !formDataToSave.expenseCategory || formDataToSave.expenseCategory == ""
+            || !formDataToSave.description || formDataToSave.description == ""
+            || !formDataToSave.paymentType || formDataToSave.paymentType == ""
+            || !formDataToSave.amountSpend || formDataToSave.amountSpend === ""
+            || (formDataToSave.expenseCategory === "STOCK" && formDataToSave.quantity === "")
+        ) {
+            showToast.error("Não são permitidos campos vazios!");
+            return;
+        }
+
+        if(formDataToSave.expenseCategory === "STOCK" && formDataToSave.quantity == 0) {
+            showToast.error("Não é permitido a quantidade ser 0!");
+            return;
+        }
+
+        console.log(formDataToSave)
+
+        const responseCode = await registrarDespesa(formDataToSave);
+
+        if(responseCode == 201) {
+            showToast.success("Despesa registrada com sucesso!")
+            navigate(-1);
+        }
+    };
+
+    const handleProductOptionsChange = (e) => {
+        const { name, value } = e.target;
+        let productObj = { id: null, name: "" };
+        try {
+            productObj = JSON.parse(value);
+        } catch {}
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: productObj.name,
+            fkProduct: productObj.id
+        }));
     };
 
     const handleInputChange = (e) => {
@@ -109,11 +169,11 @@ const ExpenseRegister = () => {
                         <div className="flex gap-3 items-center justify-center w-full">
                             <Select
                                 text="Item da despesa"
-                                name="expenseDetail"
+                                name="descriptionStock"
                                 required
                                 options={productOptions}
-                                handleOnChange={handleInputChange}
-                                value={formData.expenseDetail}
+                                handleOnChange={handleProductOptionsChange}
+                                value={formData.descriptionStock}
                             />  
                             <Input
                                 type="text"
@@ -130,11 +190,11 @@ const ExpenseRegister = () => {
                         <Input
                             type="text"
                             text="Item da despesa"
-                            name="expenseDetail"
+                            name="descriptionDefault"
                             required
                             placeholder="Digite o item da despesa"
                             handleOnChange={handleInputChange}
-                            value={formData.expenseDetail}
+                            value={formData.descriptionDefault}
                             maxLength="50"
                         />
                     )
@@ -142,11 +202,11 @@ const ExpenseRegister = () => {
                 <Input
                     type="text"
                     text="Valor"
-                    name="amountExpend"
+                    name="amountSpend"
                     required
                     placeholder="Digite o valor"
                     handleOnChange={handleValorChange}
-                    value={formData.amountExpend}
+                    value={formData.amountSpend}
                     maxLength="50"
                 />
                 <Input

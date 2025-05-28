@@ -12,131 +12,43 @@ import DeleteButton from "../../components/buttons/deleteButton/DeleteButton";
 import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete";
 import { deleteExpense, saveExpenseChanges } from "./Expenses";
 import ModalEditExpense from "../../components/modals/modalEditExpense/ModalEditExpense";
+import { showToast } from "../../components/toastStyle/ToastStyle";
+import { ENDPOINTS } from "../../constants/endpoints";
+import { formatDateWithoutTime } from "../../hooks/formatUtils";
+import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../hooks/translateAttributes";
 
 function Expenses() {
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
+  const [searchTerm, setSearchTerm] = useState(""); 
   const [expenseElements, setExpenseElements] = useState([]); 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
   const navigate = useNavigate();
   const tableHeader = [
-    { label:"Item", key: "expenseDetail"},
+    { label:"Item", key: "description"},
     { label:"Categoria", key: "expenseCategory"},
-    { label:"Valor", key: "amountExpend"},
+    { label:"Valor", key: "amountSpend"},
     { label:"Data do pagamento", key: "date"},
     { label:"Quantidade", key: "quantity"},
     { label:"Forma de pagamento", key: "paymentType"},
     { label: "Ações", key: "actions"}
   ]
 
-  const mockTableData = [
-    {
-    expenseDetail: "Compra de materiais de escritório",
-    expenseCategory: "Suprimentos",
-    amountExpend: 250.75,
-    date: "2025-05-15",
-    quantity: 10,
-    paymentType: "Cartão de crédito",
-    actions: [
-      <div className="flex gap-2">
-        <PrimaryButton
-          id="2"
-          text="Editar"
-          onClick={() => setIsEditing(true)}
-        />
-        <DeleteButton 
-          id="1"
-          text="Deletar"
-          onClick={() => setIsDeleteModalOpen(true)}
-        />
-      </div>
-    ]
-  },
-  {
-    expenseDetail: "Almoço com cliente",
-    expenseCategory: "Refeição",
-    amountExpend: 89.90,
-    date: "2025-05-14",
-    quantity: 1,
-    paymentType: "Dinheiro",
-    actions: [
-      <div className="flex gap-2">
-        <PrimaryButton
-          id="2"
-          text="Editar"
-          onClick={() => setIsEditing(true)}
-        />
-        <DeleteButton 
-          id="1"
-          text="Deletar"
-          onClick={() => setIsDeleteModalOpen(true)}
-        />
-      </div>
-    ]
-  },
-  {
-    expenseDetail: "Assinatura de software",
-    expenseCategory: "Serviços",
-    amountExpend: 129.99,
-    date: "2025-05-01",
-    quantity: 1,
-    paymentType: "Débito automático",
-    actions: [
-      <div className="flex gap-2">
-        <PrimaryButton
-          id="2"
-          text="Editar"
-          onClick={() => setIsEditing(true)}
-        />
-        <DeleteButton 
-          id="1"
-          text="Deletar"
-          onClick={() => setIsDeleteModalOpen(true)}
-        />
-      </div>
-    ]
-  },
-  {
-    expenseDetail: "Transporte para reunião",
-    expenseCategory: "Transporte",
-    amountExpend: 45.00,
-    date: "2025-05-10",
-    quantity: 1,
-    paymentType: "Cartão de débito",
-    actions: [
-      <div className="flex gap-2">
-        <PrimaryButton
-          id="2"
-          text="Editar"
-          onClick={() => setIsEditing(true)}
-        />
-        <DeleteButton 
-          id="1"
-          text="Deletar"
-          onClick={() => setIsDeleteModalOpen(true)}
-        />
-      </div>
-    ]
-  }
-  ]
-
   useEffect(() => {
-    // function buscarDespesas() {
-    //   axiosProvider.get("/expenses")
-    //     .then((response) => {
-    //       setExpenseElements(
-    //         response.data
-    //       )
-    //     .catch((error) => {
-    //       console.log("Erro ao buscar despesas", error)
-    //       return [];
-    //     })
-    //     })
-    // }
+    function buscarDespesas() {
+      axiosProvider.get(ENDPOINTS.EXPENSES)
+        .then((response) => {
+          setExpenseElements(
+            response.data || []
+          )
+        })
+        .catch((error) => {
+          console.log("Erro ao buscar despesas", error)
+        })
+    }
 
-    // buscarDespesas();
+    buscarDespesas();
 
     setIsLoading(false);
   }, [])
@@ -146,22 +58,22 @@ function Expenses() {
   };
 
   const handleDelete = () => {
-  //   const responseCode = deleteExpense(1)
+    const responseCode = deleteExpense(1)
 
-    // if(responseCode) {
+    if(responseCode) {
+      showToast.success("Despesa deletada com sucesso!")
       setIsDeleteModalOpen(false);
-    // } 
-    alert("Despesa deletada")
+    } 
   }
   
     const filteredExpenseElements = expenseElements.filter((element) => {
       const visibleFields = [ 
-        element.props.expenseDetail,
-        element.props.amountExpend,
-        element.props.expenseCategory,
-        element.props.quantity,
-        element.props.paymentType,
-        element.props.date
+        element.description,
+        element.amountSpend,
+        element.expenseCategory,
+        element.quantity,
+        element.paymentType,
+        element.date
       ].map((field) =>
         String(field ?? "")
           .toUpperCase()
@@ -239,16 +151,15 @@ function Expenses() {
                   ) : (
                     <Table 
                       headers={tableHeader}
-                      data={mockTableData}
-                      // data={
-                      //   filteredExpenseElements.map((expense) => ({
-                      //     ...expense,
-                      //     amountExpend: `R$ ${expense.amountExpend.toFixed(2).replace(".", ",")}`
-                      //    date: formatDateWithoutTime(expense.date)
-                      //    expenseCategory: getExpenseCategoryTranslated(expense.expenseCategory)
-                      //    paymentType: getPaymentTypeTranslated(expense.paymentType)
-                      //    quantity: expense.quantity? : "n/a" 
-                      //   }))}
+                      data={
+                        filteredExpenseElements.map((expense) => ({
+                          ...expense,
+                        amountSpend: `R$ ${expense.amountSpend.toFixed(2).replace(".", ",")}`,
+                         date: formatDateWithoutTime(expense.date),
+                         expenseCategory: getExpenseCategoryTranslated(expense.expenseCategory),
+                         paymentType: getPaymentTypeTranslated(expense.paymentType),
+                         quantity: expense.quantity != null ? expense.quantity : "n/a" 
+                        }))}
                       messageNotFound="Nenhuma despesa encontrada"
                     />
                     )

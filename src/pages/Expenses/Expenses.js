@@ -15,16 +15,16 @@ export const deleteExpense = (id) => {
 }
 
 export const saveExpenseChanges = (expenseDataUpdate, closeModal) => {
-    if(expenseDataUpdate.expenseCategory === "STOCK" && isNaN(Number(expenseDataUpdate.expenseDetail)))  {
-        expenseDataUpdate.expenseDetail = null;
+    if(expenseDataUpdate.expenseCategory === "STOCK" && isNaN(Number(expenseDataUpdate.description)))  {
+        expenseDataUpdate.description = null;
     }
 
     if(
         !expenseDataUpdate.date || expenseDataUpdate.date == ""
         || !expenseDataUpdate.expenseCategory || expenseDataUpdate.expenseCategory == ""
-        || !expenseDataUpdate.expenseDetail || expenseDataUpdate.expenseDetail == ""
+        || !expenseDataUpdate.description || expenseDataUpdate.description == ""
         || !expenseDataUpdate.paymentType || expenseDataUpdate.paymentType == ""
-        || !expenseDataUpdate.amountExpend || expenseDataUpdate.amountExpend === ""
+        || !expenseDataUpdate.amountSpend || expenseDataUpdate.amountSpend === ""
         || (expenseDataUpdate.expenseCategory === "STOCK" && expenseDataUpdate.quantity === "")
     ) {
         showToast.error("Não são permitidos campos vazios!");

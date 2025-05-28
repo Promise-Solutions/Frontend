@@ -31,10 +31,3 @@ export const changeSubJobData = async (infos, updateSubJobData) => {
     }
     return await updateSubJobData(infos);
 }
-
-export const getNumericValue = (valueString) => {
-  if(typeof valueString === "string" && valueString.includes(",")) {
-    valueString = valueString.replace(",", ".");
-  }
-  return parseFloat(valueString);
-};
