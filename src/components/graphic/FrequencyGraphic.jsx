@@ -132,9 +132,9 @@ const FrequencyGraphic = ({ title }) => {
                 </Pie>
                 <Tooltip
                   formatter={(value, name, props) => [
-                    <span
-                      style={{ color: props.payload?.fill }}
-                    >{`${value} usuários`}</span>,
+                    <span style={{ color: props.payload?.fill }}>{`${value} ${
+                      value == 1 ? "atendimento" : "atendimentos"
+                    }`}</span>,
                     name,
                   ]}
                   contentStyle={{
@@ -190,9 +190,9 @@ const FrequencyGraphic = ({ title }) => {
                 </Pie>
                 <Tooltip
                   formatter={(value, name, props) => [
-                    <span
-                      style={{ color: props.payload?.fill }}
-                    >{`${value} usuários`}</span>,
+                    <span style={{ color: props.payload?.fill }}>{`${value} ${
+                      value == 1 ? "atendimento" : "atendimentos"
+                    }`}</span>,
                     name,
                   ]}
                   contentStyle={{
