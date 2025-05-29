@@ -44,7 +44,7 @@ const CardUser = ({
   return (
     <div
       id={`user_${id}`}
-      className={`card_user border-1 border-pink-zero hover:border-cyan-zero  text-[#d9d9d9] w-[17rem] h-auto rounded-[5px] bg-[#1E1E1E90] cursor-pointer relative`}
+      className={`card_user border-1 border-pink-zero hover:border-cyan-zero  text-[#d9d9d9] w-[18rem] h-auto rounded-[5px] bg-[#1E1E1E90] cursor-pointer relative`}
       onClick={onClick}
     >
       <div
@@ -52,11 +52,11 @@ const CardUser = ({
         title="Acessar Usuário"
       >
         <div className="flex items-center gap-2">
-          <h1 className="card_user_name">{name}</h1>
+          <h1 className="card_user_name w-40">{name}</h1>
           {isBirthdayToday && (
             <FaBirthdayCake
               className="text-cyan-zero"
-              size={22}
+              size={30}
               title="Aniversário hoje!"
             />
           )}
