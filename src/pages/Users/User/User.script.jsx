@@ -54,7 +54,16 @@ export const RenderInfos = () => {
       if (error.response?.status === 428) {
         showToast.error("Você não pode deletar seu próprio usuário.");
       }
-      showToast.error("Erro ao deletar usuário. Tente novamente.");
+      if (isClient) {
+      showToast.error(
+        "Erro ao deletar cliente. Verifique se há comandas ou serviços associados a esse cliente."
+      );
+      } else {
+      showToast.error(
+        "Erro ao deletar funcionário. Verifique se há comandas ou serviços associados a esse funcionário."
+      );
+
+      }
     } finally {
       setIsDeleteModalOpen(false);
     }
