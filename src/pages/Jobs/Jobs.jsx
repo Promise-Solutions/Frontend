@@ -77,7 +77,7 @@ const Jobs = () => {
 
   return (
     <div className="slide-in-ltr min-w-full min-h-full text-white">
-      {/* <Breadcrumbs /> */}
+      <Breadcrumbs />
       <section className="flex flex-col justify-around items-center mx-16 mt-6">
         <div className="flex flex-col md:flex-row w-full justify-between">
           <div className="flex items-center">

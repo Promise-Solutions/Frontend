@@ -40,7 +40,6 @@ const Breadcrumbs = () => {
 
   // States for dynamic labels
   const [userName, setUserName] = useState(null);
-  const [commandNumber, setCommandNumber] = useState(null);
   const [jobTitle, setJobTitle] = useState(null);
 
   // Busca nome do usuário se estiver na rota de usuário
@@ -65,27 +64,10 @@ const Breadcrumbs = () => {
     }
   }, [params.userParam, state, userName]);
 
-  // Busca número da comanda se estiver na rota de command
-  useEffect(() => {
-    const commandId = params.command;
-    if (commandId && !commandNumber) {
-      // Tenta pegar do state de navegação
-      if (state && state.commandNumber) {
-        setCommandNumber(state.commandNumber);
-        return;
-      }
-      // Busca via API se não veio no state
-      axiosProvider
-        .get(ENDPOINTS.getCommandById(commandId))
-        .then((res) => setCommandNumber(res.data?.commandNumber))
-        .catch(() => setCommandNumber(null));
-    }
-  }, [params.command, state, commandNumber]);
-
   // Busca nome do serviço se estiver na rota de serviço
   useEffect(() => {
     const jobId = params.jobId;
-    if (jobId) {
+    if (jobId && !jobTitle) {
       axiosProvider
         .get(ENDPOINTS.getJobById(jobId))
         .then((res) => setJobTitle(res.data?.title))
@@ -93,106 +75,40 @@ const Breadcrumbs = () => {
     }
   }, [params.jobId, jobTitle]);
 
-  const pathParts = pathname.split("/").filter(Boolean);
-  let pathAcc = "";
-  let userParamUsed = false;
-  let commandParamUsed = false;
-  let jobParamUsed = false;
+  // Só mostra breadcrumbs se houver param relevante
+  if (!params.userParam && !params.jobId) return null;
 
-  // Gera breadcrumbs com links para as páginas de listagem e label dinâmico para detalhes
-  const crumbs = [];
-  for (let idx = 0; idx < pathParts.length; idx++) {
-    const part = pathParts[idx];
-    pathAcc += "/" + part;
-
-    // Usuário
-    if (params.userParam && part === params.userParam && !userParamUsed) {
-      userParamUsed = true;
-      // Link para lista de usuários
-      crumbs.push(
-        <span key="users-link">
-          <Link to={ROUTERS.USERS} className="hover:underline text-white/80">
-            Usuários
-          </Link>
-          <span className="mx-2 text-white/40">{">"}</span>
+  // Serviços > Nome do Serviço
+  if (params.jobId) {
+    return (
+      <nav className="text-sm mb-2 mt-2 ml-2 flex items-center gap-1">
+        <Link to={ROUTERS.JOBS} className="hover:underline text-white/80">
+          Serviços
+        </Link>
+        <span className="mx-2 text-white/40">{">"}</span>
+        <span className="text-cyan-zero font-semibold">
+          {jobTitle || "Serviço"}
         </span>
-      );
-      // Nome do usuário
-      crumbs.push(
-        <span key={part} className="text-cyan-zero font-semibold">
-          {userName || "Usuário"}
-        </span>
-      );
-      continue;
-    }
-    // Comanda
-    if (params.command && part === params.command && !commandParamUsed) {
-      commandParamUsed = true;
-      crumbs.push(
-        <span key="bar-link">
-          <Link to={ROUTERS.BAR} className="hover:underline text-white/80">
-            Bar
-          </Link>
-          <span className="mx-2 text-white/40">{">"}</span>
-        </span>
-      );
-      crumbs.push(
-        <span key={part} className="text-cyan-zero font-semibold">
-          {commandNumber ? `Comanda: ${commandNumber}` : "Comanda"}
-        </span>
-      );
-      continue;
-    }
-    // Serviço
-    if (params.jobId && part === params.jobId && !jobParamUsed) {
-      jobParamUsed = true;
-      crumbs.push(
-        <span key="jobs-link">
-          <Link to={ROUTERS.JOBS} className="hover:underline text-white/80">
-            Serviços
-          </Link>
-          <span className="mx-2 text-white/40">{">"}</span>
-        </span>
-      );
-      crumbs.push(
-        <span key={part} className="text-cyan-zero font-semibold">
-          {jobTitle ? jobTitle : "Serviço"}
-        </span>
-      );
-      continue;
-    }
-    // Listagem (ex: /jobs, /users, etc)
-    // Só mostra se for a última parte OU se não for id/uuid
-    const isIdOrUuid = /^\d+$/.test(part) || /^[0-9a-fA-F-]{16,}$/.test(part);
-    if (!isIdOrUuid && !params.userParam && !params.command && !params.jobId) {
-      const label = getLabel(pathAcc) || part;
-      const isLast = idx === pathParts.length - 1;
-      crumbs.push(
-        isLast ? (
-          <span key={pathAcc} className="text-cyan-zero font-semibold">
-            {label}
-          </span>
-        ) : (
-          <span key={pathAcc}>
-            <Link to={pathAcc} className="hover:underline text-white/80">
-              {label}
-            </Link>
-            <span className="mx-2 text-white/40">{">"}</span>
-          </span>
-        )
-      );
-    }
+      </nav>
+    );
   }
 
-  // Só mostra breadcrumbs se houver crumbs
-  if (!crumbs.length) return null;
+  // Usuários > Nome do Usuário
+  if (params.userParam) {
+    return (
+      <nav className="text-sm mb-2 mt-2 ml-2 flex items-center gap-1">
+        <Link to={ROUTERS.USERS} className="hover:underline text-white/80">
+          Usuários
+        </Link>
+        <span className="mx-2 text-white/40">{">"}</span>
+        <span className="text-cyan-zero font-semibold">
+          {userName || "Usuário"}
+        </span>
+      </nav>
+    );
+  }
 
-  return (
-    <nav className="text-sm mb-2 mt-2 ml-2 flex items-center gap-1">
-      {/* Removido o link "Início" */}
-      {crumbs}
-    </nav>
-  );
+  return null;
 };
 
 export default Breadcrumbs;
