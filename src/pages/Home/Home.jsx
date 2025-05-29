@@ -2,11 +2,12 @@ import { useEffect, useRef } from "react";
 import CardHomePage from "../../components/cards/cardHomePage/CardHomePage.jsx";
 import { useNavigate } from "react-router-dom";
 import { handleButtonClick } from "../../components/cards/cardHomePage/CardHome.script.js";
-import UserIcon from "../../assets/iconsHomePage/icon-empresa.png";
+import UserIcon from "../../assets/iconsHomePage/icon-user.png";
 import JobIcon from "../../assets/iconsHomePage/icon-servicos.png";
 import BarIcon from "../../assets/iconsHomePage/icon-bar.png";
 import DashIcon from "../../assets/iconsHomePage/icon-dashboard.png";
 import RelatIcon from "../../assets/iconsHomePage/icon-report.png";
+import CalendarIcon from "../../assets/iconsHomePage/icon-calendar.png";
 import TaskIcon from "../../assets/iconsHomePage/icon-tarefas.png";
 import StockIcon from "../../assets/iconsHomePage/icon-estoque.png";
 import ExpenseIcon from "../../assets/iconsHomePage/icon-despesas.png";
@@ -161,6 +162,16 @@ const Home = () => {
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.REPORTS, navigate)}
+          />
+          <CardHomePage
+            title="Calendário"
+            text="Visualize sua agenda."
+            url={CalendarIcon}
+            idButton={ROUTERS.CALENDAR}
+            className="text-[42px] text-transparent font-bold"
+            style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+            buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
+            onClick={() => handleButtonClick(ROUTERS.CALENDAR, navigate)}
           />
         </Slider>
       </div>
