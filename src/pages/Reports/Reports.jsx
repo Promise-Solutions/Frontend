@@ -1,50 +1,110 @@
 import { CiEraser } from "react-icons/ci";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
 import CardReport from "../../components/cards/cardReport/CardReport";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { axiosProvider } from "../../provider/apiProvider";
+import { ENDPOINTS } from "../../constants/endpoints";
+import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete";
+import { showToast } from "../../components/toastStyle/ToastStyle";
 
 const Reports = () => {
-  const allReports = [
-    "Relatório Gerado em - 01/01/2024",
-    "Relatório Gerado em - 10/01/2024",
-    "Relatório Gerado em - 15/02/2024",
-    "Relatório Gerado em - 20/03/2024",
-    "Relatório Gerado em - 05/04/2024",
-    "Relatório Gerado em - 10/05/2024",
-    "Relatório Gerado em - 25/05/2024",
-    "Relatório Gerado em - 01/06/2024",
-    "Relatório Gerado em - 15/06/2024",
-    "Relatório Gerado em - 30/06/2024",
-    "Relatório Gerado em - 10/07/2024",
-    "Relatório Gerado em - 20/07/2024",
-  ];
-  const [reports, setReports] = useState(allReports);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reports, setReports] = useState([]);
+  const [allReports, setAllReports] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+  const [deleteIndex, setDeleteIndex] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const handleDownload = (index) => {
-    alert(`Download do relatório ${index + 1}`);
+  // Busca relatórios do backend
+  const fetchReports = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axiosProvider.get(ENDPOINTS.driveList());
+      const files = Array.isArray(response.data) ? response.data : [];
+      setAllReports(files);
+      setReports(files);
+    } catch (error) {
+      setAllReports([]);
+      setReports([]);
+      showToast.error("Erro ao buscar relatórios.");
+    }
+    setIsLoading(false);
   };
 
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
+  // Função para baixar relatório
+  const handleDownload = async (fileId, fileName) => {
+    try {
+      const response = await axiosProvider.get(
+        ENDPOINTS.driveDownload(fileId),
+        {
+          responseType: "blob",
+        }
+      );
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName || "relatorio.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      showToast.success("Download iniciado!");
+    } catch (error) {
+      showToast.error("Erro ao baixar relatório.");
+    }
+  };
+
+  // Função para abrir modal de exclusão
   const handleDelete = (index) => {
-    alert(`Deletar relatório ${index + 1}`);
+    setDeleteIndex(index);
+    setIsDeleteModalOpen(true);
   };
 
+  // Confirma exclusão do relatório
+  const confirmDelete = async () => {
+    if (deleteIndex == null) return;
+    const file = reports[deleteIndex];
+    try {
+      await axiosProvider.delete(ENDPOINTS.driveDelete(file.id));
+      setIsDeleteModalOpen(false);
+      setDeleteIndex(null);
+      showToast.success("Relatório deletado com sucesso!");
+      fetchReports();
+    } catch (error) {
+      showToast.error("Erro ao deletar relatório.");
+      setIsDeleteModalOpen(false);
+      setDeleteIndex(null);
+    }
+  };
+
+  // Função para filtrar relatórios por data
   const parseDate = (str) => {
-    const [day, month, year] = str.split("/");
-    return new Date(`${year}-${month}-${day}`);
+    // Espera-se que str seja no formato "YYYY-MM-DD" ou "DD/MM/YYYY"
+    if (!str) return null;
+    if (str.includes("/")) {
+      const [day, month, year] = str.split("/");
+      return new Date(`${year}-${month}-${day}`);
+    }
+    return new Date(str);
   };
 
   const handleFilter = () => {
-    // Se ambos os campos estiverem vazios, retorna todos
     if (!dateFrom && !dateTo) {
       setReports(allReports);
       return;
     }
     setReports(
-      allReports.filter((item) => {
-        const dateStr = item.split(" - ")[1];
+      allReports.filter((file) => {
+        // Tenta pegar a data do nome do arquivo, ex: "Relatório Gerado em - 01/01/2024"
+        let dateStr = file.name?.match(/\d{2}\/\d{2}\/\d{4}/)?.[0];
+        if (!dateStr && file.createdTime) {
+          // Usa a data de criação do arquivo se não encontrar no nome
+          dateStr = file.createdTime.slice(0, 10);
+        }
         const reportDate = parseDate(dateStr);
         let fromValid = true;
         let toValid = true;
@@ -65,6 +125,44 @@ const Reports = () => {
     setReports(allReports);
   };
 
+  // Função para gerar novo relatório (exemplo: download do endpoint)
+  const handleGenerateReport = async () => {
+    try {
+      // Garante que a requisição seja feita corretamente e trate erros de status HTTP
+      const response = await axiosProvider.get(
+        ENDPOINTS.generateExcelReport(),
+        {
+          responseType: "blob",
+          validateStatus: (status) => status >= 200 && status < 500, // Permite tratar erros manualmente
+        }
+      );
+      if (response.status !== 200) {
+        showToast.error("Erro ao gerar relatório. Status: " + response.status);
+        return;
+      }
+      if (!response.data || response.data.size === 0) {
+        showToast.error("O relatório retornou vazio.");
+        return;
+      }
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "relatorio.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      showToast.success("Relatório gerado com sucesso!");
+      fetchReports();
+    } catch (error) {
+      // Mostra detalhes do erro no toast
+      showToast.error(
+        "Erro ao gerar relatório: " + (error?.message || "Erro desconhecido")
+      );
+      // Opcional: console.log(error) para debug
+      // console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="slide-in-ltr mx-16 my-6 text-white">
@@ -74,7 +172,7 @@ const Reports = () => {
             <PrimaryButton
               id="generate_report_button_id"
               text="Gerar Relatório"
-              onClick={() => {}}
+              onClick={handleGenerateReport}
             />
           </div>
         </div>
@@ -119,18 +217,40 @@ const Reports = () => {
         </div>
         <div className="max-h-[450px] overflow-y-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {reports.map((item, index) => (
-              <CardReport
-                key={index}
-                id={index}
-                item={item}
-                onDownload={() => handleDownload(index)}
-                onDelete={() => handleDelete(index)}
-              />
-            ))}
+            {isLoading ? (
+              <div className="text-center text-gray-400 col-span-3">
+                Carregando relatórios...
+              </div>
+            ) : reports.length === 0 ? (
+              <div className="text-center text-gray-400 col-span-3">
+                Nenhum relatório encontrado.
+              </div>
+            ) : (
+              reports.map((file, index) => (
+                <CardReport
+                  key={file.id}
+                  id={file.id}
+                  item={file.name}
+                  onDownload={() => handleDownload(file.id, file.name)}
+                  onDelete={() => handleDelete(index)}
+                />
+              ))
+            )}
           </div>
         </div>
       </div>
+      <ModalConfirmDelete
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+        title={"Deletar Relatório"}
+        description={
+          <span className="text-yellow-zero font-semibold">
+            Tem certeza de que deseja deletar esse relatório? <br /> Não será
+            possível recuperar!
+          </span>
+        }
+      />
     </>
   );
 };

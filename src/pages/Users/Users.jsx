@@ -20,22 +20,23 @@ const Users = () => {
 
   useEffect(() => {
     const fetchAndRender = async () => {
+      setIsLoading(true); // Adicionado: inicia loading antes da requisição
       try {
         const elements = await renderUsers(
           filterType,
           findUsers,
           setUserId,
-          setIsClient, // Passa setIsClient
+          setIsClient,
           navigate
         );
         setUserElements(elements);
       } catch (error) {
         console.error("Erro ao renderizar usuários:", error);
       }
+      setIsLoading(false); // Adicionado: encerra loading após a requisição
     };
 
     fetchAndRender();
-    setIsLoading(false);
   }, [filterType]); // Atualiza quando filterType muda
 
   const handleSearch = (term) => {
