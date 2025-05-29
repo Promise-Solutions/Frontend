@@ -27,6 +27,7 @@ import { ROUTERS } from "../../../constants/routers.js";
 import { ENDPOINTS } from "../../../constants/endpoints.js";
 import { formatDateWithoutTime } from "../../../hooks/formatUtils.js";
 import { SyncLoader } from "react-spinners";
+import { FaWhatsapp } from "react-icons/fa"; // Adicionado ícone do WhatsApp
 
 export const RenderInfos = () => {
   const { userParam } = useParams();
@@ -55,14 +56,13 @@ export const RenderInfos = () => {
         showToast.error("Você não pode deletar seu próprio usuário.");
       }
       if (isClient) {
-      showToast.error(
-        "Erro ao deletar cliente. Verifique se há comandas ou serviços associados a esse cliente."
-      );
+        showToast.error(
+          "Erro ao deletar cliente. Verifique se há comandas ou serviços associados a esse cliente."
+        );
       } else {
-      showToast.error(
-        "Erro ao deletar funcionário. Verifique se há comandas ou serviços associados a esse funcionário."
-      );
-
+        showToast.error(
+          "Erro ao deletar funcionário. Verifique se há comandas ou serviços associados a esse funcionário."
+        );
       }
     } finally {
       setIsDeleteModalOpen(false);
@@ -137,8 +137,7 @@ export const RenderInfos = () => {
               },
               {
                 name: "TicketMédio",
-                value:
-                  response.data.ticket
+                value: response.data.ticket,
               },
             ]);
           } else {
@@ -404,6 +403,15 @@ export const RenderInfos = () => {
   }
   //Fim da função edit
 
+  // Função para abrir WhatsApp em nova aba
+  const handleWhatsappClick = (contact, e) => {
+    e.stopPropagation && e.stopPropagation();
+    if (!contact) return;
+    const phone = contact.replace(/\D/g, "");
+    if (phone.length < 10) return;
+    window.open(`https://wa.me/55${phone}`, "_blank");
+  };
+
   // Função para renderizar o conteúdo baseado no filtro selecionado
   const renderContent = () => {
     if (!user) {
@@ -426,14 +434,22 @@ export const RenderInfos = () => {
             <div className="flex justify-between">
               <div>
                 <h1 className="text-[42px]">
-                  <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
+                    <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
+                    {user?.contact && (
+                      <FaWhatsapp
+                        className="inline-block ml-2 pb-4 text-green-500 hover:text-green-400 cursor-pointer"
+                        size={55}
+                        title="Enviar mensagem no WhatsApp"
+                        onClick={(e) => handleWhatsappClick(user?.contact, e)}
+                      />
+                    )}
                 </h1>
                 <ul className="flex flex-col mt-6 gap-2">
                   {isClient && (
                     <li>
                       <b>Tipo de Cliente: </b>{" "}
                       {user?.clientType == "SINGLE" ? "Avulso" : "Mensal"}
-                    </li>
+                      </li>
                   )}
                   <li>
                     <b>E-mail: </b> {user?.email}
@@ -442,8 +458,9 @@ export const RenderInfos = () => {
                     <b>CPF: </b> {user?.cpf}
                   </li>
                   <li>
-                    <b>Contato: </b> {user?.contact}
-                  </li>
+                    <b>Contato: </b>
+                      <span> {user?.contact} </span>
+                    </li>
                   {isClient && (
                     <li>
                       <b>Data de Nascimento: </b>{" "}
