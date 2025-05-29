@@ -41,6 +41,7 @@ const Breadcrumbs = () => {
   // States for dynamic labels
   const [userName, setUserName] = useState(null);
   const [jobTitle, setJobTitle] = useState(null);
+  const [commandNumber, setCommandNumber] = useState(null);
 
   // Busca nome do usuário se estiver na rota de usuário
   useEffect(() => {
@@ -75,8 +76,19 @@ const Breadcrumbs = () => {
     }
   }, [params.jobId, jobTitle]);
 
+  // Busca número da comanda se estiver na rota de comanda
+  useEffect(() => {
+    const commandId = params.command;
+    if (commandId && !commandNumber) {
+      axiosProvider
+        .get(ENDPOINTS.getCommandById(commandId))
+        .then((res) => setCommandNumber(res.data?.commandNumber))
+        .catch(() => setCommandNumber(null));
+    }
+  }, [params.command, commandNumber]);
+
   // Só mostra breadcrumbs se houver param relevante
-  if (!params.userParam && !params.jobId) return null;
+  if (!params.userParam && !params.jobId && !params.command) return null;
 
   // Serviços > Nome do Serviço
   if (params.jobId) {
@@ -103,6 +115,21 @@ const Breadcrumbs = () => {
         <span className="mx-2 text-white/40">{">"}</span>
         <span className="text-cyan-zero font-semibold">
           {userName || "Usuário"}
+        </span>
+      </nav>
+    );
+  }
+
+  // Comandas > Número da Comanda
+  if (params.command) {
+    return (
+      <nav className="text-sm mb-2 mt-2 ml-2 flex items-center gap-1">
+        <Link to={ROUTERS.BAR} className="hover:underline text-white/80">
+          Comandas
+        </Link>
+        <span className="mx-2 text-white/40">{">"}</span>
+        <span className="text-cyan-zero font-semibold">
+          {commandNumber ? `Comanda: ${commandNumber}` : "Comanda"}
         </span>
       </nav>
     );
