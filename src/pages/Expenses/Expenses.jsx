@@ -12,6 +12,7 @@ import DeleteButton from "../../components/buttons/deleteButton/DeleteButton";
 import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete";
 import { deleteExpense, saveExpenseChanges } from "./Expenses";
 import ModalEditExpense from "../../components/modals/modalEditExpense/ModalEditExpense";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 function Expenses() {
   const [isLoading, setIsLoading] = useState(true);
@@ -171,7 +172,9 @@ function Expenses() {
     const term = searchTerm.toUpperCase().trim();
 
     return visibleFields.some((field) => field.includes(term));
-  });
+    });
+  
+  
   return (
     <div className="slide-in-ltr min-w-full min-h-full text-white overflow-y-hidden">
       <ModalEditGoal
@@ -179,22 +182,23 @@ function Expenses() {
         onClose={() => setIsGoalModalOpen(false)}
         goal={expenseElements.goal}
       />
-      {
-        isEditing ? (
-          <ModalEditExpense 
-            idExpense={1} 
-            onClose={() => setIsEditing(false)} 
-            onSave={saveExpenseChanges}
-          />
-        ) : (
-          null
-        ) 
-      }
+      {isEditing ? (
+        <ModalEditExpense
+          idExpense={1}
+          onClose={() => setIsEditing(false)}
+          onSave={saveExpenseChanges}
+        />
+      ) : null}
       <section className="mx-16 my-6">
         <div className="flex justify-center flex-col">
           <div className="flex w-full items-center gap-4 justify-between">
-            <div>
+            <div className="items-center">
               <h1 className="text-2xl font-thin">Gerencie suas despesas</h1>
+              <p className="flex gap-4 items-center text-yellow-zero text-sm">
+                Antes de adicionar uma despesa de categoria estoque, cadastre o produto{" "}
+                <FaArrowRightLong />
+                <span className="underline cursor-pointer" onClick={() => navigate(ROUTERS.BAR_STOCK)}>Aqui!</span>
+              </p>
             </div>
             <PrimaryButton
               id="goal_button"
@@ -228,48 +232,47 @@ function Expenses() {
             </div>
           ) : (
             <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
-                {isLoading ? 
-                  ( 
-                    <SyncLoader
-                      size={8}
-                      loading={true}
-                      color={"#02AEBA"}
-                      speedMultiplier={2}
-                    />
-                  ) : (
-                    <Table 
-                      headers={tableHeader}
-                      data={mockTableData}
-                      // data={
-                      //   filteredExpenseElements.map((expense) => ({
-                      //     ...expense,
-                      //     amountExpend: `R$ ${expense.amountExpend.toFixed(2).replace(".", ",")}`
-                      //    date: formatDateWithoutTime(expense.date)
-                      //    expenseCategory: getExpenseCategoryTranslated(expense.expenseCategory)
-                      //    paymentType: getPaymentTypeTranslated(expense.paymentType)
-                      //    quantity: expense.quantity? : "n/a" 
-                      //   }))}
-                      messageNotFound="Nenhuma despesa encontrada"
-                    />
-                    )
-                  }
+              {isLoading ? (
+                <SyncLoader
+                  size={8}
+                  loading={true}
+                  color={"#02AEBA"}
+                  speedMultiplier={2}
+                />
+              ) : (
+                <Table
+                  headers={tableHeader}
+                  data={mockTableData}
+                  // data={
+                  //   filteredExpenseElements.map((expense) => ({
+                  //     ...expense,
+                  //     amountExpend: `R$ ${expense.amountExpend.toFixed(2).replace(".", ",")}`
+                  //    date: formatDateWithoutTime(expense.date)
+                  //    expenseCategory: getExpenseCategoryTranslated(expense.expenseCategory)
+                  //    paymentType: getPaymentTypeTranslated(expense.paymentType)
+                  //    quantity: expense.quantity? : "n/a"
+                  //   }))}
+                  messageNotFound="Nenhuma despesa encontrada"
+                />
+              )}
             </div>
           )}
         </div>
       </section>
-      {
-        isDeleteModalOpen ? (
-          <ModalConfirmDelete
-              isOpen={isDeleteModalOpen}
-              onClose={() => setIsDeleteModalOpen(false)}
-              onConfirm={handleDelete}
-              title={"Deletar Despesa"}
-              description={<span className="text-yellow-zero font-semibold">Tem certeza de que deseja deletar essa despesa? <br/> Não será possível recuperar!</span>}
-          />
-        ): (
-          null
-        )
-      }
+      {isDeleteModalOpen ? (
+        <ModalConfirmDelete
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={handleDelete}
+          title={"Deletar Despesa"}
+          description={
+            <span className="text-yellow-zero font-semibold">
+              Tem certeza de que deseja deletar essa despesa? <br /> Não será
+              possível recuperar!
+            </span>
+          }
+        />
+      ) : null}
     </div>
   );
 }

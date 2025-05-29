@@ -68,7 +68,7 @@ const StockTable = ({ products, onEdit, onDelete }) => {
         </table>
       ) : (
         <div className="flex justify-center">
-          <p className="text-gray-400">Nenhum produto encontrado</p>
+          <p className="text-gray-400">Nenhum produto encontrado.</p>
         </div>
       )}
     </div>
