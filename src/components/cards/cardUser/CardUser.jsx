@@ -1,4 +1,5 @@
 import { IoMdMusicalNote } from "react-icons/io";
+import { FaWhatsapp } from "react-icons/fa"; // Adicionado ícone do WhatsApp
 
 const CardUser = ({
   id,
@@ -9,10 +10,20 @@ const CardUser = ({
   contact,
   onClick,
 }) => {
+  // Função para abrir WhatsApp em nova aba
+  const handleWhatsappClick = (e) => {
+    e.stopPropagation();
+    if (!contact) return;
+    // Remove caracteres não numéricos do contato
+    const phone = contact.replace(/\D/g, "");
+    if (phone.length < 10) return; // Não tenta abrir se o número for inválido
+    window.open(`https://wa.me/55${phone}`, "_blank");
+  };
+
   return (
     <div
       id={`user_${id}`}
-      className={`card_user border-1 border-pink-zero hover:border-cyan-zero  text-[#d9d9d9] w-[17rem] h-auto rounded-[5px] bg-[#1E1E1E90] cursor-pointer`}
+      className={`card_user border-1 border-pink-zero hover:border-cyan-zero  text-[#d9d9d9] w-[17rem] h-auto rounded-[5px] bg-[#1E1E1E90] cursor-pointer relative`} // Adicionado relative
       onClick={onClick}
     >
       <div
@@ -20,15 +31,26 @@ const CardUser = ({
         title="Acessar Usuário"
       >
         <h1 className="card_user_name">{name}</h1>
-        <div
-          className={clientType ? `w-2 h-2 rounded-[50%] ${
-            active ? "bg-green-zero" : "bg-red-zero"
-          }` : ""   
-          }
-        >{clientType ? "" : <IoMdMusicalNote />}</div>
+        <div className="flex items-center gap-2">
+          <div
+            className={
+              clientType
+                ? `w-2 h-2 rounded-[50%] ${
+                    active ? "bg-green-zero" : "bg-red-zero"
+                  }`
+                : ""
+            }
+          >
+            {clientType ? "" : <IoMdMusicalNote />}
+          </div>
+        </div>
       </div>
       <div>
-        <div className={`border-1 ${clientType ? "border-pink-zero" : "border-cyan-zero"}`}></div>
+        <div
+          className={`border-1 ${
+            clientType ? "border-pink-zero" : "border-cyan-zero"
+          }`}
+        ></div>
         <ul className="px-8 py-6 text-[16px] list-disc marker:text-cyan-zero ease-in-out">
           {clientType && (
             <li>
@@ -49,6 +71,15 @@ const CardUser = ({
           </li>
         </ul>
       </div>
+      {/* Ícone do WhatsApp no canto inferior direito */}
+      {contact && (
+        <FaWhatsapp
+          className="text-green-500 hover:text-green-400 cursor-pointer absolute bottom-3 right-3 z-10"
+          size={28}
+          title="Enviar mensagem no WhatsApp"
+          onClick={handleWhatsappClick}
+        />
+      )}
     </div>
   );
 };
