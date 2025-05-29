@@ -129,9 +129,7 @@ export const RenderInfos = () => {
               {
                 name: "TicketMédio",
                 value:
-                  (response.data.totalValue +
-                    response.data.totalCommandsValue) /
-                  response.data.frequency,
+                  response.data.ticket
               },
             ]);
           } else {

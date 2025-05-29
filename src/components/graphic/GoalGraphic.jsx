@@ -6,7 +6,8 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { axiosProvider } from "../../provider/apiProvider";
 
 const GoalGraphic = ({ title }) => {
   // Monocromático cyan-zero, mas com diferenciação perceptível
@@ -15,14 +16,42 @@ const GoalGraphic = ({ title }) => {
     "#4fdbe3", // cyan-zero + lighten
     "#b2f6fa", // cyan-zero + much lighter
   ];
-  const totalMeta = 10000;
-  const atual = 7000;
-  const gap = totalMeta - atual;
-  const meta = totalMeta;
+
+  const [meta, setMeta] = useState(0);
+  const [lucro, setLucro] = useState(0);
+  const [gap, setGap] = useState(0);
+
+  useEffect(() => {
+    // Busca a meta
+    axiosProvider
+      .get("/goals/recent")
+      .then((res) => {
+        const goalValue = res.data.goal || 0;
+        setMeta(goalValue);
+
+        // Busca o lucro atual
+        axiosProvider
+          .get("/dashboard/balances")
+          .then((res2) => {
+            const profit = res2.data.profitOrLoss || 0;
+            setLucro(profit);
+            setGap(goalValue - profit);
+          })
+          .catch(() => {
+            setLucro(0);
+            setGap(goalValue);
+          });
+      })
+      .catch(() => {
+        setMeta(0);
+        setLucro(0);
+        setGap(0);
+      });
+  }, []);
 
   const mockData = [
     { name: "Meta", value: meta },
-    { name: "Atual", value: atual },
+    { name: "Atual", value: lucro },
     { name: "Gap", value: gap },
   ];
 
@@ -94,7 +123,7 @@ const GoalGraphic = ({ title }) => {
             innerRadius="60%"
             outerRadius="70%"
             startAngle={450}
-            endAngle={450 - (360 * atual) / totalMeta}
+            endAngle={meta > 0 ? 450 - (360 * lucro) / meta : 450}
             fill="#8884d8"
           >
             <Cell fill={COLORS[1]} />
@@ -108,7 +137,7 @@ const GoalGraphic = ({ title }) => {
             innerRadius="50%"
             outerRadius="60%"
             startAngle={450}
-            endAngle={450 - (360 * gap) / totalMeta}
+            endAngle={meta > 0 ? 450 - (360 * gap) / meta : 450}
             fill="#8884d8"
           >
             <Cell fill={COLORS[2]} />

@@ -18,7 +18,7 @@ const PaymentGraphic = ({ title }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosProvider.get("/dashboard/balances");
+        const response = await axiosProvider.get("/dashboard/category-balances");
         const dataObj = response.data;
         const formattedData = [
           {

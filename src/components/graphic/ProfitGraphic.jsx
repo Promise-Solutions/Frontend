@@ -10,13 +10,36 @@ import {
   ReferenceLine,
   Label,
 } from "recharts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { axiosProvider } from "../../provider/apiProvider";
 
 const ProfitGraphic = ({ title }) => {
-  // Exemplo com valores negativos para ilustrar déficit
-  const mockData = [
-    { name: "Total", Entrada: 24000, Saída: 25000, Lucro: -1000 },
-  ];
+  const [data, setData] = useState([]);
+
+  const fetchData = async () => {
+    axiosProvider
+      .get("/dashboard/balances")
+      .then((response) => {
+        const dataObj = response.data;
+        const formattedData = [
+          {
+            name: "Total",
+            Entrada: dataObj.totalEntryValue || 0,
+            Saída: dataObj.totalExpenseValue || 0,
+            Lucro: dataObj.profitOrLoss || 0,
+          },
+        ];
+        setData(formattedData);
+      })
+      .catch((error) => {
+        console.error("Error fetching profit data:", error);
+        setData([]);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const [showInfo, setShowInfo] = useState(false);
 
@@ -67,13 +90,13 @@ const ProfitGraphic = ({ title }) => {
         </div>
       </div>
       <ResponsiveContainer width="100%" height={220}>
-        <BarChart data={mockData}>
+        <BarChart data={data}>
           <CartesianGrid stroke="#444" strokeDasharray="3 3" />
           <XAxis dataKey="name" stroke="#fff" />
           <YAxis stroke="#fff" domain={["auto", "auto"]} />
           <Tooltip
             formatter={(value, name) => {
-              if (name === "Lucro" && mockData[0].Lucro < 0) {
+              if (name === "Lucro" && data.length > 0 && data[0].Lucro < 0) {
                 return [`R$ ${value.toLocaleString("pt-BR")}`, "Perda"];
               }
               return [`R$ ${value.toLocaleString("pt-BR")}`, name];
@@ -104,9 +127,10 @@ const ProfitGraphic = ({ title }) => {
               },
               { value: "Saída", type: "circle", color: "#64B5F6", id: "Saída" },
               {
-                value: getLucroLabel(mockData[0].Lucro),
+                value: data.length > 0 ? getLucroLabel(data[0].Lucro) : "Lucro",
                 type: "circle",
-                color: getLucroColor(mockData[0].Lucro),
+                color:
+                  data.length > 0 ? getLucroColor(data[0].Lucro) : "#90CAF9",
                 id: "Lucro",
               },
             ]}
@@ -116,8 +140,8 @@ const ProfitGraphic = ({ title }) => {
           <Bar dataKey="Saída" fill="#64B5F6" />
           <Bar
             dataKey={"Lucro"}
-            fill={getLucroColor(mockData[0].Lucro)}
-            name={getLucroLabel(mockData[0].Lucro)}
+            fill={data.length > 0 ? getLucroColor(data[0].Lucro) : "#90CAF9"}
+            name={data.length > 0 ? getLucroLabel(data[0].Lucro) : "Lucro"}
           />
         </BarChart>
       </ResponsiveContainer>
