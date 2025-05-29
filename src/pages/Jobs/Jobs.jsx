@@ -13,6 +13,7 @@ import {
   getServiceTypeTranslated,
   getStatusTranslated,
 } from "../../hooks/translateAttributes";
+import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs.jsx"; // Adicionado Breadcrumbs
 
 const Jobs = () => {
   const [allJobsElements, setAllJobsElements] = useState([]);
@@ -76,6 +77,7 @@ const Jobs = () => {
 
   return (
     <div className="slide-in-ltr min-w-full min-h-full text-white">
+      {/* <Breadcrumbs /> */}
       <section className="flex flex-col justify-around items-center mx-16 mt-6">
         <div className="flex flex-col md:flex-row w-full justify-between">
           <div className="flex items-center">
@@ -106,14 +108,13 @@ const Jobs = () => {
           ) : (
             <Table
               headers={tableHeader}
-              data={
-                filteredJobsElements.map((job) => ({
-                  ...job,
-                  category: getCategoryTranslated(job.category),
-                  serviceType: getServiceTypeTranslated(job.serviceType),
-                  status: getStatusTranslated(job.status),
-                  totalValue: `R$ ${job.totalValue.toFixed(2).replace(".", ",")}` 
-                }))}
+              data={filteredJobsElements.map((job) => ({
+                ...job,
+                category: getCategoryTranslated(job.category),
+                serviceType: getServiceTypeTranslated(job.serviceType),
+                status: getStatusTranslated(job.status),
+                totalValue: `R$ ${job.totalValue.toFixed(2).replace(".", ",")}`,
+              }))}
               messageNotFound="Nenhum serviço encontrado"
             />
           )}
