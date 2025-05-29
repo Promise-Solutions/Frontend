@@ -6,6 +6,7 @@ import { axiosProvider } from "../../provider/apiProvider";
 import { ENDPOINTS } from "../../constants/endpoints";
 import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete";
 import { showToast } from "../../components/toastStyle/ToastStyle";
+import { SyncLoader } from "react-spinners";
 
 const Reports = () => {
   const [reports, setReports] = useState([]);
@@ -15,6 +16,7 @@ const Reports = () => {
   const [dateTo, setDateTo] = useState("");
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   // Busca relatórios do backend
   const fetchReports = async () => {
@@ -37,25 +39,34 @@ const Reports = () => {
   }, []);
 
   // Função para baixar relatório
-  const handleDownload = async (fileId, fileName) => {
-    try {
-      const response = await axiosProvider.get(
-        ENDPOINTS.driveDownload(fileId),
-        {
-          responseType: "blob",
+  const handleDownload = async (fileName, fileId) => {
+    await showToast.promise(
+      (async () => {
+        try {
+          const response = await axiosProvider.get(
+            ENDPOINTS.driveDownload(fileId),
+            {
+              responseType: "blob",
+            }
+          );
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          // Usa exatamente o nome original do arquivo gerado
+          link.href = url;
+          link.setAttribute("download", fileName || "relatorio.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        } catch (error) {
+          throw new Error("Erro ao baixar relatório.");
         }
-      );
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", fileName || "relatorio.xlsx");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      showToast.success("Download iniciado!");
-    } catch (error) {
-      showToast.error("Erro ao baixar relatório.");
-    }
+      })(),
+      {
+        loading: "Baixando relatório...",
+        success: "Download iniciado!",
+        error: "Erro ao baixar relatório.",
+      }
+    );
   };
 
   // Função para abrir modal de exclusão
@@ -221,6 +232,13 @@ const Reports = () => {
               <div className="text-center text-gray-400 col-span-3">
                 Carregando relatórios...
               </div>
+            ) : isDownloading ? (
+              <div className="flex flex-col items-center justify-center col-span-3 py-12">
+                <SyncLoader size={10} color="#02AEBA" speedMultiplier={2} />
+                <span className="mt-4 text-cyan-zero">
+                  Baixando relatório...
+                </span>
+              </div>
             ) : reports.length === 0 ? (
               <div className="text-center text-gray-400 col-span-3">
                 Nenhum relatório encontrado.
@@ -231,7 +249,7 @@ const Reports = () => {
                   key={file.id}
                   id={file.id}
                   item={file.name}
-                  onDownload={() => handleDownload(file.id, file.name)}
+                  onDownload={() => handleDownload(file.name, file.id)}
                   onDelete={() => handleDelete(index)}
                 />
               ))
