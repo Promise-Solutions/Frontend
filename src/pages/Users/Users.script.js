@@ -25,6 +25,7 @@ export const renderUsers = async (
         active: user.active,
         contact: user.contact,
         email: user.email,
+        birthDay: user.birthDay, // Passa birthDay
         onClick: () => {
           setUserId(user.id);
           const isClient = filterType === "CLIENTE";

@@ -27,7 +27,7 @@ import { ROUTERS } from "../../../constants/routers.js";
 import { ENDPOINTS } from "../../../constants/endpoints.js";
 import { formatDateWithoutTime } from "../../../hooks/formatUtils.js";
 import { SyncLoader } from "react-spinners";
-import { FaWhatsapp } from "react-icons/fa"; // Adicionado ícone do WhatsApp
+import { FaWhatsapp, FaBirthdayCake } from "react-icons/fa"; // Adicionado ícone do WhatsApp e bolo
 
 export const RenderInfos = () => {
   const { userParam } = useParams();
@@ -412,6 +412,78 @@ export const RenderInfos = () => {
     window.open(`https://wa.me/55${phone}`, "_blank");
   };
 
+  // Função para verificar se hoje é aniversário (corrigido para ignorar ano)
+  const isBirthdayToday = (() => {
+    if (!user?.birthDay) return false;
+    let birthMonth, birthDate;
+    if (typeof user.birthDay === "string" && user.birthDay.length >= 10) {
+      // Suporta formato "YYYY-MM-DD"
+      const [year, month, day] = user.birthDay.split("-");
+      birthMonth = parseInt(month, 10);
+      birthDate = parseInt(day, 10);
+    } else {
+      const birth = new Date(user.birthDay);
+      birthMonth = birth.getMonth() + 1;
+      birthDate = birth.getDate();
+    }
+    const today = new Date();
+    const todayMonth = today.getMonth() + 1;
+    const todayDate = today.getDate();
+    return todayMonth === birthMonth && todayDate === birthDate;
+  })();
+
+  // Componente de balões animados
+  const Balloons = () => (
+    <div
+      style={{
+        position: "fixed",
+        left: 0,
+        top: 0,
+        width: "100vw",
+        height: "100vh",
+        pointerEvents: "none",
+        zIndex: 50,
+      }}
+    >
+      {[...Array(10)].map((_, i) => (
+        <svg
+          key={i}
+          style={{
+            position: "absolute",
+            left: `${10 + i * 8}%`,
+            bottom: "-80px",
+            animation: `balloonUp 3s ${i * 0.2}s forwards`,
+            width: 40,
+            height: 80,
+            opacity: 0.8,
+          }}
+          viewBox="0 0 40 80"
+        >
+          <ellipse
+            cx="20"
+            cy="30"
+            rx="18"
+            ry="28"
+            fill={
+              ["#FF69B4", "#FFD700", "#87CEEB", "#FF6347", "#7CFC00"][i % 5]
+            }
+          />
+          <rect x="18" y="58" width="4" height="15" fill="#888" />
+        </svg>
+      ))}
+      <style>
+        {`
+          @keyframes balloonUp {
+            to {
+              transform: translateY(-90vh);
+              opacity: 0;
+            }
+          }
+        `}
+      </style>
+    </div>
+  );
+
   // Função para renderizar o conteúdo baseado no filtro selecionado
   const renderContent = () => {
     if (!user) {
@@ -431,25 +503,26 @@ export const RenderInfos = () => {
             id="info_section"
             className="flex w-full flex-col justify-between"
           >
+            {/* Balões animados se for aniversário */}
+            {isBirthdayToday && <Balloons />}
             <div className="flex justify-between">
               <div>
-                <h1 className="text-[42px]">
-                    <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
-                    {user?.contact && (
-                      <FaWhatsapp
-                        className="inline-block ml-2 pb-4 text-green-500 hover:text-green-400 cursor-pointer"
-                        size={55}
-                        title="Enviar mensagem no WhatsApp"
-                        onClick={(e) => handleWhatsappClick(user?.contact, e)}
-                      />
-                    )}
+                <h1 className="text-[42px] flex items-center gap-2">
+                  <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
+                  {isBirthdayToday && (
+                    <FaBirthdayCake
+                      className="text-cyan-zero"
+                      size={32}
+                      title="Aniversário hoje!"
+                    />
+                  )}
                 </h1>
                 <ul className="flex flex-col mt-6 gap-2">
                   {isClient && (
                     <li>
                       <b>Tipo de Cliente: </b>{" "}
                       {user?.clientType == "SINGLE" ? "Avulso" : "Mensal"}
-                      </li>
+                    </li>
                   )}
                   <li>
                     <b>E-mail: </b> {user?.email}
@@ -459,8 +532,16 @@ export const RenderInfos = () => {
                   </li>
                   <li>
                     <b>Contato: </b>
-                      <span> {user?.contact} </span>
-                    </li>
+                    <span> {user?.contact} </span>
+                    {user?.contact && (
+                      <FaWhatsapp
+                        className="inline-block pb-2 text-green-500 hover:text-green-400 cursor-pointer"
+                        size={30}
+                        title="Enviar mensagem no WhatsApp"
+                        onClick={(e) => handleWhatsappClick(user?.contact, e)}
+                      />
+                    )}
+                  </li>
                   {isClient && (
                     <li>
                       <b>Data de Nascimento: </b>{" "}
