@@ -1,14 +1,14 @@
 import { useState } from "react";
-import CancelButton from "../modalConfirmDelete/cancelButton";
+import CancelButton from "../../buttons/CancelButton";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
 import DeleteButton from "../../buttons/deleteButton/DeleteButton";
-import ModalConfirmDelete from "../modalConfirmDelete/ModalConfirmDelete";
+import ModalConfirmDelete from "../confirmDelete/ModalConfirmDelete";
 import Input from "../../form/Input";
 import Select from "../../form/Select";
 import { axiosProvider } from "../../../provider/apiProvider";
 import { showToast } from "../../toastStyle/ToastStyle";
 import { ENDPOINTS } from "../../../constants/endpoints";
-import ModalEditGeneric from "../ModalEditGeneric";
+import ModalGeneric from "../ModalGeneric";
 
 const mapStatusToFrontend = {
   PENDING: "Pendente",
@@ -150,7 +150,7 @@ const ModalEditTask = ({
   
   return(
     <>
-      <ModalEditGeneric title="Editar Tarefa" inputs={inputs} buttons={buttons}/>
+      <ModalGeneric title="Editar Tarefa" inputs={inputs} buttons={buttons} borderVariant="edit"/>
       <ModalConfirmDelete
          isOpen={isDeleteModalOpen}
          onClose={() => setIsDeleteModalOpen(false)}

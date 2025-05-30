@@ -1,4 +1,4 @@
-import { showToast, ToastStyle } from "../../toastStyle/ToastStyle";
+import { showToast, ToastStyle } from "../../../toastStyle/ToastStyle";
 
 export const handleInputChange = (e, setSubJobsInfos) => {
     const { name, value } = e.target;
@@ -31,10 +31,3 @@ export const changeSubJobData = async (infos, updateSubJobData) => {
     }
     return await updateSubJobData(infos);
 }
-
-export const getNumericValue = (valueString) => {
-  if(typeof valueString === "string" && valueString.includes(",")) {
-    valueString = valueString.replace(",", ".");
-  }
-  return parseFloat(valueString);
-};

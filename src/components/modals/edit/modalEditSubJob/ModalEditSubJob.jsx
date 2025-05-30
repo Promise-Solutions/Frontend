@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { useSubJobContext } from "../../../context/SubJobContext";
-import { handleInputChange, changeSubJobData, getNumericValue } from "./ModalEditSubJob.script";
-import ModalConfirmDelete from "../modalConfirmDelete/ModalConfirmDelete";
-import Input from '../../form/Input'
-import CancelButton from "../modalConfirmDelete/cancelButton";
-import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
-import DeleteButton from "../../buttons/deleteButton/DeleteButton";
+import { useSubJobContext } from "../../../../context/SubJobContext";
+import { handleInputChange, changeSubJobData } from "./ModalEditSubJob.script";
+import ModalConfirmDelete from "../../confirmDelete/ModalConfirmDelete";
+import Input from '../../../form/Input'
+import CancelButton from "../../../buttons/CancelButton";
+import ConfirmButton from "../../../buttons/confirmButton/ConfirmButton";
+import DeleteButton from "../../../buttons/deleteButton/DeleteButton";
 import { useParams } from "react-router-dom";
-import Select from "../../form/Select";
-import Checkbox from "../../form/Checkbox";
-import ModalEditGeneric from "../ModalEditGeneric";
+import Select from "../../../form/Select";
+import Checkbox from "../../../form/Checkbox";
+import ModalGeneric from "../../ModalGeneric";
+import { getNumericValue } from "../../../../hooks/formatUtils";
 
 const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
   const { updateSubJobData, deleteSubJobById } = useSubJobContext();
@@ -17,10 +18,10 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { jobId } = useParams(); 
 
-   const handleInputCheckboxChange = (e) => {
-      const { name } = e.target;
-      setSubJobsInfos((prevData) => ({ ...prevData, [name]: e.target.checked }));
-    };
+  const handleInputCheckboxChange = (e) => {
+    const { name } = e.target;
+    setSubJobsInfos((prevData) => ({ ...prevData, [name]: e.target.checked }));
+  };
 
   const handleValorChange = (e, setSubJobsInfos) => {
     let { name, value } = e.target;
@@ -143,7 +144,7 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
   ]
   return (
     <>
-      <ModalEditGeneric title="Editar Subserviço" inputs={inputs} buttons={buttons}/>
+      <ModalGeneric title="Editar Subserviço" inputs={inputs} buttons={buttons} borderVariant="edit"/>
       <ModalConfirmDelete
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}

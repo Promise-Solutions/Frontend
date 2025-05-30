@@ -9,6 +9,7 @@ import Select from "../../../components/form/Select";
 import Checkbox from "../../../components/form/Checkbox";
 import { showToast } from "../../../components/toastStyle/ToastStyle";
 import { ROUTERS } from "../../../constants/routers";
+import { getNumericValue } from "../../../hooks/formatUtils";
 
 const SubJobRegister = () => {
   const { saveSubJob } = useSubJobContext();
@@ -43,8 +44,6 @@ const SubJobRegister = () => {
       value: getNumericValue(formData.value),
     };
 
-    console.log(subJobDataToRegister);
-
     const responseCode = await registrarSubServico(
       subJobDataToRegister,
       saveSubJob
@@ -73,17 +72,6 @@ const SubJobRegister = () => {
     }
 
     setFormData((prevData) => ({ ...prevData, [name]: newValue }));
-  };
-
-  const getNumericValue = (valueString) => {
-    if (valueString == "" || valueString == NaN || valueString == null) {
-      return "";
-    }
-    // Substitui vírgula por ponto para parseFloat
-    if (typeof valueString === "string") {
-      valueString = valueString.replace(",", ".");
-    }
-    return parseFloat(valueString);
   };
 
   return (

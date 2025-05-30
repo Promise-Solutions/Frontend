@@ -19,6 +19,7 @@ function Input({
       </label>
       <input
         required={required}
+        autoComplete="off"
         type={type}
         step={step || ""} // Default to "any" if not provided
         name={name}

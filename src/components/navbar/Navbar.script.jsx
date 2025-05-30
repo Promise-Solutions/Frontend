@@ -4,15 +4,15 @@ import { ROUTERS } from "../../constants/routers";
 
 // Tabs disponíveis
 export const tabs = [
-  { id: "users", name: "Usuários" },
+  { id: "calendar", name: "Calendário" },
   { id: "jobs", name: "Serviços" },
+  { id: "tasks", name: "Tarefas" },   
   { id: "bar", name: "Bar" },
   { id: "bar/stock", name: "Estoque" },
   { id: "expenses", name: "Despesas" },
-  { id: "tasks", name: "Tarefas" },
-  { id: "dashboard", name: "Análise" },
+  { id: "dashboard", name: "Análises" },
   { id: "reports", name: "Relatórios" },
-  { id: "calendar", name: "Calendário" },
+  { id: "users", name: "Usuários" },
 ];
 
 // Hook da lógica da navbar

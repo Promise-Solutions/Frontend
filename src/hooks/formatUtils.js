@@ -76,3 +76,13 @@ export function extractDateOnly(dateStr) {
 
   return `${day.padStart(2, "0")}/${month.padStart(2, "0")}/${year}`;
 }
+
+export const getNumericValue = (valueString) => {
+if (valueString == "" || valueString == NaN || valueString == null) {
+    return "";
+}
+if (typeof valueString === "string" && valueString.includes(",")) {
+    valueString = valueString.replace(",", ".");
+}
+return parseFloat(valueString);
+};

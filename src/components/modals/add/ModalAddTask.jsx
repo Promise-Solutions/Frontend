@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Select from "../../form/Select";
 import Input from "../../form/Input";
-import CancelButton from "../modalConfirmDelete/cancelButton";
+import CancelButton from "../../buttons/CancelButton";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
 import { showToast } from "../../toastStyle/ToastStyle";
 

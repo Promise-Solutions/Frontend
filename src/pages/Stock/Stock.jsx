@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton.jsx";
-import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete.jsx";
+import ModalConfirmDelete from "../../components/modals/confirmDelete/ModalConfirmDelete.jsx";
 import StockTable from "../../components/tables/stockTable";
-import ModalAddProduct from "../../components/modals/modalAddProduct/ModalAddProduct.jsx";
-import ModalEditProduct from "../../components/modals/modalEditProduct/ModalEditProduct.jsx";
+import ModalAddProduct from "../../components/modals/add/ModalAddProduct.jsx";
+import ModalEditProduct from "../../components/modals/edit/ModalEditProduct.jsx";
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { SyncLoader } from "react-spinners";
@@ -52,8 +52,10 @@ const Stock = () => {
         productToAdd
       );
       setProducts((prevProducts) => [...prevProducts, response.data]);
+      showToast.success("Produto adicionado com sucesso!")
       setIsAddModalOpen(false);
     } catch (error) {
+      showToast.error("Erro ao adicionar produto!")
       console.error("Erro ao adicionar produto:", error);
     }
   };

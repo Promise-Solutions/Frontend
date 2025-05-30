@@ -5,9 +5,9 @@ import ConfirmButton from "../../components/buttons/confirmButton/ConfirmButton.
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton.jsx";
 import DeleteButton from "../../components/buttons/deleteButton/DeleteButton.jsx";
 import Table from "../../components/tables/Table";
-import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete.jsx";
-import ModalEditCommandProduct from "../../components/modals/modalEditCommandProduct/ModalEditCommandProduct.jsx";
-import ModalAddDiscount from "../../components/modals/modalAddDiscount/ModalAddDiscount.jsx"; // Importa o novo modal
+import ModalConfirmDelete from "../../components/modals/confirmDelete/ModalConfirmDelete.jsx";
+import ModalEditCommandProduct from "../../components/modals/edit/ModalEditCommandProduct.jsx";
+import ModalAddDiscount from "../../components/modals/add/ModalAddDiscount.jsx"; // Importa o novo modal
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
 import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate

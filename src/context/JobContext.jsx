@@ -61,7 +61,6 @@ export function JobProvider({ children }) {
     try {
       const response = await axiosProvider.get(ENDPOINTS.JOBS);
       const jobs = response.data;
-      console.log("jobs", jobs)
       return jobs;
     } catch (error) {
       console.error("Erro ao buscar serviços:", error);

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Input from "../../form/Input.jsx";
 import ConfirmButton from "../../buttons/confirmButton/ConfirmButton.jsx";
-import CancelButton from "../modalConfirmDelete/cancelButton.jsx";
-import { showToast } from "../../toastStyle/ToastStyle";
-import ModalEditGeneric from "../ModalEditGeneric.jsx";
+import CancelButton from "../../buttons/CancelButton.jsx";
+import { showToast } from "../../toastStyle/ToastStyle.jsx";
+import ModalGeneric from "../ModalGeneric.jsx";
 
 const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
   const [formData, setFormData] = useState(initialData || {});
@@ -51,6 +51,16 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
       disabled
     />,
     <Input
+      type="number"
+      name="quantity"
+      required
+      text="Quantidade"
+      placeholder="Digite a quantidade para clientes"
+      value={formData.quantity}
+      handleOnChange={handleInputChange}
+      min="1"
+    />,
+    <Input
       type="text"
       name="clientValue"
       required
@@ -78,7 +88,7 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
   ]
 
   return (
-    <ModalEditGeneric title="Editar Produto" inputs={inputs} buttons={buttons}/>
+    <ModalGeneric title="Editar Produto" inputs={inputs} buttons={buttons} borderVariant="edit"/>
   );
 };
 
