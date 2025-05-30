@@ -83,16 +83,6 @@ const Home = () => {
       <div className="w-full max-w-[90vw] px-4 py-2" onWheel={handleWheel}>
         <Slider ref={sliderRef} {...sliderSettings} className="pl-14">
           <CardHomePage
-            title="Usuários"
-            text="Gerencie seus usuários e visualize seus serviços e indicadores."
-            url={UserIcon}
-            idButton={ROUTERS.USERS}
-            className="text-[42px] text-transparent font-bold"
-            style={{ WebkitTextStroke: "2px #02aebaff" }}
-            buttonStyle={{ backgroundColor: "#02aebaff" }}
-            onClick={() => handleButtonClick(ROUTERS.USERS, navigate)}
-          />
-          <CardHomePage
             title="Serviços"
             text="Gerencie seus serviços e subserviços registrados."
             url={JobIcon}
@@ -102,6 +92,16 @@ const Home = () => {
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.JOBS, navigate)}
           />
+            <CardHomePage
+              title="Tarefas"
+              text="Obtenha uma visão de suas tarefas e gerencie seus status."
+              url={TaskIcon}
+              idButton={ROUTERS.TASKS}
+              className="text-[42px] text-transparent font-bold"
+              style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+              buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
+              onClick={() => handleButtonClick(ROUTERS.TASKS, navigate)}
+            />
           <CardHomePage
             title="Bar"
             text="Visualize e gerencie as comandas e pedidos dos seus clientes."
@@ -111,16 +111,6 @@ const Home = () => {
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.BAR, navigate)}
-          />
-          <CardHomePage
-            title="Análise"
-            text="Acompanhe dados, métricas e tendências em tempo real."
-            url={DashIcon}
-            idButton={ROUTERS.DASHBOARD}
-            className="text-[42px] text-transparent font-bold"
-            style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
-            buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
-            onClick={() => handleButtonClick(ROUTERS.DASHBOARD, navigate)}
           />
           <CardHomePage
             title="Estoque"
@@ -143,14 +133,14 @@ const Home = () => {
             onClick={() => handleButtonClick(ROUTERS.EXPENSES, navigate)}
           />
           <CardHomePage
-            title="Tarefas"
-            text="Obtenha uma visão de suas tarefas e gerencie seus status."
-            url={TaskIcon}
-            idButton={ROUTERS.TASKS}
+            title="Análise"
+            text="Acompanhe dados, métricas e tendências em tempo real."
+            url={DashIcon}
+            idButton={ROUTERS.DASHBOARD}
             className="text-[42px] text-transparent font-bold"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
-            onClick={() => handleButtonClick(ROUTERS.TASKS, navigate)}
+            onClick={() => handleButtonClick(ROUTERS.DASHBOARD, navigate)}
           />
           <CardHomePage
             title="Relatórios"
@@ -161,6 +151,16 @@ const Home = () => {
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.REPORTS, navigate)}
+          />
+          <CardHomePage
+            title="Usuários"
+            text="Gerencie seus usuários e visualize seus serviços e indicadores."
+            url={UserIcon}
+            idButton={ROUTERS.USERS}
+            className="text-[42px] text-transparent font-bold"
+            style={{ WebkitTextStroke: "2px #02aebaff" }}
+            buttonStyle={{ backgroundColor: "#02aebaff" }}
+            onClick={() => handleButtonClick(ROUTERS.USERS, navigate)}
           />
         </Slider>
       </div>

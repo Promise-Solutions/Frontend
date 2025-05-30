@@ -1,45 +1,69 @@
-import ModalEditGeneric from "../ModalEditGeneric";
+import CancelButton from "../../buttons/CancelButton";
+import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
+import ModalGeneric from "../ModalGeneric";
 import { useEffect, useState } from "react";
+import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../../hooks/translateAttributes";
+import { getNumericValue } from "../../../hooks/formatUtils";
+import Select from "../../form/Select";
+import Input from "../../form/Input";
 import { axiosProvider } from "../../../provider/apiProvider";
 import { ENDPOINTS } from "../../../constants/endpoints";
-import Select from "../../form/Select";
-import CancelButton from "../modalConfirmDelete/cancelButton";
-import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
-import Input from "../../form/Input";
-import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../../hooks/translateAttributes";
 
-const ModalEditExpense = ({
-    idExpense, onClose, onSave
+const ModalAddExpense = ({
+    isOpen, onClose, onSave
 }) => {
-    const [productOptions, setProductOptions] = useState([{id: null, name: "<Não encontrado>", disabled: true}]);
-    const [expenseData, setExpenseData] = useState({
-        description: "Compra de materiais de escritório",
-        expenseCategory: "Suprimentos",
-        amountSpend: 250.75,
-        date: "2025-05-15",
-        quantity: 10,
-        paymentType: "Cartão de crédito"
-    });
+    if(!isOpen) return;
     
+    const [formData, setFormData] = useState({
+            description: "",
+            amountSpend: "",
+            date: "",
+            expenseCategory: "",
+            paymentType: "",
+            quantity: "",
+            fkProduct: null
+    });
+
+    const [productOptions, setProductOptions] = useState([{id: null, name: "<Não encontrado>", disabled: true}]);
+        
     const expenseCategoryOptions = [
         {id:"BILLS", name: getExpenseCategoryTranslated("BILLS")},
         {id:"STOCK", name: getExpenseCategoryTranslated("STOCK")},
         {id:"MAINTENANCE", name: getExpenseCategoryTranslated("MAINTENANCE")},
-        {id:"OTHERS", name: getExpenseCategoryTranslated("OTHERS")} 
+        {id:"OTHERS", name: getExpenseCategoryTranslated("OTHERS")}
     ]
-    
+
     const paymentTypeOptions = [
         {id:"CREDIT_CARD", name: getPaymentTypeTranslated("CREDIT_CARD")},
         {id:"DEBIT_CARD", name: getPaymentTypeTranslated("DEBIT_CARD")},
         {id:"BILLET", name: getPaymentTypeTranslated("BILLET")},
         {id:"MONEY", name: getPaymentTypeTranslated("MONEY")},
         {id:"PIX", name: getPaymentTypeTranslated("PIX")},
-        {id:"TRANSFER", name: getPaymentTypeTranslated("TRANSFER")},
+        {id:"TRANSFER", name: getPaymentTypeTranslated("TRANSFER")}
     ]
 
+    useEffect(() => {
+        axiosProvider.get(ENDPOINTS.PRODUCTS)
+            .then((response) => {
+                setProductOptions(
+                    response.data.map((product) => (
+                        {id: product.id, name:product.name}  
+                    ))
+                )
+            })
+            .catch(() => ([{id: null, name: "<Não encontrado>", disabled: true}]))
+    }, [])
+
+    
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setExpenseData((prevData) => ({ ...prevData, [name]: value }));
+        const name = e.target.name;
+        let value = e.target.value;
+
+        if(name === "amountSpend" || name === "fkProduct" || name === "quantity"){
+            value = getNumericValue(value)
+        } 
+
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
     const handleValorChange = (e) => {
@@ -48,33 +72,33 @@ const ModalEditExpense = ({
       value = value.replace(/[^0-9,]/g, "");
 
       let newValue = value
-
+      
       const partes = newValue.split(",");
       if (partes.length > 2) {
         newValue = partes[0] + "," + partes.slice(1).join("");
       }
       
-      setExpenseData((prevData) => ({ ...prevData, [name]: newValue }));
+      setFormData((prevData) => ({ ...prevData, [name]: getNumericValue(newValue) }));
     };
 
-    const inputs =[
+    const inputs = [
         <Select
             text="Categoria da despesa"
             name="expenseCategory"
             required
             options={expenseCategoryOptions}
             handleOnChange={handleInputChange}
-            value={expenseData.expenseCategory}
+            value={formData.expenseCategory}
         />,
-        expenseData.expenseCategory === "STOCK" ? (
-            <div className="flex gap-3 items-end justify-center w-full">
+        formData.expenseCategory === "STOCK" ? (
+            <div className="flex gap-3 items-center justify-center w-full">
                 <Select
-                    text="Item da despesa"
-                    name="description"
+                    text="Produto da despesa"
+                    name="fkProduct"
                     required
                     options={productOptions}
                     handleOnChange={handleInputChange}
-                    value={expenseData.description}
+                    value={formData.fkProduct}
                 />  
                 <Input
                     type="text"
@@ -82,8 +106,8 @@ const ModalEditExpense = ({
                     name="quantity"
                     required
                     placeholder="Digite a quantidade"
-                    handleOnChange={handleValorChange}
-                    value={expenseData.quantity}
+                    handleOnChange={handleInputChange}
+                    value={formData.quantity}
                     maxLength="50"
                 />
             </div>
@@ -95,18 +119,19 @@ const ModalEditExpense = ({
                 required
                 placeholder="Digite o item da despesa"
                 handleOnChange={handleInputChange}
-                value={expenseData.description}
+                value={formData.description}
                 maxLength="50"
             />
-        ),
+        )
+        ,
         <Input
             type="text"
-            text="Valor"
+            text="Valor Total"
             name="amountSpend"
             required
-            placeholder="Digite o valor"
+            placeholder="Digite o valor total"
             handleOnChange={handleValorChange}
-            value={expenseData.amountSpend}
+            value={formData.amountSpend}
             maxLength="50"
         />,
         <Input
@@ -116,7 +141,7 @@ const ModalEditExpense = ({
             required
             placeholder="Digite o valor"
             handleOnChange={handleInputChange}
-            value={expenseData.date}
+            value={formData.date}
             min="1900-01-01"
             max="2099-12-31"
             className="custom-calendar"
@@ -127,37 +152,19 @@ const ModalEditExpense = ({
             required
             options={paymentTypeOptions}
             handleOnChange={handleInputChange}
-            value={expenseData.paymentType}
+            value={formData.paymentType}
         />  
     ]
 
     const buttons = [
         <CancelButton text="Cancelar" type="button" onClick={onClose} />,
-        <ConfirmButton text="Salvar" onClick={() => onSave(expenseData, () => onClose())} />
+        <ConfirmButton text="Confirmar" onClick={() => onSave(formData, productOptions)}  />
     ]
-    // useEffect(() => {
-    //     axiosProvider.get(ENDPOINTS.EXPENSES)
-    //     .then((response) => {
-    //         setExpenseElements(response.data);
-    //     })
-    //     .catch((error) =>{  
-    //         console.log("Erro ao buscar dados", error)
-    //     })    
-    // axiosProvider.get("/products")
-    //     .then((response) => {
-    //         setProductOptions(
-    //             response.data.map((product) => (
-    //                 {id: product.id, name:product.name}  
-    //             ))
-    //         )
-    //     })
-    //     .catch(() => ([{id: null, name: "<Não encontrado>", disabled: true}]))
-    // },[])
-
 
     return (
-        <ModalEditGeneric title={"Editar despesa"} inputs={inputs} buttons={buttons} initialData={expenseData} widthModal={"w-[600px]"} />
+        <ModalGeneric title="Adicionar Despesa" inputs={inputs} buttons={buttons} widthModal="w-[600px]" borderVariant="add" />
     );
 }
 
-export default ModalEditExpense;
+export default ModalAddExpense;
+

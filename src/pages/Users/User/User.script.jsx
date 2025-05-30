@@ -9,7 +9,7 @@ import {
 import Select from "../../../components/form/Select.jsx";
 import Input from "../../../components/form/Input.jsx";
 import DeleteButton from "../../../components/buttons/deleteButton/DeleteButton.jsx";
-import ModalConfirmDelete from "../../../components/modals/modalConfirmDelete/ModalConfirmDelete.jsx";
+import ModalConfirmDelete from "../../../components/modals/confirmDelete/ModalConfirmDelete.jsx";
 import ScreenFilter from "../../../components/filters/screenFilter/ScreenFilter.jsx";
 import Kpi from "../../../components/graphic/Kpi.jsx";
 import React from "react";
@@ -22,7 +22,7 @@ import {
   getServiceTypeTranslated,
   getStatusTranslated,
 } from "../../../hooks/translateAttributes.js";
-import CancelButton from "../../../components/modals/modalConfirmDelete/cancelButton.jsx";
+import CancelButton from "../../../components/buttons/CancelButton.jsx";
 import { ROUTERS } from "../../../constants/routers.js";
 import { ENDPOINTS } from "../../../constants/endpoints.js";
 import { formatDateWithoutTime } from "../../../hooks/formatUtils.js";

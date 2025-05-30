@@ -10,7 +10,7 @@ export const tabs = [
   { id: "bar", name: "Bar" },
   { id: "bar/stock", name: "Estoque" },
   { id: "expenses", name: "Despesas" },
-  { id: "dashboard", name: "Análise" },
+  { id: "dashboard", name: "Análises" },
   { id: "reports", name: "Relatórios" },
   { id: "users", name: "Usuários" },
 ];

@@ -3,7 +3,7 @@ import { useJobContext } from "../../../context/JobContext";
 import { useSubJobContext } from "../../../context/SubJobContext";
 import PrimaryButton from "../../../components/buttons/primaryButton/PrimaryButton";
 import DeleteButton from "../../../components/buttons/deleteButton/DeleteButton";
-import ModalConfirmDelete from "../../../components/modals/modalConfirmDelete/ModalConfirmDelete";
+import ModalConfirmDelete from "../../../components/modals/confirmDelete/ModalConfirmDelete";
 import CardSubJob from "../../../components/cards/cardSubJob/CardSubJob";
 import Input from "../../../components/form/Input";
 import { useNavigate, useParams } from "react-router-dom";
@@ -20,10 +20,10 @@ import {
   getServiceTypeTranslated,
   getStatusTranslated,
 } from "../../../hooks/translateAttributes";
-import ModalEditSubJob from "../../../components/modals/modalEditSubJob/ModalEditSubJob";
-import CancelButton from "../../../components/modals/modalConfirmDelete/cancelButton";
+import ModalEditSubJob from "../../../components/modals/edit/modalEditSubJob/ModalEditSubJob";
+import CancelButton from "../../../components/buttons/CancelButton";
 import { SyncLoader } from "react-spinners";
-import ModalEditGeneric from "../../../components/modals/ModalEditGeneric";
+import ModalGeneric from "../../../components/modals/ModalGeneric";
 
 const JobManagement = () => {
   const { jobId } = useParams();
@@ -127,11 +127,6 @@ const JobManagement = () => {
           onSave={handleSubJobUpdated}
           onDelete={handleSubJobDeleted}
         />
-
-        // <ModalEditGeneric
-        //   onClose={() => setEditingSubJob(false)}
-        //   onSave={handleSubJobUpdated}
-        // />
       )}
       {isLoading ? (
         <div className="flex items-center justify-center w-full h-[40vh]">
@@ -284,10 +279,6 @@ const JobManagement = () => {
                 data={subJob}
                 onEdit={() => setEditingSubJob(subJob)}
                 onUpdateStatus={handleChangeSubJobStatus}
-                setModalEditSubJob
-                isEditingSubJob
-                setIsEditingSubJob
-                setSubJobDataToEdit
               />
             ))
           ) : (

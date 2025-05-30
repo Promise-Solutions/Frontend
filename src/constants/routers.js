@@ -13,7 +13,6 @@ export const ROUTERS = {
   PROJECTS: '/projects',
   TASKS: '/tasks',
   EXPENSES: '/expenses',
-  EXPENSE_REGISTER: '/register/expenses',
   CALENDAR: '/calendar',
 
   USER_DETAIL: '/user/:userParam',

@@ -3,7 +3,7 @@ import CommandFilter from "../../components/filters/commandFilter/CommandFilter"
 import BarTypeFilter from "../../components/filters/barTypeFilter/BarTypeFilter";
 import RegisterButton from "../../components/buttons/registerButton/RegisterButton";
 import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
-import ModalOpenCommand from "../../components/modals/modalOpenCommand/ModalOpenCommand"; // Import the new modal
+import ModalOpenCommand from "../../components/modals/add/ModalOpenCommand"; // Import the new modal
 import { renderCommands, stockRedirect } from "./Bar.script";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate

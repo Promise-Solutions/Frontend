@@ -13,7 +13,6 @@ export const renderJobs = async (
   findClientById
 ) => {
   const jobs = await findJobs();
-  console.log("jobs", jobs)
 
   if (jobs != []) {
     const jobsReturned =  await Promise.all(

@@ -1,5 +1,5 @@
+import CancelButton from "../../buttons/CancelButton.jsx";
 import DeleteButton from "../../buttons/deleteButton/DeleteButton.jsx";
-import CancelButton from "./cancelButton.jsx";
 import ReactDOM from "react-dom";
 
 const ModalConfirmDelete = ({

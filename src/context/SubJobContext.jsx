@@ -58,7 +58,6 @@ export function SubJobProvider({ children }) {
     const id = subJobData.id;
 
     try {
-      console.log("subJobDAta",  subJobData)
       const request = await axiosProvider.patch(ENDPOINTS.getSubJobById(id), {
         title: subJobData.title,
         description: subJobData.description,

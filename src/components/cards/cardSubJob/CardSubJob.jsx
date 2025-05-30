@@ -19,8 +19,6 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
     }
   };
 
-  
-
   return (
     <div
       id={`job_${data.id}`}
@@ -52,20 +50,19 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
                 } marker:duration-100 ease-in-out`}
         >
           <li>
-            <b>Descrição: </b>{" "}
+            <b>Descrição: </b>
             <span className="max-h-[3rem] overflow-y-auto break-words breakable-text">
-              {" "}
-              {data?.description || ""}{" "}
+              data?.description || ""
             </span>
           </li>
           <li>
-            <b>Valor: </b>{" "}
+            <b>Valor: </b>
             <span className="breakable-text overflow-y-auto max-h-[3rem]">
-              {" "}
-              R${" "}
+              
+              R$
               {typeof data?.value === "number"
                 ? data.value.toFixed(2).replace(".", ",")
-                : ""}{" "}
+                : ""}
             </span>
           </li>
           <li>

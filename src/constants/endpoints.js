@@ -11,6 +11,7 @@ export const ENDPOINTS = {
     TASKS: "/tasks",
     DASHBOARD_BAR_FINANCES:`/dashboard/bar-finances`,
     EXPENSES: "/expenses",
+    GOAL: "/goals",
 
     getClientById: (id) => `/clients/${id}`,
     getEmployeeById: (id) => `/employees/${id}`,

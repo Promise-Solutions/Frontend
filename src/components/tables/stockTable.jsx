@@ -1,6 +1,7 @@
 import React from "react";
 import PrimaryButton from "../buttons/primaryButton/PrimaryButton";
 import DeleteButton from "../buttons/deleteButton/DeleteButton";
+import EditButton from "../buttons/editButton/EditButton";
 
 const StockTable = ({ products, onEdit, onDelete }) => {
   return (
@@ -52,7 +53,7 @@ const StockTable = ({ products, onEdit, onDelete }) => {
                 </td>
                 <td className="border border-gray-700 text-center px-4 py-2">
                   <div className="flex gap-2">
-                    <PrimaryButton
+                    <EditButton
                       text="Editar"
                       onClick={() => onEdit(product)}
                     />
