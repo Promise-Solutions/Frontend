@@ -9,9 +9,16 @@ import { axiosProvider } from "../../provider/apiProvider";
 import Table from "../../components/tables/Table";
 import ModalEditGoal from "../../components/modals/edit/ModalEditGoal";
 import DeleteButton from "../../components/buttons/deleteButton/DeleteButton";
-import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete";
-import { deleteExpense, saveExpenseChanges } from "./Expenses";
-import ModalEditExpense from "../../components/modals/modalEditExpense/ModalEditExpense";
+import { deleteExpense, registrarDespesa, saveExpenseChanges, validateDataToSave } from "./Expenses";
+import ModalConfirmDelete from "../../components/modals/confirmDelete/ModalConfirmDelete";
+import ModalEditExpense from "../../components/modals/edit/ModalEditExpense";
+import { FaArrowRightLong } from "react-icons/fa6";
+import { ENDPOINTS } from "../../constants/endpoints";
+import { formatDateWithoutTime } from "../../hooks/formatUtils";
+import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../hooks/translateAttributes";
+import EditButton from "../../components/buttons/editButton/EditButton";
+import ModalAddExpense from "../../components/modals/add/ModalAddExpense";
+import { showToast } from "../../components/toastStyle/ToastStyle";
 
 function Expenses() {
   const [isLoading, setIsLoading] = useState(true);
@@ -185,24 +192,25 @@ function Expenses() {
         onClose={() => setIsGoalModalOpen(false)}
         onSave={handleSaveGoal}
       />
-      {
-        isEditing ? (
-          <ModalEditExpense 
-            idExpense={1} 
-            onClose={() => setIsEditing(false)} 
-            onSave={saveExpenseChanges}
-          />
-        ) : (
-          null
-        ) 
-      }
+      <ModalEditExpense 
+        isOpen={isEditing}
+        initialData={expenseToEdit} 
+        onClose={() => setIsEditing(false)} 
+        onSave={saveExpenseChanges}
+        onExpenseSaved={handleExpenseUpdated}
+      />
+      <ModalAddExpense
+        isOpen={isAddModalOpen}
+        onSave={handleRegisterExpense}
+        onClose={() => setIsAddModalOpen(false)}
+      />
       <section className="mx-16 my-6">
         <div className="flex justify-center flex-col">
           <div className="flex w-full items-center gap-4 justify-between">
             <div className="items-center">
               <h1 className="text-2xl font-thin">Gerencie suas despesas</h1>
               <p className="flex gap-4 items-center text-yellow-zero text-sm">
-                Antes de adicionar uma despesa de categoria estoque, cadastre o produto{" "}
+                Antes de adicionar uma despesa de categoria estoque, cadastre o produto
                 <FaArrowRightLong />
                 <span className="underline cursor-pointer" onClick={() => navigate(ROUTERS.BAR_STOCK)}>Aqui!</span>
               </p>
@@ -250,16 +258,29 @@ function Expenses() {
                   ) : (
                     <Table 
                       headers={tableHeader}
-                      data={mockTableData}
-                      // data={
-                      //   filteredExpenseElements.map((expense) => ({
-                      //     ...expense,
-                      //     amountExpend: `R$ ${expense.amountExpend.toFixed(2).replace(".", ",")}`
-                      //    date: formatDateWithoutTime(expense.date)
-                      //    expenseCategory: getExpenseCategoryTranslated(expense.expenseCategory)
-                      //    paymentType: getPaymentTypeTranslated(expense.paymentType)
-                      //    quantity: expense.quantity? : "n/a" 
-                      //   }))}
+                     data={
+                        filteredExpenseElements.map((expense) => ({
+                          ...expense,
+                          amountSpend: `R$ ${expense.amountSpend.toFixed(2).replace(".", ",")}`,
+                          date: formatDateWithoutTime(expense.date),
+                          expenseCategory: getExpenseCategoryTranslated(expense.expenseCategory),
+                          paymentType: getPaymentTypeTranslated(expense.paymentType),
+                          quantity: expense.quantity != null ? expense.quantity : <span className="text-gray-400">N/A</span>,
+                          actions: [
+                            <div className="flex gap-2">
+                              <EditButton
+                                id="id_edit"
+                                text="Editar"
+                                onClick={() => handleEditExpense(expense)}
+                              />
+                              <DeleteButton 
+                                id="id_delete"
+                                text="Deletar"
+                                onClick={() => handleDelete(expense.id)}
+                              />
+                          </div>
+                        ]
+                        }))}
                       messageNotFound="Nenhuma despesa encontrada"
                     />
                     )
@@ -273,7 +294,7 @@ function Expenses() {
           <ModalConfirmDelete
               isOpen={isDeleteModalOpen}
               onClose={() => setIsDeleteModalOpen(false)}
-              onConfirm={handleDelete}
+              onConfirm={handleConfirmDelete}
               title={"Deletar Despesa"}
               description={<span className="text-yellow-zero font-semibold">Tem certeza de que deseja deletar essa despesa? <br/> Não será possível recuperar!</span>}
           />

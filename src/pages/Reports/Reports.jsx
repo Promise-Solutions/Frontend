@@ -4,7 +4,7 @@ import CardReport from "../../components/cards/cardReport/CardReport";
 import { useEffect, useState } from "react";
 import { axiosProvider } from "../../provider/apiProvider";
 import { ENDPOINTS } from "../../constants/endpoints";
-import ModalConfirmDelete from "../../components/modals/modalConfirmDelete/ModalConfirmDelete";
+import ModalConfirmDelete from "../../components/modals/confirmDelete/ModalConfirmDelete";
 import { showToast } from "../../components/toastStyle/ToastStyle";
 import { SyncLoader } from "react-spinners";
 
