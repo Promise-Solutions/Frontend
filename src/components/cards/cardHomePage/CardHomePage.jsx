@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { handleButtonClick } from "./CardHome.script";
 import PrimaryButton from "../../buttons/primaryButton/PrimaryButton";
 
-function CardHomePage({ title, text, url, idButton }) {
+function CardHomePage({ title, text, icon, idButton, iconClassName }) {
   const navigate = useNavigate();
 
   return (
@@ -16,7 +16,7 @@ function CardHomePage({ title, text, url, idButton }) {
       </h1>
       <div className="flex justify-between items-center mb-2">
         <p className="w-[60%] text-white tracking-wide font-medium">{text}</p>
-        <img src={url} className="mr-2 w-[27%] h-[4rem]" />
+        <span className="mr-2 flex items-center justify-center">{icon}</span>
       </div>
       <PrimaryButton
         text="Acessar"
