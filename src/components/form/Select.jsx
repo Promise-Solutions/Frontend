@@ -1,9 +1,18 @@
-const Select = ({ text, name, options, handleOnChange, value, required }) => {
+const Select = ({ text, subtitle, name, options, handleOnChange, value, required }) => {
   return (
     <div className="flex flex-col justify-between w-full sm:w-[48%] md:w-full">
-      <label htmlFor={name} className="text-[20px] text-white">
-        <b>{text} {required ? <span className="text-red-zero">*</span> : ""} :</b>
-      </label>
+      <div className="flex justify-between items-end">
+        <label htmlFor={name} className="text-[20px] text-white">
+          <b>{text} {required ? <span className="text-red-zero">*</span> : ""} :</b>
+        </label>
+
+        {subtitle && (
+          <div className="text-[11px] text-yellow-zero mb-1">
+            {subtitle}
+          </div>
+        )}
+      </div>
+
       <select
         name={name}
         id={name}

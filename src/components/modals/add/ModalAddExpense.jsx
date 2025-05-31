@@ -3,11 +3,14 @@ import ConfirmButton from "../../buttons/action/ConfirmButton";
 import ModalGeneric from "../ModalGeneric";
 import { useEffect, useState } from "react";
 import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../../hooks/translateAttributes";
-import { getNumericValue } from "../../../hooks/formatUtils";
+import { getBRCurrency, getNumericValue } from "../../../hooks/formatUtils";
 import Select from "../../form/Select";
 import Input from "../../form/Input";
 import { axiosProvider } from "../../../provider/apiProvider";
 import { ENDPOINTS } from "../../../constants/endpoints";
+import { FaArrowRightLong } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import { ROUTERS } from "../../../constants/routers";
 
 const ModalAddExpense = ({
     isOpen, onClose, onSave
@@ -23,7 +26,7 @@ const ModalAddExpense = ({
             quantity: "",
             fkProduct: null
     });
-
+    const navigate = useNavigate();
     const [productOptions, setProductOptions] = useState([{id: null, name: "<Não encontrado>", disabled: true}]);
         
     const expenseCategoryOptions = [
@@ -59,9 +62,9 @@ const ModalAddExpense = ({
         const name = e.target.name;
         let value = e.target.value;
 
-        if(name === "amountSpend" || name === "fkProduct" || name === "quantity"){
-            value = getNumericValue(value)
-        } 
+        if(name === "quantity") {
+            value = value.replace(/[^0-9]/g, "")
+        }
 
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
@@ -69,16 +72,16 @@ const ModalAddExpense = ({
     const handleValorChange = (e) => {
       let { name, value } = e.target;
 
-      value = value.replace(/[^0-9,]/g, "");
+      value = value.replace(/[^0-9,.]/g, "");
 
-      let newValue = value
+      let newValue = value.replace(".", ",")
       
       const partes = newValue.split(",");
       if (partes.length > 2) {
         newValue = partes[0] + "," + partes.slice(1).join("");
       }
       
-      setFormData((prevData) => ({ ...prevData, [name]: getNumericValue(newValue) }));
+      setFormData((prevData) => ({ ...prevData, [name]: newValue }));
     };
 
     const inputs = [
@@ -89,6 +92,15 @@ const ModalAddExpense = ({
             options={expenseCategoryOptions}
             handleOnChange={handleInputChange}
             value={formData.expenseCategory}
+            subtitle={formData.expenseCategory === "STOCK" ? 
+                (
+                <div className="flex gap-1">
+                    Caso o produto desejado não exista no estoque, adicione
+                    <span className="underline cursor-pointer" onClick={() => navigate(ROUTERS.BAR_STOCK)}>aqui</span>
+                </div> 
+                ) : (
+                    null
+                )}
         />,
         formData.expenseCategory === "STOCK" ? (
             <div className="flex gap-3 items-center justify-center w-full">
@@ -133,6 +145,12 @@ const ModalAddExpense = ({
             handleOnChange={handleValorChange}
             value={formData.amountSpend}
             maxLength="50"
+            subtitle={formData.expenseCategory === "STOCK" && formData.amountSpend && formData.quantity ? 
+                (
+                 "Valor da unidade : " + getBRCurrency((formData.amountSpend  / formData.quantity))
+                ) : (
+                    null
+                )}
         />,
         <Input
             type="date"

@@ -1,6 +1,7 @@
 function Input({
   type,
   text,
+  subtitle,
   name,
   placeholder,
   handleOnChange,
@@ -14,9 +15,17 @@ function Input({
 }) {
   return (
     <div className="flex flex-col justify-between w-full sm:w-[48%] md:w-full">
-      <label htmlFor={name} className="text-[20px] text-white">
-        <b>{text} {required ? <span className="text-red-zero">*</span> : ""} :</b>
-      </label>
+      <div className="flex justify-between items-end">
+        <label htmlFor={name} className="text-[20px] text-white">
+          <b>{text} {required ? <span className="text-red-zero">*</span> : ""} :</b>
+        </label>
+
+        {subtitle && (
+          <div className="text-[11px] text-yellow-zero mb-1">
+            {subtitle}
+          </div>
+        )}
+      </div>
       <input
         required={required}
         autoComplete="off"

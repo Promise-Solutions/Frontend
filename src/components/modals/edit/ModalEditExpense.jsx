@@ -8,7 +8,7 @@ import ConfirmButton from "../../buttons/action/ConfirmButton";
 import Input from "../../form/Input";
 import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../../hooks/translateAttributes";
 import { showToast } from "../../toastStyle/ToastStyle";
-import { getNumericValue } from "../../../hooks/formatUtils";
+import { getBRCurrency, getNumericValue } from "../../../hooks/formatUtils";
 
 const ModalEditExpense = ({
     isOpen, initialData, onClose, onSave, onExpenseSaved
@@ -61,9 +61,9 @@ const ModalEditExpense = ({
         const name = e.target.name;
         let value = e.target.value;
 
-        if(name === "amountSpend" || name === "fkProduct" || name === "quantity"){
-            value = getNumericValue(value)
-        } 
+        if(name === "quantity") {
+            value = value.replace(/[^0-9]/g, "")
+        }
 
         setExpenseData((prevData) => ({ ...prevData, [name]: value }));
     };
@@ -71,21 +71,24 @@ const ModalEditExpense = ({
     const handleValorChange = (e) => {
       let { name, value } = e.target;
 
-      value = value.replace(/[^0-9,]/g, "");
+      value = value.replace(/[^0-9.,]/g, "");
 
-      let newValue = value
+      let newValue = value.replace(".", ",")
 
       const partes = newValue.split(",");
       if (partes.length > 2) {
         newValue = partes[0] + "," + partes.slice(1).join("");
       }
       
-      setExpenseData((prevData) => ({ ...prevData, [name]: getNumericValue(newValue)}));
+      setExpenseData((prevData) => ({ ...prevData, [name]: newValue}));
     };
 
     const handleSaveChanges =  async () => {
         const expenseDataUpdate = {
-        ...expenseData
+        ...expenseData,
+        fkProduct: getNumericValue(expenseData.fkProduct),
+        quantity: getNumericValue(expenseData.quantity),
+        amountSpend: getNumericValue(expenseData.amountSpend)
         };
         
         if(expenseData.expenseCategory === "STOCK") {
@@ -130,7 +133,7 @@ const ModalEditExpense = ({
                     name="quantity"
                     required
                     placeholder="Digite a quantidade"
-                    handleOnChange={handleValorChange}
+                    handleOnChange={handleInputChange}
                     value={expenseData.quantity}
                     maxLength="50"
                 />
@@ -156,6 +159,12 @@ const ModalEditExpense = ({
             handleOnChange={handleValorChange}
             value={expenseData.amountSpend}
             maxLength="50"
+            subtitle={expenseData.expenseCategory === "STOCK" && expenseData.amountSpend && expenseData.quantity ? 
+                (
+                    "Valor da unidade : " + getBRCurrency((getNumericValue(expenseData.amountSpend) / getNumericValue( expenseData.quantity)))
+                ) : (
+                    null
+                )}
         />,
         <Input
             type="date"

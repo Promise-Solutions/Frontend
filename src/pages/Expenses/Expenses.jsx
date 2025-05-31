@@ -14,7 +14,7 @@ import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete";
 import ModalEditExpense from "../../components/modals/edit/ModalEditExpense";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { ENDPOINTS } from "../../constants/endpoints";
-import { formatDateWithoutTime } from "../../hooks/formatUtils";
+import { formatDateWithoutTime, getNumericValue } from "../../hooks/formatUtils";
 import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../hooks/translateAttributes";
 import EditButton from "../../components/buttons/action/EditButton";
 import ModalAddExpense from "../../components/modals/add/ModalAddExpense";
@@ -65,7 +65,10 @@ function Expenses() {
 
   const handleRegisterExpense = async (formData, productOptions) => {
         const formDataToSave = {
-            ...formData
+            ...formData,
+            fkProduct: getNumericValue(formData.fkProduct),
+            quantity: getNumericValue(formData.quantity),
+            amountSpend: getNumericValue(formData.amountSpend)
         };
         if(formData.expenseCategory === "STOCK") {
             formDataToSave.description = productOptions.find(p => p.id === formData.fkProduct)?.name || formData.description;
@@ -226,44 +229,33 @@ function Expenses() {
             </div>
           ) : (
             <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
-                {isLoading ? 
-                  ( 
-                    <SyncLoader
-                      size={8}
-                      loading={true}
-                      color={"#02AEBA"}
-                      speedMultiplier={2}
-                    />
-                  ) : (
-                    <Table 
-                      headers={tableHeader}
-                     data={
-                        filteredExpenseElements.map((expense) => ({
-                          ...expense,
-                          amountSpend: `R$ ${expense.amountSpend.toFixed(2).replace(".", ",")}`,
-                          date: formatDateWithoutTime(expense.date),
-                          expenseCategory: getExpenseCategoryTranslated(expense.expenseCategory),
-                          paymentType: getPaymentTypeTranslated(expense.paymentType),
-                          quantity: expense.quantity != null ? expense.quantity : <span className="text-gray-400">N/A</span>,
-                          actions: [
-                            <div className="flex gap-2">
-                              <EditButton
-                                id="id_edit"
-                                text="Editar"
-                                onClick={() => handleEditExpense(expense)}
-                              />
-                              <DeleteButton 
-                                id="id_delete"
-                                text="Deletar"
-                                onClick={() => handleDelete(expense.id)}
-                              />
-                          </div>
-                        ]
-                        }))}
-                      messageNotFound="Nenhuma despesa encontrada"
-                    />
-                    )
-                  }
+              <Table 
+                headers={tableHeader}
+                data={
+                  filteredExpenseElements.map((expense) => ({
+                    ...expense,
+                    amountSpend: `R$ ${expense.amountSpend.toFixed(2).replace(".", ",")}`,
+                    date: formatDateWithoutTime(expense.date),
+                    expenseCategory: getExpenseCategoryTranslated(expense.expenseCategory),
+                    paymentType: getPaymentTypeTranslated(expense.paymentType),
+                    quantity: expense.quantity != null ? expense.quantity : <span className="text-gray-400">N/A</span>,
+                    actions: [
+                      <div className="flex gap-2">
+                        <EditButton
+                          id="id_edit"
+                          text="Editar"
+                          onClick={() => handleEditExpense(expense)}
+                        />
+                        <DeleteButton 
+                          id="id_delete"
+                          text="Deletar"
+                          onClick={() => handleDelete(expense.id)}
+                        />
+                    </div>
+                  ]
+                  }))}
+                messageNotFound="Nenhuma despesa encontrada"
+              />
             </div>
           )}
         </div>
