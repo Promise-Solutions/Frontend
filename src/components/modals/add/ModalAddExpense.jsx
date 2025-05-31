@@ -145,7 +145,7 @@ const ModalAddExpense = ({
             handleOnChange={handleValorChange}
             value={formData.amountSpend}
             maxLength="50"
-            subtitle={formData.expenseCategory === "STOCK" && formData.amountSpend && formData.quantity ? 
+            subtitle={formData.expenseCategory === "STOCK" && formData.amountSpend && formData.quantity && formData.quantity > 0 ? 
                 (
                  "Valor da unidade : " + getBRCurrency((formData.amountSpend  / formData.quantity))
                 ) : (

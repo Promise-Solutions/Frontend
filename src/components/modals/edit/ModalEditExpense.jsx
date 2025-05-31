@@ -47,14 +47,14 @@ const ModalEditExpense = ({
         setExpenseData(initialData);
 
         axiosProvider.get(ENDPOINTS.PRODUCTS)  
-        .then((response) => {
-            setProductOptions(
-                response.data.map((product) => (
-                    {id: product.id, name:product.name}  
-                ))
-            )
-        })
-        .catch(() => ([{id: null, name: "<Não encontrado>", disabled: true}]))
+            .then((response) => {
+                setProductOptions(
+                    response.data.map((product) => (
+                        {id: product.id, name:product.name}  
+                    ))
+                )
+            })
+            .catch(() => ([{id: null, name: "<Não encontrado>", disabled: true}]))
     },[])
 
     const handleInputChange = (e) => {
@@ -92,7 +92,7 @@ const ModalEditExpense = ({
         };
         
         if(expenseData.expenseCategory === "STOCK") {
-            expenseDataUpdate.description = productOptions.find(p => p.id === expenseData.fkProduct)?.name || expenseData.description;
+            expenseDataUpdate.description = productOptions.find(p => p.id === expenseDataUpdate.fkProduct)?.name || expenseData.description;
         } else {
             expenseDataUpdate.fkProduct = null
             expenseDataUpdate.quantity = null
@@ -159,7 +159,7 @@ const ModalEditExpense = ({
             handleOnChange={handleValorChange}
             value={expenseData.amountSpend}
             maxLength="50"
-            subtitle={expenseData.expenseCategory === "STOCK" && expenseData.amountSpend && expenseData.quantity ? 
+            subtitle={expenseData.expenseCategory === "STOCK" && expenseData.amountSpend && expenseData.quantity && expenseData.quantity > 0 ? 
                 (
                     "Valor da unidade : " + getBRCurrency((getNumericValue(expenseData.amountSpend) / getNumericValue( expenseData.quantity)))
                 ) : (

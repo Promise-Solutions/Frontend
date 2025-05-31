@@ -14,7 +14,7 @@ import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete";
 import ModalEditExpense from "../../components/modals/edit/ModalEditExpense";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { ENDPOINTS } from "../../constants/endpoints";
-import { formatDateWithoutTime, getNumericValue } from "../../hooks/formatUtils";
+import { formatDateWithoutTime, getBRCurrency, getNumericValue } from "../../hooks/formatUtils";
 import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../hooks/translateAttributes";
 import EditButton from "../../components/buttons/action/EditButton";
 import ModalAddExpense from "../../components/modals/add/ModalAddExpense";
@@ -57,10 +57,10 @@ function Expenses() {
       const despesas = await buscarDespesas();
 
       setExpenseElements(despesas)
+      setIsLoading(false);
     }
-
+    
     carregarDespesas();
-    setIsLoading(false);
   }, [])
 
   const handleRegisterExpense = async (formData, productOptions) => {
@@ -70,13 +70,16 @@ function Expenses() {
             quantity: getNumericValue(formData.quantity),
             amountSpend: getNumericValue(formData.amountSpend)
         };
+
         if(formData.expenseCategory === "STOCK") {
-            formDataToSave.description = productOptions.find(p => p.id === formData.fkProduct)?.name || formData.description;
+          console.log("if")
+            formDataToSave.description = productOptions.find(p => p.id === formDataToSave.fkProduct)?.name || formData.description;
+            console.log("description", formDataToSave.description)
         } else {
             formDataToSave.fkProduct = null
             formDataToSave.quantity = null
         }
-      
+        console.log(productOptions)
         console.log(formDataToSave)
         if(!validateDataToSave(formDataToSave)) return;
 
@@ -234,7 +237,7 @@ function Expenses() {
                 data={
                   filteredExpenseElements.map((expense) => ({
                     ...expense,
-                    amountSpend: `R$ ${expense.amountSpend.toFixed(2).replace(".", ",")}`,
+                    amountSpend: getBRCurrency(expense.amountSpend),
                     date: formatDateWithoutTime(expense.date),
                     expenseCategory: getExpenseCategoryTranslated(expense.expenseCategory),
                     paymentType: getPaymentTypeTranslated(expense.paymentType),
