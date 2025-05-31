@@ -52,7 +52,7 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
           <li>
             <b>Descrição: </b>
             <span className="max-h-[3rem] overflow-y-auto break-words breakable-text">
-              data?.description || ""
+              {data?.description || ""}
             </span>
           </li>
           <li>
