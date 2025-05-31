@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import Input from "../../components/form/Input.jsx";
 import Select from "../../components/form/Select.jsx"; // Import Select component
-import ConfirmButton from "../../components/buttons/confirmButton/ConfirmButton.jsx"; // Import ConfirmButton component
-import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton.jsx";
-import DeleteButton from "../../components/buttons/deleteButton/DeleteButton.jsx";
+import ConfirmButton from "../../components/buttons/action/ConfirmButton.jsx"; // Import ConfirmButton component
+import PrimaryButton from "../../components/buttons/PrimaryButton.jsx";
+import DeleteButton from "../../components/buttons/action/DeleteButton.jsx";
 import Table from "../../components/tables/Table";
-import ModalConfirmDelete from "../../components/modals/confirmDelete/ModalConfirmDelete.jsx";
+import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete.jsx";
 import ModalEditCommandProduct from "../../components/modals/edit/ModalEditCommandProduct.jsx";
 import ModalAddDiscount from "../../components/modals/add/ModalAddDiscount.jsx"; // Importa o novo modal
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext

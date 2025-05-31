@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useJobContext } from "../../../context/JobContext";
 import { useSubJobContext } from "../../../context/SubJobContext";
-import PrimaryButton from "../../../components/buttons/primaryButton/PrimaryButton";
-import DeleteButton from "../../../components/buttons/deleteButton/DeleteButton";
-import ModalConfirmDelete from "../../../components/modals/confirmDelete/ModalConfirmDelete";
-import CardSubJob from "../../../components/cards/cardSubJob/CardSubJob";
+import PrimaryButton from "../../../components/buttons/PrimaryButton";
+import DeleteButton from "../../../components/buttons/action/DeleteButton";
+import ModalConfirmDelete from "../../../components/modals/ModalConfirmDelete";
+import CardSubJob from "../../../components/cards/CardSubJob";
 import Input from "../../../components/form/Input";
 import { useNavigate, useParams } from "react-router-dom";
-import RegisterButton from "../../../components/buttons/registerButton/RegisterButton";
+import RegisterButton from "../../../components/buttons/action/RegisterButton";
 import Select from "../../../components/form/Select";
 import {
   handleInputChange,
@@ -21,9 +21,8 @@ import {
   getStatusTranslated,
 } from "../../../hooks/translateAttributes";
 import ModalEditSubJob from "../../../components/modals/edit/modalEditSubJob/ModalEditSubJob";
-import CancelButton from "../../../components/buttons/CancelButton";
+import CancelButton from "../../../components/buttons/action/CancelButton";
 import { SyncLoader } from "react-spinners";
-import ModalGeneric from "../../../components/modals/ModalGeneric";
 
 const JobManagement = () => {
   const { jobId } = useParams();

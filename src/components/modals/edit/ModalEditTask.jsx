@@ -1,8 +1,8 @@
 import { useState } from "react";
-import CancelButton from "../../buttons/CancelButton";
-import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
-import DeleteButton from "../../buttons/deleteButton/DeleteButton";
-import ModalConfirmDelete from "../confirmDelete/ModalConfirmDelete";
+import CancelButton from "../../buttons/action/CancelButton";
+import ConfirmButton from "../../buttons/action/ConfirmButton";
+import DeleteButton from "../../buttons/action/DeleteButton";
+import ModalConfirmDelete from "../ModalConfirmDelete";
 import Input from "../../form/Input";
 import Select from "../../form/Select";
 import { axiosProvider } from "../../../provider/apiProvider";

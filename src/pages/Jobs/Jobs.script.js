@@ -1,5 +1,5 @@
 import React from "react";
-import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton.jsx";
+import PrimaryButton from "../../components/buttons/PrimaryButton.jsx";
 import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } from "../../hooks/translateAttributes.js";
 import { ROUTERS } from "../../constants/routers.js";
 

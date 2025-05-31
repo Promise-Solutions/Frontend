@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton.jsx";
-import ModalConfirmDelete from "../../components/modals/confirmDelete/ModalConfirmDelete.jsx";
+import PrimaryButton from "../../components/buttons/PrimaryButton.jsx";
+import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete.jsx";
 import StockTable from "../../components/tables/stockTable";
 import ModalAddProduct from "../../components/modals/add/ModalAddProduct.jsx";
 import ModalEditProduct from "../../components/modals/edit/ModalEditProduct.jsx";

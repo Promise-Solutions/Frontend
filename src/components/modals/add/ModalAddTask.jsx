@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Select from "../../form/Select";
 import Input from "../../form/Input";
-import CancelButton from "../../buttons/CancelButton";
-import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
+import CancelButton from "../../buttons/action/CancelButton";
+import ConfirmButton from "../../buttons/action/ConfirmButton";
 import { showToast } from "../../toastStyle/ToastStyle";
 
 const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {

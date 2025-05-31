@@ -54,7 +54,7 @@ export function UserProvider({ children }) {
 
   async function findUsers(filterType) {
     try {
-      const endpoint = filterType === "CLIENTE" ? ENDPOINTS.CLIENTS : ENDPOINTS.EMPLOYEES;
+      const endpoint = filterType === "CLIENTES" ? ENDPOINTS.CLIENTS : ENDPOINTS.EMPLOYEES;
       const response = await axiosProvider.get(endpoint);
 
       // Verifique se response.data é um array antes de usar .map()

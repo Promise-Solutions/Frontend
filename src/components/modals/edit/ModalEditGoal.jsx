@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Select from "../../form/Select";
-import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
+import ConfirmButton from "../../buttons/action/ConfirmButton";
 import { showToast } from "../../toastStyle/ToastStyle";
 import { axiosProvider } from "../../../provider/apiProvider";
 import Input from "../../form/Input";
-import CancelButton from "../../buttons/CancelButton";
+import CancelButton from "../../buttons/action/CancelButton";
 import ModalGeneric from "../ModalGeneric";
 
 const ModalEditGoal = ({ isOpen, onClose, onSave,  currentGoal=0 }) => {

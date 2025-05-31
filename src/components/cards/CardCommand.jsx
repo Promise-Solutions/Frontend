@@ -1,4 +1,4 @@
-import ImageDone from "../../../assets/icone-concluido.png"; // Importa o ícone de "check"
+import ImageDone from "../../assets/icone-concluido.png"; // Importa o ícone de "check"
 
 const CardCommand = ({
   id,

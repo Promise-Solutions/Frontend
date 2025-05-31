@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import CardHomePage from "../../components/cards/cardHomePage/CardHomePage.jsx";
 import { useNavigate } from "react-router-dom";
-import { handleButtonClick } from "../../components/cards/cardHomePage/CardHome.script.js";
 import UserIcon from "../../assets/iconsHomePage/icon-user.png";
 import JobIcon from "../../assets/iconsHomePage/icon-servicos.png";
 import BarIcon from "../../assets/iconsHomePage/icon-bar.png";
@@ -13,7 +12,7 @@ import StockIcon from "../../assets/iconsHomePage/icon-estoque.png";
 import ExpenseIcon from "../../assets/iconsHomePage/icon-despesas.png";
 import Logo from "../../assets/logo-branco-bg-sonoro.png";
 import { handleLogout } from "./Home.script.js";
-import LogoutButton from "../../components/buttons/logoutButton/LogoutButton.jsx";
+import LogoutButton from "../../components/buttons/action/logoutButton/LogoutButton.jsx";
 import { ROUTERS } from "../../constants/routers.js";
 
 // Importação do react-slick e slick-carousel

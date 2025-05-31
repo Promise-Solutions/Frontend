@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSubJobContext } from "../../../../context/SubJobContext";
 import { handleInputChange, changeSubJobData } from "./ModalEditSubJob.script";
-import ModalConfirmDelete from "../../confirmDelete/ModalConfirmDelete";
+import ModalConfirmDelete from "../../ModalConfirmDelete";
 import Input from '../../../form/Input'
-import CancelButton from "../../../buttons/CancelButton";
-import ConfirmButton from "../../../buttons/confirmButton/ConfirmButton";
-import DeleteButton from "../../../buttons/deleteButton/DeleteButton";
+import CancelButton from "../../../buttons/action/CancelButton";
+import ConfirmButton from "../../../buttons/action/ConfirmButton";
+import DeleteButton from "../../../buttons/action/DeleteButton";
 import { useParams } from "react-router-dom";
 import Select from "../../../form/Select";
 import Checkbox from "../../../form/Checkbox";

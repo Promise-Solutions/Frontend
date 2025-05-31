@@ -1,7 +1,7 @@
 import React from "react";
-import PrimaryButton from "../buttons/primaryButton/PrimaryButton";
-import DeleteButton from "../buttons/deleteButton/DeleteButton";
-import EditButton from "../buttons/editButton/EditButton";
+import PrimaryButton from "../buttons/PrimaryButton";
+import DeleteButton from "../buttons/action/DeleteButton";
+import EditButton from "../buttons/action/EditButton";
 
 const StockTable = ({ products, onEdit, onDelete }) => {
   return (

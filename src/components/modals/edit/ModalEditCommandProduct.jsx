@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Select from "../../form/Select.jsx";
 import Input from "../../form/Input.jsx";
-import ConfirmButton from "../../buttons/confirmButton/ConfirmButton.jsx";
-import CancelButton from "../../buttons/CancelButton.jsx";
+import ConfirmButton from "../../buttons/action/ConfirmButton.jsx";
+import CancelButton from "../../buttons/action/CancelButton.jsx";
 import { showToast } from "../../toastStyle/ToastStyle.jsx";
 
 const ModalEditCommandProduct = ({

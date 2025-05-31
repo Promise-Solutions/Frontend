@@ -1,5 +1,5 @@
-import CancelButton from "../../buttons/CancelButton";
-import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
+import CancelButton from "../../buttons/action/CancelButton";
+import ConfirmButton from "../../buttons/action/ConfirmButton";
 import ModalGeneric from "../ModalGeneric";
 import { useEffect, useState } from "react";
 import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../../hooks/translateAttributes";

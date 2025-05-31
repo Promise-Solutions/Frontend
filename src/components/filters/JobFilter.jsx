@@ -1,7 +1,7 @@
 import { useState } from "react";
-import icon from "../../../assets/icone-busca.png";
+import icon from "../../assets/icone-busca.png";
 
-const CommandFilter = ({ id, placeholder, onSearch }) => {
+const JobFilter = ({ id, placeholder, onSearch }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState("");
 
@@ -14,12 +14,12 @@ const CommandFilter = ({ id, placeholder, onSearch }) => {
   return (
     <div
       className={`flex flex-row border-1 h-10 w-60 items-center transition-colors ease-in-out duration-100 ${
-        isFocused ? "border-pink-zero" : "border-white"
+        isFocused ? "border-[#9A3379]" : "border-white"
       }`}
     >
       <img src={icon} alt="Buscar" className="mx-2 w-[24px] h-[24px]" />
       <input
-        id={id || "input_search_command"}
+        id={id}
         type="text"
         placeholder={placeholder}
         className="outline-none"
@@ -27,9 +27,10 @@ const CommandFilter = ({ id, placeholder, onSearch }) => {
         onChange={handleInputChange}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        autoComplete="off"
       />
     </div>
   );
 };
 
-export default CommandFilter;
+export default JobFilter;

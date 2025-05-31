@@ -1,15 +1,14 @@
-// UserFilter.jsx
 import { useState } from "react";
-import icon from "../../../assets/icone-busca.png";
+import icon from "../../assets/icone-busca.png";
 
-const UserFilter = ({ id, placeholder, onSearch }) => {
+const CommandFilter = ({ id, placeholder, onSearch }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState("");
 
   const handleInputChange = (e) => {
-    let newValue = e.target.value;
+    const newValue = e.target.value;
     setValue(newValue);
-    onSearch(newValue); // onSearch deve ser responsável por filtrar os cards no componente pai
+    onSearch(newValue);
   };
 
   return (
@@ -20,7 +19,7 @@ const UserFilter = ({ id, placeholder, onSearch }) => {
     >
       <img src={icon} alt="Buscar" className="mx-2 w-[24px] h-[24px]" />
       <input
-        id={id}
+        id={id || "input_search_command"}
         type="text"
         placeholder={placeholder}
         className="outline-none"
@@ -33,4 +32,4 @@ const UserFilter = ({ id, placeholder, onSearch }) => {
   );
 };
 
-export default UserFilter;
+export default CommandFilter;

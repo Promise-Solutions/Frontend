@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import ImageDone from "../../../assets/icone-concluido.png";
-import { useSubJobContext } from "../../../context/SubJobContext";
-import { showToast } from "../../toastStyle/ToastStyle";
-import EditButton from "../../buttons/editButton/EditButton";
-import { formatDateWithoutTime, formatDateWithTime, formatTimeWithoutSeconds } from "../../../hooks/formatUtils";
+import ImageDone from "../../assets/icone-concluido.png";
+import { useSubJobContext } from "../../context/SubJobContext";
+import { showToast } from "../toastStyle/ToastStyle";
+import EditButton from "../buttons/action/EditButton";
+import { formatDateWithoutTime, formatDateWithTime, formatTimeWithoutSeconds } from "../../hooks/formatUtils";
 
 const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
   const { updateSubJobStatus } = useSubJobContext();
@@ -52,7 +52,7 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
           <li>
             <b>Descrição: </b>
             <span className="max-h-[3rem] overflow-y-auto break-words breakable-text">
-              data?.description || ""
+              {data?.description || ""}
             </span>
           </li>
           <li>

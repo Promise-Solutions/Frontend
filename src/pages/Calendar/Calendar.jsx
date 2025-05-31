@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../constants/routers";
 import { SyncLoader } from "react-spinners";
 import dayjs from "dayjs";
-import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
+import PrimaryButton from "../../components/buttons/PrimaryButton";
 import CalendarMonth from "./components/CalendarMonth";
 import SubJobTable from "./components/SubJobTable";
 import { getStatusTranslated } from "../../hooks/translateAttributes";

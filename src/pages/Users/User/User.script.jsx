@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../../context/UserContext.jsx";
-import PrimaryButton from "../../../components/buttons/primaryButton/PrimaryButton.jsx";
+import PrimaryButton from "../../../components/buttons/PrimaryButton.jsx";
 import { useJobContext } from "../../../context/JobContext.jsx";
 import {
   showToast,
@@ -8,13 +8,13 @@ import {
 } from "../../../components/toastStyle/ToastStyle.jsx";
 import Select from "../../../components/form/Select.jsx";
 import Input from "../../../components/form/Input.jsx";
-import DeleteButton from "../../../components/buttons/deleteButton/DeleteButton.jsx";
-import ModalConfirmDelete from "../../../components/modals/confirmDelete/ModalConfirmDelete.jsx";
+import DeleteButton from "../../../components/buttons/action/DeleteButton.jsx";
+import ModalConfirmDelete from "../../../components/modals/ModalConfirmDelete.jsx";
 import ScreenFilter from "../../../components/filters/screenFilter/ScreenFilter.jsx";
 import Kpi from "../../../components/graphic/Kpi.jsx";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import RegisterButton from "../../../components/buttons/registerButton/RegisterButton.jsx";
+import RegisterButton from "../../../components/buttons/action/RegisterButton.jsx";
 import Table from "../../../components/tables/Table.jsx";
 import { axiosProvider } from "../../../provider/apiProvider";
 import {
@@ -22,7 +22,7 @@ import {
   getServiceTypeTranslated,
   getStatusTranslated,
 } from "../../../hooks/translateAttributes.js";
-import CancelButton from "../../../components/buttons/CancelButton.jsx";
+import CancelButton from "../../../components/buttons/action/CancelButton.jsx";
 import { ROUTERS } from "../../../constants/routers.js";
 import { ENDPOINTS } from "../../../constants/endpoints.js";
 import { formatDateWithoutTime } from "../../../hooks/formatUtils.js";
@@ -41,13 +41,12 @@ export const RenderInfos = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-
   // Função para deletar usuário
   const handleDeleteUser = async () => {
-    try {
+    try {  
       const endpoint = isClient
-        ? `/clients/${userId}`
-        : `/employees/${userId}/${localStorage.getItem("userLogged")}`;
+        ? ENDPOINTS.getClientById(userId) 
+        : `${ENDPOINTS.getEmployeeById(userId)}/${localStorage.getItem("userLogged")}`;
       await axiosProvider.delete(endpoint);
       showToast.success("Usuário deletado com sucesso!", { style: ToastStyle });
       navigate(ROUTERS.USERS);
@@ -71,7 +70,6 @@ export const RenderInfos = () => {
 
   const renderJobs = async () => {
     const jobsRendered = await findJobsByClientId(userParam);
-
     setFilteredJobs(jobsRendered);
   };
 

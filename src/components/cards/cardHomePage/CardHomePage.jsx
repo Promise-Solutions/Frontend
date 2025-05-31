@@ -1,9 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { handleButtonClick } from "./CardHome.script";
-import PrimaryButton from "../../buttons/primaryButton/PrimaryButton";
+import PrimaryButton from "../../buttons/PrimaryButton";
 
 function CardHomePage({ title, text, url, idButton }) {
   const navigate = useNavigate();
+
+  const handleButtonClick = (route) => {
+  if (typeof navigate !== "function") {
+    console.error("navigate is not a function. Ensure it is passed correctly.");
+    return;
+  }
+  navigate(route);
+};
 
   return (
     <article

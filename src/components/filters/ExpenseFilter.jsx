@@ -1,20 +1,21 @@
+// ExpenseFilter.jsx
 import { useState } from "react";
-import icon from "../../../assets/icone-busca.png";
+import icon from "../../assets/icone-busca.png";
 
-const JobFilter = ({ id, placeholder, onSearch }) => {
+const ExpenseFilter = ({ id, placeholder, onSearch }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState("");
 
   const handleInputChange = (e) => {
-    const newValue = e.target.value;
+    let newValue = e.target.value;
     setValue(newValue);
-    onSearch(newValue);
+    onSearch(newValue); // onSearch deve ser responsável por filtrar os cards no componente pai
   };
 
   return (
     <div
       className={`flex flex-row border-1 h-10 w-60 items-center transition-colors ease-in-out duration-100 ${
-        isFocused ? "border-[#9A3379]" : "border-white"
+        isFocused ? "border-pink-zero" : "border-white"
       }`}
     >
       <img src={icon} alt="Buscar" className="mx-2 w-[24px] h-[24px]" />
@@ -27,10 +28,9 @@ const JobFilter = ({ id, placeholder, onSearch }) => {
         onChange={handleInputChange}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        autoComplete="off"
       />
     </div>
   );
 };
 
-export default JobFilter;
+export default ExpenseFilter;

@@ -1,22 +1,26 @@
 // Importa os componentes necessários
-import UserFilter from "../../components/filters/userFilter/UserFilter";
-import UserTypeFilter from "../../components/filters/userTypeFilter/UserTypeFilter";
-import RegisterButton from "../../components/buttons/registerButton/RegisterButton";
+import UserFilter from "../../components/filters/UserFilter";
+import RegisterButton from "../../components/buttons/action/RegisterButton";
 import { registerRedirect, renderUsers } from "./Users.script";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserContext } from "../../context/UserContext";
 import { SyncLoader } from "react-spinners";
+import TypeFilter from "../../components/filters/typeFilter/TypeFilter";
 
 // Componente funcional para a página de gerenciamento de usuários
 const Users = () => {
   const [userElements, setUserElements] = useState([]); // Estado para armazenar os elementos renderizados
-  const [filterType, setFilterType] = useState("CLIENTE"); // Default to "Cliente"
+  const [filterType, setFilterType] = useState("CLIENTES"); // Default to "CLIENTES"
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
   const [isLoading, setIsLoading] = useState(true);
   const { findUsers, setUserId, setIsClient } = useUserContext(); // Adicionado setIsClient
   const navigate = useNavigate(); //Navigate para navegatação, ele não atualiza a página
+  const userFilters = [
+    {label: "Clientes", value: "CLIENTES"},
+    {label: "Internos", value: "INTERNOS"}
+  ]
 
   useEffect(() => {
     const fetchAndRender = async () => {
@@ -44,7 +48,7 @@ const Users = () => {
   };
 
   const handleFilterChange = (newFilter) => {
-    setFilterType(newFilter === "1" ? "CLIENTE" : "FUNCIONARIO"); // Map filter value to type
+    setFilterType(newFilter); // Map filter value to type
   };
 
   const filteredUserElements = userElements.filter((element) => {
@@ -85,8 +89,9 @@ const Users = () => {
           <div className="border-t-1 border-gray-600 mt-7 pt-4">
             <div className="flex w-full items-center">
               <div className="flex justify-center w-[100%] pl-75">
-                <UserTypeFilter
-                  onFilterChange={handleFilterChange} // Pass updated callback
+                <TypeFilter
+                  onFilterChange={handleFilterChange}
+                  filters={userFilters}
                 />
               </div>
               <div className="flex gap-2 justify-end text-gray-400">
@@ -118,7 +123,7 @@ const Users = () => {
                 {filteredUserElements.length > 0
                   ? filteredUserElements // Ensure filtered elements are rendered
                   : noResultsMessage ||
-                    (filterType === "CLIENTE" ? (
+                    (filterType === "CLIENTES" ? (
                       <p className="text-center text-gray-400">
                         Nenhum cliente encontrado.
                       </p>

@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
-import RegisterButton from "../../components/buttons/registerButton/RegisterButton";
+import RegisterButton from "../../components/buttons/action/RegisterButton";
 import { SyncLoader } from "react-spinners";
-import ExpenseFilter from "../../components/filters/expenseFilter/ExpenseFilter";
-import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
+import ExpenseFilter from "../../components/filters/ExpenseFilter"
+import PrimaryButton from "../../components/buttons/PrimaryButton";
 import { useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../constants/routers";
 import { axiosProvider } from "../../provider/apiProvider";
 import Table from "../../components/tables/Table";
 import ModalEditGoal from "../../components/modals/edit/ModalEditGoal";
-import DeleteButton from "../../components/buttons/deleteButton/DeleteButton";
-import { deleteExpense, registrarDespesa, saveExpenseChanges, validateDataToSave } from "./Expenses";
-import ModalConfirmDelete from "../../components/modals/confirmDelete/ModalConfirmDelete";
+import DeleteButton from "../../components/buttons/action/DeleteButton";
+import { deleteExpense, registrarDespesa, saveExpenseChanges, validateDataToSave } from "./Expenses.script";
+import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete";
 import ModalEditExpense from "../../components/modals/edit/ModalEditExpense";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { ENDPOINTS } from "../../constants/endpoints";
 import { formatDateWithoutTime } from "../../hooks/formatUtils";
 import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../hooks/translateAttributes";
-import EditButton from "../../components/buttons/editButton/EditButton";
+import EditButton from "../../components/buttons/action/EditButton";
 import ModalAddExpense from "../../components/modals/add/ModalAddExpense";
 import { showToast } from "../../components/toastStyle/ToastStyle";
 
@@ -54,26 +54,16 @@ function Expenses() {
     }
 
     async function carregarDespesas() {
-    const despesas = await buscarDespesas();
+      const despesas = await buscarDespesas();
 
-    await Promise.all(despesas.map(async (expense) => {
-      if (expense.expenseCategory === "STOCK" && expense.fkProduct) {
-        try {
-          const response = await axiosProvider.get(ENDPOINTS.getProductById(expense.fkProduct));
-          expense.quantity = response.data.quantity;
-        } catch (error) {
-          console.error("Erro ao buscar produto", error);
-        }
-      }
-    }));
-    setExpenseElements(despesas)
-  }
+      setExpenseElements(despesas)
+    }
 
     carregarDespesas();
     setIsLoading(false);
   }, [])
 
-  const handleRegisterExpense = async (formData, productOptions, newQuantity) => {
+  const handleRegisterExpense = async (formData, productOptions) => {
         const formDataToSave = {
             ...formData
         };
@@ -95,22 +85,11 @@ function Expenses() {
         }
     };
 
-    const handleExpenseRegistered = (expenseRegistered, newQuantity) => {
-      let newExpense = expenseRegistered 
-      if(newQuantity) {
-          newExpense = {
-            ...newExpense,
-            quantity: newQuantity
-          }
-      }
-
-      console.log(newExpense)
-      
+    const handleExpenseRegistered = (expenseRegistered) => {
       setExpenseElements((prev) => [
         ...prev,
-        newExpense
-      ]
-      );
+        expenseRegistered
+      ]);
   };
 
   const handleSearch = (term) => {

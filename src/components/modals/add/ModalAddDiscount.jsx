@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Input from "../../form/Input";
-import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
-import CancelButton from "../../buttons/CancelButton";
+import ConfirmButton from "../../buttons/action/ConfirmButton";
+import CancelButton from "../../buttons/action/CancelButton";
 
 const ModalAddDiscount = ({ isOpen, onClose, onConfirm }) => {
   const [discount, setDiscount] = useState(0);

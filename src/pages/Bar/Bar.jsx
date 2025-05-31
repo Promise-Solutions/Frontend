@@ -1,14 +1,15 @@
 // Importa os componentes necessários
-import CommandFilter from "../../components/filters/commandFilter/CommandFilter"; // Updated import
-import BarTypeFilter from "../../components/filters/barTypeFilter/BarTypeFilter";
-import RegisterButton from "../../components/buttons/registerButton/RegisterButton";
-import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
+import CommandFilter from "../../components/filters/CommandFilter"; // Updated import
+import RegisterButton from "../../components/buttons/action/RegisterButton";
+import PrimaryButton from "../../components/buttons/PrimaryButton";
 import ModalOpenCommand from "../../components/modals/add/ModalOpenCommand"; // Import the new modal
 import { renderCommands, stockRedirect } from "./Bar.script";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
 import { SyncLoader } from "react-spinners";
+import TypeFilter from "../../components/filters/typeFilter/TypeFilter";
+// import TypeFilter from "../../components/filters/typeFilter/TypeFilter";
 
 const Bar = () => {
   const { setCommandId, findCommands } = useCommandContext(); // Obtém o setCommandId do contexto
@@ -17,7 +18,10 @@ const Bar = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de busca
   const [isOpenCommandModalOpen, setIsOpenCommandModalOpen] = useState(false); // State to control the modal
   const [isLoading, setIsLoading] = useState(true);
-
+  const barFilters = [
+    { label: "Abertas", value: "ABERTAS" },
+    { label: "Fechadas", value: "FECHADAS" },
+  ];
   const navigate = useNavigate();
 
   const refreshCommands = async () => {
@@ -93,9 +97,7 @@ const Bar = () => {
           </div>
           <div className="flex justify-between mt-4 pt-4 border-t-1 border-gray-600">
             <div className="flex w-full flex-1 justify-center pl-75">
-              <BarTypeFilter
-                onFilterChange={handleFilterChange} // Passa a função corrigida
-              />
+              <TypeFilter filters={barFilters} onFilterChange={handleFilterChange} />
             </div>
             <div className="flex gap-2 text-gray-400">
               <CommandFilter

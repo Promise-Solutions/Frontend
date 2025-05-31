@@ -1,5 +1,5 @@
 import React from "react";
-import CardCommand from "../../components/cards/cardCommand/CardCommand.jsx";
+import CardCommand from "../../components/cards/CardCommand.jsx";
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { ROUTERS } from "../../constants/routers.js";
 import { ENDPOINTS } from "../../constants/endpoints.js";

@@ -1,10 +1,10 @@
 import { CiEraser } from "react-icons/ci";
-import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
-import CardReport from "../../components/cards/cardReport/CardReport";
+import PrimaryButton from "../../components/buttons/PrimaryButton";
+import CardReport from "../../components/cards/CardReport";
 import { useEffect, useState } from "react";
 import { axiosProvider } from "../../provider/apiProvider";
 import { ENDPOINTS } from "../../constants/endpoints";
-import ModalConfirmDelete from "../../components/modals/confirmDelete/ModalConfirmDelete";
+import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete";
 import { showToast } from "../../components/toastStyle/ToastStyle";
 import { SyncLoader } from "react-spinners";
 

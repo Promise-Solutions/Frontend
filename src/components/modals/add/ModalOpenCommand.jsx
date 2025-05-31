@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Select from "../../form/Select";
-import ConfirmButton from "../../buttons/confirmButton/ConfirmButton";
-import CancelButton from "../../buttons/CancelButton";
+import ConfirmButton from "../../buttons/action/ConfirmButton";
+import CancelButton from "../../buttons/action/CancelButton";
 import { showToast } from "../../toastStyle/ToastStyle";
 import { axiosProvider } from "../../../provider/apiProvider";
 import Input from "../../form/Input";

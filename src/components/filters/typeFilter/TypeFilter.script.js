@@ -1,28 +1,20 @@
 // Importa o hook useState do React para gerenciar estados locais
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // Importa o React para usar a função createElement
 import React from "react";
 
 // Hook personalizado para gerenciar a lógica do filtro de tipos de usuário
-export const useUserTypeFilterLogic = () => {
-  // Define o estado inicial do filtro ativo como "1"
-  const [activeFilter, setActiveFilter] = useState("1");
-  // Define os filtros disponíveis como "Cliente" e "Interno"
-  const filters = [
-    { label: "Clientes", value: "1" },
-    { label: "Internos", value: "2" },
-  ];
-
-  // Função para atualizar o filtro ativo ao clicar em um botão
+export const useTypeFilterLogic = ( filters = [] ) => {
+  const [activeFilter, setActiveFilter] = useState(filters[0]?.value);
+  
   const handleFilterClick = (filterValue, onFilterChange) => {
-    setActiveFilter(filterValue); // Update the active filter state
+    setActiveFilter(filterValue);
     if (onFilterChange) {
-      onFilterChange(filterValue); // Notify parent of filter change
+      onFilterChange(filterValue);
     }
   };
-
-  // Retorna o filtro ativo, a função de clique e a lista de filtros
-  return { activeFilter, handleFilterClick, filters };
+  
+  return { activeFilter, handleFilterClick };
 };
 
 // Função para renderizar os botões de filtro dinamicamente

@@ -4,7 +4,7 @@ import { DndContext, closestCenter } from "@dnd-kit/core";
 import TaskColumn from "../../components/tasks/TaskColumn";
 import ModalAddTask from "../../components/modals/add/ModalAddTask";
 import ModalEditTask from "../../components/modals/edit/ModalEditTask";
-import PrimaryButton from "../../components/buttons/primaryButton/PrimaryButton";
+import PrimaryButton from "../../components/buttons/PrimaryButton";
 import { axiosProvider } from "../../provider/apiProvider";
 import { SyncLoader } from "react-spinners";
 import { ENDPOINTS } from "../../constants/endpoints";

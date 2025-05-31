@@ -1,10 +1,10 @@
 // Componente funcional para a página Jobs
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import JobsFilter from "../../components/filters/jobFilter/JobFilter";
+import JobsFilter from "../../components/filters/JobFilter";
 import { registerRedirect, renderJobs } from "./Jobs.script";
 import { useJobContext } from "../../context/JobContext";
-import RegisterButton from "../../components/buttons/registerButton/RegisterButton";
+import RegisterButton from "../../components/buttons/action/RegisterButton.jsx";
 import Table from "../../components/tables/Table";
 import { useUserContext } from "../../context/UserContext";
 import { SyncLoader } from "react-spinners";
