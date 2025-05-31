@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
-import CardHomePage from "../../components/cards/cardHomePage/CardHomePage.jsx";
+import CardHomePage from "../../components/cards/cardHomePage/CardHomePage.jsx"
 import { useNavigate } from "react-router-dom";
-import { handleButtonClick } from "../../components/cards/cardHomePage/CardHome.script.js";
 import {
   MdCalendarToday,
   MdBuild,
