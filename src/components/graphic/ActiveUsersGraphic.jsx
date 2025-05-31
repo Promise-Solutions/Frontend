@@ -76,7 +76,7 @@ const ActiveUsersGraphic = ({ title }) => {
         </div>
       </div>
       <ResponsiveContainer width="100%" height={220}>
-        {data.length > 0 ? (
+        {data.length > 0 && !(data[0].value === 0 && data[1].value === 0) ? (
           <PieChart>
             <Pie
               data={data}

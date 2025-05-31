@@ -18,7 +18,9 @@ const PaymentGraphic = ({ title }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosProvider.get("/dashboard/category-balances");
+        const response = await axiosProvider.get(
+          "/dashboard/category-balances"
+        );
         const dataObj = response.data;
         const formattedData = [
           {
@@ -78,7 +80,11 @@ const PaymentGraphic = ({ title }) => {
         </div>
       </div>
       <ResponsiveContainer width="100%" height={220}>
-        {data.length > 0 ? (
+        {data.length > 0 && data.every((d) => d.Entrada === 0) ? (
+          <div className="text-white text-center pt-16">
+            Sem dados para exibir
+          </div>
+        ) : data.length > 0 ? (
           <BarChart data={data}>
             <CartesianGrid stroke="#444" strokeDasharray="3 3" />
             <XAxis dataKey="name" stroke="#fff" />

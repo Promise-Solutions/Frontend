@@ -1,15 +1,18 @@
-import { useEffect, useRef } from "react";
+import { useRef, useState } from "react";
 import CardHomePage from "../../components/cards/cardHomePage/CardHomePage.jsx";
 import { useNavigate } from "react-router-dom";
-import UserIcon from "../../assets/iconsHomePage/icon-user.png";
-import JobIcon from "../../assets/iconsHomePage/icon-servicos.png";
-import BarIcon from "../../assets/iconsHomePage/icon-bar.png";
-import DashIcon from "../../assets/iconsHomePage/icon-dashboard.png";
-import RelatIcon from "../../assets/iconsHomePage/icon-report.png";
-import CalendarIcon from "../../assets/iconsHomePage/icon-calendar.png";
-import TaskIcon from "../../assets/iconsHomePage/icon-tarefas.png";
-import StockIcon from "../../assets/iconsHomePage/icon-estoque.png";
-import ExpenseIcon from "../../assets/iconsHomePage/icon-despesas.png";
+import { handleButtonClick } from "../../components/cards/cardHomePage/CardHome.script.js";
+import {
+  MdCalendarToday,
+  MdBuild,
+  MdAssignment,
+  MdLocalBar,
+  MdInventory,
+  MdAttachMoney,
+  MdDashboard,
+  MdAssessment,
+  MdPeople,
+} from "react-icons/md";
 import Logo from "../../assets/logo-branco-bg-sonoro.png";
 import { handleLogout } from "./Home.script.js";
 import LogoutButton from "../../components/buttons/action/logoutButton/LogoutButton.jsx";
@@ -23,24 +26,52 @@ import "slick-carousel/slick/slick-theme.css";
 const Home = () => {
   const navigate = useNavigate();
   const sliderRef = useRef(null);
+  const [currentTab, setCurrentTab] = useState(0);
+
+  // Slides e responsividade
+  const totalSlides = 9;
+  const defaultSlidesToShow = 4;
+  const responsive = [
+    {
+      breakpoint: 1024,
+      settings: { slidesToShow: 2, slidesToScroll: 1 },
+    },
+    {
+      breakpoint: 600,
+      settings: { slidesToShow: 1, slidesToScroll: 1 },
+    },
+  ];
+
+  // Calcula slidesToShow atual a partir do sliderRef (fallback para default)
+  const getCurrentSlidesToShow = () => {
+    if (
+      sliderRef.current &&
+      sliderRef.current.innerSlider &&
+      sliderRef.current.innerSlider.props
+    ) {
+      return sliderRef.current.innerSlider.props.slidesToShow;
+    }
+    return defaultSlidesToShow;
+  };
 
   // Configurações do slider
   const sliderSettings = {
-    dots: true,
+    dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 3,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: { slidesToShow: 2 },
-      },
-      {
-        breakpoint: 600,
-        settings: { slidesToShow: 1 },
-      },
-    ],
+    slidesToShow: defaultSlidesToShow,
+    slidesToScroll: defaultSlidesToShow - 1 > 0 ? defaultSlidesToShow - 1 : 1,
+    responsive,
+    afterChange: (current) => {
+      const slidesToShow = getCurrentSlidesToShow();
+      const tabCount = Math.ceil(totalSlides / slidesToShow);
+      const lastTabIndex = tabCount - 1;
+      if (current >= totalSlides - slidesToShow) {
+        setCurrentTab(lastTabIndex);
+      } else {
+        setCurrentTab(Math.floor(current / slidesToShow));
+      }
+    },
   };
 
   // Faz o scroll do mouse acionar o avanço/retrocesso do slider
@@ -55,6 +86,10 @@ const Home = () => {
       }
     }
   };
+
+  // Calcula tabCount dinamicamente para as bolinhas
+  const slidesToShow = getCurrentSlidesToShow();
+  const tabCount = Math.ceil(totalSlides / slidesToShow);
 
   return (
     <main className="slide-in-ltr flex flex-col justify-center items-center min-h-[100vh] h-full w-[100vw] gap-30">
@@ -76,6 +111,7 @@ const Home = () => {
             id="logout_button_id"
             text="Sair"
             onClick={() => handleLogout(navigate)}
+            className="cursor-pointer"
           />
         </div>
       </div>
@@ -85,9 +121,9 @@ const Home = () => {
           <CardHomePage
             title="Calendário"
             text="Visualize sua agenda."
-            url={CalendarIcon}
+            icon={<MdCalendarToday className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.CALENDAR}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.CALENDAR, navigate)}
@@ -95,29 +131,29 @@ const Home = () => {
           <CardHomePage
             title="Serviços"
             text="Gerencie seus serviços e subserviços registrados."
-            url={JobIcon}
+            icon={<MdBuild className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.JOBS}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.JOBS, navigate)}
           />
-            <CardHomePage
-              title="Tarefas"
-              text="Obtenha uma visão de suas tarefas e gerencie seus status."
-              url={TaskIcon}
-              idButton={ROUTERS.TASKS}
-              className="text-[42px] text-transparent font-bold"
-              style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
-              buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
-              onClick={() => handleButtonClick(ROUTERS.TASKS, navigate)}
-            />
+          <CardHomePage
+            title="Tarefas"
+            text="Obtenha uma visão de suas tarefas e gerencie seus status."
+            icon={<MdAssignment className="w-16 h-16 text-cyan-500" />}
+            idButton={ROUTERS.TASKS}
+            className="text-[42px] text-transparent font-bold cursor-pointer"
+            style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
+            buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
+            onClick={() => handleButtonClick(ROUTERS.TASKS, navigate)}
+          />
           <CardHomePage
             title="Bar"
             text="Visualize e gerencie as comandas e pedidos dos seus clientes."
-            url={BarIcon}
+            icon={<MdLocalBar className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.BAR}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.BAR, navigate)}
@@ -125,9 +161,9 @@ const Home = () => {
           <CardHomePage
             title="Estoque"
             text="Visualize e gerencie os produtos presentes em seu estoque."
-            url={StockIcon}
+            icon={<MdInventory className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.BAR_STOCK}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.BAR_STOCK, navigate)}
@@ -135,9 +171,9 @@ const Home = () => {
           <CardHomePage
             title="Despesas"
             text="Visualize e gerencie suas despesas."
-            url={ExpenseIcon}
+            icon={<MdAttachMoney className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.EXPENSES}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.EXPENSES, navigate)}
@@ -145,9 +181,9 @@ const Home = () => {
           <CardHomePage
             title="Análise"
             text="Acompanhe dados, métricas e tendências em tempo real."
-            url={DashIcon}
+            icon={<MdDashboard className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.DASHBOARD}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.DASHBOARD, navigate)}
@@ -155,9 +191,9 @@ const Home = () => {
           <CardHomePage
             title="Relatórios"
             text="Visualize seus relatórios existentes ou gere novos."
-            url={RelatIcon}
+            icon={<MdAssessment className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.REPORTS}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.REPORTS, navigate)}
@@ -165,14 +201,15 @@ const Home = () => {
           <CardHomePage
             title="Usuários"
             text="Gerencie seus usuários e visualize seus serviços e indicadores."
-            url={UserIcon}
+            icon={<MdPeople className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.USERS}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px #02aebaff" }}
             buttonStyle={{ backgroundColor: "#02aebaff" }}
             onClick={() => handleButtonClick(ROUTERS.USERS, navigate)}
           />
         </Slider>
+        {/* Removido o indicador de tabs */}
       </div>
     </main>
   );

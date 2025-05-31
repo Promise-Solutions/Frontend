@@ -110,7 +110,8 @@ const FrequencyGraphic = ({ title }) => {
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex-1">
           <ResponsiveContainer width="100%" height={220}>
-            {data.length > 0 ? (
+            {data.length > 0 &&
+            !(data[0].value === 0 && data[1].value === 0) ? (
               <PieChart>
                 <Pie
                   data={data}
@@ -168,7 +169,12 @@ const FrequencyGraphic = ({ title }) => {
         </div>
         <div className="flex-1">
           <ResponsiveContainer width="100%" height={220}>
-            {categoryData.length > 0 ? (
+            {categoryData.length > 0 &&
+            !(
+              categoryData[0].value === 0 &&
+              categoryData[1].value === 0 &&
+              categoryData[2].value === 0
+            ) ? (
               <PieChart>
                 <Pie
                   data={categoryData}

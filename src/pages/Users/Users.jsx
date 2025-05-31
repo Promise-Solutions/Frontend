@@ -51,20 +51,42 @@ const Users = () => {
     setFilterType(newFilter); // Map filter value to type
   };
 
-  const filteredUserElements = userElements.filter((element) => {
-    const name = (element.props.name || "").toUpperCase().trim();
-    const email = (element.props.email || "").toUpperCase().trim();
-    const contact = (element.props.contact || "").toUpperCase().trim();
-    const clientType = (element.props.clientType || "").toUpperCase().trim(); // Ensure clientType is included
-    const term = searchTerm.toUpperCase().trim();
+  const filteredUserElements = userElements
+    .filter((element) => {
+      const name = (element.props.name || "").toUpperCase().trim();
+      const email = (element.props.email || "").toUpperCase().trim();
+      const contact = (element.props.contact || "").toUpperCase().trim();
+      const clientType = (element.props.clientType || "").toUpperCase().trim();
+      const term = searchTerm.toUpperCase().trim();
 
-    return (
-      name.includes(term) ||
-      email.includes(term) ||
-      contact.includes(term) ||
-      clientType.includes(term) // Ensure clientType is part of the filter
-    );
-  });
+      return (
+        name.includes(term) ||
+        email.includes(term) ||
+        contact.includes(term) ||
+        clientType.includes(term)
+      );
+    })
+    .map((element) => {
+      // Garante que a prop isBirthdayMonth seja passada para o CardUser
+      if (element && element.type && element.props) {
+        let isBirthdayMonth = false;
+        if (element.props.birthDay) {
+          // Considere apenas o mês
+          const birthMonth = new Date(element.props.birthDay).getMonth();
+          const nowMonth = new Date().getMonth();
+          isBirthdayMonth = birthMonth === nowMonth;
+        }
+        // Retorna um novo elemento React com a prop isBirthdayMonth
+        return {
+          ...element,
+          props: {
+            ...element.props,
+            isBirthdayMonth,
+          },
+        };
+      }
+      return element;
+    });
 
   const noResultsMessage =
     searchTerm && filteredUserElements.length === 0 ? (

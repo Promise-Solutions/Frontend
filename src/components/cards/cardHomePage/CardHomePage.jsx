@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../buttons/PrimaryButton";
 
-function CardHomePage({ title, text, url, idButton }) {
+function CardHomePage({ title, text, icon, idButton, iconClassName }) {
   const navigate = useNavigate();
 
   const handleButtonClick = (route) => {
@@ -23,12 +23,13 @@ function CardHomePage({ title, text, url, idButton }) {
       </h1>
       <div className="flex justify-between items-center mb-2">
         <p className="w-[60%] text-white tracking-wide font-medium">{text}</p>
-        <img src={url} className="mr-2 w-[27%] h-[4rem]" />
+        <span className="mr-2 flex items-center justify-center">{icon}</span>
       </div>
       <PrimaryButton
         text="Acessar"
         onClick={() => handleButtonClick(idButton, navigate)}
         id={`${idButton}_id`}
+        className="cursor-pointer"
       ></PrimaryButton>
     </article>
   );

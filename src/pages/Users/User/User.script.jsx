@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useUserContext } from "../../../context/UserContext.jsx";
 import PrimaryButton from "../../../components/buttons/PrimaryButton.jsx";
 import { useJobContext } from "../../../context/JobContext.jsx";
@@ -12,7 +12,6 @@ import DeleteButton from "../../../components/buttons/action/DeleteButton.jsx";
 import ModalConfirmDelete from "../../../components/modals/ModalConfirmDelete.jsx";
 import ScreenFilter from "../../../components/filters/screenFilter/ScreenFilter.jsx";
 import Kpi from "../../../components/graphic/Kpi.jsx";
-import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import RegisterButton from "../../../components/buttons/action/RegisterButton.jsx";
 import Table from "../../../components/tables/Table.jsx";
@@ -41,6 +40,11 @@ export const RenderInfos = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+
+  // Controla se a animação dos balões já foi exibida
+  const [balloonsShown, setBalloonsShown] = useState(false);
+  const balloonsTimeoutRef = useRef(null);
+
   // Função para deletar usuário
   const handleDeleteUser = async () => {
     try {  
@@ -415,7 +419,6 @@ export const RenderInfos = () => {
     if (!user?.birthDay) return false;
     let birthMonth, birthDate;
     if (typeof user.birthDay === "string" && user.birthDay.length >= 10) {
-      // Suporta formato "YYYY-MM-DD"
       const [year, month, day] = user.birthDay.split("-");
       birthMonth = parseInt(month, 10);
       birthDate = parseInt(day, 10);
@@ -429,6 +432,22 @@ export const RenderInfos = () => {
     const todayDate = today.getDate();
     return todayMonth === birthMonth && todayDate === birthDate;
   })();
+
+  // Exibe balões apenas uma vez ao carregar a página se for aniversário hoje
+  useEffect(() => {
+    // Só ativa a animação se for aniversário hoje e a tela foi montada
+    if (isBirthdayToday && !balloonsShown) {
+      setBalloonsShown(true);
+      balloonsTimeoutRef.current = setTimeout(() => {
+        setBalloonsShown(false);
+      }, 3500);
+    }
+    // Cleanup para evitar memory leak
+    return () => {
+      if (balloonsTimeoutRef.current) clearTimeout(balloonsTimeoutRef.current);
+    };
+    // eslint-disable-next-line
+  }, [isBirthdayToday /* apenas ao montar */]);
 
   // Componente de balões animados
   const Balloons = () => (
@@ -501,8 +520,8 @@ export const RenderInfos = () => {
             id="info_section"
             className="flex w-full flex-col justify-between"
           >
-            {/* Balões animados se for aniversário */}
-            {isBirthdayToday && <Balloons />}
+            {/* Balões animados se for aniversário, apenas uma vez ao carregar */}
+            {isBirthdayToday && balloonsShown && <Balloons />}
             <div className="flex justify-between">
               <div>
                 <h1 className="text-[42px] flex items-center gap-2">
@@ -605,8 +624,15 @@ export const RenderInfos = () => {
         return (
           <div>
             <div className="flex justify-between items-center">
-              <h1 className="text-[42px]">
+              <h1 className="text-[42px] flex items-center gap-2">
                 <b>{isClient ? "Cliente: " : "Funcionário: "}</b> {user?.name}
+                {isBirthdayToday && (
+                  <FaBirthdayCake
+                    className="text-cyan-zero"
+                    size={32}
+                    title="Aniversário hoje!"
+                  />
+                )}
               </h1>
               <div className="flex justify-end">
                 <RegisterButton

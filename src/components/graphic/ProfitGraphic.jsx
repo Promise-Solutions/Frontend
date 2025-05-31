@@ -90,60 +90,75 @@ const ProfitGraphic = ({ title }) => {
         </div>
       </div>
       <ResponsiveContainer width="100%" height={220}>
-        <BarChart data={data}>
-          <CartesianGrid stroke="#444" strokeDasharray="3 3" />
-          <XAxis dataKey="name" stroke="#fff" />
-          <YAxis stroke="#fff" domain={["auto", "auto"]} />
-          <Tooltip
-            formatter={(value, name) => {
-              if (name === "Lucro" && data.length > 0 && data[0].Lucro < 0) {
-                return [`R$ ${value.toLocaleString("pt-BR")}`, "Perda"];
-              }
-              return [`R$ ${value.toLocaleString("pt-BR")}`, name];
-            }}
-            contentStyle={{
-              backgroundColor: "#1E1E1E",
-              border: "1px solid var(--color-pink-zero)",
-              color: "white",
-              borderRadius: "8px",
-              padding: "10px",
-            }}
-          />
-          <Legend
-            verticalAlign="top"
-            align="right"
-            iconType="circle"
-            wrapperStyle={{
-              color: "white",
-              fontSize: "14px",
-              paddingBottom: "16px",
-            }}
-            payload={[
-              {
-                value: "Entrada",
-                type: "circle",
-                color: "#1976D2",
-                id: "Entrada",
-              },
-              { value: "Saída", type: "circle", color: "#64B5F6", id: "Saída" },
-              {
-                value: data.length > 0 ? getLucroLabel(data[0].Lucro) : "Lucro",
-                type: "circle",
-                color:
-                  data.length > 0 ? getLucroColor(data[0].Lucro) : "#90CAF9",
-                id: "Lucro",
-              },
-            ]}
-          />
-          <ReferenceLine y={0} stroke="#fff" />
-          <Bar dataKey="Entrada" fill="#1976D2" />
-          <Bar dataKey="Saída" fill="#64B5F6" />
-          <Bar
-            dataKey={"Lucro"}
-            fill={data.length > 0 ? getLucroColor(data[0].Lucro) : "#90CAF9"}
-            name={data.length > 0 ? getLucroLabel(data[0].Lucro) : "Lucro"}
-          />
-        </BarChart>
+        {data.length > 0 &&
+        data[0].Entrada === 0 &&
+        data[0].Saída === 0 &&
+        data[0].Lucro === 0 ? (
+          <div className="text-white text-center pt-16">
+            Sem dados para exibir
+          </div>
+        ) : (
+          <BarChart data={data}>
+            <CartesianGrid stroke="#444" strokeDasharray="3 3" />
+            <XAxis dataKey="name" stroke="#fff" />
+            <YAxis stroke="#fff" domain={["auto", "auto"]} />
+            <Tooltip
+              formatter={(value, name) => {
+                if (name === "Lucro" && data.length > 0 && data[0].Lucro < 0) {
+                  return [`R$ ${value.toLocaleString("pt-BR")}`, "Perda"];
+                }
+                return [`R$ ${value.toLocaleString("pt-BR")}`, name];
+              }}
+              contentStyle={{
+                backgroundColor: "#1E1E1E",
+                border: "1px solid var(--color-pink-zero)",
+                color: "white",
+                borderRadius: "8px",
+                padding: "10px",
+              }}
+            />
+            <Legend
+              verticalAlign="top"
+              align="right"
+              iconType="circle"
+              wrapperStyle={{
+                color: "white",
+                fontSize: "14px",
+                paddingBottom: "16px",
+              }}
+              payload={[
+                {
+                  value: "Entrada",
+                  type: "circle",
+                  color: "#1976D2",
+                  id: "Entrada",
+                },
+                {
+                  value: "Saída",
+                  type: "circle",
+                  color: "#64B5F6",
+                  id: "Saída",
+                },
+                {
+                  value:
+                    data.length > 0 ? getLucroLabel(data[0].Lucro) : "Lucro",
+                  type: "circle",
+                  color:
+                    data.length > 0 ? getLucroColor(data[0].Lucro) : "#90CAF9",
+                  id: "Lucro",
+                },
+              ]}
+            />
+            <ReferenceLine y={0} stroke="#fff" />
+            <Bar dataKey="Entrada" fill="#1976D2" />
+            <Bar dataKey="Saída" fill="#64B5F6" />
+            <Bar
+              dataKey={"Lucro"}
+              fill={data.length > 0 ? getLucroColor(data[0].Lucro) : "#90CAF9"}
+              name={data.length > 0 ? getLucroLabel(data[0].Lucro) : "Lucro"}
+            />
+          </BarChart>
+        )}
       </ResponsiveContainer>
     </div>
   );
