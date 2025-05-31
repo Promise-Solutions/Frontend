@@ -2,6 +2,7 @@ import React from "react";
 import PrimaryButton from "../buttons/PrimaryButton";
 import DeleteButton from "../buttons/action/DeleteButton";
 import EditButton from "../buttons/action/EditButton";
+import { getBRCurrency } from "../../hooks/formatUtils";
 
 const StockTable = ({ products, onEdit, onDelete }) => {
   return (
@@ -46,10 +47,10 @@ const StockTable = ({ products, onEdit, onDelete }) => {
                   {product.quantity}
                 </td>
                 <td className="border border-gray-700 text-center px-4 py-2">
-                  R$ {Number(product.clientValue).toFixed(2)}
+                  {getBRCurrency(product.clientValue)}
                 </td>
                 <td className="border border-gray-700 text-center px-4 py-2">
-                  R$ {Number(product.internalValue).toFixed(2)}
+                  {getBRCurrency(product.internalValue)}
                 </td>
                 <td className="border border-gray-700 text-center px-4 py-2">
                   <div className="flex gap-2">

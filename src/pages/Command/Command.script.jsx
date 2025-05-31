@@ -15,6 +15,7 @@ import { axiosProvider } from "../../provider/apiProvider.js";
 import { ROUTERS } from "../../constants/routers.js";
 import { SyncLoader } from "react-spinners";
 import { ENDPOINTS } from "../../constants/endpoints.js";
+import { getBRCurrency } from "../../hooks/formatUtils.js";
 
 export const RenderCommandDetails = () => {
   const { command, setCommand, commandId, setCommandId } = useCommandContext(); // Usa o BarContext para obter a comanda
@@ -455,7 +456,7 @@ export const RenderCommandDetails = () => {
                   <b>Desconto:</b> {command.discount}%
                 </li>
                 <li>
-                  <b>Valor Total:</b> R$ {calculateTotalValue()}
+                  <b>Valor Total:</b> {getBRCurrency(calculateTotalValue())} 
                 </li>
                 <li>
                   <b>Status:</b>{" "}

@@ -14,6 +14,7 @@ import {
   getStatusTranslated,
 } from "../../hooks/translateAttributes";
 import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs.jsx"; // Adicionado Breadcrumbs
+import { getBRCurrency } from "../../hooks/formatUtils.js";
 
 const Jobs = () => {
   const [allJobsElements, setAllJobsElements] = useState([]);
@@ -54,9 +55,7 @@ const Jobs = () => {
       .trim();
     const clientType = (job.clientType || "").toUpperCase().trim();
     const status = (getStatusTranslated(job.status) || "").toUpperCase().trim();
-    const valor = (
-      `R$${job.totalValue.toFixed(2).replace(".", ",").toString()}` || ""
-    ).trim();
+    const valor = (getBRCurrency(job.totalValue) || "").trim();
 
     const term = searchTerm.toUpperCase().trim();
 
@@ -113,7 +112,7 @@ const Jobs = () => {
                 category: getCategoryTranslated(job.category),
                 serviceType: getServiceTypeTranslated(job.serviceType),
                 status: getStatusTranslated(job.status),
-                totalValue: `R$ ${job.totalValue.toFixed(2).replace(".", ",")}`,
+                totalValue: getBRCurrency(job.totalValue),
               }))}
               messageNotFound="Nenhum serviço encontrado"
             />

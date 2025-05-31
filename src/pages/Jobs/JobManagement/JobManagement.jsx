@@ -23,6 +23,7 @@ import {
 import ModalEditSubJob from "../../../components/modals/edit/modalEditSubJob/ModalEditSubJob";
 import CancelButton from "../../../components/buttons/action/CancelButton";
 import { SyncLoader } from "react-spinners";
+import { getBRCurrency } from "../../../hooks/formatUtils";
 
 const JobManagement = () => {
   const { jobId } = useParams();
@@ -153,7 +154,7 @@ const JobManagement = () => {
               <li>
                 <b>Valor Total do Serviço: </b>
                 {typeof jobData?.totalValue === "number"
-                  ? `R$ ${jobData.totalValue.toFixed(2).replace(".", ",")}`
+                  ?  getBRCurrency(jobData.totalValue)
                   : "Erro ao buscar valor total"}
               </li>
               <li>

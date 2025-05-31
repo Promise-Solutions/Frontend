@@ -91,10 +91,10 @@ export const getBRCurrency = (value) => {
     if(typeof value === "string") {
         value = getNumericValue(value)
     } else if(typeof value === "number" ) {
-        value = String(value.toFixed(2))
+        value = value.toFixed(2)
     } else {
         return;
     }
 
-    return `R$ ${value.replace(".", ",")}`
+    return `R$ ${String(value).replace(".", ",")}`
 }

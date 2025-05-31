@@ -24,7 +24,7 @@ import {
 import CancelButton from "../../../components/buttons/action/CancelButton.jsx";
 import { ROUTERS } from "../../../constants/routers.js";
 import { ENDPOINTS } from "../../../constants/endpoints.js";
-import { formatDateWithoutTime } from "../../../hooks/formatUtils.js";
+import { formatDateWithoutTime, getBRCurrency } from "../../../hooks/formatUtils.js";
 import { SyncLoader } from "react-spinners";
 import { FaWhatsapp, FaBirthdayCake } from "react-icons/fa"; // Adicionado ícone do WhatsApp e bolo
 
@@ -101,7 +101,7 @@ export const RenderInfos = () => {
         title: job.title,
         category: getCategoryTranslated(job.category),
         serviceType: getServiceTypeTranslated(job.serviceType),
-        totalValue: `R$ ${job.totalValue.toFixed(2).replace(".", ",")}`,
+        totalValue: getBRCurrency(job.totalValue),
         status: getStatusTranslated(job.status),
         action: React.createElement(PrimaryButton, {
           id: "access_button",
@@ -598,20 +598,20 @@ export const RenderInfos = () => {
                 <Kpi
                   title={data[1].name && "Total Gasto em Bar"}
                   value={
-                    data[1].value > 0 ? `R$ ${data[1].value}` : "Sem Gastos"
+                    data[1].value > 0 ? getBRCurrency(data[1].value) : "Sem Gastos"
                   }
                 />
                 <Kpi
                   title={data[2].name && "Total Gasto em Serviços"}
                   value={
-                    data[2].value > 0 ? `R$ ${data[2].value}` : "Sem Gastos"
+                    data[2].value > 0 ? getBRCurrency(data[2].value) : "Sem Gastos"
                   }
                 />
                 <Kpi
                   title={data[3].name && "Ticket Médio"}
                   value={
                     data[3].value > 0
-                      ? `R$ ${data[3].value}`
+                      ? getBRCurrency(data[3].value)
                       : "Sem Ticket Médio"
                   }
                 />

@@ -3,7 +3,7 @@ import ImageDone from "../../assets/icone-concluido.png";
 import { useSubJobContext } from "../../context/SubJobContext";
 import { showToast } from "../toastStyle/ToastStyle";
 import EditButton from "../buttons/action/EditButton";
-import { formatDateWithoutTime, formatDateWithTime, formatTimeWithoutSeconds } from "../../hooks/formatUtils";
+import { formatDateWithoutTime, formatDateWithTime, formatTimeWithoutSeconds, getBRCurrency } from "../../hooks/formatUtils";
 
 const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
   const { updateSubJobStatus } = useSubJobContext();
@@ -59,10 +59,9 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
             <b>Valor: </b>
             <span className="breakable-text overflow-y-auto max-h-[3rem]">
               
-              R$
               {typeof data?.value === "number"
-                ? data.value.toFixed(2).replace(".", ",")
-                : ""}
+                ? getBRCurrency( data.value)
+                : "Erro ao buscar valor"}
             </span>
           </li>
           <li>
