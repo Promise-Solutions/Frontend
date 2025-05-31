@@ -111,6 +111,7 @@ const Home = () => {
             id="logout_button_id"
             text="Sair"
             onClick={() => handleLogout(navigate)}
+            className="cursor-pointer"
           />
         </div>
       </div>
@@ -122,7 +123,7 @@ const Home = () => {
             text="Visualize sua agenda."
             icon={<MdCalendarToday className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.CALENDAR}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.CALENDAR, navigate)}
@@ -132,7 +133,7 @@ const Home = () => {
             text="Gerencie seus serviços e subserviços registrados."
             icon={<MdBuild className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.JOBS}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.JOBS, navigate)}
@@ -142,7 +143,7 @@ const Home = () => {
             text="Obtenha uma visão de suas tarefas e gerencie seus status."
             icon={<MdAssignment className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.TASKS}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.TASKS, navigate)}
@@ -152,7 +153,7 @@ const Home = () => {
             text="Visualize e gerencie as comandas e pedidos dos seus clientes."
             icon={<MdLocalBar className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.BAR}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.BAR, navigate)}
@@ -162,7 +163,7 @@ const Home = () => {
             text="Visualize e gerencie os produtos presentes em seu estoque."
             icon={<MdInventory className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.BAR_STOCK}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.BAR_STOCK, navigate)}
@@ -172,7 +173,7 @@ const Home = () => {
             text="Visualize e gerencie suas despesas."
             icon={<MdAttachMoney className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.EXPENSES}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.EXPENSES, navigate)}
@@ -182,7 +183,7 @@ const Home = () => {
             text="Acompanhe dados, métricas e tendências em tempo real."
             icon={<MdDashboard className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.DASHBOARD}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.DASHBOARD, navigate)}
@@ -192,7 +193,7 @@ const Home = () => {
             text="Visualize seus relatórios existentes ou gere novos."
             icon={<MdAssessment className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.REPORTS}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
             buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
             onClick={() => handleButtonClick(ROUTERS.REPORTS, navigate)}
@@ -202,7 +203,7 @@ const Home = () => {
             text="Gerencie seus usuários e visualize seus serviços e indicadores."
             icon={<MdPeople className="w-16 h-16 text-cyan-500" />}
             idButton={ROUTERS.USERS}
-            className="text-[42px] text-transparent font-bold"
+            className="text-[42px] text-transparent font-bold cursor-pointer"
             style={{ WebkitTextStroke: "2px #02aebaff" }}
             buttonStyle={{ backgroundColor: "#02aebaff" }}
             onClick={() => handleButtonClick(ROUTERS.USERS, navigate)}

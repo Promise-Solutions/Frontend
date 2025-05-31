@@ -99,78 +99,84 @@ const GoalGraphic = ({ title }) => {
         </div>
       </div>
       <ResponsiveContainer width="100%" height={220}>
-        <PieChart>
-          <Pie
-            data={[mockData[0]]}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            innerRadius="70%"
-            outerRadius="80%"
-            startAngle={450}
-            endAngle={metaEndAngle}
-            fill="#8884d8"
-          >
-            <Cell fill={COLORS[0]} />
-          </Pie>
-          <Pie
-            data={[mockData[1]]}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            innerRadius="60%"
-            outerRadius="70%"
-            startAngle={450}
-            endAngle={meta > 0 ? 450 - (360 * lucro) / meta : 450}
-            fill="#8884d8"
-          >
-            <Cell fill={COLORS[1]} />
-          </Pie>
-          <Pie
-            data={[mockData[2]]}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            innerRadius="50%"
-            outerRadius="60%"
-            startAngle={450}
-            endAngle={meta > 0 ? 450 - (360 * gap) / meta : 450}
-            fill="#8884d8"
-          >
-            <Cell fill={COLORS[2]} />
-          </Pie>
-          <Tooltip
-            formatter={(value, name, props) => [
-              <span
-                style={{ color: props.payload.fill }}
-              >{`R$ ${value.toLocaleString("pt-BR")}`}</span>,
-              name,
-            ]}
-            contentStyle={{
-              backgroundColor: "#1E1E1E",
-              border: "1px solid var(--color-pink-zero)",
-              color: "white",
-              borderRadius: "8px",
-              padding: "10px",
-            }}
-            itemStyle={{
-              color: "white",
-            }}
-          />
-          <Legend
-            verticalAlign="top"
-            align="right"
-            iconType="circle"
-            wrapperStyle={{
-              color: "white",
-              fontSize: "14px",
-              paddingBottom: "16px",
-            }}
-          />
-        </PieChart>
+        {meta === 0 && lucro === 0 && gap === 0 ? (
+          <div className="text-white text-center pt-16">
+            Sem dados para exibir
+          </div>
+        ) : (
+          <PieChart>
+            <Pie
+              data={[mockData[0]]}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              innerRadius="70%"
+              outerRadius="80%"
+              startAngle={450}
+              endAngle={metaEndAngle}
+              fill="#8884d8"
+            >
+              <Cell fill={COLORS[0]} />
+            </Pie>
+            <Pie
+              data={[mockData[1]]}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              innerRadius="60%"
+              outerRadius="70%"
+              startAngle={450}
+              endAngle={meta > 0 ? 450 - (360 * lucro) / meta : 450}
+              fill="#8884d8"
+            >
+              <Cell fill={COLORS[1]} />
+            </Pie>
+            <Pie
+              data={[mockData[2]]}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              innerRadius="50%"
+              outerRadius="60%"
+              startAngle={450}
+              endAngle={meta > 0 ? 450 - (360 * gap) / meta : 450}
+              fill="#8884d8"
+            >
+              <Cell fill={COLORS[2]} />
+            </Pie>
+            <Tooltip
+              formatter={(value, name, props) => [
+                <span
+                  style={{ color: props.payload.fill }}
+                >{`R$ ${value.toLocaleString("pt-BR")}`}</span>,
+                name,
+              ]}
+              contentStyle={{
+                backgroundColor: "#1E1E1E",
+                border: "1px solid var(--color-pink-zero)",
+                color: "white",
+                borderRadius: "8px",
+                padding: "10px",
+              }}
+              itemStyle={{
+                color: "white",
+              }}
+            />
+            <Legend
+              verticalAlign="top"
+              align="right"
+              iconType="circle"
+              wrapperStyle={{
+                color: "white",
+                fontSize: "14px",
+                paddingBottom: "16px",
+              }}
+            />
+          </PieChart>
+        )}
       </ResponsiveContainer>
     </div>
   );

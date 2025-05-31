@@ -89,11 +89,24 @@ const Calendar = () => {
     { label: "Ação", key: "action" },
   ];
 
+  // Função para saber se o mês tem subjob que usa sala e não está fechado
+  const hasRoomSubJobInMonth = (monthToCheck, yearToCheck) => {
+    const monthStr = String(monthToCheck + 1).padStart(2, "0");
+    const yearMonth = `${yearToCheck}-${monthStr}`;
+    return calendarData.some(
+      (d) =>
+        d.date &&
+        d.date.startsWith(yearMonth) &&
+        Array.isArray(d.subjobs) &&
+        d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
+    );
+  };
+
   return (
     <div className="slide-in-ltr min-h-screen flex flex-col bg-gradient-to-br from-zinc-950 to-zinc-900 text-white">
       <div className="mx-13 my-3">
         <h1 className="text-2xl font-thin mt-6 mb-4">
-          Calendário de Subserviços (Uso de Sala)
+          Calendário de Subserviços (Uso de Salas)
         </h1>
         {isLoading ? (
           <SyncLoader
@@ -144,7 +157,8 @@ const Calendar = () => {
                 </div>
               ) : (
                 <div className="text-gray-400 mt-8">
-                  Selecione um dia com subserviço que utiliza sala.
+                  Selecione ao lado um dia para visualizar subserviços que
+                  utilizam salas.
                 </div>
               )}
             </div>

@@ -22,6 +22,7 @@ function CardHomePage({ title, text, icon, idButton, iconClassName }) {
         text="Acessar"
         onClick={() => handleButtonClick(idButton, navigate)}
         id={`${idButton}_id`}
+        className="cursor-pointer"
       ></PrimaryButton>
     </article>
   );
