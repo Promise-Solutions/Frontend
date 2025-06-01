@@ -138,7 +138,7 @@ const Home = () => {
         className="w-full max-w-[90vw] flex justify-center"
         onWheel={handleWheel}
       >
-        <div className="w-full max-w-[1100px]">
+        <div className="w-full max-w-[1100px] ml-6">
           <Slider ref={sliderRef} {...sliderSettings}>
             <CardHomePage
               title="Calendário"
