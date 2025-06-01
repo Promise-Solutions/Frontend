@@ -51,9 +51,14 @@ const Reports = () => {
           );
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
-          // Usa exatamente o nome original do arquivo gerado
+          // Ajusta o nome do arquivo para trocar datas de dd-mm-yyyy para dd/mm/yyyy
+          let adjustedFileName = fileName;
+          adjustedFileName = adjustedFileName.replace(
+            /(\d{2})-(\d{2})-(\d{4})/,
+            (match, d, m, y) => `${d}/${m}/${y}`
+          );
           link.href = url;
-          link.setAttribute("download", fileName || "relatorio.xlsx");
+          link.setAttribute("download", adjustedFileName || "relatorio.xlsx");
           document.body.appendChild(link);
           link.click();
           link.remove();
@@ -110,12 +115,16 @@ const Reports = () => {
     }
     setReports(
       allReports.filter((file) => {
-        // Tenta pegar a data do nome do arquivo, ex: "Relatório Gerado em - 01/01/2024"
-        let dateStr = file.name?.match(/\d{2}\/\d{2}\/\d{4}/)?.[0];
-        if (!dateStr && file.createdTime) {
-          // Usa a data de criação do arquivo se não encontrar no nome
-          dateStr = file.createdTime.slice(0, 10);
+        // Filtra pelo nome do arquivo, procurando datas no formato dd/mm/yyyy OU dd-mm-yyyy
+        let dateStr =
+          file.name?.match(/\d{2}[\/-]\d{2}[\/-]\d{4}/)?.[0] ||
+          file.createdTime?.slice(0, 10);
+
+        // Normaliza para dd/mm/yyyy para comparação
+        if (dateStr && dateStr.includes("-")) {
+          dateStr = dateStr.replace(/-/g, "/");
         }
+
         const reportDate = parseDate(dateStr);
         let fromValid = true;
         let toValid = true;
@@ -138,40 +147,83 @@ const Reports = () => {
 
   // Função para gerar novo relatório (exemplo: download do endpoint)
   const handleGenerateReport = async () => {
-    try {
-      // Garante que a requisição seja feita corretamente e trate erros de status HTTP
-      const response = await axiosProvider.get(
-        ENDPOINTS.generateExcelReport(),
-        {
-          responseType: "blob",
-          validateStatus: (status) => status >= 200 && status < 500, // Permite tratar erros manualmente
+    await showToast.promise(
+      (async () => {
+        try {
+          // Gera o relatório
+          const response = await axiosProvider.get(
+            ENDPOINTS.generateExcelReport(),
+            {
+              responseType: "blob",
+              validateStatus: (status) => status >= 200 && status < 500,
+            }
+          );
+          if (response.status !== 200) {
+            throw new Error(
+              "Erro ao gerar relatório. Status: " + response.status
+            );
+          }
+          if (!response.data || response.data.size === 0) {
+            throw new Error("O relatório retornou vazio.");
+          }
+          // Atualiza a lista de relatórios
+          await fetchReports();
+
+          // Aguarda a lista atualizar e pega o último relatório gerado
+          // (assume que o novo relatório é o primeiro da lista)
+          const latestReport =
+            Array.isArray(allReports) && allReports.length > 0
+              ? allReports[0]
+              : null;
+
+          // Se não encontrar, tenta buscar novamente
+          let fileToDownload = latestReport;
+          if (!fileToDownload) {
+            const refreshed = await axiosProvider.get(ENDPOINTS.driveList());
+            fileToDownload =
+              Array.isArray(refreshed.data) && refreshed.data.length > 0
+                ? refreshed.data[0]
+                : null;
+          }
+
+          if (fileToDownload) {
+            // Faz o download do novo relatório usando o nome exibido (com data formatada)
+            let displayName = fileToDownload.name?.replace(
+              /(\d{2})-(\d{2})-(\d{4})/,
+              (match, d, m, y) => `${d}/${m}/${y}`
+            );
+            // Chama o endpoint de download
+            const downloadResp = await axiosProvider.get(
+              ENDPOINTS.driveDownload(fileToDownload.id),
+              { responseType: "blob" }
+            );
+            const url = window.URL.createObjectURL(
+              new Blob([downloadResp.data])
+            );
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", displayName || "relatorio.xlsx");
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+          } else {
+            throw new Error(
+              "Não foi possível localizar o relatório gerado para download."
+            );
+          }
+        } catch (error) {
+          throw new Error(
+            "Erro ao gerar relatório: " +
+              (error?.message || "Erro desconhecido")
+          );
         }
-      );
-      if (response.status !== 200) {
-        showToast.error("Erro ao gerar relatório. Status: " + response.status);
-        return;
+      })(),
+      {
+        loading: "Gerando relatório...",
+        success: "Relatório gerado e baixado com sucesso!",
+        error: (err) => err.message || "Erro ao gerar relatório.",
       }
-      if (!response.data || response.data.size === 0) {
-        showToast.error("O relatório retornou vazio.");
-        return;
-      }
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "relatorio.xlsx");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      showToast.success("Relatório gerado com sucesso!");
-      fetchReports();
-    } catch (error) {
-      // Mostra detalhes do erro no toast
-      showToast.error(
-        "Erro ao gerar relatório: " + (error?.message || "Erro desconhecido")
-      );
-      // Opcional: console.log(error) para debug
-      // console.log(error);
-    }
+    );
   };
 
   return (
@@ -203,7 +255,7 @@ const Reports = () => {
             <CiEraser size={"40px"} />
           </button>
           <label className="flex flex-col text-gray-400">
-            <span>Período de: 00/00/0000</span>
+            <span>Período de:</span>
             <input
               type="date"
               className="bg-black border border-pink-zero text-white px-4 py-2 w-[250px] focus:outline-none"
@@ -212,7 +264,7 @@ const Reports = () => {
             />
           </label>
           <label className="flex flex-col text-gray-400">
-            <span>Período até: 00/00/0000</span>
+            <span>Período até:</span>
             <input
               type="date"
               className="bg-black border border-pink-zero text-white px-4 py-2 w-[250px] focus:outline-none"
@@ -244,15 +296,22 @@ const Reports = () => {
                 Nenhum relatório encontrado.
               </div>
             ) : (
-              reports.map((file, index) => (
-                <CardReport
-                  key={file.id}
-                  id={file.id}
-                  item={file.name}
-                  onDownload={() => handleDownload(file.name, file.id)}
-                  onDelete={() => handleDelete(index)}
-                />
-              ))
+              reports.map((file, index) => {
+                // Ajusta a exibição do nome do arquivo para trocar datas de dd-mm-yyyy por dd/mm/yyyy
+                let displayName = file.name?.replace(
+                  /(\d{2})-(\d{2})-(\d{4})/,
+                  (match, d, m, y) => `${d}/${m}/${y}`
+                );
+                return (
+                  <CardReport
+                    key={file.id}
+                    id={file.id}
+                    item={displayName}
+                    onDownload={() => handleDownload(file.name, file.id)}
+                    onDelete={() => handleDelete(index)}
+                  />
+                );
+              })
             )}
           </div>
         </div>

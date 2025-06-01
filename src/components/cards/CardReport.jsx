@@ -13,14 +13,14 @@ function CardReport({ id, item, onDownload, onDelete }) {
       </div>
       <div className="flex gap-2">
         <button
-          className="flex items-center gap-1 px-3 py-2 rounded-md text-white hover:text-pink-zero border border-white/20 hover:border-pink-zero transition text-sm"
+          className="flex items-center gap-1 px-3 py-2 rounded-md text-white hover:text-pink-zero border border-white/20 hover:border-pink-zero transition text-sm cursor-pointer"
           onClick={onDownload}
           title="Baixar"
         >
           <FiDownload /> Baixar
         </button>
         <button
-          className="flex items-center gap-1 px-3 py-2 rounded-md text-red-400 hover:text-white border border-white/20 hover:border-pink-zero transition text-sm"
+          className="flex items-center gap-1 px-3 py-2 rounded-md text-red-400 hover:text-white border border-white/20 hover:border-pink-zero transition text-sm cursor-pointer"
           onClick={onDelete}
           title="Excluir"
         >
