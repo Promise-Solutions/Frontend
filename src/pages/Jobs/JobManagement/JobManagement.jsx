@@ -24,6 +24,7 @@ import ModalEditSubJob from "../../../components/modals/edit/modalEditSubJob/Mod
 import CancelButton from "../../../components/buttons/action/CancelButton";
 import { SyncLoader } from "react-spinners";
 import { getBRCurrency } from "../../../hooks/formatUtils";
+import Breadcrumbs from "../../../components/breadcrumbs/Breadcrumbs";
 
 const JobManagement = () => {
   const { jobId } = useParams();
@@ -120,6 +121,7 @@ const JobManagement = () => {
       id="container-job-management"
       className="slide-in-ltr w-full flex flex-col "
     >
+      <Breadcrumbs className="px-16" />
       {editingSubJob && (
         <ModalEditSubJob
           subJobData={editingSubJob}
@@ -154,7 +156,7 @@ const JobManagement = () => {
               <li>
                 <b>Valor Total do Serviço: </b>
                 {typeof jobData?.totalValue === "number"
-                  ?  getBRCurrency(jobData.totalValue)
+                  ? getBRCurrency(jobData.totalValue)
                   : "Erro ao buscar valor total"}
               </li>
               <li>

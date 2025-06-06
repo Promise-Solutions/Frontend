@@ -47,7 +47,6 @@ function AppRoutes() {
       <Route path={ROUTERS.TASKS} element={<Tasks />} />
       <Route path={ROUTERS.EXPENSES} element={<Expenses />} />
       <Route path={ROUTERS.CALENDAR} element={<Calendar />} />
-
     </Routes>
   );
 }

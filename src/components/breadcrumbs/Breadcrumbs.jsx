@@ -33,7 +33,7 @@ function getLabel(path) {
   return PATH_LABELS[clean] || clean.replace("/", "");
 }
 
-const Breadcrumbs = () => {
+const Breadcrumbs = ({ className }) => {
   const location = useLocation();
   const { pathname, state } = location;
   const params = useParams();
@@ -93,7 +93,7 @@ const Breadcrumbs = () => {
   // Serviços > Nome do Serviço
   if (params.jobId) {
     return (
-      <nav className="text-sm mb-2 mt-2 ml-2 flex items-center gap-1">
+      <nav className={`text-sm mb-2 mt-2 ml-2 flex items-center gap-1 ${className}`}>
         <Link to={ROUTERS.JOBS} className="hover:underline text-white/80">
           Serviços
         </Link>

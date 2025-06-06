@@ -16,13 +16,13 @@ export const ROUTERS = {
   CALENDAR: '/calendar',
 
   USER_DETAIL: '/user/:userParam',
-  JOB_DETAIL: '/jobs/:jobId',
+  JOB_DETAIL: '/job/:jobId',
   USER_JOB_REGISTER: '/user/:userParam/register/jobs',
   SUBJOB_REGISTER: '/jobs/:jobId/register/subjobs',
   COMMAND: '/command/:command',
 
   getUserDetail: (userParam) => `/user/${userParam}`,
-  getJobDetail: (jobId) => `/jobs/${jobId}`,
+  getJobDetail: (jobId) => `/job/${jobId}`,
   getUserJobRegister: (userParam) => `/user/${userParam}/register/jobs`,
   getSubJobRegister: (jobId) => `/jobs/${jobId}/register/subjobs`,
   getCommand: (command) => `/command/${command}`,
