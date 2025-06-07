@@ -4,6 +4,7 @@ import Input from "../../form/Input.jsx";
 import ConfirmButton from "../../buttons/action/ConfirmButton.jsx";
 import CancelButton from "../../buttons/action/CancelButton.jsx";
 import { showToast } from "../../toastStyle/ToastStyle.jsx";
+import ModalGeneric from "../ModalGeneric.jsx";
 
 const ModalEditCommandProduct = ({
   isOpen,
@@ -20,7 +21,7 @@ const ModalEditCommandProduct = ({
         idProduto: initialData.idProduto,
         nomeProduto: initialData.name, // Map initial product name
         qtdProduto: initialData.productQuantity, // Map initial quantity
-        valorUnitario: initialData.clientValue, // Map initial unit value
+        valorUnitario: initialData.unitValue, // Map initial unit value
         estoque: initialData.stockQuantity, // Map initial stock quantity
       });
     }
@@ -42,7 +43,7 @@ const ModalEditCommandProduct = ({
         ...formData,
         idProduto: selectedProduct.id,
         nomeProduto: selectedProduct.name, // Correct field for product name
-        valorUnitario: selectedProduct.clientValue, // Correct field for unit value
+        valorUnitario: selectedProduct.unitValue, // Correct field for unit value
         estoque: selectedProduct.quantity, // Correct field for stock quantity
       });
     }
@@ -72,6 +73,48 @@ const ModalEditCommandProduct = ({
   };
 
   if (!isOpen) return null;
+
+  const inputs = [
+    <Select
+      text="Produto"
+      name="idProduto"
+      required
+      options={allProducts.map((product) => ({
+        id: product.id,
+        name: `${product.name} (Estoque: ${product.quantity})`,
+      }))}
+      handleOnChange={handleProductSelect}
+      value={formData.idProduto || ""}
+    />,
+    <Input
+      type="number"
+      name="qtdProduto"
+      required
+      text={`Quantidade ${
+        formData.estoque ? `(Disponível: ${formData.estoque})` : ""
+      }`}
+      placeholder="Digite a quantidade"
+      handleOnChange={handleInputChange}
+      value={formData.qtdProduto || ""}
+      min={1}
+      max={formData.estoque || ""}
+    />,
+    <Input
+      type="text"
+      name="valorUnitario"
+      required
+      text="Valor Unitário"
+      placeholder="Digite o valor unitário"
+      handleOnChange={handleInputChange}
+      value={formData.valorUnitario || ""}
+      disabled
+    />
+  ]
+
+  const buttons = [
+    <CancelButton text="Cancelar" type="button" onClick={onClose} />,
+    <ConfirmButton type="submit" text="Salvar" />
+  ]
 
   return (
     <div className="fixed inset-0 bg-black/90 flex justify-center items-center z-10">
@@ -121,6 +164,10 @@ const ModalEditCommandProduct = ({
         </form>
       </div>
     </div>
+  );
+
+  return (
+    <ModalGeneric />
   );
 };
 

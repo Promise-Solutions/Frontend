@@ -65,7 +65,7 @@ export const ENDPOINTS = {
   getSubJobById: (id) => `/sub-jobs/${id}`,
   listSubJobsByJob: (fkService) => `/sub-jobs/job?fkService=${fkService}`,
   updateSubJob: (id) => `/sub-jobs/${id}`,
-  updateSubJobStatus: (id) => `/sub-jobs/${id}/update-status`,
+  updateSubJobStatus: (id) => `/sub-jobs/${id}/status`,
   deleteSubJob: (id) => `/sub-jobs/${id}`,
 
   // TaskController endpoints

@@ -27,7 +27,7 @@ export function SubJobProvider({ children }) {
     if (!id) return;
     
     try {
-      const response = await axiosProvider.patch(`${ENDPOINTS.getSubJobById(id)}/update-status`, { status: newStatus})
+      const response = await axiosProvider.patch(ENDPOINTS.updateSubJobStatus(id), { status: newStatus})
   
       if (response.status == 200) {
         return response.data;

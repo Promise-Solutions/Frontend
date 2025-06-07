@@ -15,7 +15,8 @@ import { axiosProvider } from "../../provider/apiProvider.js";
 import { ROUTERS } from "../../constants/routers.js";
 import { SyncLoader } from "react-spinners";
 import { ENDPOINTS } from "../../constants/endpoints.js";
-import { getBRCurrency } from "../../hooks/formatUtils.js";
+import { getBRCurrency, getNumericValue } from "../../hooks/formatUtils.js";
+import EditButton from "../../components/buttons/action/EditButton.jsx";
 
 export const RenderCommandDetails = () => {
   const { command, setCommand, commandId, setCommandId } = useCommandContext(); // Usa o BarContext para obter a comanda
@@ -23,8 +24,8 @@ export const RenderCommandDetails = () => {
   const [newProduct, setNewProduct] = useState({
     name: "",
     productQuantity: 0,
-    clientValue: "",
-    idProduct: null,
+    unitValue: "",
+    idProduto: null,
   });
   const [allProducts, setAllProducts] = useState([]); // State to store all available products
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -174,9 +175,9 @@ export const RenderCommandDetails = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "quantity") {
-      const quantity = parseInt(value);
-      if (quantity < 0) {
+    if (name === "productQuantity") {
+      const productQuantity = parseInt(value);
+      if (productQuantity < 0) {
         showToast.error("A quantidade não pode ser negativa.");
         return;
       }
@@ -194,8 +195,8 @@ export const RenderCommandDetails = () => {
     if (selectedProduct) {
       setNewProduct({
         name: selectedProduct.name,
-        quantity: 0,
-        clientValue: selectedProduct.clientValue,
+        productQuantity: 0,
+        unitValue: command.isInternal ? selectedProduct.internalValue : selectedProduct.clientValue,
         stockQuantity: selectedProduct.quantity, // Set stock quantity
         idProduto: selectedProduct.id,
       });
@@ -205,14 +206,14 @@ export const RenderCommandDetails = () => {
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
-    if (!newProduct.idProduto || newProduct.quantity <= 0) {
+    if (!newProduct.idProduto || newProduct.productQuantity <= 0) {
       showToast.error(
         "Por favor, selecione um produto e insira uma quantidade válida."
       );
       return;
     }
 
-    if (newProduct.quantity > newProduct.stockQuantity) {
+    if (newProduct.productQuantity > newProduct.stockQuantity) {
       showToast.error("A quantidade inserida excede o estoque disponível.");
       return;
     }
@@ -221,8 +222,8 @@ export const RenderCommandDetails = () => {
       const productToAdd = {
         fkProduct: newProduct.idProduto,
         fkCommand: command.id,
-        productQuantity: parseInt(newProduct.quantity),
-        clientValue: parseFloat(newProduct.clientValue).toFixed(2),
+        productQuantity: parseInt(newProduct.productQuantity),
+        unitValue: newProduct.unitValue
       };
 
       await axiosProvider.post(ENDPOINTS.COMMAND_PRODUCTS, productToAdd);
@@ -236,8 +237,8 @@ export const RenderCommandDetails = () => {
       // Clear inputs
       setNewProduct({
         name: "",
-        quantity: 0,
-        clientValue: "",
+        productQuantity: 0,
+        unitValue: "",
         stockQuantity: 0,
         idProduto: null,
       });
@@ -255,6 +256,7 @@ export const RenderCommandDetails = () => {
       productQuantity: product.productQuantity, // Map productQuantity to quantity for editing
       stockQuantity:
         allProducts.find((p) => p.id === product.fkProduct)?.quantity || 0, // Fetch stock quantity
+      unitValue: command.isInternal ? product.internalValue : product.clientValue,
     });
     setIsEditCommandProductModalOpen(true);
   };
@@ -294,7 +296,7 @@ export const RenderCommandDetails = () => {
         fkCommand: command.id,
         fkProduct: updatedProduct.idProduto,
         productQuantity: parseInt(updatedProduct.qtdProduto),
-        clientValue: parseFloat(updatedProduct.valorUnitario),
+        unitValue: getNumericValue(updatedProduct.valorUnitario)
       };
 
       await axiosProvider.patch(
@@ -335,6 +337,7 @@ export const RenderCommandDetails = () => {
           fkClient: command.fkClient,
           totalValue: command.totalValue,
           fkEmployee: command.fkEmployee,
+          isInternal: command.isInternal
         });
 
         // Refetch command details
@@ -367,6 +370,7 @@ export const RenderCommandDetails = () => {
         fkEmployee: command.fkEmployee,
         discount: discount.toFixed(2),
         fkClient: command.fkClient, // Keep the client associated
+        isInternal: command.isInternal
       });
 
       setIsLoading(true);
@@ -487,7 +491,7 @@ export const RenderCommandDetails = () => {
                       />
                       <Input
                         type="number"
-                        name="quantity"
+                        name="productQuantity"
                         required
                         text={`Quantidade ${
                           newProduct.stockQuantity
@@ -496,20 +500,18 @@ export const RenderCommandDetails = () => {
                         }`} // Display available stock
                         placeholder="Digite a quantidade"
                         handleOnChange={handleInputChange}
-                        value={newProduct.quantity}
+                        value={newProduct.productQuantity}
                         min={1} // Prevent negative values
                         max={newProduct.stockQuantity || ""} // Prevent exceeding stock
                       />
-                      <Input
-                        type="text"
-                        name="clientValue"
-                        required
-                        text="Valor Unitário"
-                        placeholder="Valor unitário"
-                        handleOnChange={handleInputChange}
-                        value={newProduct.clientValue}
-                        disabled
-                      />
+                      {
+                        newProduct?.idProduto && ( 
+                          <div className="border-2 border-pink-zero rounded-2xl px-5 py-2">
+                            <h2 className="font-bold text-[20px]">Valor Unitário</h2>
+                            <p>{getBRCurrency(newProduct.unitValue)}</p>
+                          </div>
+                        )
+                      }
                       <ConfirmButton type="submit" text="Adicionar Produto" />
                     </form>
                   ) : (
@@ -550,22 +552,17 @@ export const RenderCommandDetails = () => {
           ) : (
             <Table
               headers={[
-                { label: "ID", key: "idProduto" },
                 { label: "Nome", key: "name" },
                 { label: "Quantidade", key: "productQuantity" },
-                { label: "Valor Unitário", key: "clientValue" },
-                { label: "Valor Total", key: "totalValue" },
+                { label: `R$ Valor ${command?.isInternal ? "(Funcionários)" : "(Clientes)"} `, key: "unitValue" },
                 { label: "Ações", key: "actions" },
               ]}
               data={products.map((product) => ({
                 ...product,
-                clientValue: `R$ ${parseFloat(product.clientValue).toFixed(2)}`,
-                totalValue: `R$ ${parseFloat(
-                  product.productQuantity * product.clientValue
-                ).toFixed(2)}`,
+                unitValue: getBRCurrency(product.unitValue),
                 actions: (
                   <div className="flex gap-2">
-                    <PrimaryButton
+                    <EditButton
                       text="Editar"
                       onClick={() => handleEditCommandProduct(product)}
                       disabled={command.status === "CLOSED"} // Disable if command is closed
@@ -576,7 +573,7 @@ export const RenderCommandDetails = () => {
                       disabled={command.status === "CLOSED"} // Disable if command is closed
                     />
                   </div>
-                ),
+                )
               }))}
               elementMessageNotFound="produto"
             />
