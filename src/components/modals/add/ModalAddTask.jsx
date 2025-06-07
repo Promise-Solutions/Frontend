@@ -4,8 +4,10 @@ import Input from "../../form/Input";
 import CancelButton from "../../buttons/action/CancelButton";
 import ConfirmButton from "../../buttons/action/ConfirmButton";
 import { showToast } from "../../toastStyle/ToastStyle";
+import ModalGeneric from "../ModalGeneric";
 
 const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
+  if (!isOpen) return null;
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -16,6 +18,7 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
     status: "",
   });
 
+  
   const mapStatusToBackend = {
     Pendente: "PENDING",
     Fazendo: "WORKING",
@@ -60,66 +63,62 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
     });
   };
 
-  if (!isOpen) return null;
+  const inputs = [
+    <Input
+      type="text"
+      text="Título"
+      name="title"
+      required
+      placeholder="Digite o título"
+      handleOnChange={handleInputChange}
+      value={formData.title}
+    />,
+    <Input
+      type="text"
+      text="Descrição"
+      name="description"
+      required
+      placeholder="Digite a descrição"
+      handleOnChange={handleInputChange}
+      value={formData.description}
+    />,
+    <Input
+      type="date"
+      text="Data Limite"
+      name="limitDate"
+      handleOnChange={handleInputChange}
+      value={formData.limitDate}
+      className="custom-calendar"
+    />,
+    <Select
+      text="Responsável"
+      name="fkEmployee"
+      options={employees.map((emp) => ({
+        id: emp.id,
+        name: emp.name,
+      }))}
+      handleOnChange={handleInputChange}
+      value={formData.fkEmployee}
+    />,
+    <Select
+      text="Autor"
+      name="fkAssigned"
+      options={employees.map((emp) => ({
+        id: emp.id,
+        name: emp.name,
+      }))}
+      handleOnChange={handleInputChange}
+      value={formData.fkAssigned}
+    />
+  ]
+
+  const buttons = [
+    <CancelButton text="Cancelar" onClick={onClose} />,
+    <ConfirmButton text="Adicionar" onClick={handleSubmit} />
+  ]
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-[#1E1E1E98] border-1 border-pink-zero text-white p-6 shadow-lg w-[400px]">
-        <h2 className="text-xl font-bold mb-4">Nova Tarefa</h2>
-        <div className="flex flex-col gap-4">
-          <Input
-            type="text"
-            text="Título"
-            name="title"
-            required
-            placeholder="Digite o título"
-            handleOnChange={handleInputChange}
-            value={formData.title}
-          />
-          <Input
-            type="text"
-            text="Descrição"
-            name="description"
-            required
-            placeholder="Digite a descrição"
-            handleOnChange={handleInputChange}
-            value={formData.description}
-          />
-          <Input
-            type="date"
-            text="Data Limite"
-            name="limitDate"
-            handleOnChange={handleInputChange}
-            value={formData.limitDate}
-            className="custom-calendar"
-          />
-          <Select
-            text="Responsável"
-            name="fkEmployee"
-            options={employees.map((emp) => ({
-              id: emp.id,
-              name: emp.name,
-            }))}
-            handleOnChange={handleInputChange}
-            value={formData.fkEmployee}
-          />
-          <Select
-            text="Autor"
-            name="fkAssigned"
-            options={employees.map((emp) => ({
-              id: emp.id,
-              name: emp.name,
-            }))}
-            handleOnChange={handleInputChange}
-            value={formData.fkAssigned}
-          />
-        </div>
-        <div className="mt-4 flex justify-end gap-4">
-          <CancelButton text="Cancelar" onClick={onClose} />
-          <ConfirmButton text="Adicionar" onClick={handleSubmit} />
-        </div>
-      </div>
-    </div>
+    <ModalGeneric title="Nova Tarefa" inputs={inputs} buttons={buttons} widthModal="w-[400px]" borderVariant="add"/>
   );
 };
 

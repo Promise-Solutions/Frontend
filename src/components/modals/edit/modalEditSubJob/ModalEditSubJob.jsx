@@ -23,12 +23,12 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
     setSubJobsInfos((prevData) => ({ ...prevData, [name]: e.target.checked }));
   };
 
-  const handleValorChange = (e, setSubJobsInfos) => {
+  const handleValorChange = (e) => {
     let { name, value } = e.target;
 
-    value = value.replace(/[^0-9,]/g, "");
+    value = value.replace(/[^0-9.,]/g, "");
 
-    let newValue = value
+    let newValue = value.replace(".", ",")
 
     const partes = newValue.split(",");
     if (partes.length > 2) {
@@ -127,24 +127,26 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
         handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
         value={subJobsInfos?.expectedEndTime ? subJobsInfos.expectedEndTime : "" || ""}
         className="custom-calendar"
-        />,
+        />
     </div>
   ]
 
   const buttons = [
-    <DeleteButton 
-      id="btn_delete_subjob" 
-      text="Excluir"
-      onClick={() => setIsDeleteModalOpen(true)}
-    />,
-    <div className="flex justify-end gap-4 w-[60%]">
-      <CancelButton text="Cancelar" type="button" onClick={onCancel} />
-      <ConfirmButton onClick={handleSubmit} text="Salvar" />
+    <div className="flex justify-between w-full">
+      <DeleteButton 
+        id="btn_delete_subjob" 
+        text="Excluir"
+        onClick={() => setIsDeleteModalOpen(true)}
+        />
+      <div className="flex justify-end gap-4 w-[60%]">
+        <CancelButton text="Cancelar" type="button" onClick={onCancel} />
+        <ConfirmButton onClick={handleSubmit} text="Salvar" />
+      </div>
     </div>
   ]
   return (
     <>
-      <ModalGeneric title="Editar Subserviço" inputs={inputs} buttons={buttons} borderVariant="edit"/>
+      <ModalGeneric title="Editar Subserviço" inputs={inputs} buttons={buttons} borderVariant="edit" widthModal="w-[600px]"/>
       <ModalConfirmDelete
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}

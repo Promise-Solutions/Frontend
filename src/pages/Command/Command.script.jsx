@@ -23,7 +23,7 @@ export const RenderCommandDetails = () => {
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState({
     name: "",
-    productQuantity: 0,
+    productQuantity: "",
     unitValue: "",
     idProduto: null,
   });
@@ -173,14 +173,10 @@ export const RenderCommandDetails = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
 
     if (name === "productQuantity") {
-      const productQuantity = parseInt(value);
-      if (productQuantity < 0) {
-        showToast.error("A quantidade não pode ser negativa.");
-        return;
-      }
+      value = value.replace(/[^0-9]/g, "")
     }
 
     setNewProduct((prev) => ({ ...prev, [name]: value }));
@@ -206,7 +202,7 @@ export const RenderCommandDetails = () => {
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
-    if (!newProduct.idProduto || newProduct.productQuantity <= 0) {
+    if (!newProduct.idProduto || newProduct.productQuantity <= 0 ) {
       showToast.error(
         "Por favor, selecione um produto e insira uma quantidade válida."
       );
@@ -256,7 +252,7 @@ export const RenderCommandDetails = () => {
       productQuantity: product.productQuantity, // Map productQuantity to quantity for editing
       stockQuantity:
         allProducts.find((p) => p.id === product.fkProduct)?.quantity || 0, // Fetch stock quantity
-      unitValue: command.isInternal ? product.internalValue : product.clientValue,
+      unitValue: product.unitValue,
     });
     setIsEditCommandProductModalOpen(true);
   };
@@ -490,7 +486,7 @@ export const RenderCommandDetails = () => {
                         value={newProduct.idProduto || ""}
                       />
                       <Input
-                        type="number"
+                        type="text"
                         name="productQuantity"
                         required
                         text={`Quantidade ${

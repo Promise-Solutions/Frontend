@@ -6,6 +6,7 @@ import { showToast } from "../../toastStyle/ToastStyle";
 import { axiosProvider } from "../../../provider/apiProvider";
 import Input from "../../form/Input";
 import { ENDPOINTS } from "../../../constants/endpoints";
+import ModalGeneric from "../ModalGeneric";
 
 const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
   const [clients, setClients] = useState([]);
@@ -14,16 +15,16 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [openCommands, setOpenCommands] = useState([]);
   const [numberCommand, setNumberCommand] = useState(0);
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const clientsResponse = await axiosProvider.get(ENDPOINTS.CLIENTS);
         const employeesResponse = await axiosProvider.get(ENDPOINTS.EMPLOYEES);
         const commandsResponse = await axiosProvider.get(
-           ENDPOINTS.getCommandByStatus("OPEN")
+          ENDPOINTS.getCommandByStatus("OPEN")
         );
-
+        
         setClients(clientsResponse.data || []); // Ensure data is an array
         setEmployees(employeesResponse.data || []); // Ensure data is an array
         setOpenCommands(
@@ -34,9 +35,10 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
         showToast.error("Erro ao carregar dados.");
       }
     };
-
+    
     fetchData();
   }, []);
+  if (!isOpen) return null;
 
   const handleClientChange = (e) => {
     const clientId = e.target.value;
@@ -124,60 +126,51 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
     }
   };
 
-  if (!isOpen) return null;
+  const inputs = [
+    <Input
+      type="number"
+      name="commandNumber"
+      required
+      text="Número da Comanda"
+      placeholder="Digite o número da comanda"
+      handleOnChange={handleNumberCommandChange}
+    />,
+    <Select
+      text="Cliente"
+      name="client"
+      options={[
+        { id: null, value: null, name: "Nenhum (Funcionário)" }, // Default option with explicit value
+        ...clients.map((client) => ({
+          id: client.id,
+          value: client.id,
+          name: client.name,
+        })),
+      ]}
+      handleOnChange={handleClientChange}
+      value={selectedClient || "null"}
+    />,
+    <Select
+      text="Funcionário"
+      name="employee"
+      required
+      options={[
+        ...employees.map((employee) => ({
+          id: employee.id,
+          name: employee.name,
+        })),
+      ]}
+      handleOnChange={handleEmployeeChange}
+      value={selectedEmployee || ""}
+    />
+  ]  
 
+  const buttons = [
+    <CancelButton text="Cancelar" type="button" onClick={onClose} />,
+    <ConfirmButton text="Abrir Comanda" onClick={handleOpenCommand} />
+  ]
+  
   return (
-    <div className="fixed inset-0 bg-black/90 flex justify-center items-center z-10">
-      <div className="bg-[#1E1E1E98] border-1 border-pink-zero text-white p-6 shadow-lg w-[400px]">
-        <h2 className="text-xl font-bold mb-4">
-          Abrir Nova Comanda<br></br>{" "}
-          <span className="text-yellow-zero text-[14px]">
-            Não selecione cliente caso a comanda seja de um funcionário
-          </span>
-        </h2>
-        <div className="flex flex-col gap-4">
-          <Input
-            type="number"
-            name="commandNumber"
-            required
-            text="Número da Comanda"
-            placeholder="Digite o número da comanda"
-            handleOnChange={handleNumberCommandChange}
-          />
-          <Select
-            text="Cliente"
-            name="client"
-            options={[
-              { id: null, value: null, name: "Nenhum (Funcionário)" }, // Default option with explicit value
-              ...clients.map((client) => ({
-                id: client.id,
-                value: client.id,
-                name: client.name,
-              })),
-            ]}
-            handleOnChange={handleClientChange}
-            value={selectedClient || "null"}
-          />
-          <Select
-            text="Funcionário"
-            name="employee"
-            required
-            options={[
-              ...employees.map((employee) => ({
-                id: employee.id,
-                name: employee.name,
-              })),
-            ]}
-            handleOnChange={handleEmployeeChange}
-            value={selectedEmployee || ""}
-          />
-        </div>
-        <div className="mt-4 flex justify-end gap-4">
-          <CancelButton text="Cancelar" type="button" onClick={onClose} />
-          <ConfirmButton text="Abrir Comanda" onClick={handleOpenCommand} />
-        </div>
-      </div>
-    </div>
+    <ModalGeneric title="Abrir Nova Comanda" inputs={inputs} buttons={buttons} borderVariant="add" />
   );
 };
 

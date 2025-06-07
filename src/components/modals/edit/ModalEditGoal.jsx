@@ -6,8 +6,9 @@ import { axiosProvider } from "../../../provider/apiProvider";
 import Input from "../../form/Input";
 import CancelButton from "../../buttons/action/CancelButton";
 import ModalGeneric from "../ModalGeneric";
+import { getBRCurrency, getNumericValue } from "../../../hooks/formatUtils";
 
-const ModalEditGoal = ({ isOpen, onClose, onSave,  currentGoal=0 }) => {
+const ModalEditGoal = ({ isOpen, onClose, onSave, currentGoal=0, onGoalSaved }) => {
   if (!isOpen) return null;
 
   const [inputGoal, setInputGoal] = useState(currentGoal);
@@ -15,9 +16,9 @@ const ModalEditGoal = ({ isOpen, onClose, onSave,  currentGoal=0 }) => {
   const handleInputChange = (e) => {
     let { value } = e.target;
 
-    value = value.replace(/[^0-9,]/g, "");
+    value = value.replace(/[^0-9.,]/g, "");
 
-    let newValue = value
+    let newValue = value.replace(".", ",")
 
     const partes = newValue.split(",");
     if (partes.length > 2) {
@@ -26,13 +27,20 @@ const ModalEditGoal = ({ isOpen, onClose, onSave,  currentGoal=0 }) => {
     setInputGoal(newValue);
   } 
 
-  const handleConfirmUpdate = () => {
+  const handleConfirmUpdate = async () => {
     if(inputGoal == null || inputGoal == "") {
       showToast.error("O campo de meta está vazio!")
       return;
     }
+
+    const goalToSave = getNumericValue(inputGoal)
   
-    onSave(inputGoal)
+    const response = await onSave(goalToSave);
+
+    if(response) {
+      console.log(response)
+      onGoalSaved(response.goal);
+    }
   }
 
   const input = [
@@ -43,7 +51,7 @@ const ModalEditGoal = ({ isOpen, onClose, onSave,  currentGoal=0 }) => {
       text="Atualize a meta"
       placeholder="Digite a nova meta"
       handleOnChange={handleInputChange}
-      value={inputGoal}
+      value={String(inputGoal).replace(".", ",")}
     />
   ]
 
@@ -52,7 +60,7 @@ const ModalEditGoal = ({ isOpen, onClose, onSave,  currentGoal=0 }) => {
     <ConfirmButton text="Salvar meta" onClick={handleConfirmUpdate} />
   ]
   return (
-    <ModalGeneric title="Meta" subTitle={`Meta atual: ${currentGoal}`} inputs={input} buttons={buttons} borderVariant="edit" />
+    <ModalGeneric title="Meta" subTitle={`Meta atual: ${getBRCurrency(currentGoal)}`} inputs={input} buttons={buttons} borderVariant="edit" />
   )
 };
 

@@ -21,7 +21,7 @@ function Input({
         </label>
 
         {subtitle && (
-          <div className="text-[11px] text-yellow-zero mb-1">
+          <div className="text-[13px] text-yellow-zero mb-1">
             {subtitle}
           </div>
         )}

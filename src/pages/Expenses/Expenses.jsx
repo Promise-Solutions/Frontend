@@ -30,6 +30,7 @@ function Expenses() {
   const [idExpenseToDelete, setIdExpenseToDelete] = useState(null);
   const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [currentGoal, setCurrentGoal] = useState(null)
   const navigate = useNavigate();
   const tableHeader = [
     { label:"Item", key: "description"},
@@ -59,8 +60,24 @@ function Expenses() {
       setExpenseElements(despesas)
       setIsLoading(false);
     }
-    
+
+    async function getCurrentGoal() {
+      await axiosProvider.get(ENDPOINTS.RECENT_GOAL)
+        .then((response) => {
+          setCurrentGoal(response.data.goal)
+        })
+        .catch((error) => {
+          if(error.status == 404) {
+            console.log("Meta ainda não cadastrada!")
+          } else {
+            console.error("Erro ao buscar meta atual", error)
+          }
+          setCurrentGoal(0)
+        })
+    }
+  
     carregarDespesas();
+    getCurrentGoal();
   }, [])
 
   const handleRegisterExpense = async (formData, productOptions) => {
@@ -138,31 +155,33 @@ function Expenses() {
     );
   };
 
-  const handleSaveGoal = (goal) => {
-    axiosProvider.put(ENDPOINTS.GOAL, {goal})
-      .then(() => {
+  const handleSaveGoal = async (goal) => {
+    return axiosProvider.put(ENDPOINTS.GOALS, {goal})
+      .then((response) => {
         showToast.success("Meta atualizada com sucesso!")
         setIsGoalModalOpen(false);
+        return response.data;
       })
       .catch((error) => {
         showToast.error("Não foi possível atualizar a meta!")
         console.error("Não foi possível atualizar a meta", error)
+        return null;
       })
   }
   
-    const filteredExpenseElements = expenseElements.filter((element) => {
-      const visibleFields = [ 
-        element.description,
-        element.amountSpend,
-        element.expenseCategory,
-        element.quantity,
-        element.paymentType,
-        element.date
-      ].map((field) =>
-        String(field ?? "")
-          .toUpperCase()
-          .trim()
-      );
+  const filteredExpenseElements = expenseElements.filter((element) => {
+    const visibleFields = [ 
+      element.description,
+      element.amountSpend,
+      element.expenseCategory,
+      element.quantity,
+      element.paymentType,
+      element.date
+    ].map((field) =>
+      String(field ?? "")
+        .toUpperCase()
+        .trim()
+    );
       
     const term = searchTerm.toUpperCase().trim();
 
@@ -176,6 +195,8 @@ function Expenses() {
         isOpen={isGoalModalOpen}
         onClose={() => setIsGoalModalOpen(false)}
         onSave={handleSaveGoal}
+        onGoalSaved={setCurrentGoal}
+        currentGoal={currentGoal}
       />
       <ModalEditExpense 
         isOpen={isEditing}
@@ -195,11 +216,14 @@ function Expenses() {
             <div className="items-center">
               <h1 className="text-2xl font-thin">Gerencie suas despesas</h1>
             </div>
-            <PrimaryButton
-              id="goal_button"
-              text="Gerenciar Meta"
-              onClick={() => setIsGoalModalOpen(true)}
-            />
+            <div className="flex items-end gap-2">
+              <span className="text-yellow-zero font-semibold text-[13px]">Meta Atual: { getBRCurrency(currentGoal)}</span>
+              <PrimaryButton
+                id="goal_button"
+                text="Gerenciar Meta"
+                onClick={() => setIsGoalModalOpen(true)}
+                />
+            </div>
           </div>
           <div className="flex justify-between mt-4 border-t-1 pt-4 border-gray-600">
             <div className="flex gap-2 justify-end w-full text-gray-400">

@@ -14,8 +14,22 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const sanitizedValue = name === "qtdProduto" && value < 0 ? 0 : value;
-    setFormData((prevData) => ({ ...prevData, [name]: sanitizedValue }));
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleValorChange = (e) => {
+    let { name, value } = e.target;
+
+    value = value.replace(/[^0-9.,]/g, "");
+
+    let newValue = value.replace(".", ",")
+
+    const partes = newValue.split(",");
+    if (partes.length > 2) {
+      newValue = partes[0] + "," + partes.slice(1).join("");
+    }
+    
+    setFormData((prevData) => ({ ...prevData, [name]: newValue }));
   };
 
   const handleSubmit = (e) => {
@@ -46,19 +60,9 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
       required
       text="Nome do Produto"
       placeholder="Digite o nome do produto"
-      value={formData.name || ""}
+      value={formData?.name || ""}
       handleOnChange={handleInputChange}
       disabled
-    />,
-    <Input
-      type="number"
-      name="quantity"
-      required
-      text="Quantidade"
-      placeholder="Digite a quantidade para clientes"
-      value={formData.quantity}
-      handleOnChange={handleInputChange}
-      min="1"
     />,
     <Input
       type="text"
@@ -66,19 +70,17 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
       required
       text="Valor Unitário para Clientes"
       placeholder="Digite o valor para clientes"
-      value={formData.clientValue || ""}
-      handleOnChange={handleInputChange}
+      value={String(formData?.clientValue).replace(".", ",")  || ""}
+      handleOnChange={handleValorChange}
     />,
     <Input
-      type="number"
+      type="text"
       name="internalValue"
       required
-      text="Valor para Funcionários"
+      text="Valor Unitário para Funcionários"
       placeholder="Digite o valor para funcionário"
-      value={formData.internalValue || ""}
-      handleOnChange={handleInputChange}
-      min="0"
-      step="any"
+      value={String(formData?.internalValue).replace(".", ",") || ""}
+      handleOnChange={handleValorChange}
     />,
   ]
 

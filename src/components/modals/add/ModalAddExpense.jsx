@@ -95,7 +95,7 @@ const ModalAddExpense = ({
             subtitle={formData.expenseCategory === "STOCK" ? 
                 (
                 <div className="flex gap-1">
-                    Caso o produto desejado não exista no estoque, adicione
+                    Caso o produto ainda não exista no estoque, adicione
                     <span className="underline cursor-pointer" onClick={() => navigate(ROUTERS.BAR_STOCK)}>aqui</span>
                 </div> 
                 ) : (
@@ -180,7 +180,7 @@ const ModalAddExpense = ({
     ]
 
     return (
-        <ModalGeneric title="Adicionar Despesa" inputs={inputs} buttons={buttons} widthModal="w-[600px]" borderVariant="add" />
+        <ModalGeneric title="Adicionar Despesa" inputs={inputs} buttons={buttons} widthModal="w-[625px]" borderVariant="add" />
     );
 }
 

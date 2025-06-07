@@ -157,7 +157,7 @@ const ModalEditExpense = ({
             required
             placeholder="Digite o valor total"
             handleOnChange={handleValorChange}
-            value={expenseData.amountSpend}
+            value={String(expenseData.amountSpend).replace(".", ",") }
             maxLength="50"
             subtitle={expenseData.expenseCategory === "STOCK" && expenseData.amountSpend && expenseData.quantity && expenseData.quantity > 0 ? 
                 (
@@ -194,7 +194,7 @@ const ModalEditExpense = ({
     ]
 
     return (
-        <ModalGeneric title="Editar despesa" inputs={inputs} buttons={buttons} initialData={expenseData} widthModal="w-[600px]" borderVariant="edit" />
+        <ModalGeneric title="Editar despesa" inputs={inputs} buttons={buttons} widthModal="w-[625px]" borderVariant="edit" />
     );
 }
 

@@ -59,16 +59,13 @@ const SubJobRegister = () => {
   const handleValorChange = (e) => {
     let { name, value } = e.target;
 
-    // Permitir apenas números, vírgula e ponto
     value = value.replace(/[^0-9.,]/g, "");
 
-    // Permitir apenas um separador decimal (ponto ou vírgula)
-    let newValue = value;
-    const partes = newValue.split(/[.,]/);
+    let newValue = value.replace(".", ",")
+
+    const partes = newValue.split(",");
     if (partes.length > 2) {
-      // Mantém o primeiro separador encontrado
-      const firstSeparator = newValue.match(/[.,]/)[0];
-      newValue = partes[0] + firstSeparator + partes.slice(1).join("");
+      newValue = partes[0] + "," + partes.slice(1).join("");
     }
 
     setFormData((prevData) => ({ ...prevData, [name]: newValue }));

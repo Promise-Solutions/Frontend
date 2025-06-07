@@ -13,6 +13,7 @@ export const ENDPOINTS = {
   EXPENSES: "/expenses",
   TRACING: "/tracing",
   GOALS: "/goals",
+  RECENT_GOAL: "/goals/recent",
   DRIVE: "/drive",
 
   getClientById: (id) => `/clients/${id}`,
@@ -50,7 +51,6 @@ export const ENDPOINTS = {
 
   // GoalController endpoints
   getGoalById: (id) => `/goals/${id}`,
-  getMostRecentGoal: () => `/goals/recent`,
   deleteGoal: (id) => `/goals/${id}`,
 
   // ProductController endpoints

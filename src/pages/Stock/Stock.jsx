@@ -9,6 +9,7 @@ import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { SyncLoader } from "react-spinners";
 import { ENDPOINTS } from "../../constants/endpoints.js";
+import { getNumericValue } from "../../hooks/formatUtils.js";
 
 const Stock = () => {
   const [products, setProducts] = useState([]);
@@ -44,8 +45,8 @@ const Stock = () => {
       const productToAdd = {
         ...newProduct,
         quantity: parseInt(newProduct.quantity),
-        clientValue: parseFloat(newProduct.clientValue).toFixed(2),
-        internalValue: parseFloat(newProduct.internalValue).toFixed(2),
+        clientValue: getNumericValue(newProduct.clientValue),
+        internalValue: getNumericValue(newProduct.internalValue),
       };
       const response = await axiosProvider.post(
         ENDPOINTS.PRODUCTS,
@@ -71,8 +72,8 @@ const Stock = () => {
         ...editingProduct,
         ...updatedProduct,
         quantity: parseInt(updatedProduct.quantity),
-        clientValue: parseFloat(updatedProduct.clientValue).toFixed(2),
-        internalValue: parseFloat(updatedProduct.internalValue).toFixed(2),
+        clientValue: getNumericValue(updatedProduct.clientValue),
+        internalValue: getNumericValue(updatedProduct.internalValue)
       };
       await axiosProvider.patch(
         ENDPOINTS.getProductById(editingProduct.id),
