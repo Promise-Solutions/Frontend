@@ -79,7 +79,7 @@ export function extractDateOnly(dateStr) {
 
 export const getNumericValue = (valueString) => {
 if (valueString == "" || valueString == NaN || valueString == null) {
-    return "";
+    return valueString;
 }
 if (typeof valueString === "string" && valueString.includes(",")) {
     valueString = valueString.replace(",", ".");
@@ -93,7 +93,7 @@ export const getBRCurrency = (value) => {
     } else if(typeof value === "number" ) {
         value = value.toFixed(2)
     } else {
-        return;
+        return "Não foi possível encontrar o valor" ;
     }
 
     return `R$ ${String(value).replace(".", ",")}`

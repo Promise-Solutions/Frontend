@@ -194,11 +194,6 @@ function Expenses() {
           <div className="flex w-full items-center gap-4 justify-between">
             <div className="items-center">
               <h1 className="text-2xl font-thin">Gerencie suas despesas</h1>
-              <p className="flex gap-4 items-center text-yellow-zero text-sm">
-                Antes de adicionar uma despesa de categoria estoque, cadastre o produto
-                <FaArrowRightLong />
-                <span className="underline cursor-pointer" onClick={() => navigate(ROUTERS.BAR_STOCK)}>Aqui!</span>
-              </p>
             </div>
             <PrimaryButton
               id="goal_button"

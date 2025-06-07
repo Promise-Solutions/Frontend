@@ -7,7 +7,7 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
     name: "",
     clientValue: "",
-    quantity: "",
+    quantity: 0,
     internalValue: "",
   });
 
@@ -38,16 +38,6 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
               placeholder="Digite o nome do produto"
               value={formData.name}
               handleOnChange={handleInputChange}
-            />
-            <Input
-              type="number"
-              name="quantity"
-              required
-              text="Quantidade"
-              placeholder="Digite a quantidade para clientes"
-              value={formData.quantity}
-              handleOnChange={handleInputChange}
-              min="1"
             />
             <Input
               type="number"
