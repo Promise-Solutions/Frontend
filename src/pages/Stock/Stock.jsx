@@ -9,6 +9,9 @@ import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { SyncLoader } from "react-spinners";
 import { ENDPOINTS } from "../../constants/endpoints.js";
+//import StockFilter from "../components/StockFilter";
+import ExpenseFilter from "../../components/filters/ExpenseFilter.jsx";
+
 
 const Stock = () => {
   const [products, setProducts] = useState([]);
@@ -120,13 +123,21 @@ const Stock = () => {
 
   return (
     <div className="slide-in-ltr text-white my-6 mx-16">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-thin">Gerencie seu estoque</h1>
-        <PrimaryButton
-          text="Adicionar Produto"
-          onClick={() => setIsAddModalOpen(true)}
-        />
-      </div>
+      <div className="flex justify-between mt-4 border-t-1 pt-4 border-gray-600">
+            <div className="flex gap-2 justify-end w-full text-gray-400">
+              <ExpenseFilter
+                id="input_search_expense"
+                placeholder="Busque um Produto"
+                onSearch={handleSearch}
+              />
+              <RegisterButton
+                id="register_button"
+                title="Cadastrar Usuário"
+                text="+"
+                onClick={() => setIsAddModalOpen(true)}
+              />
+            </div>
+          </div>
       {isLoading ? (
         <SyncLoader
           size={8}
