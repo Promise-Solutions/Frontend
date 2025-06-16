@@ -81,7 +81,8 @@ const Jobs = () => {
           <div className="flex items-center">
             <h1 className="text-2xl font-thin">Gerencie seus serviços</h1>
           </div>
-          <div className="flex gap-2 justify-end text-gray-400">
+        </div>
+        <div className="flex gap-2 justify-end text-gray-400 border-t-1 border-gray-600 pt-4 mt-7 w-full">
             <JobsFilter
               id="input_search_job"
               placeholder="Busque um Serviço"
@@ -94,7 +95,6 @@ const Jobs = () => {
               onClick={() => registerRedirect(navigate)}
             />
           </div>
-        </div>
         <div className="flex justify-center items-center w-full mt-4 flex-col">
           {isLoading ? (
             <SyncLoader
