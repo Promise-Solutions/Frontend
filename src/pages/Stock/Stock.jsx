@@ -143,7 +143,7 @@ const Stock = () => {
   return (
     <div className="slide-in-ltr text-white my-6 mx-16">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-thin">Gerencie seu estoque</h1>
+        <h1 className="text-2xl font-thin pt-3">Gerencie seu estoque</h1>
       </div>
       <div className="flex gap-2 justify-end text-gray-400 border-t-1 border-gray-600 pt-4 mt-7">
         <StockFilter

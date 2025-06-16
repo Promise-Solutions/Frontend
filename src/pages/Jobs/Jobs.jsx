@@ -79,7 +79,7 @@ const Jobs = () => {
       <section className="flex flex-col justify-around items-center mx-16 mt-6">
         <div className="flex flex-col md:flex-row w-full justify-between">
           <div className="flex items-center">
-            <h1 className="text-2xl font-thin">Gerencie seus serviços</h1>
+            <h1 className="text-2xl font-thin pt-3">Gerencie seus serviços</h1>
           </div>
         </div>
         <div className="flex gap-2 justify-end text-gray-400 border-t-1 border-gray-600 pt-4 mt-7 w-full">
