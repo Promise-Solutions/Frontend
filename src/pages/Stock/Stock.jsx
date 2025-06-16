@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import PrimaryButton from "../../components/buttons/PrimaryButton.jsx";
 import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete.jsx";
 import StockTable from "../../components/tables/stockTable";
@@ -9,18 +8,14 @@ import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { SyncLoader } from "react-spinners";
 import { ENDPOINTS } from "../../constants/endpoints.js";
-//import StockFilter from "../components/StockFilter";
 import ExpenseFilter from "../../components/filters/ExpenseFilter.jsx";
+import RegisterButton from "../../components/buttons/action/RegisterButton.jsx";
+import StockFilter from "../../components/filters/StockFilter.jsx";
 
 
 const Stock = () => {
   const [products, setProducts] = useState([]);
-  const [formData, setFormData] = useState({
-    productName: "",
-    quantity: 0,
-    clientValue: "",
-    internalValue: "",
-  });
+  const [searchTerm, setSearchTerm] = useState("");
   const [editingProduct, setEditingProduct] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
@@ -40,6 +35,10 @@ const Stock = () => {
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
     }
+  };
+
+  const handleSearch = (term) => {
+    setSearchTerm(term.toUpperCase().trim());
   };
 
   const handleAddProduct = async (newProduct) => {
@@ -121,11 +120,30 @@ const Stock = () => {
     }
   };
 
+  const filteredExpenseElements = products.filter((element) => {
+      const visibleFields = [ 
+        element.id,
+        element.name,
+        element.quantity,
+        element.clientValue,
+        element.internalValue,
+      ].map((field) =>
+        String(field ?? "")
+          .toUpperCase()
+          .trim()
+      );
+      
+    const term = searchTerm.toUpperCase().trim();
+
+    return visibleFields.some((field) => field.includes(term));
+    });
+  
+
   return (
     <div className="slide-in-ltr text-white my-6 mx-16">
       <div className="flex justify-between mt-4 border-t-1 pt-4 border-gray-600">
             <div className="flex gap-2 justify-end w-full text-gray-400">
-              <ExpenseFilter
+              <StockFilter
                 id="input_search_expense"
                 placeholder="Busque um Produto"
                 onSearch={handleSearch}
@@ -139,18 +157,22 @@ const Stock = () => {
             </div>
           </div>
       {isLoading ? (
-        <SyncLoader
-          size={8}
-          loading={true}
-          color={"#02AEBA"}
-          speedMultiplier={2}
-        />
+        <div className="flex w-full h-full items-center justify-center mt-[5rem]">
+              <SyncLoader
+                size={8}
+                loading={true}
+                color={"#02AEBA"}
+                speedMultiplier={2}
+              />
+            </div>
       ) : (
+        <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
         <StockTable
-          products={products}
+          products={filteredExpenseElements}
           onEdit={handleEdit}
           onDelete={handleDelete}
-        />
+        />  
+      </div>
       )}
 
       <ModalAddProduct

@@ -1,26 +1,35 @@
 import { useState } from "react";
-import { Search } from "lucide-react";
+import icon from "../../assets/icone-busca.png";
 
-export default function StockFilter({ id, placeholder, onSearch }) {
-  const [valorBusca, setValorBusca] = useState("");
+const StockFilter = ({ id, placeholder, onSearch }) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const [value, setValue] = useState("");
 
-  const handleChange = (event) => {
-    const novoValor = event.target.value;
-    setValorBusca(novoValor);
-    onSearch(novoValor);
+  const handleInputChange = (e) => {
+    let newValue = e.target.value;
+    setValue(newValue);
+    onSearch(newValue); // onSearch deve ser responsável por filtrar os cards no componente pai
   };
 
   return (
-    <div className="relative w-full">
-      <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+    <div
+      className={`flex flex-row border-1 h-10 w-60 items-center transition-colors ease-in-out duration-100 ${
+        isFocused ? "border-pink-zero" : "border-white"
+      }`}
+    >
+      <img src={icon} alt="Buscar" className="mx-2 w-[24px] h-[24px]" />
       <input
-        type="text"
         id={id}
+        type="text"
         placeholder={placeholder}
-        value={valorBusca}
-        onChange={handleChange}
-        className="w-full rounded-lg border border-gray-300 py-2 pl-10 pr-4 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+        className="outline-none"
+        value={value}
+        onChange={handleInputChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       />
     </div>
   );
-}
+};
+
+export default StockFilter;
