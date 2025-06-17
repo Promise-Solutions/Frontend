@@ -22,19 +22,14 @@ const mapStatusToBackend = {
   Concluído: "COMPLETED",
 };
 
-const ModalEditTask = ({
-  task,
-  onClose,
-  onEdit,
-  onDelete,
-  employees,
-}) => {
+const ModalEditTask = ({ task, onClose, onEdit, onDelete, employees }) => {
   const [formData, setFormData] = useState({
     title: task.title || "",
     description: task.description || "",
     startDate: task.startDate || "",
     limitDate: task.limitDate || "",
     fkEmployee: task.fkEmployee || "",
+    fkAssigned: task.fkAssigned || "",
     status: mapStatusToFrontend[task.status] || task.status,
   });
 
@@ -64,6 +59,7 @@ const ModalEditTask = ({
         id: task.id,
         ...formData,
         fkEmployee: formData.fkEmployee || null,
+        fkAssigned: formData.fkAssigned || null,
         limitDate: formData.limitDate || null,
         status: mapStatusToBackend[formData.status] || formData.status,
       };
@@ -137,27 +133,42 @@ const ModalEditTask = ({
       }))}
       handleOnChange={handleInputChange}
       value={formData.fkEmployee}
-    />
-  ]
+    />,
+    <Select
+      text="Autor"
+      name="fkAssigned"
+      options={employees.map((emp) => ({
+        id: emp.id,
+        name: emp.name,
+      }))}
+      handleOnChange={handleInputChange}
+      value={formData.fkAssigned}
+    />,
+  ];
 
   const buttons = [
     <DeleteButton text="Deletar" onClick={handleDelete} />,
     <div className="flex justify-end gap-4 ">
       <CancelButton text="Cancelar" onClick={onClose} />
       <ConfirmButton text="Salvar" onClick={handleEdit} />
-    </div>
-  ]
-  
-  return(
+    </div>,
+  ];
+
+  return (
     <>
-      <ModalGeneric title="Editar Tarefa" inputs={inputs} buttons={buttons} borderVariant="edit"/>
+      <ModalGeneric
+        title="Editar Tarefa"
+        inputs={inputs}
+        buttons={buttons}
+        borderVariant="edit"
+      />
       <ModalConfirmDelete
-         isOpen={isDeleteModalOpen}
-         onClose={() => setIsDeleteModalOpen(false)}
-         onConfirm={confirmDelete}
-         title="Confirmar Deleção"
-         description="Tem certeza de que deseja deletar esta tarefa?"
-       />
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+        title="Confirmar Deleção"
+        description="Tem certeza de que deseja deletar esta tarefa?"
+      />
     </>
   );
 };

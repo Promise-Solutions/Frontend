@@ -18,7 +18,6 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
     status: "",
   });
 
-  
   const mapStatusToBackend = {
     Pendente: "PENDING",
     Fazendo: "WORKING",
@@ -109,16 +108,22 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
       }))}
       handleOnChange={handleInputChange}
       value={formData.fkAssigned}
-    />
-  ]
+    />,
+  ];
 
   const buttons = [
     <CancelButton text="Cancelar" onClick={onClose} />,
-    <ConfirmButton text="Adicionar" onClick={handleSubmit} />
-  ]
+    <ConfirmButton text="Adicionar" onClick={handleSubmit} />,
+  ];
 
   return (
-    <ModalGeneric title="Nova Tarefa" inputs={inputs} buttons={buttons} widthModal="w-[400px]" borderVariant="add"/>
+    <ModalGeneric
+      title="Nova Tarefa"
+      inputs={inputs}
+      buttons={buttons}
+      widthModal="w-[400px]"
+      borderVariant="add"
+    />
   );
 };
 

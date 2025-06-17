@@ -168,7 +168,7 @@ const ModalEditExpense = ({
         />,
         <Input
             type="date"
-            text="Data prevista para o pagamento"
+            text="Data de pagamento"
             name="date"
             required
             placeholder="Digite o valor"

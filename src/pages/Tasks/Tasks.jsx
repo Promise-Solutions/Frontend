@@ -61,6 +61,7 @@ const Tasks = () => {
           ...task,
           status: mapStatusToFrontend[task.status] || task.status,
           responsibleName: employeesMap[task.fkEmployee] || "Não atribuído",
+          assignedName: employeesMap[task.fkAssigned] || "Não atribuído",
         }));
 
         setTasks(tasksWithNames);
@@ -99,6 +100,9 @@ const Tasks = () => {
           responsibleName:
             employees.find((emp) => emp.id === res.data.fkEmployee)?.name ||
             "Não atribuído",
+          assignedName:
+            employees.find((emp) => emp.id === res.data.fkAssigned)?.name ||
+            "Não atribuído",
         };
         setTasks([...tasks, taskWithNames]);
         setIsAddModalOpen(false);
@@ -126,7 +130,10 @@ const Tasks = () => {
           status: mapStatusToFrontend[res.data.status],
           responsibleName:
             employees.find((emp) => emp.id === res.data.fkEmployee)?.name ||
-            "Não atribuído", // Atualiza o campo responsibleName
+            "Não atribuído",
+          assignedName:
+            employees.find((emp) => emp.id === res.data.fkAssigned)?.name ||
+            "Não atribuído",
         };
 
         setTasks((prev) =>
@@ -147,11 +154,11 @@ const Tasks = () => {
     const task = tasks.find((t) => t.id === taskId);
     if (!task) return;
 
-    const { responsibleName, ...payload } = {
+    const { responsibleName, assignedName, ...payload } = {
       ...task,
       fkEmployee: task.fkEmployee || null, // Certifica-se de enviar fkEmployee corretamente
       status: newStatus, // Atualiza o status
-    }; // Remove o campo responsibleName do payload
+    }; // Remove os campos responsibleName e assignedName do payload
 
     axiosProvider
       .patch(`tasks/${taskId}`, payload)
