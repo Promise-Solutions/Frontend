@@ -10,11 +10,11 @@ import { useEffect, useState } from "react";
 import { axiosProvider } from "../../provider/apiProvider";
 
 const GoalGraphic = ({ title }) => {
-  // Monocromático cyan-zero, mas com diferenciação perceptível
+  // Paleta de cores vivas e bem distintas
   const COLORS = [
-    "var(--color-cyan-zero)", // principal
-    "#4fdbe3", // cyan-zero + lighten
-    "#b2f6fa", // cyan-zero + much lighter
+    "#4CAF50", // meta (verde vivo)
+    "#FFEB3B", // atual (amarelo vivo)
+    "#FF5252", // gap (vermelho vivo)
   ];
 
   const [meta, setMeta] = useState(0);
@@ -79,7 +79,7 @@ const GoalGraphic = ({ title }) => {
             className="cursor-pointer"
             viewBox="0 0 20 20"
           >
-            <circle cx="10" cy="10" r="10" fill="var(--color-cyan-zero)" />
+            <circle cx="10" cy="10" r="10" fill={COLORS[0]} />
             <text
               x="10"
               y="15"

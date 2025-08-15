@@ -13,7 +13,6 @@ import ExpenseFilter from "../../components/filters/ExpenseFilter.jsx";
 import RegisterButton from "../../components/buttons/action/RegisterButton.jsx";
 import StockFilter from "../../components/filters/StockFilter.jsx";
 
-
 const Stock = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,7 +31,7 @@ const Stock = () => {
   const fetchProducts = async () => {
     try {
       const response = await axiosProvider.get(ENDPOINTS.PRODUCTS);
-      setProducts(response.data);
+      setProducts(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
     }
@@ -55,10 +54,10 @@ const Stock = () => {
         productToAdd
       );
       setProducts((prevProducts) => [...prevProducts, response.data]);
-      showToast.success("Produto adicionado com sucesso!")
+      showToast.success("Produto adicionado com sucesso!");
       setIsAddModalOpen(false);
     } catch (error) {
-      showToast.error("Erro ao adicionar produto!")
+      showToast.error("Erro ao adicionar produto!");
       console.error("Erro ao adicionar produto:", error);
     }
   };
@@ -75,7 +74,7 @@ const Stock = () => {
         ...updatedProduct,
         quantity: parseInt(updatedProduct.quantity),
         clientValue: getNumericValue(updatedProduct.clientValue),
-        internalValue: getNumericValue(updatedProduct.internalValue)
+        internalValue: getNumericValue(updatedProduct.internalValue),
       };
       await axiosProvider.patch(
         ENDPOINTS.getProductById(editingProduct.id),
@@ -87,10 +86,10 @@ const Stock = () => {
         )
       );
       setEditingProduct(null);
-      showToast.success("Produto atualizado com sucesso!")
+      showToast.success("Produto atualizado com sucesso!");
       setIsEditModalOpen(false);
     } catch (error) {
-      showToast.error("Erro ao atualizar produto!")
+      showToast.error("Erro ao atualizar produto!");
       console.error("Erro ao atualizar produto:", error);
     }
   };
@@ -102,9 +101,7 @@ const Stock = () => {
 
   const confirmDelete = async () => {
     try {
-      await axiosProvider.delete(
-        ENDPOINTS.getProductById(productToDelete.id)
-      );
+      await axiosProvider.delete(ENDPOINTS.getProductById(productToDelete.id));
       setProducts((prevProducts) =>
         prevProducts.filter((product) => product.id !== productToDelete.id)
       );
@@ -122,23 +119,22 @@ const Stock = () => {
   };
 
   const filteredExpenseElements = products.filter((element) => {
-      const visibleFields = [ 
-        element.id,
-        element.name,
-        element.quantity,
-        element.clientValue,
-        element.internalValue,
-      ].map((field) =>
-        String(field ?? "")
-          .toUpperCase()
-          .trim()
-      );
-      
+    const visibleFields = [
+      element.id,
+      element.name,
+      element.quantity,
+      element.clientValue,
+      element.internalValue,
+    ].map((field) =>
+      String(field ?? "")
+        .toUpperCase()
+        .trim()
+    );
+
     const term = searchTerm.toUpperCase().trim();
 
     return visibleFields.some((field) => field.includes(term));
-    });
-  
+  });
 
   return (
     <div className="slide-in-ltr text-white my-6 mx-16">
@@ -160,21 +156,21 @@ const Stock = () => {
       </div>
       {isLoading ? (
         <div className="flex w-full h-full items-center justify-center mt-[5rem]">
-              <SyncLoader
-                size={8}
-                loading={true}
-                color={"#02AEBA"}
-                speedMultiplier={2}
-              />
-            </div>
+          <SyncLoader
+            size={8}
+            loading={true}
+            color={"#02AEBA"}
+            speedMultiplier={2}
+          />
+        </div>
       ) : (
         <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
-        <StockTable
-          products={filteredExpenseElements}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />  
-      </div>
+          <StockTable
+            products={filteredExpenseElements}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        </div>
       )}
 
       <ModalAddProduct
