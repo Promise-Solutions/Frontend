@@ -95,6 +95,9 @@ const Login = () => {
             value={formData.password}
           />
           <SubmitButton text="Confirmar" />
+          <p className="text-center text-gray-400 mt-4">
+            <a href="/reset-password">Esqueceu sua senha?</a>
+          </p>
         </form>
       </div>
     </div>
