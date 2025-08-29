@@ -4,7 +4,9 @@ import Button from "../../components/form/SubmitButton";
 const Reset = () => {
   return (
     <div className="flex justify-center items-center h-screen w-screen flex-col">
-      <h1 className="text-2xl font-bold mb-2 text-white">Insira a nova senha</h1>
+      <h1 className="text-2xl font-light mb-2 text-white">
+        Insira a nova senha
+      </h1>
       <div className="w-96 border-1 border-pink-zero p-12 rounded-lg shadow-lg">
         <p className="text-yellow-zero mb-4">
           Por favor, insira sua nova senha.
