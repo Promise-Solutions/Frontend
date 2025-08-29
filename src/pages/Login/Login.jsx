@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { toast } from "react-hot-toast";
 import Input from "../../components/form/Input";
 import SubmitButton from "../../components/form/SubmitButton";
 import { showToast, ToastStyle } from "../../components/toastStyle/ToastStyle";
@@ -57,6 +56,7 @@ const Login = () => {
         { style: ToastStyle }
       );
     } catch (error) {
+      console.log(error);
       showToast.error("Erro ao autenticar. Verifique suas credenciais.", {
         style: ToastStyle,
       });
@@ -95,6 +95,9 @@ const Login = () => {
             value={formData.password}
           />
           <SubmitButton text="Confirmar" />
+          <p className="text-center text-gray-400 cursor-pointer hover:underline" onClick={() => navigate(ROUTERS.FORGOT)}>
+            Esqueceu sua senha?
+          </p>
         </form>
       </div>
     </div>

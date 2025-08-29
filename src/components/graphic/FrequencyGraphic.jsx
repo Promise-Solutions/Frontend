@@ -54,17 +54,19 @@ const FrequencyGraphic = ({ title }) => {
     fetchData();
   }, []);
 
-  // Frequência geral: monocromático cyan-zero
+  // Paleta de cores vivas e bem distintas
   const COLORS = [
-    "var(--color-cyan-zero)",
-    "#4fdbe3", // cyan-zero + lighten
-    "#b2f6fa", // cyan-zero + much lighter
+    "#FF5252", // vermelho vivo
+    "#FFEB3B", // amarelo vivo
+    "#4CAF50", // verde vivo
+    "#2196F3", // azul vivo
+    "#FF9800", // laranja vivo
   ];
-  // Frequência por categoria: monocromático pink-zero, mas com maior diferenciação
+  // Frequência por categoria: cores vivas
   const CATEGORY_COLORS = [
-    "var(--color-pink-zero)",
-    "#c05a9e", // pink-zero + lighten
-    "#e6b3d6", // pink-zero + much lighter
+    "#E040FB", // roxo vivo
+    "#00E676", // verde neon
+    "#FFEB3B", // amarelo vivo
   ];
   const [showInfo, setShowInfo] = useState(false);
 
@@ -86,7 +88,7 @@ const FrequencyGraphic = ({ title }) => {
             className="cursor-pointer"
             viewBox="0 0 20 20"
           >
-            <circle cx="10" cy="10" r="10" fill="var(--color-cyan-zero)" />
+            <circle cx="10" cy="10" r="10" fill="#FFEB3B" />
             <text
               x="10"
               y="15"

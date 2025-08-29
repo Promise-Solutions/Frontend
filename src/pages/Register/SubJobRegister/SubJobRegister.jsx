@@ -25,6 +25,24 @@ const SubJobRegister = () => {
     startTime: null,
     expectedEndTime: null,
   });
+  const [repeatWeekly, setRepeatWeekly] = useState(false);
+  const [repeatDays, setRepeatDays] = useState([]);
+  const [repeatEndDate, setRepeatEndDate] = useState("");
+
+  const weekDays = [
+    { value: 0, label: "Dom" },
+    { value: 1, label: "Seg" },
+    { value: 2, label: "Ter" },
+    { value: 3, label: "Qua" },
+    { value: 4, label: "Qui" },
+    { value: 5, label: "Sex" },
+    { value: 6, label: "Sáb" },
+  ];
+  const handleRepeatDayChange = (day) => {
+    setRepeatDays((prev) =>
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    );
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,21 +56,53 @@ const SubJobRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const subJobDataToRegister = {
       ...formData,
       value: getNumericValue(formData.value),
     };
 
-    const responseCode = await registrarSubServico(
-      subJobDataToRegister,
-      saveSubJob
-    );
+    // Se não for repetição, fluxo normal
+    if (!repeatWeekly) {
+      const responseCode = await registrarSubServico(
+        subJobDataToRegister,
+        saveSubJob
+      );
+      if (responseCode == 201) {
+        setTimeout(() => {
+          navigate(ROUTERS.getJobDetail(jobId));
+        }, 700);
+      }
+      return;
+    }
 
-    if (responseCode == 201) {
-      setTimeout(() => {
-        navigate(ROUTERS.getJobDetail(jobId));
-      }, 700);
+    // Se for repetição semanal
+    if (repeatWeekly && repeatDays.length > 0 && repeatEndDate) {
+      const startDate = new Date(formData.date);
+      const endDate = new Date(repeatEndDate);
+      let current = new Date(startDate);
+      let createdAny = false;
+
+      while (current <= endDate) {
+        if (repeatDays.includes(current.getDay())) {
+          const payload = {
+            ...subJobDataToRegister,
+            date: current.toISOString().slice(0, 10),
+          };
+          // Verifica conflito antes de criar (implemente sua lógica de backend aqui)
+          const conflict = false; // await checkSubJobConflict(payload);
+          if (!conflict) {
+            await registrarSubServico(payload, saveSubJob);
+            createdAny = true;
+          }
+        }
+        current.setDate(current.getDate() + 1);
+      }
+      if (createdAny) {
+        setTimeout(() => {
+          navigate(ROUTERS.getJobDetail(jobId));
+        }, 700);
+      }
+      return;
     }
   };
 
@@ -61,7 +111,7 @@ const SubJobRegister = () => {
 
     value = value.replace(/[^0-9.,]/g, "");
 
-    let newValue = value.replace(".", ",")
+    let newValue = value.replace(".", ",");
 
     const partes = newValue.split(",");
     if (partes.length > 2) {
@@ -82,7 +132,7 @@ const SubJobRegister = () => {
       <form
         onSubmit={handleSubmit}
         autoComplete="off"
-        className="flex flex-col items-center justify-center gap-10 w-full h-full px-4"
+        className="flex flex-col items-center justi w-full h-full px-4"
       >
         <section
           id="form_cliente"
@@ -118,13 +168,6 @@ const SubJobRegister = () => {
             value={formData.value === NaN ? null : formData.value}
             maxLength="50"
           />
-          <Checkbox
-            text="Utilizará a Sala?"
-            required
-            name="needsRoom"
-            handleOnChange={handleInputCheckboxChange}
-            value={formData.needsRoom}
-          />
           <Input
             type="date"
             text="Data prevista para subserviço"
@@ -135,6 +178,13 @@ const SubJobRegister = () => {
             min={new Date().toLocaleDateString("en-CA")}
             max="2099-12-31"
             className="custom-calendar"
+          />
+          <Checkbox
+            text="Utilizará a Sala?"
+            required
+            name="needsRoom"
+            handleOnChange={handleInputCheckboxChange}
+            value={formData.needsRoom}
           />
           <div className="flex items-center justify-between w-full gap-8">
             <Input
@@ -157,9 +207,54 @@ const SubJobRegister = () => {
               className="custom-calendar"
             />
           </div>
-        </section>
 
-        <SubmitButton text="Confirmar" />
+          <div className="flex flex-col gap-2 mt-2 w-full">
+            <Checkbox
+              text={<span className="text-white">Repetir semanalmente</span>}
+              name="repeatWeekly"
+              value={repeatWeekly}
+              handleOnChange={() => setRepeatWeekly((v) => !v)}
+            />
+            {repeatWeekly && (
+              <>
+                <div className="flex flex-col gap-0 mt-0 w-full">
+                  <span className="text-white text-sm mb-0 leading-tight">
+                    Dias:
+                  </span>
+                  <div className="flex flex-row gap-0.5">
+                    {weekDays.map((d) => (
+                      <Checkbox
+                        key={d.value}
+                        text={
+                          <span className="text-white text-xs">{d.label}</span>
+                        }
+                        name={`repeatDay_${d.value}`}
+                        value={repeatDays.includes(d.value)}
+                        handleOnChange={() => handleRepeatDayChange(d.value)}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center mt-0.5">
+                  <span className="text-white text-sm mr-2">Até:</span>
+                  <input
+                    type="date"
+                    value={repeatEndDate}
+                    min={
+                      formData.date || new Date().toLocaleDateString("en-CA")
+                    }
+                    onChange={(e) => setRepeatEndDate(e.target.value)}
+                    className="ml-1 border rounded px-2 py-1 bg-transparent text-white"
+                    style={{ borderColor: "#5f6176" }}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+          <div className="flex items-center justify-center w-full">
+            <SubmitButton text="Confirmar" />
+          </div>
+        </section>
       </form>
     </main>
   );

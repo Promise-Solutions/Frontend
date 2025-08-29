@@ -43,9 +43,9 @@ const BarGraphic = ({ title }) => {
 
   const [showInfo, setShowInfo] = useState(false);
 
-  // Define a cor do Lucro dinamicamente
+  // Define a cor do Lucro dinamicamente: verde se positivo, vermelho se negativo
   const getLucroColor = (lucro) =>
-    lucro < 0 ? "var(--color-red-zero)" : "#B39DDB";
+    lucro < 0 ? "var(--color-red-zero)" : "#43A047"; // verde forte
 
   // Define o label do Lucro dinamicamente
   const getLucroLabel = (lucro) => (lucro < 0 ? "Perda" : "Lucro");
@@ -144,7 +144,7 @@ const BarGraphic = ({ title }) => {
                     data.length > 0 ? getLucroLabel(data[0].Lucro) : "Lucro",
                   type: "circle",
                   color:
-                    data.length > 0 ? getLucroColor(data[0].Lucro) : "#B39DDB",
+                    data.length > 0 ? getLucroColor(data[0].Lucro) : "#43A047",
                   id: "Lucro",
                 },
               ]}
@@ -154,7 +154,7 @@ const BarGraphic = ({ title }) => {
             <Bar dataKey="Saída" fill="#9575CD" />
             <Bar
               dataKey="Lucro"
-              fill={data.length > 0 ? getLucroColor(data[0].Lucro) : "#B39DDB"}
+              fill={data.length > 0 ? getLucroColor(data[0].Lucro) : "#43A047"}
               name={data.length > 0 ? getLucroLabel(data[0].Lucro) : "Lucro"}
             />
           </BarChart>

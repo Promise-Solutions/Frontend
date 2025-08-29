@@ -12,6 +12,7 @@ const CalendarMonth = ({
   setMonth,
   setYear,
   resetSelection,
+  pendingByDay = {}, // novo prop
 }) => {
   dayjs.locale("pt-br");
   const today = dayjs(`${year}-${String(month + 1).padStart(2, "0")}-01`);
@@ -177,7 +178,7 @@ const CalendarMonth = ({
                   const dateStr = day
                     ? today.date(day).format("YYYY-MM-DD")
                     : null;
-                  const isRoomDay = hasRoomSubJob(dateStr);
+                  const isPendingDay = pendingByDay[dateStr];
                   const isToday =
                     day &&
                     now.date() === day &&
@@ -198,13 +199,13 @@ const CalendarMonth = ({
                                 ? "ring-2 ring-yellow-zero"
                                 : ""
                             }
-                            ${isRoomDay ? "border-2 border-pink-zero" : ""}
+                            ${isPendingDay ? "border-2 border-pink-zero" : ""}
                             cursor-pointer hover:bg-pink-zero/10 hover:text-pink-zero
                           `}
                           onClick={() => onDayClick(dateStr)}
                         >
                           {/* Bolinha cyan-zero acima do número do dia */}
-                          {isRoomDay && (
+                          {isPendingDay && (
                             <span
                               className="absolute left-1/2 -top-1.5 -translate-x-1/2"
                               style={{

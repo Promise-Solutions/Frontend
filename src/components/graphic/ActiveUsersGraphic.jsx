@@ -34,7 +34,8 @@ const ActiveUsersGraphic = ({ title }) => {
     fetchData();
   }, []);
 
-  const COLORS = ["#02AEBA", "#027B8A"];
+  // Paleta de cores vivas e bem distintas
+  const COLORS = ["#FF5252", "#FFEB3B", "#4CAF50", "#2196F3", "#FF9800"];
   const [showInfo, setShowInfo] = useState(false);
 
   return (
@@ -55,7 +56,7 @@ const ActiveUsersGraphic = ({ title }) => {
             className="cursor-pointer"
             viewBox="0 0 20 20"
           >
-            <circle cx="10" cy="10" r="10" fill="#02AEBA" />
+            <circle cx="10" cy="10" r="10" fill={COLORS[0]} />
             <text
               x="10"
               y="15"
