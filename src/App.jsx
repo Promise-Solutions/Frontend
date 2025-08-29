@@ -134,7 +134,7 @@ function App() {
 
 const NavbarWrapper = () => {
   const { pathname } = useLocation(); // Move useLocation here
-  return pathname !== "/login" && pathname !== "/home" && pathname !== "/" && pathname !== "/reset-password" ? (
+  return pathname !== "/login" && pathname !== "/home" && pathname !== "/" && pathname !== "/reset-password" && pathname !== "/forgot-password" ? (
     <Navbar />
   ) : null; // Conditionally render Navbar
 };
