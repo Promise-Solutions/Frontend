@@ -555,7 +555,7 @@ export const RenderCommandDetails = () => {
               ]}
               data={products.map((product) => ({
                 ...product,
-                unitValue: getBRCurrency(product.unitValue),
+                unitValue: getBRCurrency(product.unitValue * product.productQuantity),
                 actions: (
                   <div className="flex gap-2">
                     <EditButton
