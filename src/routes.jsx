@@ -24,7 +24,7 @@ import SubJobRegister from "./pages/Register/SubJobRegister/SubJobRegister.jsx";
 import Expenses from "./pages/Expenses/Expenses.jsx";
 import Calendar from "./pages/Calendar/Calendar.jsx";
 import Reset from "./pages/ResetPassword/Reset.jsx";
-import ForgotPassword from "./pages/ForgotPassword/Forgot.jsx";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
 
 function AppRoutes() {
   return (

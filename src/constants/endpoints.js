@@ -15,6 +15,7 @@ export const ENDPOINTS = {
   GOALS: "/goals",
   RECENT_GOAL: "/goals/recent",
   DRIVE: "/drive",
+  FORGOT_PASSWORD: "/auth/forgot-password",
 
   getClientById: (id) => `/clients/${id}`,
   getEmployeeById: (id) => `/employees/${id}`,
