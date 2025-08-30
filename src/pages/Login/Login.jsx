@@ -5,6 +5,7 @@ import { showToast, ToastStyle } from "../../components/toastStyle/ToastStyle";
 import { useNavigate } from "react-router-dom";
 import { axiosProvider } from "../../provider/apiProvider";
 import { ROUTERS } from "../../constants/routers";
+import { ENDPOINTS } from "../../constants/endpoints";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -28,38 +29,39 @@ const Login = () => {
       return;
     }
 
-    try {
-      await showToast.promise(
-        axiosProvider
-          .post("/employees/login", {
-            email: formData.email,
-            password: formData.password,
-          })
-          .then((response) => {
-            const data = response.data;
-            const token = data.token;
-            const userLogged = data.id;
+    const tokenExists = localStorage.getItem("token") !== null;
 
-            if (token) {
-              localStorage.setItem("token", token);
-              localStorage.setItem("userLogged", userLogged);
-              navigate(ROUTERS.HOME_ALIAS);
-            } else {
-              throw new Error("Token não recebido.");
-            }
-          }),
-        {
-          loading: "Autenticando...",
-          success: "Usuário autenticado com sucesso!",
-          error: "Erro ao autenticar. Verifique suas credenciais.",
-        },
-        { style: ToastStyle }
+    if(tokenExists) {
+      localStorage.removeItem("token");
+    }
+
+    try {
+      showToast.loading("Autenticando...");
+
+      const response = await axiosProvider.post(
+          ENDPOINTS.EMPLOYEES_LOGIN,
+          { 
+            email: formData.email, 
+            password: formData.password
+          }
       );
+
+      const { token, id } =  response.data;
+
+       if (token) {
+          localStorage.setItem("token", token);
+          localStorage.setItem("userLogged", id);
+          showToast.dismiss()
+          showToast.success("Usuário autenticado com sucesso!")
+          navigate(ROUTERS.HOME_ALIAS);
+        } else {
+          throw new Error("Token não recebido.");
+        }
+
     } catch (error) {
       console.log(error);
-      showToast.error("Erro ao autenticar. Verifique suas credenciais.", {
-        style: ToastStyle,
-      });
+      showToast.dismiss();
+      showToast.error("Erro ao autenticar. Verifique suas credenciais.")
     }
   };
 

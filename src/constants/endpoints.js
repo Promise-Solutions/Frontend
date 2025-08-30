@@ -1,6 +1,7 @@
 export const ENDPOINTS = {
   CLIENTS: "/clients",
   EMPLOYEES: "/employees",
+  EMPLOYEES_LOGIN:"/employees/login",
   JOBS: "/jobs",
   SUBJOBS: "/sub-jobs",
   COMMANDS: "/commands",

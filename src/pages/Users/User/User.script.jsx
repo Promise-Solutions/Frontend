@@ -161,7 +161,6 @@ export const RenderInfos = () => {
       clientType: user?.clientType || "",
       birthDay: user?.birthDay || "",
       active: user?.active,
-      password: "",
       birthDay: user?.birthDay || "",
       createdDate: user?.createdDate || "",
     });
@@ -230,45 +229,42 @@ export const RenderInfos = () => {
       } else if (!formData.contact || contact.length < 15) {
         showToast.error("Contato deve ter 15 caracteres.");
         return;
-      } else if (!formData.birthDay || !formData.birthDay == null) {
+      } else if (isClient & (!formData.birthDay || !formData.birthDay == null)) {
         showToast.error("Data de nascimento vazia.");
         return;
       } else {
-        await showToast.promise(
-          (async () => {
-            try {
-              const updatedFormData = {
-                ...formData,
-                name: formData.name.toUpperCase(),
-                contact: formData.contact,
-              };
+        const updatedFormData = {
+          ...formData,
+          name: formData.name.toUpperCase(),
+          contact: formData.contact,
+        };
 
-              if (!formData.password) delete updatedFormData.password;
-              if (!isClient) delete updatedFormData.clientType;
+        if (!formData.password) delete updatedFormData.password;
+        if (!isClient) delete updatedFormData.clientType;
 
-              const endpoint = isClient
-                ? `/clients/${userId}`
-                : `/employees/${userId}`;
-              console.log("Dados atualizados:", updatedFormData);
-              await axiosProvider.patch(endpoint, updatedFormData);
-              setUser({ ...user, ...updatedFormData });
-              setIsEditing(false);
-              showToast.success("Informações atualizadas com sucesso!");
-            } catch (error) {
-              showToast.error("Erro ao salvar alterações:", error);
-            }
-          })(),
-          {
-            loading: "Salvando alterações...",
-            success: "Informações atualizadas com sucesso!",
-            error: "Erro ao salvar alterações.",
-          },
-          {
-            style: ToastStyle,
-          }
-        );
+        const endpoint = isClient
+          ? ENDPOINTS.getClientById(userId)
+          : ENDPOINTS.getEmployeeById(userId);
+
+        updateInfos(endpoint, updatedFormData);  
       }
     };
+
+    async function updateInfos(endpoint, updatedFormData) {
+       try {
+        await axiosProvider.patch(endpoint, updatedFormData);
+        setUser({ ...user, ...updatedFormData });
+        setIsEditing(false);
+        showToast.success("Informações atualizadas com sucesso!");
+      } catch (error) {
+        console.log(error)
+        const invalidFields = error.response.data.invalidFields.join(', ')
+        if(error.response.data.type == "INVALID_DATA") {
+          showToast.error("Seguintes campos inválidos: " +invalidFields);
+        
+        }
+      }
+    }
 
     return (
       <section id="edit_section" className="flex w-full justify-between">
@@ -342,19 +338,6 @@ export const RenderInfos = () => {
                   min="1900-12-31"
                   max={new Date().toLocaleDateString("en-CA")}
                   className="custom-calendar"
-                />
-              </li>
-            ) : null}
-
-            {!isClient ? (
-              <li>
-                <Input
-                  text="Senha"
-                  type="text"
-                  name="password"
-                  required
-                  value={formData.password}
-                  handleOnChange={handleInputChange}
                 />
               </li>
             ) : null}

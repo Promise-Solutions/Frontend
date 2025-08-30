@@ -11,7 +11,7 @@ import SubmitButton from "../../components/form/SubmitButton.jsx";
 import logo from "../../assets/logo-branco-bg-sonoro.png";
 import SelectTypeUser from "../../components/form/SelectTypeUser.jsx";
 import Select from "../../components/form/Select.jsx";
-import { formatDateWithoutTime } from "../../hooks/formatUtils.js";
+import { ENDPOINTS } from "../../constants/endpoints.js";
 
 function Register() {
   const navigate = useNavigate();
@@ -139,7 +139,7 @@ function Register() {
         birthDay: formData.dataNascimento,
         createdDate: new Date().toISOString(),
       };
-      endpoint = "clients";
+      endpoint = ENDPOINTS.CLIENTS
     } else if (selectedType === "FUNCIONARIO") {
       novoUsuario = {
         name: formData.nome.toUpperCase(),
@@ -149,14 +149,14 @@ function Register() {
         password: formData.senha,
         active: true,
       };
-      endpoint = "employees";
+      endpoint = ENDPOINTS.EMPLOYEES
     }
 
     console.log(novoUsuario)
 
     try {
       console.log("Novo usuário:", novoUsuario);
-      const res = await axiosProvider.post(`/${endpoint}`, novoUsuario);
+      const res = await axiosProvider.post(endpoint, novoUsuario);
       if (res.status === 201) {
         showToast.success("Cadastro realizado com sucesso!");
         setFormData({
@@ -173,7 +173,13 @@ function Register() {
         showToast.error("Erro ao cadastrar usuário.");
       }
     } catch (error) {
-      showToast.error("Erro ao cadastrar usuário.");
+      const responseCode = error.status;
+
+      if(responseCode === 409) {
+        showToast.error(error.response.data.message);
+      } else {
+        showToast.error("Erro ao cadastrar usuário.");
+      }
     }
   };
 

@@ -39,8 +39,11 @@ const ForgotPassword = () => {
     .catch((error) => {
       setEmailValido(false);
       console.log(error)
-      const mensagem = error?.response?.data?.message || "Erro ao enviar e-mail";
-      setMensagemRetorno(mensagem);
+      if(error.response.data.type == "BAD_REQUEST") {
+        setMensagemRetorno(error.response.data.message)
+      } else {
+        setMensagemRetorno("Erro ao enviar e-mail");
+      }
     })
     
   }
