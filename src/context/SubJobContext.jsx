@@ -7,14 +7,14 @@ const SubJobContext = createContext({});
 
 export function SubJobProvider({ children }) {
   const saveSubJob = async (formData) => {
+    console.log("formData", formData)
     try {
       const request = await axiosProvider.post(ENDPOINTS.SUBJOBS, formData);
-      if (request.status == 201) {
-        showToast.success("Subservico Cadastrado!");
-        return request.status
-      }
-      return null;
+    
+      showToast.success("Subservico Cadastrado!");
+      return request.status
     } catch (error) {
+      console.error("Erro ao cadastrar subserviço", error)
       if(error && error.response.status == 409) {
         showToast.error("Horários em conflito com outro subserviço registrado.")
       } else {
@@ -23,11 +23,11 @@ export function SubJobProvider({ children }) {
     };
   };
   
-  const updateSubJobStatus = async (id, newStatus) => {
+  const updateSubJobStatus = async (id, data) => {
     if (!id) return;
     
     try {
-      const response = await axiosProvider.patch(ENDPOINTS.updateSubJobStatus(id), { status: newStatus})
+      const response = await axiosProvider.patch(ENDPOINTS.updateSubJobStatus(id), data)
   
       if (response.status == 200) {
         return response.data;
@@ -90,13 +90,9 @@ export function SubJobProvider({ children }) {
 
     try {
       const request = await axiosProvider.delete(ENDPOINTS.getSubJobById(subJobId));
-      if(request.status == 200) {
-        showToast.success("Subserviço excluído com sucesso!")
-        return request.data
-      } else {
-        showToast.error("Não foi possível excluir o subserviço")
-        return null
-      }
+      
+      showToast.success("Subserviço excluído com sucesso!")
+      return request.data
     } catch (error) {
       showToast.error("Erro ao excluir subserviço");
       console.log("Erro ao excluir subserviço", error);

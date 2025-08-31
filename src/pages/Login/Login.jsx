@@ -19,15 +19,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.email.trim()) {
-      showToast.error("O campo de email está vazio.");
-      return;
-    }
+    // if (!formData.email.trim()) {
+    //   showToast.error("O campo de email está vazio.");
+    //   return;
+    // }
 
-    if (!formData.password.trim()) {
-      showToast.error("O campo de senha está vazio.");
-      return;
-    }
+    // if (!formData.password.trim()) {
+    //   showToast.error("O campo de senha está vazio.");
+    //   return;
+    // }
 
     const tokenExists = localStorage.getItem("token") !== null;
 
@@ -46,14 +46,14 @@ const Login = () => {
           }
       );
 
-      const { token, id } =  response.data;
+      const { token, id } =  response?.data || {};
 
        if (token) {
           localStorage.setItem("token", token);
           localStorage.setItem("userLogged", id);
           showToast.dismiss()
           showToast.success("Usuário autenticado com sucesso!")
-          navigate(ROUTERS.HOME_ALIAS);
+          navigate(ROUTERS.HOME_ALIAS); 
         } else {
           throw new Error("Token não recebido.");
         }
@@ -63,7 +63,7 @@ const Login = () => {
       showToast.dismiss();
       showToast.error("Erro ao autenticar. Verifique suas credenciais.")
     }
-  };
+  }
 
 
   return (
@@ -96,7 +96,7 @@ const Login = () => {
             handleOnChange={handleInputChange}
             value={formData.password}
           />
-          <SubmitButton text="Confirmar" />
+          <SubmitButton text="Confirmar"/>
           <p className="text-center text-gray-400 cursor-pointer hover:underline" onClick={() => navigate(ROUTERS.FORGOT)}>
             Esqueceu sua senha?
           </p>

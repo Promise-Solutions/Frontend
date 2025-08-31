@@ -1,3 +1,5 @@
+import React from "react";
+
 const ModalGeneric = ({
   title = "Editar",
   subTitle,
@@ -30,10 +32,14 @@ const ModalGeneric = ({
         </h2>
         <form>
           <div className="flex flex-col gap-4">
-            {inputs}
+            {inputs.map((input, index) =>
+              React.cloneElement(input, { key: input.key || index })
+            )}
           </div>
           <div className="mt-4 flex justify-end gap-4">
-            {buttons}
+            {buttons.map((button, index) =>
+              React.cloneElement(button, { key: button.key || index })
+            )}
           </div>
         </form>
       </div>

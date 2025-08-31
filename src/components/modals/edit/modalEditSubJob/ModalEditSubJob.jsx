@@ -47,6 +47,8 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
       fkService: jobId
     }
 
+    console.log("infosUpdate", infosUpdate)
+
     const response = await changeSubJobData(infosUpdate, updateSubJobData)
     if (response) {
       const {jobTotalValue, ...dataUpdated} = response 
@@ -55,9 +57,9 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
   };
 
   const handleDelete = async (id) => {
-    const response = await deleteSubJobById(id)
+    const response = await deleteSubJobById(id);
 
-    if (response.id != null) {
+    if (response != null) {
       onDelete(response);
     }
     setIsDeleteModalOpen(false)
@@ -65,6 +67,7 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
 
   const inputs = [
     <Input
+      key="input_title"
       type="text"
       name="title"
       text="Titulo"
@@ -74,6 +77,7 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
       disabled
     />,
     <Input
+      key="input_description"
       type="text"
       name="description"
       text="Descrição"
@@ -84,6 +88,7 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
       min="0"
     />,
     <Input
+      key="input_value"
       type="text"
       name="value"
       text="Valor do produto"
@@ -92,12 +97,14 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
       handleOnChange={(e) => handleValorChange(e, setSubJobsInfos)}
     />,
     <Checkbox
+      key="checkbox_needsRoom"
       text="Utilizará a Sala?"
       name="needsRoom"
       handleOnChange={handleInputCheckboxChange}
       value={subJobsInfos?.needsRoom || ""}
     />,
     <Input
+        key="input_date"
         type="date"
         text="Data prevista para subserviço"
         name="date"
@@ -108,8 +115,9 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
         max="2099-12-31"
         className="custom-calendar"
       />,
-    <div className="flex items-end justify-between w-full gap-8">
+    <div key="div_inputs_time" className="flex items-end justify-between w-full gap-8">
       <Input
+        key="input_startTime"
         type="time"
         text="Horário de início"
         name="startTime"
@@ -118,8 +126,8 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
         value={subJobsInfos?.startTime ? subJobsInfos.startTime : "" || ""}
         className="custom-calendar"
         />
-
       <Input
+        key="input_expectedEndTime"
         type="time"
         text="Previsão de conclusão"
         name="expectedEndTime"
@@ -134,13 +142,14 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
   const buttons = [
     <div className="flex justify-between w-full">
       <DeleteButton 
+        key="btn_delete_subjob"
         id="btn_delete_subjob" 
         text="Excluir"
         onClick={() => setIsDeleteModalOpen(true)}
         />
-      <div className="flex justify-end gap-4 w-[60%]">
-        <CancelButton text="Cancelar" type="button" onClick={onCancel} />
-        <ConfirmButton onClick={handleSubmit} text="Salvar" />
+      <div key="div_btn_right" className="flex justify-end gap-4 w-[60%]">
+        <CancelButton key="btn_cancel" text="Cancelar" type="button" onClick={onCancel} />
+        <ConfirmButton key="btn_confirm" onClick={handleSubmit} text="Salvar" />
       </div>
     </div>
   ]

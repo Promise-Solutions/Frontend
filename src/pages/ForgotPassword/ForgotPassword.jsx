@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import Input from "../../components/form/Input";
-import Button from "../../components/form/SubmitButton";
 import { ENDPOINTS } from "../../constants/endpoints";
 import { axiosProvider } from "../../provider/apiProvider";
 import { showToast } from "../../components/toastStyle/ToastStyle";
 import ReturnButton from "../../components/buttons/action/ReturnButton";
+import SecondaryButton from "../../components/buttons/SecondaryButton";
 
 const ForgotPassword = () => {
 
@@ -70,7 +70,7 @@ const ForgotPassword = () => {
             placeholder="Digite seu e-mail"
             className="mt-4"
           />
-          <Button type="button" onClick={envioEmail} text="Enviar Código" className="mt-4" />
+          <SecondaryButton onClick={envioEmail} text="Enviar Código" className="mt-4" />
         </div> 
         <p className={`h-10 text-[12px] text-center mt-2 font-semibold tracking-widest
           ${emailValido ?  ` text-yellow-zero` : `text-red-zero`}

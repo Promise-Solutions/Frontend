@@ -54,13 +54,12 @@ const JobManagement = () => {
       const jobDataFetched = await fetchJobData(jobId);
       setJob(jobDataFetched);
       setJobData(jobDataFetched);
+      setSubJobsData(jobDataFetched.subJobs);
+      console.log(jobDataFetched);
     };
     loadJobData();
 
-    (async () => {
-      const subJobs = await findSubJobsByJobId(jobId);
-      setSubJobsData(subJobs);
-    })();
+    
 
     setIsLoading(false);
   }, [jobId]);
@@ -278,7 +277,7 @@ const JobManagement = () => {
             subJobsData.map((subJob) => (
               <CardSubJob
                 key={subJob.id}
-                data={subJob}
+                data={{ ...subJob, jobId: jobData.id  }}
                 onEdit={() => setEditingSubJob(subJob)}
                 onUpdateStatus={handleChangeSubJobStatus}
               />

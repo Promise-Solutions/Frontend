@@ -1,4 +1,4 @@
-import { showToast, ToastStyle } from "../../../components/toastStyle/ToastStyle";
+import { showToast } from "../../../components/toastStyle/ToastStyle";
 
 export const registrarSubServico = async (formData, saveSubJob) => {
     if(formData.title == "" || formData.description == "" || formData.value == "") {
@@ -9,6 +9,10 @@ export const registrarSubServico = async (formData, saveSubJob) => {
        showToast.error("Não são aceitos valores negativos!")
         return;
     } 
+    if(formData.description < 2 || formData.description > 500) {
+        showToast.error("Descrição deve ter entre 2 e 500 caracteres");
+        return;
+    }
     if(formData.needsRoom && (formData.date == null || formData.startTime == null || formData.expectedEndTime == null)) {
         showToast.error("Quando há o uso de sala, a data os horários precisam ser informados!")
         return;

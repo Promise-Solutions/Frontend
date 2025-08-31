@@ -2,12 +2,10 @@ import logo from "../../../assets/logo-branco-bg-sonoro.png";
 import Input from "../../../components/form/Input";
 import SubmitButton from "../../../components/form/SubmitButton";
 import { useSubJobContext } from "../../../context/SubJobContext";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { registrarSubServico } from "./SubJobRegister.script";
 import { useNavigate, useParams } from "react-router-dom";
-import Select from "../../../components/form/Select";
 import Checkbox from "../../../components/form/Checkbox";
-import { showToast } from "../../../components/toastStyle/ToastStyle";
 import { ROUTERS } from "../../../constants/routers";
 import { getNumericValue } from "../../../hooks/formatUtils";
 
@@ -58,7 +56,7 @@ const SubJobRegister = () => {
     e.preventDefault();
     const subJobDataToRegister = {
       ...formData,
-      value: getNumericValue(formData.value),
+      value: getNumericValue(formData.value)
     };
 
     // Se não for repetição, fluxo normal

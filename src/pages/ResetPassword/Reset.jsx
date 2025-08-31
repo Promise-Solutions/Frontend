@@ -1,5 +1,5 @@
+import SecondaryButton from "../../components/buttons/SecondaryButton";
 import Input from "../../components/form/Input";
-import Button from "../../components/form/SubmitButton";
 
 const Reset = () => {
   return (
@@ -24,7 +24,7 @@ const Reset = () => {
             placeholder="Confirme sua nova senha"
             className="mt-4"
           />
-          <Button text="Redefinir Senha" className="mt-4" />
+          <SecondaryButton text="Redefinir Senha" className="mt-4" />
         </div>
       </div>
     </div>

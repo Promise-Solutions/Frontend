@@ -220,34 +220,43 @@ export const RenderInfos = () => {
       if (!formData.name) {
         showToast.error("Nome é obrigatório.");
         return;
-      } else if (!validarEmail()) {
+      }  
+      if (formData.name.length < 2) {
+        showToast.error("Nome deve ter ao menos 2 caracteres.")
+        return;
+      }
+      if (!validarEmail()) {
         showToast.error("E-mail é obrigatório.");
         return;
-      } else if (!formData.cpf || cpf.length < 14) {
+      }
+      
+      if (!formData.cpf || cpf.length < 14) {
         showToast.error("CPF deve ter 14 caracteres.");
         return;
-      } else if (!formData.contact || contact.length < 15) {
+      } 
+      
+      if (!formData.contact || contact.length < 15) {
         showToast.error("Contato deve ter 15 caracteres.");
         return;
-      } else if (isClient & (!formData.birthDay || !formData.birthDay == null)) {
+      }
+      if (isClient & (!formData.birthDay || !formData.birthDay == null)) {
         showToast.error("Data de nascimento vazia.");
         return;
-      } else {
-        const updatedFormData = {
-          ...formData,
-          name: formData.name.toUpperCase(),
-          contact: formData.contact,
-        };
+      } 
+      const updatedFormData = {
+        ...formData,
+        name: formData.name.toUpperCase(),
+        contact: formData.contact,
+      };
 
-        if (!formData.password) delete updatedFormData.password;
-        if (!isClient) delete updatedFormData.clientType;
+      if (!formData.password) delete updatedFormData.password;
+      if (!isClient) delete updatedFormData.clientType;
 
-        const endpoint = isClient
-          ? ENDPOINTS.getClientById(userId)
-          : ENDPOINTS.getEmployeeById(userId);
+      const endpoint = isClient
+        ? ENDPOINTS.getClientById(userId)
+        : ENDPOINTS.getEmployeeById(userId);
 
-        updateInfos(endpoint, updatedFormData);  
-      }
+      updateInfos(endpoint, updatedFormData);  
     };
 
     async function updateInfos(endpoint, updatedFormData) {
