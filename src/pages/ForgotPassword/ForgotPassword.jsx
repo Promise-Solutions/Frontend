@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Input from "../../components/form/Input";
 import { ENDPOINTS } from "../../constants/endpoints";
 import { axiosProvider } from "../../provider/apiProvider";
@@ -54,7 +54,7 @@ const ForgotPassword = () => {
       <div className="absolute top-2.5 left-2">
         <ReturnButton tamanho='20px'/>
       </div>
-        <h1 className="text-2xl font-bold mb-2 text-white">Esqueceu a senha?</h1>
+        <h1 className="text-2xl font-light mb-2 text-white">Esqueceu a senha?</h1>
 
       </div>
       <div className="w-96 border-1 border-pink-zero px-8 pb-6 pt-14 h-auto rounded-lg shadow-lg">

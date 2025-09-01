@@ -17,21 +17,19 @@ export const ENDPOINTS = {
   RECENT_GOAL: "/goals/recent",
   DRIVE: "/drive",
   FORGOT_PASSWORD: "/auth/forgot-password",
+  RESET_PASSWORD: "/auth/reset-password",
 
   getClientById: (id) => `/clients/${id}`,
   getEmployeeById: (id) => `/employees/${id}`,
   getJobById: (id) => `/jobs/${id}`,
-  getSubJobById: (id) => `/sub-jobs/${id}`,
   getSubJobByJob: (jobId) => `/sub-jobs/job?fkService=${jobId}`,
   getJobsByClient: (clientId) => `/jobs/client?fkClient=${clientId}`,
   getCommandById: (id) => `/commands/${id}`,
-  getProductById: (id) => `/products/${id}`,
   getDashboardClientStats: (idClient) => `/dashboard/client-stats/${idClient}`,
   getCommandProductsByCommand: (commandId) =>
     `/command-products?fkComanda=${commandId}`,
   getCommandProductsByProduct: (productId) => `/command-products/${productId}`,
   getCommandByStatus: (status) => `/commands?status=${status}`,
-  getTaskById: (taskId) => `/tasks/${taskId}`,
   getExpenseById: (expenseId) => `/expenses/${expenseId}`,
 
   // DashboardController endpoints
