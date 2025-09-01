@@ -152,17 +152,41 @@ function Expenses() {
   };
 
   const handleSaveGoal = async (goal) => {
-    return axiosProvider.put(ENDPOINTS.GOALS, {goal})
-      .then((response) => {
-        showToast.success("Meta atualizada com sucesso!")
-        setIsGoalModalOpen(false);
-        return response.data;
-      })
-      .catch((error) => {
-        showToast.error("Não foi possível atualizar a meta!")
-        console.error("Não foi possível atualizar a meta", error)
-        return null;
-      })
+    axiosProvider.get(ENDPOINTS.RECENT_GOAL).then((res) => {
+      console.log(res.data.id);
+      if (res.data == null || res.data == "" || res.data == undefined) {
+        axiosProvider
+          .post(ENDPOINTS.GOALS, {
+            goal: goal,
+          })
+          .then((response) => {
+            showToast.success("Meta atualizada com sucesso!");
+            setIsGoalModalOpen(false);
+            return response.data;
+          })
+          .catch((error) => {
+            showToast.error("Não foi possível atualizar a meta!");
+            console.error("Não foi possível atualizar a meta", error);
+            return null;
+          });
+      } else if (res.data != null || res.data != "" || res.data != undefined) {
+        axiosProvider
+          .put(ENDPOINTS.GOALS, {
+            id: res.data.id,
+            goal: goal
+          })
+          .then((response) => {
+            showToast.success("Meta atualizada com sucesso!");
+            setIsGoalModalOpen(false);
+            return response.data;
+          })
+          .catch((error) => {
+            showToast.error("Não foi possível atualizar a meta!");
+            console.error("Não foi possível atualizar a meta", error);
+            return null;
+          });
+      }
+    });
   }
   
   const filteredExpenseElements = expenseElements.filter((element) => {

@@ -11,7 +11,6 @@ import Login from "./pages/Login/Login";
 import Bar from "./pages/Bar/Bar";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Reports from "./pages/Reports/Reports";
-import Projects from "./pages/Projects/Projects";
 import Jobs from "./pages/Jobs/Jobs";
 import Home from "./pages/Home/Home";
 import User from "./pages/Users/User/User.jsx";
@@ -44,7 +43,6 @@ function AppRoutes() {
       <Route path={ROUTERS.COMMAND} element={<Command />} />
       <Route path={ROUTERS.DASHBOARD} element={<Dashboard />} />
       <Route path={ROUTERS.REPORTS} element={<Reports />} />
-      <Route path={ROUTERS.PROJECTS} element={<Projects />} />
       <Route path={ROUTERS.JOBS} element={<Jobs />} />
       <Route path={ROUTERS.TASKS} element={<Tasks />} />
       <Route path={ROUTERS.EXPENSES} element={<Expenses />} />
