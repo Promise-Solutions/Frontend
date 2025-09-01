@@ -1,0 +1,34 @@
+import { showToast } from "../components/toastStyle/ToastStyle";
+import { ROUTERS } from "../constants/routers";
+import { axiosProvider } from "../provider/apiProvider";
+
+export const validateSession = () => {
+  const pathname = window.location.pathname;
+  if (pathname != ROUTERS.LOGIN) {
+    const userLogged = localStorage.getItem("userLogged");
+
+    if (userLogged == null || userLogged == "" || userLogged == undefined) {
+      showToast.error("Sessão expirada, entre novamente!");
+      localStorage.removeItem("token");
+      localStorage.removeItem("userLogged");
+      showToast.error("Para sua segurança. Faça login novamente.");
+      window.location.href = ROUTERS.LOGIN;
+    } else {
+      axiosProvider
+        .get(`/employees/${userLogged}`)
+        .then((res) => {
+          if (res.status === 200) {
+            showToast.success("Sessão validada!");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          showToast.error("Sessão expirada, entre novamente!");
+          localStorage.removeItem("token");
+          localStorage.removeItem("userLogged");
+          showToast.error("Para sua segurança. Faça login novamente.");
+          window.location.href = ROUTERS.LOGIN;
+        });
+    }
+  }
+};

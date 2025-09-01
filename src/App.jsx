@@ -8,6 +8,7 @@ import GlobalProvider from "./context/GlobalProvider";
 import Play from "./assets/play.png";
 import Pause from "./assets/pause.png";
 import { FaRegClock } from "react-icons/fa";
+import { validateSession } from "./hooks/validateSession";
 
 function App() {
   const videoRef = useRef(null); // Referência para o vídeo
@@ -15,6 +16,10 @@ function App() {
   const [now, setNow] = useState(new Date());
   const [minimizedClock, setMinimizedClock] = useState(false);
   const [hoveredClock, setHoveredClock] = useState(false);
+
+    useEffect(() => {
+      validateSession();
+    }, []);
 
   // Função para pausar/reproduzir o vídeo
   const toggleVideo = () => {
@@ -27,8 +32,6 @@ function App() {
       setIsPlaying(!isPlaying);
     }
   };
-
-
 
   // Atualiza o relógio a cada segundo se expandido, senão a cada minuto
   useEffect(() => {
