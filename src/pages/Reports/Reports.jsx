@@ -21,17 +21,20 @@ const Reports = () => {
   // Busca relatórios do backend
   const fetchReports = async () => {
     setIsLoading(true);
+    setIsDownloading(true)
     try {
       const response = await axiosProvider.get(ENDPOINTS.driveList());
       const files = Array.isArray(response.data) ? response.data : [];
       setAllReports(files);
       setReports(files);
-    } catch (error) {
+    } catch (err) {
       setAllReports([]);
       setReports([]);
+      console.log(err)
       showToast.error("Erro ao buscar relatórios.");
     }
     setIsLoading(false);
+    setIsDownloading(false);
   };
 
   useEffect(() => {
@@ -62,8 +65,9 @@ const Reports = () => {
           document.body.appendChild(link);
           link.click();
           link.remove();
-        } catch (error) {
-          throw new Error("Erro ao baixar relatório.");
+        } catch (err) {
+                console.log(err);
+                showToast.error("Erro ao buscar relatórios.");
         }
       })(),
       {
@@ -90,8 +94,9 @@ const Reports = () => {
       setDeleteIndex(null);
       showToast.success("Relatório deletado com sucesso!");
       fetchReports();
-    } catch (error) {
-      showToast.error("Erro ao deletar relatório.");
+    } catch (err) {
+            console.log(err);
+            showToast.error("Erro ao buscar relatórios.");
       setIsDeleteModalOpen(false);
       setDeleteIndex(null);
     }
@@ -117,7 +122,7 @@ const Reports = () => {
       allReports.filter((file) => {
         // Filtra pelo nome do arquivo, procurando datas no formato dd/mm/yyyy OU dd-mm-yyyy
         let dateStr =
-          file.name?.match(/\d{2}[\/-]\d{2}[\/-]\d{4}/)?.[0] ||
+          file.name?.match(/\d{2}[/-]\d{2}[/-]\d{4}/)?.[0] ||
           file.createdTime?.slice(0, 10);
 
         // Normaliza para dd/mm/yyyy para comparação

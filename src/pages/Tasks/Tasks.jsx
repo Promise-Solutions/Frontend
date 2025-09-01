@@ -154,7 +154,7 @@ const Tasks = () => {
     const task = tasks.find((t) => t.id === taskId);
     if (!task) return;
 
-    const { responsibleName, assignedName, ...payload } = {
+    const { ...payload } = {
       ...task,
       fkEmployee: task.fkEmployee || null, // Certifica-se de enviar fkEmployee corretamente
       status: newStatus, // Atualiza o status

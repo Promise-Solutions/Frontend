@@ -8,6 +8,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import Checkbox from "../../../components/form/Checkbox";
 import { ROUTERS } from "../../../constants/routers";
 import { getNumericValue } from "../../../hooks/formatUtils";
+import Breadcrumbs from "../../../components/breadcrumbs/Breadcrumbs";
+import CancelButton from "../../../components/buttons/action/CancelButton";
 
 const SubJobRegister = () => {
   const { saveSubJob } = useSubJobContext();
@@ -120,141 +122,154 @@ const SubJobRegister = () => {
   };
 
   return (
-    <main className="slide-in-ltr flex items-center justify-center h-[600px] my-6 w-full px-16">
-      <section className="flex flex-col items-center justify-start gap-6 w-full px-4">
-        <img src={logo} alt="logo-studio-zero-header" className="h-[250px]" />
-        <h1 className="font-light text-4xl tracking-widest text-[#9A3379] text-center">
-          Registre um novo Subserviço
-        </h1>
-      </section>
-      <form
-        onSubmit={handleSubmit}
-        autoComplete="off"
-        className="flex flex-col items-center justi w-full h-full px-4"
-      >
-        <section
-          id="form_cliente"
-          className="flex flex-wrap items-center justify-between w-full gap-4"
-        >
-          <Input
-            type="text"
-            text="Titulo"
-            required
-            name="title"
-            placeholder="Digite o titulo"
-            handleOnChange={handleInputChange}
-            value={formData.title}
-            maxLength="50"
-          />
-          <Input
-            type="text"
-            text="Descrição"
-            required
-            name="description"
-            placeholder="Digite a descrição"
-            handleOnChange={handleInputChange}
-            value={formData.description}
-            maxLength={200}
-          />
-          <Input
-            type="tel"
-            text="Valor (R$)"
-            required
-            name="value"
-            placeholder="Digite o valor"
-            handleOnChange={handleValorChange}
-            value={formData.value === NaN ? null : formData.value}
-            maxLength="50"
-          />
-          <Input
-            type="date"
-            text="Data prevista para subserviço"
-            name="date"
-            placeholder="Digite o valor"
-            handleOnChange={handleInputChange}
-            value={formData.date}
-            min={new Date().toLocaleDateString("en-CA")}
-            max="2099-12-31"
-            className="custom-calendar"
-          />
-          <Checkbox
-            text="Utilizará a Sala?"
-            required
-            name="needsRoom"
-            handleOnChange={handleInputCheckboxChange}
-            value={formData.needsRoom}
-          />
-          <div className="flex items-center justify-between w-full gap-8">
-            <Input
-              type="time"
-              text="Horário de início"
-              name="startTime"
-              placeholder="Digite o valor"
-              handleOnChange={handleInputChange}
-              value={formData.startTime}
-              className="custom-calendar"
-            />
-
-            <Input
-              type="time"
-              text="Horário previsto de conclusão"
-              name="expectedEndTime"
-              placeholder="Digite o valor"
-              handleOnChange={handleInputChange}
-              value={formData.expectedEndTime}
-              className="custom-calendar"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2 mt-2 w-full">
-            <Checkbox
-              text={<span className="text-white">Repetir semanalmente</span>}
-              name="repeatWeekly"
-              value={repeatWeekly}
-              handleOnChange={() => setRepeatWeekly((v) => !v)}
-            />
-            {repeatWeekly && (
-              <>
-                <div className="flex flex-col gap-0 mt-0 w-full">
-                  <span className="text-white text-sm mb-0 leading-tight">
-                    Dias:
-                  </span>
-                  <div className="flex flex-row gap-0.5">
-                    {weekDays.map((d) => (
-                      <Checkbox
-                        key={d.value}
-                        text={
-                          <span className="text-white text-xs">{d.label}</span>
-                        }
-                        name={`repeatDay_${d.value}`}
-                        value={repeatDays.includes(d.value)}
-                        handleOnChange={() => handleRepeatDayChange(d.value)}
-                      />
-                    ))}
-                  </div>
-                </div>
-                <div className="flex items-center mt-0.5">
-                  <span className="text-white text-sm mr-2">Até:</span>
-                  <input
-                    type="date"
-                    value={repeatEndDate}
-                    min={
-                      formData.date || new Date().toLocaleDateString("en-CA")
-                    }
-                    onChange={(e) => setRepeatEndDate(e.target.value)}
-                    className="ml-1 border rounded px-2 py-1 bg-transparent text-white"
-                    style={{ borderColor: "#5f6176" }}
-                  />
-                </div>
-              </>
-            )}
-          </div>
-          <div className="flex items-center justify-center w-full">
-            <SubmitButton text="Confirmar" />
-          </div>
+    <>
+      <Breadcrumbs className="px-16" />
+      <main className="slide-in-ltr flex items-center justify-center h-[600px] my-6 w-full px-16">
+        <section className="flex flex-col items-center justify-start gap-6 w-full px-4">
+          <img src={logo} alt="logo-studio-zero-header" className="h-[250px]" />
+          <h1 className="font-light text-4xl tracking-widest text-[#9A3379] text-center">
+            Registre um novo Subserviço
+          </h1>
         </section>
-      </form>
-    </main>
+        <form
+          onSubmit={handleSubmit}
+          autoComplete="off"
+          className="flex flex-col items-center justi w-full h-full px-4"
+        >
+          <section
+            id="form_cliente"
+            className="flex flex-wrap items-center justify-between w-full gap-4"
+          >
+            <Input
+              type="text"
+              text="Titulo"
+              required
+              name="title"
+              placeholder="Digite o titulo"
+              handleOnChange={handleInputChange}
+              value={formData.title}
+              maxLength="50"
+            />
+            <Input
+              type="text"
+              text="Descrição"
+              required
+              name="description"
+              placeholder="Digite a descrição"
+              handleOnChange={handleInputChange}
+              value={formData.description}
+              maxLength={200}
+            />
+            <Input
+              type="tel"
+              text="Valor (R$)"
+              required
+              name="value"
+              placeholder="Digite o valor"
+              handleOnChange={handleValorChange}
+              value={isNaN(formData.value) ? null : formData.value}
+              maxLength="50"
+            />
+            <Input
+              type="date"
+              text="Data prevista para subserviço"
+              name="date"
+              placeholder="Digite o valor"
+              handleOnChange={handleInputChange}
+              value={formData.date}
+              min={new Date().toLocaleDateString("en-CA")}
+              max="2099-12-31"
+              className="custom-calendar"
+            />
+            <Checkbox
+              text="Utilizará a Sala?"
+              required
+              name="needsRoom"
+              handleOnChange={handleInputCheckboxChange}
+              value={formData.needsRoom}
+            />
+            <div className="flex items-center justify-between w-full gap-8">
+              <Input
+                type="time"
+                text="Horário de início"
+                name="startTime"
+                placeholder="Digite o valor"
+                handleOnChange={handleInputChange}
+                value={formData.startTime}
+                className="custom-calendar"
+              />
+
+              <Input
+                type="time"
+                text="Horário previsto de conclusão"
+                name="expectedEndTime"
+                placeholder="Digite o valor"
+                handleOnChange={handleInputChange}
+                value={formData.expectedEndTime}
+                className="custom-calendar"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2 mt-2 w-full">
+              <Checkbox
+                text={<span className="text-white">Repetir semanalmente</span>}
+                name="repeatWeekly"
+                value={repeatWeekly}
+                handleOnChange={() => setRepeatWeekly((v) => !v)}
+              />
+              {repeatWeekly && (
+                <>
+                  <div className="flex flex-col gap-0 mt-0 w-full">
+                    <span className="text-white text-sm mb-0 leading-tight">
+                      Dias:
+                    </span>
+                    <div className="flex flex-row gap-0.5">
+                      {weekDays.map((d) => (
+                        <Checkbox
+                          key={d.value}
+                          text={
+                            <span className="text-white text-xs">
+                              {d.label}
+                            </span>
+                          }
+                          name={`repeatDay_${d.value}`}
+                          value={repeatDays.includes(d.value)}
+                          handleOnChange={() => handleRepeatDayChange(d.value)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex items-center mt-0.5">
+                    <span className="text-white text-sm mr-2">Até:</span>
+                    <input
+                      type="date"
+                      value={repeatEndDate}
+                      min={
+                        formData.date || new Date().toLocaleDateString("en-CA")
+                      }
+                      onChange={(e) => setRepeatEndDate(e.target.value)}
+                      className="ml-1 border rounded px-2 py-1 bg-transparent text-white"
+                      style={{ borderColor: "#5f6176" }}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="flex items-center justify-center w-full">
+              <div className="flex justify-evenly w-full">
+                <SubmitButton text="Confirmar" />
+                <CancelButton
+                  text="Cancelar"
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                />
+              </div>
+            </div>
+          </section>
+        </form>
+      </main>
+    </>
   );
 };
 

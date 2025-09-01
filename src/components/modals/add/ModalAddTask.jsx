@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Select from "../../form/Select";
 import Input from "../../form/Input";
 import CancelButton from "../../buttons/action/CancelButton";
@@ -7,7 +7,6 @@ import { showToast } from "../../toastStyle/ToastStyle";
 import ModalGeneric from "../ModalGeneric";
 
 const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
-  if (!isOpen) return null;
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -17,13 +16,9 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
     fkAssigned: "",
     status: "",
   });
-
-  const mapStatusToBackend = {
-    Pendente: "PENDING",
-    Fazendo: "WORKING",
-    Concluído: "COMPLETED",
-  };
-
+  
+  if (!isOpen) return null;
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));

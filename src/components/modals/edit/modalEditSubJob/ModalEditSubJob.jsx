@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSubJobContext } from "../../../../context/SubJobContext";
 import { handleInputChange, changeSubJobData } from "./ModalEditSubJob.script";
 import ModalConfirmDelete from "../../ModalConfirmDelete";
@@ -7,7 +7,6 @@ import CancelButton from "../../../buttons/action/CancelButton";
 import ConfirmButton from "../../../buttons/action/ConfirmButton";
 import DeleteButton from "../../../buttons/action/DeleteButton";
 import { useParams } from "react-router-dom";
-import Select from "../../../form/Select";
 import Checkbox from "../../../form/Checkbox";
 import ModalGeneric from "../../ModalGeneric";
 import { getNumericValue } from "../../../../hooks/formatUtils";
@@ -110,7 +109,7 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
         name="date"
         placeholder="Digite o valor"
         handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
-        value={subJobsInfos?.date ? subJobsInfos.date : ""  || ""}
+        value={subJobsInfos?.date ? subJobsInfos.date : ""}
         min={new Date().toLocaleDateString("en-CA")}
         max="2099-12-31"
         className="custom-calendar"
@@ -123,7 +122,7 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
         name="startTime"
         placeholder="Digite o valor"
         handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
-        value={subJobsInfos?.startTime ? subJobsInfos.startTime : "" || ""}
+        value={subJobsInfos?.startTime ? subJobsInfos.startTime : ""}
         className="custom-calendar"
         />
       <Input
@@ -133,7 +132,7 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
         name="expectedEndTime"
         placeholder="Digite o valor"
         handleOnChange={(e) => handleInputChange(e, setSubJobsInfos)}
-        value={subJobsInfos?.expectedEndTime ? subJobsInfos.expectedEndTime : "" || ""}
+        value={subJobsInfos?.expectedEndTime ? subJobsInfos.expectedEndTime : ""}
         className="custom-calendar"
         />
     </div>

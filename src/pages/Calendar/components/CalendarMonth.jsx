@@ -41,28 +41,28 @@ const CalendarMonth = ({
     weeks.push(week);
   }
 
-  // Função para saber se o dia tem subjob que usa sala e não está fechado
-  const hasRoomSubJob = (dateStr) => {
-    return calendarData.some(
-      (d) =>
-        d.date === dateStr &&
-        Array.isArray(d.subjobs) &&
-        d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
-    );
-  };
+  // // Função para saber se o dia tem subjob que usa sala e não está fechado
+  // const hasRoomSubJob = (dateStr) => {
+  //   return calendarData.some(
+  //     (d) =>
+  //       d.date === dateStr &&
+  //       Array.isArray(d.subjobs) &&
+  //       d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
+  //   );
+  // };
 
-  // Função para saber se o mês tem subjob que usa sala e não está fechado
-  const hasRoomSubJobInMonth = (monthToCheck, yearToCheck) => {
-    const monthStr = String(monthToCheck + 1).padStart(2, "0");
-    const yearMonth = `${yearToCheck}-${monthStr}`;
-    return calendarData.some(
-      (d) =>
-        d.date &&
-        d.date.startsWith(yearMonth) &&
-        Array.isArray(d.subjobs) &&
-        d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
-    );
-  };
+  // // Função para saber se o mês tem subjob que usa sala e não está fechado
+  // const hasRoomSubJobInMonth = (monthToCheck, yearToCheck) => {
+  //   const monthStr = String(monthToCheck + 1).padStart(2, "0");
+  //   const yearMonth = `${yearToCheck}-${monthStr}`;
+  //   return calendarData.some(
+  //     (d) =>
+  //       d.date &&
+  //       d.date.startsWith(yearMonth) &&
+  //       Array.isArray(d.subjobs) &&
+  //       d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
+  //   );
+  // };
 
   // Animação ao carregar novos dados
   useEffect(() => {
@@ -72,8 +72,6 @@ const CalendarMonth = ({
       "animate-slide-in-right",
       "animate-fade-in"
     );
-    // Força reflow para reiniciar animação
-    // eslint-disable-next-line
     void calendarRef.current.offsetWidth;
     calendarRef.current.classList.add("animate-fade-in");
   }, [calendarData, month, year]);
@@ -90,7 +88,6 @@ const CalendarMonth = ({
                 "animate-slide-in-right",
                 "animate-fade-in"
               );
-              // eslint-disable-next-line
               void calendarRef.current.offsetWidth;
               calendarRef.current.classList.add("animate-slide-in-right");
             }
@@ -118,7 +115,6 @@ const CalendarMonth = ({
                 "animate-slide-in-right",
                 "animate-fade-in"
               );
-              // eslint-disable-next-line
               void calendarRef.current.offsetWidth;
               calendarRef.current.classList.add("animate-slide-in-left");
             }
@@ -143,7 +139,6 @@ const CalendarMonth = ({
                 "animate-slide-in-right",
                 "animate-fade-in"
               );
-              // eslint-disable-next-line
               void calendarRef.current.offsetWidth;
               calendarRef.current.classList.add("animate-fade-in");
             }

@@ -1,4 +1,3 @@
-import SelectTypeUser from "../../../components/form/SelectTypeUser";
 import logo from "../../../assets/logo-branco-bg-sonoro.png";
 import Input from "../../../components/form/Input";
 import Select from "../../../components/form/Select";

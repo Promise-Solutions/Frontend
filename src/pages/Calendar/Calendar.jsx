@@ -9,7 +9,6 @@ import CalendarMonth from "./components/CalendarMonth";
 import SubJobTable from "./components/SubJobTable";
 import { getStatusTranslated } from "../../hooks/translateAttributes";
 import TaskTableForDay from "./components/TaskTableForDay";
-import { useRef } from "react";
 
 const Calendar = () => {
   const [calendarData, setCalendarData] = useState([]); // [{date: '2024-06-01', subjobs: [...]}, ...]
@@ -59,6 +58,7 @@ const Calendar = () => {
         });
         setTasksByDay(tasksGrouped);
       } catch (err) {
+        console.log(err)
         setCalendarData([]);
         setTasksByDay({});
       }
@@ -67,15 +67,15 @@ const Calendar = () => {
     fetchCalendarData();
   }, [currentMonth, currentYear]);
 
-  // Função para saber se o dia tem subjob que usa sala e não está concluído
-  const hasRoomSubJob = (dateStr) => {
-    return calendarData.some(
-      (d) =>
-        d.date === dateStr &&
-        Array.isArray(d.subjobs) &&
-        d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
-    );
-  };
+  // // Função para saber se o dia tem subjob que usa sala e não está concluído
+  // const hasRoomSubJob = (dateStr) => {
+  //   return calendarData.some(
+  //     (d) =>
+  //       d.date === dateStr &&
+  //       Array.isArray(d.subjobs) &&
+  //       d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
+  //   );
+  // };
 
   // Ao clicar em um dia, mostra todos os subjobs daquele dia (com e sem uso de sala)
   const handleDayClick = (dateStr) => {
@@ -101,18 +101,18 @@ const Calendar = () => {
     { label: "Ação", key: "action" },
   ];
 
-  // Função para saber se o mês tem subjob que usa sala e não está fechado
-  const hasRoomSubJobInMonth = (monthToCheck, yearToCheck) => {
-    const monthStr = String(monthToCheck + 1).padStart(2, "0");
-    const yearMonth = `${yearToCheck}-${monthStr}`;
-    return calendarData.some(
-      (d) =>
-        d.date &&
-        d.date.startsWith(yearMonth) &&
-        Array.isArray(d.subjobs) &&
-        d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
-    );
-  };
+  // // Função para saber se o mês tem subjob que usa sala e não está fechado
+  // const hasRoomSubJobInMonth = (monthToCheck, yearToCheck) => {
+  //   const monthStr = String(monthToCheck + 1).padStart(2, "0");
+  //   const yearMonth = `${yearToCheck}-${monthStr}`;
+  //   return calendarData.some(
+  //     (d) =>
+  //       d.date &&
+  //       d.date.startsWith(yearMonth) &&
+  //       Array.isArray(d.subjobs) &&
+  //       d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
+  //   );
+  // };
 
   // Verifica se há subserviços pendentes para o dia selecionado
   const hasPendingSubJob = subJobsForDay.some(
@@ -218,13 +218,12 @@ const Calendar = () => {
                         setHasPendingForDay(hasPending);
                       }}
                     />
-                  </div>
-                  {/* Se não houver tarefas, não mostra a tabela */}
+                    </div>
+                    <p>{hasTaskForDay}</p>
                 </>
               ) : (
                 <div className="text-gray-400 mt-8">
-                  Selecione ao lado um dia para visualizar subserviços que
-                  utilizam salas.
+                  Selecione ao lado um dia para visualizar subserviços.
                 </div>
               )}
             </div>

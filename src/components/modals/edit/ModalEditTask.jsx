@@ -147,9 +147,9 @@ const ModalEditTask = ({ task, onClose, onEdit, onDelete, employees }) => {
   ];
 
   const buttons = [
-    <DeleteButton text="Deletar" onClick={handleDelete} />,
     <div className="flex justify-end gap-4 ">
       <CancelButton text="Cancelar" onClick={onClose} />
+      <DeleteButton text="Deletar" onClick={handleDelete} />
       <ConfirmButton text="Salvar" onClick={handleEdit} />
     </div>,
   ];

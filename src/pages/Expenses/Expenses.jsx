@@ -3,8 +3,6 @@ import RegisterButton from "../../components/buttons/action/RegisterButton";
 import { SyncLoader } from "react-spinners";
 import ExpenseFilter from "../../components/filters/ExpenseFilter"
 import PrimaryButton from "../../components/buttons/PrimaryButton";
-import { useNavigate } from "react-router-dom";
-import { ROUTERS } from "../../constants/routers";
 import { axiosProvider } from "../../provider/apiProvider";
 import Table from "../../components/tables/Table";
 import ModalEditGoal from "../../components/modals/edit/ModalEditGoal";
@@ -12,7 +10,6 @@ import DeleteButton from "../../components/buttons/action/DeleteButton";
 import { deleteExpense, registrarDespesa, saveExpenseChanges, validateDataToSave } from "./Expenses.script";
 import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete";
 import ModalEditExpense from "../../components/modals/edit/ModalEditExpense";
-import { FaArrowRightLong } from "react-icons/fa6";
 import { ENDPOINTS } from "../../constants/endpoints";
 import { formatDateWithoutTime, getBRCurrency, getNumericValue } from "../../hooks/formatUtils";
 import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../hooks/translateAttributes";
@@ -31,7 +28,6 @@ function Expenses() {
   const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [currentGoal, setCurrentGoal] = useState(null)
-  const navigate = useNavigate();
   const tableHeader = [
     { label:"Item", key: "description"},
     { label:"Categoria", key: "expenseCategory"},

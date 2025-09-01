@@ -27,7 +27,6 @@ import "slick-carousel/slick/slick-theme.css";
 const Home = () => {
   const navigate = useNavigate();
   const sliderRef = useRef(null);
-  const [currentTab, setCurrentTab] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // Slides e responsividade
@@ -67,16 +66,8 @@ const Home = () => {
     arrows: false,
     afterChange: (current) => {
       setCurrentSlide(current);
-      const slidesToShow = getCurrentSlidesToShow();
-      const tabCount = Math.ceil(totalSlides / slidesToShow);
-      const lastTabIndex = tabCount - 1;
-      if (current >= totalSlides - slidesToShow) {
-        setCurrentTab(lastTabIndex);
-      } else {
-        setCurrentTab(Math.floor(current / slidesToShow));
-      }
-    },
-  };
+    }
+  }
 
   // Faz o scroll do mouse acionar o avanço/retrocesso do slider
   const handleWheel = (e) => {
@@ -93,7 +84,6 @@ const Home = () => {
 
   // Calcula slidesToShow dinamicamente para as bolinhas
   const slidesToShow = getCurrentSlidesToShow();
-  const tabCount = Math.ceil(totalSlides / slidesToShow);
 
   // Lógica para desabilitar botões
   const isPrevDisabled = currentSlide === 0;
@@ -148,7 +138,6 @@ const Home = () => {
               className="text-[42px] text-transparent font-bold cursor-pointer"
               style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
               buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
-              onClick={() => handleButtonClick(ROUTERS.CALENDAR, navigate)}
             />
             <CardHomePage
               title="Serviços"
@@ -158,7 +147,6 @@ const Home = () => {
               className="text-[42px] text-transparent font-bold cursor-pointer"
               style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
               buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
-              onClick={() => handleButtonClick(ROUTERS.JOBS, navigate)}
             />
             <CardHomePage
               title="Tarefas"
@@ -168,7 +156,6 @@ const Home = () => {
               className="text-[42px] text-transparent font-bold cursor-pointer"
               style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
               buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
-              onClick={() => handleButtonClick(ROUTERS.TASKS, navigate)}
             />
             <CardHomePage
               title="Bar"
@@ -178,7 +165,6 @@ const Home = () => {
               className="text-[42px] text-transparent font-bold cursor-pointer"
               style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
               buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
-              onClick={() => handleButtonClick(ROUTERS.BAR, navigate)}
             />
             <CardHomePage
               title="Estoque"
@@ -188,7 +174,6 @@ const Home = () => {
               className="text-[42px] text-transparent font-bold cursor-pointer"
               style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
               buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
-              onClick={() => handleButtonClick(ROUTERS.BAR_STOCK, navigate)}
             />
             <CardHomePage
               title="Despesas"
@@ -198,7 +183,6 @@ const Home = () => {
               className="text-[42px] text-transparent font-bold cursor-pointer"
               style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
               buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
-              onClick={() => handleButtonClick(ROUTERS.EXPENSES, navigate)}
             />
             <CardHomePage
               title="Análise"
@@ -208,7 +192,6 @@ const Home = () => {
               className="text-[42px] text-transparent font-bold cursor-pointer"
               style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
               buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
-              onClick={() => handleButtonClick(ROUTERS.DASHBOARD, navigate)}
             />
             <CardHomePage
               title="Relatórios"
@@ -218,7 +201,6 @@ const Home = () => {
               className="text-[42px] text-transparent font-bold cursor-pointer"
               style={{ WebkitTextStroke: "2px var(--color-cyan-zero)" }}
               buttonStyle={{ backgroundColor: "var(--color-cyan-zero)" }}
-              onClick={() => handleButtonClick(ROUTERS.REPORTS, navigate)}
             />
             <CardHomePage
               title="Usuários"
@@ -228,7 +210,6 @@ const Home = () => {
               className="text-[42px] text-transparent font-bold cursor-pointer"
               style={{ WebkitTextStroke: "2px #02aebaff" }}
               buttonStyle={{ backgroundColor: "#02aebaff" }}
-              onClick={() => handleButtonClick(ROUTERS.USERS, navigate)}
             />
           </Slider>
         </div>

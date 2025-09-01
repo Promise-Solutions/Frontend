@@ -7,7 +7,7 @@ import ProfitGraphic from "../../components/graphic/ProfitGraphic";
 import { useEffect, useState } from "react";
 import { axiosProvider } from "../../provider/apiProvider";
 import { SyncLoader } from "react-spinners";
-import { extractDateOnly, formatDateWithoutTime } from "../../hooks/formatUtils";
+import { extractDateOnly } from "../../hooks/formatUtils";
 import { IoMdRefresh } from "react-icons/io";
 import { showToast } from "../../components/toastStyle/ToastStyle";
 

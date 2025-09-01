@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { RenderCommandDetails } from "./Command.script.jsx";
 import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs.jsx";
 

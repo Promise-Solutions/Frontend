@@ -143,7 +143,7 @@ export const RenderInfos = () => {
               },
             ]);
           } else {
-            toast.error("Nenhum dado encontrado para o usuário.");
+            showToast.error("Nenhum dado encontrado para o usuário.");
           }
         })
         .catch((error) => {
@@ -161,7 +161,6 @@ export const RenderInfos = () => {
       clientType: user?.clientType || "",
       birthDay: user?.birthDay || "",
       active: user?.active,
-      birthDay: user?.birthDay || "",
       createdDate: user?.createdDate || "",
     });
 
@@ -239,7 +238,7 @@ export const RenderInfos = () => {
         showToast.error("Contato deve ter 15 caracteres.");
         return;
       }
-      if (isClient & (!formData.birthDay || !formData.birthDay == null)) {
+      if (isClient & (!formData.birthDay || formData.birthDay == null)) {
         showToast.error("Data de nascimento vazia.");
         return;
       } 
@@ -411,7 +410,7 @@ export const RenderInfos = () => {
     if (!user?.birthDay) return false;
     let birthMonth, birthDate;
     if (typeof user.birthDay === "string" && user.birthDay.length >= 10) {
-      const [year, month, day] = user.birthDay.split("-");
+      const [month, day] = user.birthDay.split("-");
       birthMonth = parseInt(month, 10);
       birthDate = parseInt(day, 10);
     } else {

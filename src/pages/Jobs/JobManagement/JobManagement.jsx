@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useJobContext } from "../../../context/JobContext";
-import { useSubJobContext } from "../../../context/SubJobContext";
 import PrimaryButton from "../../../components/buttons/PrimaryButton";
 import DeleteButton from "../../../components/buttons/action/DeleteButton";
 import ModalConfirmDelete from "../../../components/modals/ModalConfirmDelete";
@@ -32,7 +31,6 @@ const JobManagement = () => {
     useJobContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const { findSubJobsByJobId } = useSubJobContext();
   const [jobData, setJobData] = useState();
   const [subJobsData, setSubJobsData] = useState([]);
   const [editingSubJob, setEditingSubJob] = useState(null);
@@ -122,12 +120,15 @@ const JobManagement = () => {
     >
       <Breadcrumbs className="px-16" />
       {editingSubJob && (
-        <ModalEditSubJob
-          subJobData={editingSubJob}
-          onCancel={() => setEditingSubJob(null)}
-          onSave={handleSubJobUpdated}
-          onDelete={handleSubJobDeleted}
-        />
+        <>
+        <Breadcrumbs className="px-16" />
+          <ModalEditSubJob
+            subJobData={editingSubJob}
+            onCancel={() => setEditingSubJob(null)}
+            onSave={handleSubJobUpdated}
+            onDelete={handleSubJobDeleted}
+          />
+        </>
       )}
       {isLoading ? (
         <div className="flex items-center justify-center w-full h-[40vh]">

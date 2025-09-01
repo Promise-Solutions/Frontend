@@ -16,9 +16,9 @@ export function calcTotalWithDiscount(total, discount) {
 }
 
 // Function to calculate the difference between two values
-function calcDifference(value1, value2) {
-  return parseFloat((value1 - value2).toFixed(2));
-}
+// function calcDifference(value1, value2) {
+//   return parseFloat((value1 - value2).toFixed(2));
+// }
 
 // Function to calculate the total value of a product (quantity * unit price)
 export function calcProductTotal(qtdProduto, valorUnitario) {

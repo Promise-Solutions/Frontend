@@ -1,6 +1,5 @@
 import React from "react";
 import PrimaryButton from "../../components/buttons/PrimaryButton.jsx";
-import { getCategoryTranslated, getServiceTypeTranslated, getStatusTranslated } from "../../hooks/translateAttributes.js";
 import { ROUTERS } from "../../constants/routers.js";
 
 export const registerRedirect = (navigate) => {

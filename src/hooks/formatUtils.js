@@ -47,9 +47,9 @@ export const formatTimeWithoutSeconds = (time) => {
     if(typeof time === "string") {
         [hour, minute] = time.split(":")
     
-    } else if(date instanceof Date && !isNaN(date)) {
-        hour = String(date.getHours()).padStart(2, "0");
-        minute = String(date.getMinutes()).padStart(2, "0");
+    } else if(time instanceof Date && !isNaN(time)) {
+        hour = String(time.getHours()).padStart(2, "0");
+        minute = String(time.getMinutes()).padStart(2, "0");
     }
 
     return `${hour}:${minute}`
@@ -78,7 +78,7 @@ export function extractDateOnly(dateStr) {
 }
 
 export const getNumericValue = (valueString) => {
-if (valueString == "" || valueString == NaN || valueString == null) {
+if (valueString == "" || isNaN(valueString) || valueString == null) {
     return valueString;
 }
 if (typeof valueString === "string" && valueString.includes(",")) {
