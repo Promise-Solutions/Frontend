@@ -4,7 +4,11 @@ import { axiosProvider } from "../provider/apiProvider";
 
 export const validateSession = () => {
   const pathname = window.location.pathname;
-  if (pathname != ROUTERS.LOGIN) {
+  if (
+    pathname != ROUTERS.LOGIN &&
+    pathname != ROUTERS.FORGOT &&
+    pathname != ROUTERS.RESET
+  ) {
     const userLogged = localStorage.getItem("userLogged");
 
     if (userLogged == null || userLogged == "" || userLogged == undefined) {
