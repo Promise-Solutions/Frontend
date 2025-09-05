@@ -7,13 +7,11 @@ import { axiosProvider } from "../../provider/apiProvider";
 import Table from "../../components/tables/Table";
 import ModalEditGoal from "../../components/modals/edit/ModalEditGoal";
 import DeleteButton from "../../components/buttons/action/DeleteButton";
-import { deleteExpense, registrarDespesa, saveExpenseChanges, validateDataToSave } from "./Expenses.script";
+import { deleteExpense, registrarDespesa, validateDataToSave } from "./Expenses.script";
 import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete";
-import ModalEditExpense from "../../components/modals/edit/ModalEditExpense";
 import { ENDPOINTS } from "../../constants/endpoints";
 import { formatDateWithoutTime, getBRCurrency, getNumericValue } from "../../hooks/formatUtils";
 import { getExpenseCategoryTranslated, getPaymentTypeTranslated } from "../../hooks/translateAttributes";
-import EditButton from "../../components/buttons/action/EditButton";
 import ModalAddExpense from "../../components/modals/add/ModalAddExpense";
 import { showToast } from "../../components/toastStyle/ToastStyle";
 
@@ -22,8 +20,6 @@ function Expenses() {
   const [searchTerm, setSearchTerm] = useState(""); 
   const [expenseElements, setExpenseElements] = useState([]); 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [expenseToEdit, setExpenseToEdit] = useState(null);
   const [idExpenseToDelete, setIdExpenseToDelete] = useState(null);
   const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -101,7 +97,8 @@ function Expenses() {
             showToast.success("Despesa registrada com sucesso!")
             setIsAddModalOpen(false)
             handleExpenseRegistered(response, formData.quantity)
-        }
+    }
+    console.log(formDataToSave)
     };
 
     const handleExpenseRegistered = (expenseRegistered) => {
@@ -132,18 +129,6 @@ function Expenses() {
     } 
   }
 
-  const handleEditExpense = (expense) => {
-    setExpenseToEdit(expense);
-    setIsEditing(true);
-  } 
-
-  const handleExpenseUpdated = (expenseUpdated, newQuantity) => {
-    setExpenseElements((prev) =>
-      prev.map((expense) =>
-        expense.id === expenseUpdated.id ? {...expenseUpdated , quantity: newQuantity} : expense
-      )
-    );
-  };
 
   const handleExpenseDeleted = () => {
     setExpenseElements((prev) =>
@@ -218,13 +203,6 @@ function Expenses() {
         onGoalSaved={setCurrentGoal}
         currentGoal={currentGoal}
       />
-      <ModalEditExpense 
-        isOpen={isEditing}
-        initialData={expenseToEdit} 
-        onClose={() => setIsEditing(false)} 
-        onSave={saveExpenseChanges}
-        onExpenseSaved={handleExpenseUpdated}
-      />
       <ModalAddExpense
         isOpen={isAddModalOpen}
         onSave={handleRegisterExpense}
@@ -254,7 +232,7 @@ function Expenses() {
               />
               <RegisterButton
                 id="register_button"
-                title="Cadastrar Usuário"
+                title="Cadastrar Despesa"
                 text="+"
                 onClick={() => setIsAddModalOpen(true)}
               />
@@ -283,11 +261,6 @@ function Expenses() {
                     quantity: expense.quantity != null ? expense.quantity : <span className="text-gray-400">N/A</span>,
                     actions: [
                       <div className="flex gap-2">
-                        <EditButton
-                          id="id_edit"
-                          text="Editar"
-                          onClick={() => handleEditExpense(expense)}
-                        />
                         <DeleteButton 
                           id="id_delete"
                           text="Deletar"
