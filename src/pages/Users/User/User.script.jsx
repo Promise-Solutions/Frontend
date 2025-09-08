@@ -579,7 +579,7 @@ export const RenderInfos = () => {
             </div>
 
             {data.length >= 4 && (
-              <div className="flex h-28 gap-4 justify-center mt-4 w-full">
+              <div className="flex gap-4 justify-center my-4 w-full">
                 <Kpi
                   title={data[0].name && "Frequência Total"}
                   value={
