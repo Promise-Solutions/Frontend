@@ -8,6 +8,7 @@ import PrimaryButton from "../../components/buttons/PrimaryButton";
 import { axiosProvider } from "../../provider/apiProvider";
 import { SyncLoader } from "react-spinners";
 import { ENDPOINTS } from "../../constants/endpoints";
+import { showToast } from "../../components/toastStyle/ToastStyle";
 
 const statuses = ["Pendente", "Fazendo", "Concluído"];
 
@@ -139,6 +140,7 @@ const Tasks = () => {
         setTasks((prev) =>
           prev.map((t) => (t.id === id ? updatedTaskWithNames : t))
         );
+        showToast.success("Tarefa atualizada com sucesso!")
         setIsEditModalOpen(false);
       })
       .catch((err) => console.error(err));

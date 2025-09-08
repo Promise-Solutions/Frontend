@@ -313,10 +313,6 @@ console.log(selectedProduct)
     }
   };
 
-  const calculateTotalValue = () => {
-    return parseFloat(command.totalValue).toFixed(2); // Reflete o valor total do banco
-  };
-
   const handleToggleCommandStatus = async () => {
     try {
       if (command.status === "OPEN") {
@@ -454,7 +450,7 @@ console.log(selectedProduct)
                   <b>Desconto:</b> {command.discount}%
                 </li>
                 <li>
-                  <b>Valor Total:</b> {getBRCurrency(calculateTotalValue())} 
+                  <b>Valor Total:</b> {getBRCurrency(command.totalValue)} 
                 </li>
                 <li>
                   <b>Status:</b>{" "}
@@ -548,7 +544,7 @@ console.log(selectedProduct)
               headers={[
                 { label: "Nome", key: "name" },
                 { label: "Quantidade", key: "productQuantity" },
-                { label: `R$ Valor ${command?.internal ? "(Funcionários)" : "(Clientes)"} `, key: "unitValue" },
+                { label: "R$ Valor Total", key: "unitValue" },
                 { label: "Ações", key: "actions" },
               ]}
               data={products.map((product) => ({

@@ -3,25 +3,35 @@ import Input from "../../form/Input";
 import ConfirmButton from "../../buttons/action/ConfirmButton";
 import CancelButton from "../../buttons/action/CancelButton";
 import ModalGeneric from "../ModalGeneric";
+import { getNumericValue } from "../../../hooks/formatUtils";
 
 const ModalAddDiscount = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
   const [discount, setDiscount] = useState(0);
 
-  const handleInputChange = (e) => {
-    const value = Math.max(0, Math.min(100, Number(e.target.value))); // Garantir que o valor esteja entre 0 e 100
+   const handleInputChange = (e) => {
+    let value = e.target.value;
+
+    if (!/^\d*$/.test(value)) return;
+
+    if (value !== "") {
+      const numValue = Math.min(100, Math.max(0, Number(value)));
+      value = String(numValue);
+    }
+
     setDiscount(value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onConfirm(discount); // Passa o valor do desconto para a função de confirmação
-    onClose(); // Fecha o modal
+    const numericDiscount = getNumericValue(discount);
+    onConfirm(numericDiscount); 
+    onClose();
   };
 
   const inputs = [
     <Input
-      type="number"
+      type="text"
       name="discount"
       text="Desconto (%)"
       placeholder="Digite o desconto"
