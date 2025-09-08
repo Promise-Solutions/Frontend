@@ -4,6 +4,7 @@ import ConfirmButton from "../../buttons/action/ConfirmButton.jsx";
 import CancelButton from "../../buttons/action/CancelButton.jsx";
 import { showToast } from "../../toastStyle/ToastStyle.jsx";
 import ModalGeneric from "../ModalGeneric.jsx";
+import { getNumericValue } from "../../../hooks/formatUtils.js";
 
 const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
   const [formData, setFormData] = useState(initialData || {});
@@ -48,7 +49,15 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
       return;
     }
 
-    onSave(formData);
+    const formDataToSave = {
+      ...formData,
+      clientValue: getNumericValue(formData.clientValue),
+      internalValue: getNumericValue(formData.internalValue)
+    }
+
+    console.log("formDataToSave", formDataToSave)
+
+    onSave(formDataToSave);
   };
 
   if (!isOpen) return null;

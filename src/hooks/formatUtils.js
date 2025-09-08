@@ -78,13 +78,14 @@ export function extractDateOnly(dateStr) {
 }
 
 export const getNumericValue = (valueString) => {
-if (valueString == "" || isNaN(valueString) || valueString == null) {
-    return valueString;
-}
-if (typeof valueString === "string" && valueString.includes(",")) {
-    valueString = valueString.replace(",", ".");
-}
-return parseFloat(valueString);
+    if (valueString == null || valueString === "") return valueString;
+    if (typeof valueString === "number") return parseFloat(valueString);
+    if (typeof valueString === "string") {
+        let cleaned = valueString.replace(/\s/g, "").replace(/\./g, "").replace(/,/g, ".");
+        if (isNaN(cleaned)) return 0;
+        return parseFloat(cleaned);
+    }
+    return 0;
 };
 
 export const getBRCurrency = (value) => {
