@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Select from "../../form/Select.jsx";
 import Input from "../../form/Input.jsx";
 import ConfirmButton from "../../buttons/action/ConfirmButton.jsx";
@@ -17,12 +17,13 @@ const ModalEditCommandProduct = ({
 
   useEffect(() => {
     if (initialData) {
-      setFormData({ 
+      setFormData({
         idProduto: initialData.idProduto,
         nomeProduto: initialData.name, // Map initial product name
         qtdProduto: initialData.productQuantity, // Map initial quantity
         valorUnitario: initialData.unitValue, // Map initial unit value
         estoque: initialData.stockQuantity, // Map initial stock quantity
+        qtdAtual: initialData.productQuantity,
       });
     }
   }, [initialData]);
@@ -40,7 +41,7 @@ const ModalEditCommandProduct = ({
     const selectedProduct = allProducts.find(
       (product) => product.id === selectedProductId
     );
-
+    
     if (selectedProduct) {
       setFormData({
         ...formData,
@@ -63,7 +64,7 @@ const ModalEditCommandProduct = ({
       showToast.error("Por favor, insira uma quantidade válida.");
       return;
     }
-    if (formData.qtdProduto > formData.estoque) {
+    if (formData.qtdProduto > (formData.estoque + formData.qtdAtual)) {
       showToast.error("A quantidade não pode exceder o estoque disponível.");
       return;
     }
@@ -74,6 +75,8 @@ const ModalEditCommandProduct = ({
       valorUnitario: parseFloat(formData.valorUnitario),
     });
   };
+
+  console.log(formData)
 
   if (!isOpen) return null;
 

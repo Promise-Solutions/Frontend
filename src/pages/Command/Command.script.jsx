@@ -94,6 +94,7 @@ export const RenderCommandDetails = () => {
         const endpoint = ENDPOINTS.getCommandById(commandId); 
         const response = await axiosProvider.get(endpoint);
         const commandData = response.data;
+        console.log(commandData)
 
         if (commandData) {
           setCommand(commandData); // Atualiza o estado com os dados da comanda
@@ -187,12 +188,12 @@ export const RenderCommandDetails = () => {
     const selectedProduct = allProducts.find(
       (product) => product.id === selectedProductId
     );
-
+console.log(selectedProduct)
     if (selectedProduct) {
       setNewProduct({
         name: selectedProduct.name,
         productQuantity: 0,
-        unitValue: command.isInternal ? selectedProduct.internalValue : selectedProduct.clientValue,
+        unitValue: command.internal ? selectedProduct.internalValue : selectedProduct.clientValue,
         stockQuantity: selectedProduct.quantity, // Set stock quantity
         idProduto: selectedProduct.id,
       });
@@ -217,10 +218,12 @@ export const RenderCommandDetails = () => {
     try {
       const productToAdd = {
         fkProduct: newProduct.idProduto,
-        fkCommand: command.id,
-        productQuantity: parseInt(newProduct.productQuantity),
+        fkCommand: Number(commandId),
+        productQuantity: Number(newProduct.productQuantity),
         unitValue: newProduct.unitValue
       };
+
+    console.log(productToAdd);
 
       await axiosProvider.post(ENDPOINTS.COMMAND_PRODUCTS, productToAdd);
       
@@ -282,11 +285,6 @@ export const RenderCommandDetails = () => {
   };
 
   const handleUpdateProduct = async (updatedProduct) => {
-    if (updatedProduct.qtdProduto > updatedProduct.stockQuantity) {
-      showToast.error("A quantidade inserida excede o estoque disponível.");
-      return;
-    }
-
     try {
       const productToUpdate = {
         fkCommand: command.id,
@@ -550,7 +548,7 @@ export const RenderCommandDetails = () => {
               headers={[
                 { label: "Nome", key: "name" },
                 { label: "Quantidade", key: "productQuantity" },
-                { label: `R$ Valor ${command?.isInternal ? "(Funcionários)" : "(Clientes)"} `, key: "unitValue" },
+                { label: `R$ Valor ${command?.internal ? "(Funcionários)" : "(Clientes)"} `, key: "unitValue" },
                 { label: "Ações", key: "actions" },
               ]}
               data={products.map((product) => ({
