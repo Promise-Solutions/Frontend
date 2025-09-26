@@ -24,6 +24,8 @@ import CancelButton from "../../../components/buttons/action/CancelButton";
 import { SyncLoader } from "react-spinners";
 import { getBRCurrency } from "../../../hooks/formatUtils";
 import Breadcrumbs from "../../../components/breadcrumbs/Breadcrumbs";
+import { FiMoreHorizontal } from "react-icons/fi";
+import ModalAllSubJobs from "../../../components/modals/ModalAllSubJobs";
 
 const JobManagement = () => {
   const { jobId } = useParams();
@@ -33,7 +35,9 @@ const JobManagement = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [jobData, setJobData] = useState();
   const [subJobsData, setSubJobsData] = useState([]);
+  const [firstFiveSubJobs, setFirstFiveSubJobs] = useState();
   const [editingSubJob, setEditingSubJob] = useState(null);
+  const [isModalAllSubJobsOpen, setIsModalAllSubJobsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const categoryOptions = [
@@ -50,19 +54,30 @@ const JobManagement = () => {
   useEffect(() => {
     const loadJobData = async () => {
       const jobDataFetched = await fetchJobData(jobId);
+
       setJob(jobDataFetched);
       setJobData(jobDataFetched);
       setSubJobsData(jobDataFetched.subJobs);
-      console.log(jobDataFetched);
+
+      const firstFiveSubJobs = sortFirstFiveSubJobs(jobDataFetched.subJobs);
+      setFirstFiveSubJobs(firstFiveSubJobs);
+
     };
     loadJobData();
-
-    
 
     setIsLoading(false);
   }, [jobId]);
 
   const handleChangeSubJobStatus = (response) => {
+    console.log("handleChangeSubJobStatus", response)
+    setFirstFiveSubJobs((prev) =>
+      prev.map((subJob) =>
+        subJob.id === response.subJobId
+          ? { ...subJob, status: response.subJobStatus }
+          : subJob
+      )
+    );
+
     setSubJobsData((prev) =>
       prev.map((subJob) =>
         subJob.id === response.subJobId
@@ -86,6 +101,12 @@ const JobManagement = () => {
   };
 
   const handleSubJobUpdated = (subJobUpdated, jobTotalValue) => {
+    setFirstFiveSubJobs((prev) =>
+      prev.map((subJob) =>
+        subJob.id === subJobUpdated.id ? subJobUpdated : subJob
+      )
+    );
+
     setSubJobsData((prev) =>
       prev.map((subJob) =>
         subJob.id === subJobUpdated.id ? subJobUpdated : subJob
@@ -100,6 +121,10 @@ const JobManagement = () => {
   };
 
   const handleSubJobDeleted = (response) => {
+    setFirstFiveSubJobs((prev) =>
+      prev.filter((subJob) => subJob.id !== response.id)
+    );
+
     setSubJobsData((prev) =>
       prev.filter((subJob) => subJob.id !== response.id)
     );
@@ -110,8 +135,27 @@ const JobManagement = () => {
     }));
 
     setEditingSubJob(null);
+    sortFirstFiveSubJobs(subJobsData)
   };
 
+  const sortFirstFiveSubJobs = (subJobs) => {
+    const subJobsSorted = subJobs.sort((a, b) => parseDataHora(a) - parseDataHora(b))
+    return subJobsSorted.slice(0, 5)
+  }
+
+  function parseDataHora(subJob) {
+    const date = subJob.date;
+    let time = subJob.startTime;
+    
+    if(date == null) {
+      return new Date(8640000000000000)
+    } 
+    if(time == null) {
+      time = '23:59:59'
+    }
+
+    return new Date(`${date}T${time}`);
+  }
 
   return (
     <div
@@ -127,9 +171,20 @@ const JobManagement = () => {
             onCancel={() => setEditingSubJob(null)}
             onSave={handleSubJobUpdated}
             onDelete={handleSubJobDeleted}
+            setEditingSubJob={setEditingSubJob}
           />
         </>
       )}
+
+      {isModalAllSubJobsOpen && (
+        <ModalAllSubJobs 
+          closeModal={() => setIsModalAllSubJobsOpen(false)} 
+          subJobs={subJobsData} jobId={jobData.id} 
+          handleChangeSubJobStatus={handleChangeSubJobStatus}
+          setEditingSubJob={setEditingSubJob}
+        />
+      )}
+
       {isLoading ? (
         <div className="flex items-center justify-center w-full h-[40vh]">
           <SyncLoader
@@ -265,8 +320,15 @@ const JobManagement = () => {
           onClick={() => registerRedirect(navigate, jobId)} // Pass navigate to registerRedirect
         />
       </div>
-      <section className="dropdown_section flex items-center justify-center">
-        <div className="flex flex-row gap-4 justify-left items-center mt-12 min-h-[15rem] px-[45px] py-[15px] max-h-[27rem] w-auto overflow-r-auto overflow-y-hidden max-w-[97%]">
+      <section className="dropdown_section flex flex-col items-center justify-center mx-15">
+        <div className="flex justify-between items-center w-[99%] mt-6">
+          <p className="text-cyan-zero text-[20px] font-semibold">Subserviços mais próximos</p>
+          <div className="flex items-center gap-1">
+            {/* <p className="text-[12px] text-yellow-zero">Ver todos os subserviços</p> */}
+            <FiMoreHorizontal onClick={() => setIsModalAllSubJobsOpen(true)} className="ml-auto text-cyan-zero text-2xl h-auto text-right cursor-pointer hover:text-pink-zero" title="Ver Mais"/>
+          </div>
+        </div>
+        <div className="flex flex-row gap-4 justify-left items-center min-h-[15rem] py-[6px] max-h-[27rem] w-auto overflow-r-auto overflow-y-hidden max-w-[99%]">
           {isLoading ? (
             <SyncLoader
               size={8}
@@ -275,10 +337,10 @@ const JobManagement = () => {
               speedMultiplier={2}
             />
           ) : subJobsData.length > 0 ? (
-            subJobsData.map((subJob) => (
+            firstFiveSubJobs.map((subJob) => (
               <CardSubJob
                 key={subJob.id}
-                data={{ ...subJob, jobId: jobData.id  }}
+                data={{ ...subJob, jobId: jobData.id} }
                 onEdit={() => setEditingSubJob(subJob)}
                 onUpdateStatus={handleChangeSubJobStatus}
               />

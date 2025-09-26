@@ -9,7 +9,7 @@ export const registrarSubServico = async (formData, saveSubJob) => {
        showToast.error("Não são aceitos valores negativos!")
         return;
     } 
-    if(formData.description < 2 || formData.description > 500) {
+    if(formData.description.length < 2 || formData.description.length > 500) {
         showToast.error("Descrição deve ter entre 2 e 500 caracteres");
         return;
     }

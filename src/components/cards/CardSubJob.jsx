@@ -9,15 +9,19 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
   const { updateSubJobStatus } = useSubJobContext();
 
   const handleChangeStatus = async () => {
-    console.log("dataid " + data.id + " datastatus " +data.status+ " datajobid " + data.jobId)
     const dataToSend = {
       status: data.status === "CLOSED" ? "PENDING" : "CLOSED",
       jobId: data.jobId
     }
+
+    console.log("dataToSend", dataToSend)
+
     const response = await updateSubJobStatus(
       data.id,
       dataToSend
     );
+
+    console.log("response", response)
 
     if (response != null) {
       onUpdateStatus(response);

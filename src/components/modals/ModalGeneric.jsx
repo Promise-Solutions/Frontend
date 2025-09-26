@@ -15,7 +15,7 @@ const ModalGeneric = ({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/90 flex justify-center items-center z-10">
+    <div className="fixed inset-0 bg-black/90 flex justify-center items-center z-99">
       <div
         className={`bg-[#1E1E1E98] border-1 ${borderStyle[borderVariant]} text-white p-6 shadow-lg ${widthModal} max-w-[700px] transition-all duration-300 transform animate-fade-in-modal`}
       >
