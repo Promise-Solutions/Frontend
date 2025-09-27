@@ -14,9 +14,9 @@ const ForgotPassword = () => {
 
 
   const handleInputChange = (e) => {
-  const { value } = e.target;
-  setEmailValue(value);
-}
+    const { value } = e.target;
+    setEmailValue(value);
+  }
 
   const envioEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -27,6 +27,8 @@ const ForgotPassword = () => {
       return;
     }
 
+    showToast.loading("Carregando...")
+
     axiosProvider.post(ENDPOINTS.FORGOT_PASSWORD, 
       {
         email: emailValue
@@ -34,7 +36,7 @@ const ForgotPassword = () => {
     .then((res) => {
       const mensagem = res.data;
       setEmailValido(true);
-      setMensagemRetorno(mensagem);
+      setMensagemRetorno("Enviamos em seu email instruções para redefinir sua senha.");
     })
     .catch((error) => {
       setEmailValido(false);
@@ -45,7 +47,9 @@ const ForgotPassword = () => {
         setMensagemRetorno("Erro ao enviar e-mail");
       }
     })
-    
+    .finally(() => {
+      showToast.dismiss();
+    })
   }
 
   return (

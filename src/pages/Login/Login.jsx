@@ -19,15 +19,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // if (!formData.email.trim()) {
-    //   showToast.error("O campo de email está vazio.");
-    //   return;
-    // }
+    if (!formData.email.trim()) {
+      showToast.error("O campo de email está vazio.");
+      return;
+    }
 
-    // if (!formData.password.trim()) {
-    //   showToast.error("O campo de senha está vazio.");
-    //   return;
-    // }
+    if (!formData.password.trim()) {
+      showToast.error("O campo de senha está vazio.");
+      return;
+    }
 
     const tokenExists = localStorage.getItem("token") !== null;
 
@@ -64,7 +64,6 @@ const Login = () => {
       showToast.error("Erro ao autenticar. Verifique suas credenciais.")
     }
   }
-
 
   return (
     <div className="container text-white min-w-screen min-h-screen flex items-center justify-center">
