@@ -9,6 +9,7 @@ import Play from "./assets/play.png";
 import Pause from "./assets/pause.png";
 import { FaRegClock } from "react-icons/fa";
 import { validateSession } from "./hooks/validateSession";
+import { ROUTERS } from "./constants/routers";
 
 function App() {
   const videoRef = useRef(null); // Referência para o vídeo
@@ -137,7 +138,7 @@ function App() {
 
 const NavbarWrapper = () => {
   const { pathname } = useLocation(); // Move useLocation here
-  return pathname !== "/login" && pathname !== "/home" && pathname !== "/" && pathname !== "/reset-password" && pathname !== "/forgot-password" ? (
+  return ROUTERS[pathname] === null && pathname !== "/login" && pathname !== "/home" && pathname !== "/" && pathname !== "/reset-password" && pathname !== "/forgot-password" ? (
     <Navbar />
   ) : null; // Conditionally render Navbar
 };

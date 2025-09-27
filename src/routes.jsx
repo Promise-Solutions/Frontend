@@ -24,6 +24,7 @@ import Expenses from "./pages/Expenses/Expenses.jsx";
 import Calendar from "./pages/Calendar/Calendar.jsx";
 import ResetPassword from "./pages/ResetPassword/ResetPassword.jsx";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
+import NotFound from "./pages/NotFound/NotFound.jsx";
 
 function AppRoutes() {
   return (
@@ -49,6 +50,8 @@ function AppRoutes() {
       <Route path={ROUTERS.CALENDAR} element={<Calendar />} />
       <Route path={ROUTERS.RESET} element={<ResetPassword />} />
       <Route path={ROUTERS.FORGOT} element={<ForgotPassword />} />
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

@@ -4,6 +4,11 @@ import { axiosProvider } from "../provider/apiProvider";
 
 export const validateSession = () => {
   const pathname = window.location.pathname;
+  
+  if(ROUTERS[pathname] === undefined) {
+    return;
+  }
+  
   if (
     pathname != ROUTERS.LOGIN &&
     pathname != ROUTERS.FORGOT &&
