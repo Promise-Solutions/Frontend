@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { BrowserRouter as Router, useLocation } from "react-router-dom"; // Import Router and useLocation
+import { matchPath, matchRoutes, BrowserRouter as Router, useLocation } from "react-router-dom";
 import AppRoutes from "./routes";
 import Navbar from "./components/navbar/Navbar";
 import Background from "./assets/background_backoffice_studiozero.mp4";
@@ -137,10 +137,30 @@ function App() {
 }
 
 const NavbarWrapper = () => {
-  const { pathname } = useLocation(); // Move useLocation here
-  return ROUTERS[pathname] === null && pathname !== "/login" && pathname !== "/home" && pathname !== "/" && pathname !== "/reset-password" && pathname !== "/forgot-password" ? (
-    <Navbar />
-  ) : null; // Conditionally render Navbar
+  const { pathname } = useLocation();
+
+  // Rotas onde a Navbar não deve aparecer
+  const hideNavbarRoutes = [
+    ROUTERS.LOGIN,
+    ROUTERS.RESET,
+    ROUTERS.FORGOT,
+    ROUTERS.HOME,
+    ROUTERS.HOME_ALIAS
+  ];
+
+  // Extrai só os valores de rota que são strings (ignora as funções getX)
+  const routePatterns = Object.values(ROUTERS).filter(
+    (r) => typeof r === "string"
+  );
+
+  // Verifica se o pathname atual bate com algum padrão de rota
+  const isKnownRoute = routePatterns.some((pattern) =>
+    matchPath({ path: pattern, end: true }, pathname)
+  );
+
+  const shouldShowNavbar = isKnownRoute && !hideNavbarRoutes.includes(pathname);
+
+  return shouldShowNavbar ? <Navbar /> : null;
 };
 
 export default App;
