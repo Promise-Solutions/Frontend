@@ -2,7 +2,7 @@ export const ENDPOINTS = {
   CLIENTS: "/clients",
   EMPLOYEES: "/employees",
   EMPLOYEES_LOGIN:"/employees/login",
-  JOBS: "/jobs",
+  JOBS: "/jobs?size=7",
   SUBJOBS: "/sub-jobs",
   COMMANDS: "/commands",
   PRODUCTS: "/products",
