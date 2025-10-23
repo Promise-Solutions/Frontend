@@ -10,7 +10,7 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
   return (
     <div className="pagination flex">
       <button
-        onClick={() => handlePageChange(1)}
+        onClick={() => handlePageChange(page - 1)}
         disabled={page === 1}
         className="flex justify-center items-center w-auto h-8 px-4 py-2 bg-transparent border border-pink-zero text-pink-zero font-bold text-center cursor-pointer transition-all duration-100 hover:border-cyan-zero hover:text-cyan-zero"
       >
@@ -20,7 +20,7 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
         {page} de {totalPages}
       </span>
       <button
-        onClick={() => handlePageChange(totalPages)}
+        onClick={() => handlePageChange(page + 1)}
         disabled={page === totalPages}
         className="flex justify-center items-center w-auto h-8 px-4 py-2 bg-transparent border border-pink-zero text-pink-zero font-bold text-center cursor-pointer transition-all duration-100 hover:border-cyan-zero hover:text-cyan-zero"
       >

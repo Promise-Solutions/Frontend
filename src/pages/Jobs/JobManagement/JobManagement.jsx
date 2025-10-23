@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Pagination from "../../../components/pagination/pagination.jsx";
 import { useJobContext } from "../../../context/JobContext";
 import PrimaryButton from "../../../components/buttons/PrimaryButton";
 import DeleteButton from "../../../components/buttons/action/DeleteButton";
@@ -14,6 +15,7 @@ import {
   saveChanges,
   deleteJob,
 } from "./JobManagement.script";
+import { axiosProvider } from "../../../provider/apiProvider";
 import {
   getCategoryTranslated,
   getServiceTypeTranslated,
@@ -24,18 +26,19 @@ import CancelButton from "../../../components/buttons/action/CancelButton";
 import { SyncLoader } from "react-spinners";
 import { getBRCurrency } from "../../../hooks/formatUtils";
 import Breadcrumbs from "../../../components/breadcrumbs/Breadcrumbs";
-import { FiMoreHorizontal } from "react-icons/fi";
 import ModalAllSubJobs from "../../../components/modals/ModalAllSubJobs";
 
 const JobManagement = () => {
   const { jobId } = useParams();
-  const { job, setJob, fetchJobData, updateJobData, deleteJobById } =
+  const { job, fetchJobData, updateJobData, deleteJobById } =
     useJobContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [jobData, setJobData] = useState();
   const [subJobsData, setSubJobsData] = useState([]);
-  const [firstFiveSubJobs, setFirstFiveSubJobs] = useState();
+  const [subJobsPage, setSubJobsPage] = useState(1);
+  const [subJobsTotalPages, setSubJobsTotalPages] = useState(1);
+  // Removido estado não utilizado: firstFiveSubJobs
   const [editingSubJob, setEditingSubJob] = useState(null);
   const [isModalAllSubJobsOpen, setIsModalAllSubJobsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -54,29 +57,37 @@ const JobManagement = () => {
   useEffect(() => {
     const loadJobData = async () => {
       const jobDataFetched = await fetchJobData(jobId);
-
-      setJob(jobDataFetched);
       setJobData(jobDataFetched);
-      setSubJobsData(jobDataFetched.subJobs);
-
-      const firstFiveSubJobs = sortFirstFiveSubJobs(jobDataFetched.subJobs);
-      setFirstFiveSubJobs(firstFiveSubJobs);
-
     };
     loadJobData();
-
-    setIsLoading(false);
   }, [jobId]);
 
+  useEffect(() => {
+    const fetchSubJobs = async () => {
+      setIsLoading(true);
+      try {
+        const pageSize = 4;
+        const response = await axiosProvider.get(
+          `/sub-jobs/job?fkService=${jobId}&size=${pageSize}&page=${
+            subJobsPage - 1
+          }`
+        );
+        const data = response.data || {};
+        setSubJobsData(data.content || []);
+        setSubJobsTotalPages(data.totalPages || 1);
+        console.log("[fetchSubJobs] resposta:", data);
+      } catch (err) {
+        setSubJobsData([]);
+        setSubJobsTotalPages(1);
+        console.error("Erro ao buscar subserviços:", err);
+      }
+      setIsLoading(false);
+    };
+    if (jobId) fetchSubJobs();
+  }, [jobId, subJobsPage]);
+
   const handleChangeSubJobStatus = (response) => {
-    console.log("handleChangeSubJobStatus", response)
-    setFirstFiveSubJobs((prev) =>
-      prev.map((subJob) =>
-        subJob.id === response.subJobId
-          ? { ...subJob, status: response.subJobStatus }
-          : subJob
-      )
-    );
+    console.log("handleChangeSubJobStatus", response);
 
     setSubJobsData((prev) =>
       prev.map((subJob) =>
@@ -101,11 +112,7 @@ const JobManagement = () => {
   };
 
   const handleSubJobUpdated = (subJobUpdated, jobTotalValue) => {
-    setFirstFiveSubJobs((prev) =>
-      prev.map((subJob) =>
-        subJob.id === subJobUpdated.id ? subJobUpdated : subJob
-      )
-    );
+    // Removido setFirstFiveSubJobs
 
     setSubJobsData((prev) =>
       prev.map((subJob) =>
@@ -121,9 +128,7 @@ const JobManagement = () => {
   };
 
   const handleSubJobDeleted = (response) => {
-    setFirstFiveSubJobs((prev) =>
-      prev.filter((subJob) => subJob.id !== response.id)
-    );
+    // Removido setFirstFiveSubJobs
 
     setSubJobsData((prev) =>
       prev.filter((subJob) => subJob.id !== response.id)
@@ -135,23 +140,25 @@ const JobManagement = () => {
     }));
 
     setEditingSubJob(null);
-    sortFirstFiveSubJobs(subJobsData)
+    sortFirstFiveSubJobs(subJobsData);
   };
 
   const sortFirstFiveSubJobs = (subJobs) => {
-    const subJobsSorted = subJobs.sort((a, b) => parseDataHora(a) - parseDataHora(b))
-    return subJobsSorted.slice(0, 5)
-  }
+    const subJobsSorted = subJobs.sort(
+      (a, b) => parseDataHora(a) - parseDataHora(b)
+    );
+    return subJobsSorted.slice(0, 5);
+  };
 
   function parseDataHora(subJob) {
     const date = subJob.date;
     let time = subJob.startTime;
-    
-    if(date == null) {
-      return new Date(8640000000000000)
-    } 
-    if(time == null) {
-      time = '23:59:59'
+
+    if (date == null) {
+      return new Date(8640000000000000);
+    }
+    if (time == null) {
+      time = "23:59:59";
     }
 
     return new Date(`${date}T${time}`);
@@ -165,7 +172,7 @@ const JobManagement = () => {
       <Breadcrumbs className="px-16" />
       {editingSubJob && (
         <>
-        <Breadcrumbs className="px-16" />
+          <Breadcrumbs className="px-16" />
           <ModalEditSubJob
             subJobData={editingSubJob}
             onCancel={() => setEditingSubJob(null)}
@@ -177,9 +184,10 @@ const JobManagement = () => {
       )}
 
       {isModalAllSubJobsOpen && (
-        <ModalAllSubJobs 
-          closeModal={() => setIsModalAllSubJobsOpen(false)} 
-          subJobs={subJobsData} jobId={jobData.id} 
+        <ModalAllSubJobs
+          closeModal={() => setIsModalAllSubJobsOpen(false)}
+          subJobs={subJobsData}
+          jobId={jobData.id}
           handleChangeSubJobStatus={handleChangeSubJobStatus}
           setEditingSubJob={setEditingSubJob}
         />
@@ -322,11 +330,9 @@ const JobManagement = () => {
       </div>
       <section className="dropdown_section flex flex-col items-center justify-center mx-15">
         <div className="flex justify-between items-center w-[99%] mt-6">
-          <p className="text-cyan-zero text-[20px] font-semibold">Subserviços mais próximos</p>
-          <div className="flex items-center gap-1">
-            {/* <p className="text-[12px] text-yellow-zero">Ver todos os subserviços</p> */}
-            <FiMoreHorizontal onClick={() => setIsModalAllSubJobsOpen(true)} className="ml-auto text-cyan-zero text-2xl h-auto text-right cursor-pointer hover:text-pink-zero" title="Ver Mais"/>
-          </div>
+          <p className="text-gray-400 text-[20px] font-semibold">
+            Subserviços Associados
+          </p>
         </div>
         <div className="flex flex-row gap-4 justify-left items-center min-h-[15rem] py-[6px] max-h-[27rem] w-auto overflow-r-auto overflow-y-hidden max-w-[99%]">
           {isLoading ? (
@@ -337,10 +343,10 @@ const JobManagement = () => {
               speedMultiplier={2}
             />
           ) : subJobsData.length > 0 ? (
-            firstFiveSubJobs.map((subJob) => (
+            subJobsData.map((subJob) => (
               <CardSubJob
                 key={subJob.id}
-                data={{ ...subJob, jobId: jobData.id} }
+                data={{ ...subJob, jobId: jobData.id }}
                 onEdit={() => setEditingSubJob(subJob)}
                 onUpdateStatus={handleChangeSubJobStatus}
               />
@@ -350,6 +356,13 @@ const JobManagement = () => {
               Nenhum subserviço encontrado
             </p>
           )}
+        </div>
+        <div className="flex justify-center mt-4 text-gray-400">
+          <Pagination
+            page={subJobsPage}
+            totalPages={subJobsTotalPages}
+            onPageChange={setSubJobsPage}
+          />
         </div>
       </section>
     </div>

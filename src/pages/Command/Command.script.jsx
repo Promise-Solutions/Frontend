@@ -450,7 +450,7 @@ console.log(selectedProduct)
                   <b>Desconto:</b> {command.discount}%
                 </li>
                 <li>
-                  <b>Valor Total:</b> {getBRCurrency(command.totalValue)} 
+                  <b>Valor Total:</b> {getBRCurrency(command.totalValue)}
                 </li>
                 <li>
                   <b>Status:</b>{" "}
@@ -494,14 +494,14 @@ console.log(selectedProduct)
                         min={1} // Prevent negative values
                         max={newProduct.stockQuantity || ""} // Prevent exceeding stock
                       />
-                      {
-                        newProduct?.idProduto && ( 
-                          <div className="border-2 border-pink-zero rounded-2xl px-5 py-2">
-                            <h2 className="font-bold text-[20px]">Valor Unitário</h2>
-                            <p>{getBRCurrency(newProduct.unitValue)}</p>
-                          </div>
-                        )
-                      }
+                      {newProduct?.idProduto && (
+                        <div className="border-2 border-pink-zero rounded-2xl px-5 py-2">
+                          <h2 className="font-bold text-[20px]">
+                            Valor Unitário
+                          </h2>
+                          <p>{getBRCurrency(newProduct.unitValue)}</p>
+                        </div>
+                      )}
                       <ConfirmButton type="submit" text="Adicionar Produto" />
                     </form>
                   ) : (
@@ -524,7 +524,7 @@ console.log(selectedProduct)
         </div>
         <div className="mt-6 w-full flex-1 ml-12">
           <div className="flex justify-between items-center mb-4">
-          <h2 className="text-[32px] font-thin">Produtos na Comanda</h2>
+            <h2 className="text-[32px] font-thin">Produtos na Comanda</h2>
             <PrimaryButton
               text={
                 command.status === "OPEN" ? "Fechar Comanda" : "Reabrir Comanda"
@@ -549,9 +549,11 @@ console.log(selectedProduct)
               ]}
               data={products.map((product) => ({
                 ...product,
-                unitValue: getBRCurrency(product.unitValue * product.productQuantity),
+                unitValue: getBRCurrency(
+                  product.unitValue * product.productQuantity
+                ),
                 actions: (
-                  <div className="flex gap-2">
+                  <div className="flex justify-around">
                     <EditButton
                       text="Editar"
                       onClick={() => handleEditCommandProduct(product)}
@@ -563,7 +565,7 @@ console.log(selectedProduct)
                       disabled={command.status === "CLOSED"} // Disable if command is closed
                     />
                   </div>
-                )
+                ),
               }))}
               elementMessageNotFound="produto"
             />
