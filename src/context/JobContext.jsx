@@ -13,9 +13,9 @@ export function JobProvider({ children }) {
       const response = await axiosProvider.post(ENDPOINTS.JOBS, formData);
 
       if (response.status == 201) {
-        showToast.success("Servico Cadastrado!", { style: ToastStyle })
-        return response.status
-      } 
+        showToast.success("Servico Cadastrado!", { style: ToastStyle });
+        return response.status;
+      }
     } catch (error) {
       showToast.error("Erro ao cadastrar servico!");
       console.error("Erro ao cadastrar servico!", error);
@@ -26,7 +26,7 @@ export function JobProvider({ children }) {
     if (!jobId) return;
 
     try {
-      const response = await axiosProvider.get(ENDPOINTS.getJobById(jobId))
+      const response = await axiosProvider.get(ENDPOINTS.getJobById(jobId));
       const jobData = response.data || null;
 
       if (jobData) {
@@ -39,12 +39,12 @@ export function JobProvider({ children }) {
               ? "Estúdio Fotográfico"
               : "Podcast",
           tipoServico: jobData.serviceType === "SINGLE" ? "Avulso" : "Mensal",
-          status: 
-            jobData.status === "PENDING" 
+          status:
+            jobData.status === "PENDING"
               ? "Pendente"
               : jobData.status === "COMPLETED"
               ? "Concluído"
-              : "Cancelado"
+              : "Cancelado",
         });
 
         return jobData;
@@ -56,25 +56,29 @@ export function JobProvider({ children }) {
     }
   };
 
-  const findJobs = async () => {
+  const findJobs = async (page = 0) => {
     try {
-      const response = await axiosProvider.get(ENDPOINTS.JOBS);
+      // ENDPOINTS.JOBS já tem ?size=7, então só adiciona &page=N
+      const url = `${ENDPOINTS.JOBS}&page=${page}`;
+      const response = await axiosProvider.get(url);
       const jobs = response.data;
       return jobs;
     } catch (error) {
       console.error("Erro ao buscar serviços:", error);
-      return [];
+      return { content: [], totalPages: 1 };
     }
   };
 
   const findJobsByClientId = async (clientId) => {
     try {
-      const response = await axiosProvider.get(ENDPOINTS.getJobsByClient(clientId));
+      const response = await axiosProvider.get(
+        ENDPOINTS.getJobsByClient(clientId)
+      );
 
-      if(response.status == 200) {
+      if (response.status == 200) {
         return response.data;
       }
-      
+
       return [];
     } catch (error) {
       console.error("Erro ao buscar serviços:", error);
@@ -84,20 +88,20 @@ export function JobProvider({ children }) {
 
   const updateJobData = async (id, jobData) => {
     if (!id) return;
-    try { 
+    try {
       const response = await axiosProvider.patch(ENDPOINTS.getJobById(id), {
         title: jobData.title,
         category: jobData.category,
         totalValue: jobData.totalValue,
         fkClient: jobData.fkClient,
         status: jobData.status,
-        serviceType: jobData.serviceType
+        serviceType: jobData.serviceType,
       });
 
       if (response.status === 200) {
         console.log("Serviço atualizado com sucesso!");
         showToast.success("Serviço atualizado com sucesso!");
-        return response.data
+        return response.data;
       }
     } catch (error) {
       showToast.error("Erro ao atualizar o serviço");
@@ -114,16 +118,19 @@ export function JobProvider({ children }) {
       }
       return request.status;
     } catch (error) {
-      if(error.response && error.response.status == 409) {
-        console.log("Erro! Não é possível excluir um serviço com subserviços associados");
-        showToast.error("Não é possível excluir um serviço com subserviços associados!");
-
+      if (error.response && error.response.status == 409) {
+        console.log(
+          "Erro! Não é possível excluir um serviço com subserviços associados"
+        );
+        showToast.error(
+          "Não é possível excluir um serviço com subserviços associados!"
+        );
       } else {
         showToast.error("Erro ao excluir serviço");
         console.error("Erro ao excluir serviço", error);
       }
     }
-  }
+  };
 
   return (
     <JobContext.Provider
@@ -135,7 +142,7 @@ export function JobProvider({ children }) {
         updateJobData,
         deleteJobById,
         saveJob,
-        findJobsByClientId
+        findJobsByClientId,
       }}
     >
       {children}
