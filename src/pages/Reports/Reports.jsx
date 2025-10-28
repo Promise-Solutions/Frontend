@@ -281,6 +281,7 @@ const Reports = () => {
             id="filter_report_button_id"
             text="Filtrar"
             onClick={handleFilter}
+            className="h-14"
           />
         </div>
         <div className="max-h-[450px] overflow-y-auto">

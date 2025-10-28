@@ -242,6 +242,7 @@ const JobManagement = () => {
             id="button_edit"
             text="Editar Serviço"
             onClick={() => setIsEditing(true)}
+            className="h-14"
           />
         </section>
       ) : (
