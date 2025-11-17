@@ -1,40 +1,44 @@
 import axios from "axios";
 import { isTokenValid } from "../hooks/tokenUtils";
 import { showToast } from "../components/toastStyle/ToastStyle";
+import { logoutEmitter } from "../event/logoutEmitter";
 
 export const axiosProvider = axios.create({
   baseURL: import.meta.env.VITE_URL_API,
 });
 
 axiosProvider.interceptors.request.use(
-  (config) => {
+  config => {
     const token = localStorage.getItem("token");
 
     if (token && isTokenValid(token)) {
       config.headers.Authorization = `Bearer ${token}`;
-    } else if (token && !isTokenValid(token)) {
+    } 
+    else if (token && !isTokenValid(token)) {
+      // Token expirado
       localStorage.removeItem("token");
       localStorage.removeItem("userLogged");
-      // redirecionamento programático
-      window.location.href = "/login";
-      showToast.error("Para sua segurança. Faça login novamente.");
+      showToast.error("Para sua segurança, faça login novamente.");
+      logoutEmitter.emit("logout"); // ← EMITE O EVENTO PARA REDIRECIONAR
+    
     }
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  error => Promise.reject(error)
 );
 
 axiosProvider.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
+  res => res,
+  err => {
+    if (!err.response) {
+      showToast.error("Erro de conexão. Verifique sua internet.");
+      return Promise.reject(err);
     }
 
-    return Promise.reject(error);
+    if ([401, 403].includes(err.response?.status)) {
+      logoutEmitter.emit("logout");
+    }
+    return Promise.reject(err);
   }
 );

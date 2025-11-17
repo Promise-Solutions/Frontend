@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { matchPath, matchRoutes, BrowserRouter as Router, useLocation } from "react-router-dom";
+import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import AppRoutes from "./routes";
 import Navbar from "./components/navbar/Navbar";
 import Background from "./assets/background_backoffice_studiozero.mp4";
@@ -8,8 +8,9 @@ import GlobalProvider from "./context/GlobalProvider";
 import Play from "./assets/play.png";
 import Pause from "./assets/pause.png";
 import { FaRegClock } from "react-icons/fa";
-import { validateSession } from "./hooks/validateSession";
 import { ROUTERS } from "./constants/routers";
+import { logoutEmitter } from "./event/logoutEmitter";
+import { isTokenValid } from "./hooks/tokenUtils";
 
 function App() {
   const videoRef = useRef(null); // Referência para o vídeo
@@ -17,10 +18,7 @@ function App() {
   const [now, setNow] = useState(new Date());
   const [minimizedClock, setMinimizedClock] = useState(false);
   const [hoveredClock, setHoveredClock] = useState(false);
-
-    useEffect(() => {
-      validateSession();
-    }, []);
+  const navigate = useNavigate();
 
   // Função para pausar/reproduzir o vídeo
   const toggleVideo = () => {
@@ -44,10 +42,26 @@ function App() {
     return () => clearInterval(interval);
   }, [hoveredClock, minimizedClock]);
 
+  useEffect(() => {
+    const handler = () => {
+      localStorage.clear();
+      navigate("/login");
+    };
+
+    const token = localStorage.getItem("token");
+    
+    if (token && !isTokenValid(token)) {
+      localStorage.clear();
+      navigate("/login");
+    }
+
+    logoutEmitter.on("logout", handler);
+
+    return () => logoutEmitter.off("logout", handler);
+  }, [navigate]);
 
   return (
     <GlobalProvider>
-      <Router>
         <div className="flex min-h-screen min-w-screen flex-col overflow-y-hidden">
           {/* Vídeo de fundo */}
           <video
@@ -131,7 +145,6 @@ function App() {
             <Toaster position="top-center" reverseOrder={false} />
           </div>
         </div>
-      </Router>
     </GlobalProvider>
   );
 }

@@ -9,10 +9,13 @@ import { createRoot } from "react-dom/client";
 
 // Importando o componente principal App
 import App from "./App.jsx";
+import { BrowserRouter } from "react-router-dom";
 
 // Renderizando o componente App dentro do elemento root com StrictMode ativado
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </StrictMode>
 );
