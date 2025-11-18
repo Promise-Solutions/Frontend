@@ -19,8 +19,7 @@ axiosProvider.interceptors.request.use(
       localStorage.removeItem("token");
       localStorage.removeItem("userLogged");
       showToast.error("Para sua segurança, faça login novamente.");
-      logoutEmitter.emit("logout"); // ← EMITE O EVENTO PARA REDIRECIONAR
-    
+      logoutEmitter.emit("logout");
     }
 
     return config;
@@ -31,11 +30,6 @@ axiosProvider.interceptors.request.use(
 axiosProvider.interceptors.response.use(
   res => res,
   err => {
-    if (!err.response) {
-      showToast.error("Erro de conexão. Verifique sua internet.");
-      return Promise.reject(err);
-    }
-
     if ([401, 403].includes(err.response?.status)) {
       logoutEmitter.emit("logout");
     }

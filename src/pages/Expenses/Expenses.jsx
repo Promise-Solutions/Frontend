@@ -88,9 +88,9 @@ function Expenses() {
     async function fetchExpensesPaginated() {
       setIsLoading(true);
       try {
-        const pageSize = 7;
+        const pageSize = 5;
         const response = await axiosProvider.get(
-          `${ENDPOINTS.EXPENSES}?size=${pageSize}&page=${expensePage - 1}`
+          ENDPOINTS.getExpensePagination(pageSize, expensePage - 1)
         );
         const data = response.data || {};
         setExpenseElements(data.content || []);
@@ -275,7 +275,7 @@ function Expenses() {
             <Pagination
               page={expensePage}
               totalPages={expenseTotalPages}
-              onPageChange={setExpensePage}
+              onPageChange={(newPage) => setExpensePage(newPage)}
             />
             <div className="flex row justify-between gap-4">
               <ExpenseFilter

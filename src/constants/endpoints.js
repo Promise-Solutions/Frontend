@@ -22,6 +22,7 @@ export const ENDPOINTS = {
   getClientById: (id) => `/clients/${id}`,
   getEmployeeById: (id) => `/employees/${id}`,
   getJobById: (id) => `/jobs/${id}`,
+  getJobsPagination: (size, page) => `/jobs?size=${size}&page=${page}`,
   getSubJobByJob: (jobId) => `/sub-jobs/job?fkService=${jobId}`,
   getJobsByClient: (clientId) => `/jobs/client?fkClient=${clientId}`,
   getCommandById: (id) => `/commands/${id}`,
@@ -29,8 +30,9 @@ export const ENDPOINTS = {
   getCommandProductsByCommand: (commandId) =>
     `/command-products?fkComanda=${commandId}`,
   getCommandProductsByProduct: (productId) => `/command-products/${productId}`,
-  getCommandByStatus: (status) => `/commands?status=${status}`,
+  getCommandByStatus: (status) => `/commands/by-status?status=${status}`,
   getExpenseById: (expenseId) => `/expenses/${expenseId}`,
+  getExpensePagination: (size, page) => `/expenses?size=${size}&page=${page}`,
 
   // DashboardController endpoints
   getDashboardFrequencys: () => `/dashboard/frequencys`,
