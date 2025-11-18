@@ -56,10 +56,9 @@ export function JobProvider({ children }) {
     }
   };
 
-  const findJobs = async (page = 0) => {
+  const findJobs = async (size = 6, page = 0) => {
     try {
-      // ENDPOINTS.JOBS já tem ?size=7, então só adiciona &page=N
-      const url = `${ENDPOINTS.JOBS}&page=${page}`;
+      const url = ENDPOINTS.getJobsPagination(size, page);
       const response = await axiosProvider.get(url);
       const jobs = response.data;
       return jobs;

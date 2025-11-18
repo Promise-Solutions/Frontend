@@ -347,7 +347,7 @@ const JobManagement = () => {
             subJobsData.map((subJob) => (
               <CardSubJob
                 key={subJob.id}
-                data={{ ...subJob, jobId: jobData.id }}
+                data={{ ...subJob, jobId: jobId }}
                 onEdit={() => setEditingSubJob(subJob)}
                 onUpdateStatus={handleChangeSubJobStatus}
               />

@@ -59,6 +59,8 @@ export const CommandProvider = ({ children }) => {
           : ENDPOINTS.getCommandByStatus("CLOSED")
       const response = await axiosProvider.get(endpoint);
 
+      console.log(response)
+
       if (Array.isArray(response.data)) {
         return response.data.map((command) => ({
           ...command,
