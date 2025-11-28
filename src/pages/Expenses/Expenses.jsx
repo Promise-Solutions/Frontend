@@ -75,7 +75,6 @@ function Expenses() {
       })
       .catch((error) => {
         if (error.status == 404) {
-          console.log("Meta ainda não cadastrada!");
         } else {
           console.error("Erro ao buscar meta atual", error);
         }
@@ -96,7 +95,6 @@ function Expenses() {
         setExpenseElements(data.content || []);
         setExpenseTotalPages(data.totalPages || 1);
       } catch (error) {
-        console.log("Erro ao buscar despesas", error);
         setExpenseElements([]);
         setExpenseTotalPages(1);
       }
@@ -110,7 +108,6 @@ function Expenses() {
         })
         .catch((error) => {
           if (error.status == 404) {
-            console.log("Meta ainda não cadastrada!");
           } else {
             console.error("Erro ao buscar meta atual", error);
           }
@@ -130,17 +127,13 @@ function Expenses() {
     };
 
     if (formData.expenseCategory === "STOCK") {
-      console.log("if");
       formDataToSave.description =
         productOptions.find((p) => p.id === formDataToSave.fkProduct)?.name ||
         formData.description;
-      console.log("description", formDataToSave.description);
     } else {
       formDataToSave.fkProduct = null;
       formDataToSave.quantity = null;
     }
-    console.log(productOptions);
-    console.log(formDataToSave);
     if (!validateDataToSave(formDataToSave)) return;
 
     const response = await registrarDespesa(formDataToSave);
@@ -149,7 +142,6 @@ function Expenses() {
       setIsAddModalOpen(false);
       handleExpenseRegistered(response, formData.quantity);
     }
-    console.log(formDataToSave);
   };
 
   const handleExpenseRegistered = (expenseRegistered) => {
@@ -185,7 +177,6 @@ function Expenses() {
 
   const handleSaveGoal = async (goal) => {
     axiosProvider.get(ENDPOINTS.RECENT_GOAL).then((res) => {
-      console.log(res.data.id);
       if (res.data == null || res.data == "" || res.data == undefined) {
         axiosProvider
           .post(ENDPOINTS.GOALS, {

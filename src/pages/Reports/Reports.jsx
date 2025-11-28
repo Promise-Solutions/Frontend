@@ -30,7 +30,6 @@ const Reports = () => {
     } catch (err) {
       setAllReports([]);
       setReports([]);
-      console.log(err)
       showToast.error("Erro ao buscar relatórios.");
     }
     setIsLoading(false);

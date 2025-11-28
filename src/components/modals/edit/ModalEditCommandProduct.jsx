@@ -76,8 +76,6 @@ const ModalEditCommandProduct = ({
     });
   };
 
-  console.log(formData)
-
   if (!isOpen) return null;
 
   const inputs = [

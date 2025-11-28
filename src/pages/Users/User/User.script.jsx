@@ -122,7 +122,6 @@ export const RenderInfos = () => {
       axiosProvider
         .get(ENDPOINTS.getDashboardClientStats(userId))
         .then((response) => {
-          console.log("Estatísticas do usuário:", response.data);
           if (response.data != null) {
             setData([
               {
@@ -265,7 +264,6 @@ export const RenderInfos = () => {
         setIsEditing(false);
         showToast.success("Informações atualizadas com sucesso!");
       } catch (error) {
-        console.log(error)
         const invalidFields = error.response.data.invalidFields.join(', ')
         if(error.response.data.type == "INVALID_DATA") {
           showToast.error("Seguintes campos inválidos: " +invalidFields);

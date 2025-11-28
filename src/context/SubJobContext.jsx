@@ -7,7 +7,6 @@ const SubJobContext = createContext({});
 
 export function SubJobProvider({ children }) {
   const saveSubJob = async (formData) => {
-    console.log("formData", formData)
     try {
       const request = await axiosProvider.post(ENDPOINTS.SUBJOBS, formData);
     
@@ -35,7 +34,6 @@ export function SubJobProvider({ children }) {
       return null;
     } catch (error) {
       showToast.error("Não foi possível atualizar o status do subserviço")
-      console.log("Não foi possível atualizar o status do subserviço", error)
       return null;
     }
   }
@@ -71,7 +69,6 @@ export function SubJobProvider({ children }) {
       });
 
       if (request.status === 200) {
-        console.log("Subserviço atualizado com sucesso!");
         showToast.success("Subserviço atualizado com sucesso!");
         return request.data
       }
@@ -95,7 +92,6 @@ export function SubJobProvider({ children }) {
       return request.data
     } catch (error) {
       showToast.error("Erro ao excluir subserviço");
-      console.log("Erro ao excluir subserviço", error);
     }
   };
 

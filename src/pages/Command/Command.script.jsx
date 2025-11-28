@@ -87,14 +87,12 @@ export const RenderCommandDetails = () => {
       try {
         // Evita buscar detalhes se o estado atual já corresponde ao commandId
         if (command && command.id === commandId) {
-          console.log("Comanda já carregada no estado.");
           return;
         }
 
         const endpoint = ENDPOINTS.getCommandById(commandId); 
         const response = await axiosProvider.get(endpoint);
         const commandData = response.data;
-        console.log(commandData)
 
         if (commandData) {
           setCommand(commandData); // Atualiza o estado com os dados da comanda
@@ -188,7 +186,6 @@ export const RenderCommandDetails = () => {
     const selectedProduct = allProducts.find(
       (product) => product.id === selectedProductId
     );
-console.log(selectedProduct)
     if (selectedProduct) {
       setNewProduct({
         name: selectedProduct.name,
@@ -222,8 +219,6 @@ console.log(selectedProduct)
         productQuantity: Number(newProduct.productQuantity),
         unitValue: newProduct.unitValue
       };
-
-    console.log(productToAdd);
 
       await axiosProvider.post(ENDPOINTS.COMMAND_PRODUCTS, productToAdd);
       
@@ -395,7 +390,6 @@ console.log(selectedProduct)
       setCommand(null);
       setCommandId(null);
       sessionStorage.removeItem("commandId");
-      console.log("Navigating to /bar after deleting command");
       navigate(ROUTERS.BAR); // Usa navigate para redirecionar
 
       showToast.success("Comanda e itens associados deletados com sucesso!");

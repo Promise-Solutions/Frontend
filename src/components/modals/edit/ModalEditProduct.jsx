@@ -55,8 +55,6 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
       internalValue: getNumericValue(formData.internalValue)
     }
 
-    console.log("formDataToSave", formDataToSave)
-
     onSave(formDataToSave);
   };
 

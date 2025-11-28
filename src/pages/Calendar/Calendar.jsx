@@ -58,7 +58,6 @@ const Calendar = () => {
         });
         setTasksByDay(tasksGrouped);
       } catch (err) {
-        console.log(err)
         setCalendarData([]);
         setTasksByDay({});
       }

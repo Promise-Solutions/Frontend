@@ -75,7 +75,6 @@ const JobManagement = () => {
         const data = response.data || {};
         setSubJobsData(data.content || []);
         setSubJobsTotalPages(data.totalPages || 1);
-        console.log("[fetchSubJobs] resposta:", data);
       } catch (err) {
         setSubJobsData([]);
         setSubJobsTotalPages(1);
@@ -87,7 +86,6 @@ const JobManagement = () => {
   }, [jobId, subJobsPage]);
 
   const handleChangeSubJobStatus = (response) => {
-    console.log("handleChangeSubJobStatus", response);
 
     setSubJobsData((prev) =>
       prev.map((subJob) =>

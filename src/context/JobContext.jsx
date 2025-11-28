@@ -98,7 +98,6 @@ export function JobProvider({ children }) {
       });
 
       if (response.status === 200) {
-        console.log("Serviço atualizado com sucesso!");
         showToast.success("Serviço atualizado com sucesso!");
         return response.data;
       }
@@ -118,9 +117,6 @@ export function JobProvider({ children }) {
       return request.status;
     } catch (error) {
       if (error.response && error.response.status == 409) {
-        console.log(
-          "Erro! Não é possível excluir um serviço com subserviços associados"
-        );
         showToast.error(
           "Não é possível excluir um serviço com subserviços associados!"
         );

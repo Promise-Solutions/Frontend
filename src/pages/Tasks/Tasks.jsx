@@ -91,7 +91,6 @@ const Tasks = () => {
       limitDate: limitDate || null, // Send null if no limit date is selected
       status: "PENDING", // Always send status as PENDING
     };
-    console.log("Payload for adding task:", payload); // Log the payload
     axiosProvider
       .post(ENDPOINTS.TASKS, payload)
       .then((res) => {

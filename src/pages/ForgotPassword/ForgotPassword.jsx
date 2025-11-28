@@ -40,7 +40,6 @@ const ForgotPassword = () => {
     })
     .catch((error) => {
       setEmailValido(false);
-      console.log(error)
       if(error.response.data.type == "BAD_REQUEST") {
         setMensagemRetorno(error.response.data.message)
       } else {

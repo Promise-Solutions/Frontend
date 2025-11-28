@@ -18,7 +18,6 @@ const FrequencyGraphic = ({ title }) => {
     try {
       const response = await axiosProvider.get("/dashboard/frequencys");
       const dataObj = response.data;
-      console.log("🚀 ~ fetchData ~ dataObj:", dataObj)
 
       // Monta os dados para o gráfico geral
       const formattedData = [

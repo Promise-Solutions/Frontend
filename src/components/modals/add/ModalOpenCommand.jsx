@@ -115,7 +115,6 @@ const ModalOpenCommand = ({ isOpen, onClose, onCommandAdded }) => {
         totalValue: 0.0,
       };
 
-      console.log(newCommand)
       await axiosProvider.post(ENDPOINTS.COMMANDS, newCommand);
       showToast.success("Comanda aberta com sucesso!");
       onClose();

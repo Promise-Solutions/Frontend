@@ -46,8 +46,6 @@ const ModalEditSubJob = ({ subJobData, onCancel, onSave, onDelete  }) => {
       fkService: jobId
     }
 
-    console.log("infosUpdate", infosUpdate)
-
     const response = await changeSubJobData(infosUpdate, updateSubJobData)
     if (response) {
       const {jobTotalValue, ...dataUpdated} = response 
