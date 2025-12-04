@@ -67,6 +67,7 @@ export const RenderInfos = () => {
           "Erro ao deletar funcionário. Verifique se há comandas ou serviços associados a esse funcionário."
         );
       }
+      console.error(error);
     } finally {
       setIsDeleteModalOpen(false);
     }

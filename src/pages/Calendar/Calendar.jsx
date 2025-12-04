@@ -9,6 +9,8 @@ import CalendarMonth from "./components/CalendarMonth";
 import SubJobTable from "./components/SubJobTable";
 import { getStatusTranslated } from "../../hooks/translateAttributes";
 import TaskTableForDay from "./components/TaskTableForDay";
+import { ENDPOINTS } from "../../constants/endpoints";
+import { showToast } from "../../components/toastStyle/ToastStyle";
 
 const Calendar = () => {
   const [calendarData, setCalendarData] = useState([]); // [{date: '2024-06-01', subjobs: [...]}, ...]
@@ -18,7 +20,7 @@ const Calendar = () => {
   const [tasksByDay, setTasksByDay] = useState({});
   const [hasTaskForDay, setHasTaskForDay] = useState(false);
   const [hasPendingForDay, setHasPendingForDay] = useState(false);
-  const [currentMonth, setCurrentMonth] = useState(dayjs().month());
+  const [currentMonth, setCurrentMonth] = useState(dayjs().month() + 1);
   const [currentYear, setCurrentYear] = useState(dayjs().year());
   const navigate = useNavigate();
 
@@ -27,17 +29,13 @@ const Calendar = () => {
     const fetchCalendarData = async () => {
       setIsLoading(true);
       try {
-        // Monta o mês no formato YYYY-MM
-        const monthStr = String(currentMonth + 1).padStart(2, "0");
-        const yearMonth = `${currentYear}-${monthStr}`;
-        // Busca subjobs
-        const response = await axiosProvider.get(
-          `/sub-jobs?month=${yearMonth}`
-        );
-        // Agrupa por data
+        const response = await axiosProvider.get(ENDPOINTS.getAppointmentsByMonth(currentYear, currentMonth));
+
+        const subJobsFound = response.data.subJobs;
+
         const grouped = {};
-        (response.data || []).forEach((item) => {
-          if (!item.date.startsWith(yearMonth)) return;
+        (subJobsFound || []).forEach((item) => {
+          if (!item.date) return;
           if (!grouped[item.date]) grouped[item.date] = [];
           grouped[item.date].push(item);
         });
@@ -47,17 +45,17 @@ const Calendar = () => {
         }));
         setCalendarData(arr);
 
-        // Busca tarefas do mês inteiro
-        const tasksResp = await axiosProvider.get(`/tasks?month=${yearMonth}`);
+        const tasksFound = response.data.tasks;
         // Agrupa tarefas por data
         const tasksGrouped = {};
-        (tasksResp.data || []).forEach((task) => {
-          if (!task.limitDate || !task.limitDate.startsWith(yearMonth)) return;
+        (tasksFound || []).forEach((task) => {
+          if (!task.limitDate) return;
           if (!tasksGrouped[task.limitDate]) tasksGrouped[task.limitDate] = [];
           tasksGrouped[task.limitDate].push(task);
         });
         setTasksByDay(tasksGrouped);
       } catch (err) {
+        showToast.error("Houve um erro ao buscar os compromissos do mês.");
         console.log(err)
         setCalendarData([]);
         setTasksByDay({});
@@ -66,16 +64,6 @@ const Calendar = () => {
     };
     fetchCalendarData();
   }, [currentMonth, currentYear]);
-
-  // // Função para saber se o dia tem subjob que usa sala e não está concluído
-  // const hasRoomSubJob = (dateStr) => {
-  //   return calendarData.some(
-  //     (d) =>
-  //       d.date === dateStr &&
-  //       Array.isArray(d.subjobs) &&
-  //       d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
-  //   );
-  // };
 
   // Ao clicar em um dia, mostra todos os subjobs daquele dia (com e sem uso de sala)
   const handleDayClick = (dateStr) => {
@@ -100,19 +88,6 @@ const Calendar = () => {
     { label: "Status", key: "status" },
     { label: "Ação", key: "action" },
   ];
-
-  // // Função para saber se o mês tem subjob que usa sala e não está fechado
-  // const hasRoomSubJobInMonth = (monthToCheck, yearToCheck) => {
-  //   const monthStr = String(monthToCheck + 1).padStart(2, "0");
-  //   const yearMonth = `${yearToCheck}-${monthStr}`;
-  //   return calendarData.some(
-  //     (d) =>
-  //       d.date &&
-  //       d.date.startsWith(yearMonth) &&
-  //       Array.isArray(d.subjobs) &&
-  //       d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
-  //   );
-  // };
 
   // Verifica se há subserviços pendentes para o dia selecionado
   const hasPendingSubJob = subJobsForDay.some(
