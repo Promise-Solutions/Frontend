@@ -4,11 +4,11 @@ import { axiosProvider } from "../provider/apiProvider";
 
 export const validateSession = () => {
   const pathname = window.location.pathname;
-  
-  if(ROUTERS[pathname] === undefined) {
+
+  if (ROUTERS[pathname] === undefined) {
     return;
   }
-  
+
   if (
     pathname != ROUTERS.LOGIN &&
     pathname != ROUTERS.FORGOT &&
@@ -21,7 +21,7 @@ export const validateSession = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("userLogged");
       showToast.error("Para sua segurança. Faça login novamente.");
-      window.location.href = ROUTERS.LOGIN;
+      // Removido redirecionamento duplicado, o interceptor do axios já faz isso
     } else {
       axiosProvider
         .get(`/employees/${userLogged}`)
@@ -36,7 +36,7 @@ export const validateSession = () => {
           localStorage.removeItem("token");
           localStorage.removeItem("userLogged");
           showToast.error("Para sua segurança. Faça login novamente.");
-          window.location.href = ROUTERS.LOGIN;
+          // Removido redirecionamento duplicado, o interceptor do axios já faz isso
         });
     }
   }

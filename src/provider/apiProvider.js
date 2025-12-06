@@ -1,6 +1,7 @@
 import axios from "axios";
 import { isTokenValid } from "../hooks/tokenUtils";
 import { showToast } from "../components/toastStyle/ToastStyle";
+import { ROUTERS } from "../constants/routers";
 
 export const axiosProvider = axios.create({
   baseURL: import.meta.env.VITE_URL_API,
@@ -16,7 +17,7 @@ axiosProvider.interceptors.request.use(
       localStorage.removeItem("token");
       localStorage.removeItem("userLogged");
       // redirecionamento programático
-      window.location.href = "/login";
+      window.location.href = ROUTERS.LOGIN
       showToast.error("Para sua segurança. Faça login novamente.");
     }
 
@@ -32,7 +33,8 @@ axiosProvider.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401 || error.response?.status === 403) {
       localStorage.removeItem("token");
-      window.location.href = "/login";
+      showToast.error("Sessão expirada, entre novamente!");
+      window.location.href = ROUTERS.LOGIN;
     }
 
     return Promise.reject(error);

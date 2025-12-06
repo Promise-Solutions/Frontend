@@ -28,6 +28,7 @@ export function UserProvider({ children }) {
           ? ENDPOINTS.getClientById(userId)
           : ENDPOINTS.getEmployeeById(userId);
         const response = await axiosProvider.get(endpoint);
+        console.log("Dados do usuário buscados:", response.data);
 
         if (response.data) {
           const userData = Array.isArray(response.data)

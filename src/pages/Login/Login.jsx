@@ -95,7 +95,7 @@ const Login = () => {
             handleOnChange={handleInputChange}
             value={formData.password}
           />
-          <SubmitButton text="Confirmar"/>
+          <SubmitButton text="Confirmar" />
           <p className="text-center text-gray-400 cursor-pointer hover:underline" onClick={() => navigate(ROUTERS.FORGOT)}>
             Esqueceu sua senha?
           </p>

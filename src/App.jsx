@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { matchPath, matchRoutes, BrowserRouter as Router, useLocation } from "react-router-dom";
+import { matchPath, BrowserRouter as Router, useLocation } from "react-router-dom";
 import AppRoutes from "./routes";
 import Navbar from "./components/navbar/Navbar";
 import Background from "./assets/background_backoffice_studiozero.mp4";
