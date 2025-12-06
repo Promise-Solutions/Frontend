@@ -218,8 +218,7 @@ const Reports = () => {
           }
         } catch (error) {
           throw new Error(
-            "Erro ao gerar relatório: " +
-              (error?.message || "Erro desconhecido")
+            "Erro ao gerar relatório"
           );
         }
       })(),
