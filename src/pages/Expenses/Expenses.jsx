@@ -48,37 +48,32 @@ function Expenses() {
     { label: "Ações", key: "actions" },
   ];
 
-  async function buscarDespesas() {
-    return await axiosProvider
-      .get(ENDPOINTS.EXPENSES)
-      .then((response) => {
-        return response.data || [];
-      })
-      .catch((error) => {
-        return [];
-      });
-  }
-
-  async function carregarDespesas() {
-    const despesas = await buscarDespesas();
-
-    setExpenseElements(despesas);
-    setIsLoading(false);
-  }
-
-  async function getCurrentGoal() {
-    await axiosProvider
-      .get(ENDPOINTS.RECENT_GOAL)
-      .then((response) => {
-        setCurrentGoal(response.data.goal);
-      })
-      .catch((error) => {
-        if (error.status == 404) {
-        } else {
-          console.error("Erro ao buscar meta atual", error);
-        }
-        setCurrentGoal(0);
-      });
+  
+  function formatDataToTable() {
+    return expenseElements.map((expense) => ({
+        ...expense,
+        amountSpend: getBRCurrency(expense.amountSpend),
+        date: formatDateWithoutTime(expense.date),
+        expenseCategory: getExpenseCategoryTranslated(
+          expense.expenseCategory
+        ),
+        paymentType: getPaymentTypeTranslated(expense.paymentType),
+        quantity:
+          expense.quantity != null ? (
+            expense.quantity
+          ) : (
+            <span className="text-gray-400">N/A</span>
+          ),
+        actions: [
+          <div className="flex gap-2">
+            <DeleteButton
+              id="id_delete"
+              text="Deletar"
+              onClick={() => handleDelete(expense.id)}
+            />
+          </div>,
+        ],
+      }))
   }
 
   // Removido useEffect antigo duplicado
@@ -103,7 +98,7 @@ function Expenses() {
       await axiosProvider
         .get(ENDPOINTS.RECENT_GOAL)
         .then((response) => {
-          setCurrentGoal(response.data.goal);
+          setCurrentGoal(response.data.value);
         })
         .catch((error) => {
           if (error.status == 404) {
@@ -179,10 +174,11 @@ function Expenses() {
       if (res.data == null || res.data == "" || res.data == undefined) {
         axiosProvider
           .post(ENDPOINTS.GOALS, {
-            goal: goal,
+            value: goal,
           })
           .then((response) => {
             showToast.success("Meta atualizada com sucesso!");
+            setCurrentGoal(response.data.value)
             setIsGoalModalOpen(false);
             return response.data;
           })
@@ -193,12 +189,12 @@ function Expenses() {
           });
       } else if (res.data != null || res.data != "" || res.data != undefined) {
         axiosProvider
-          .put(ENDPOINTS.GOALS, {
-            id: res.data.id,
-            goal: goal,
+          .put(ENDPOINTS.getGoalById(res.data.id), {
+            value: goal,
           })
           .then((response) => {
             showToast.success("Meta atualizada com sucesso!");
+            setCurrentGoal(response.data.value)
             setIsGoalModalOpen(false);
             return response.data;
           })
@@ -211,7 +207,8 @@ function Expenses() {
     });
   };
 
-  const filteredExpenseElements = expenseElements.filter((element) => {
+  const filteredExpenseElements = formatDataToTable().filter((element) => {
+    console.log(element)
     const visibleFields = [
       element.description,
       element.amountSpend,
@@ -294,30 +291,7 @@ function Expenses() {
             <div className="gap-2 flex flex-wrap justify-center mt-6 max-h-[500px] 2xl:max-h-[670px] overflow-y-auto w-full h-auto">
               <Table
                 headers={tableHeader}
-                data={expenseElements.map((expense) => ({
-                  ...expense,
-                  amountSpend: getBRCurrency(expense.amountSpend),
-                  date: formatDateWithoutTime(expense.date),
-                  expenseCategory: getExpenseCategoryTranslated(
-                    expense.expenseCategory
-                  ),
-                  paymentType: getPaymentTypeTranslated(expense.paymentType),
-                  quantity:
-                    expense.quantity != null ? (
-                      expense.quantity
-                    ) : (
-                      <span className="text-gray-400">N/A</span>
-                    ),
-                  actions: [
-                    <div className="flex gap-2">
-                      <DeleteButton
-                        id="id_delete"
-                        text="Deletar"
-                        onClick={() => handleDelete(expense.id)}
-                      />
-                    </div>,
-                  ],
-                }))}
+                data={filteredExpenseElements}
                 messageNotFound="Nenhuma despesa encontrada"
               />
             </div>
