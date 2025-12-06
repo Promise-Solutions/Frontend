@@ -7,7 +7,6 @@ import dayjs from "dayjs";
 import PrimaryButton from "../../components/buttons/PrimaryButton";
 import CalendarMonth from "./components/CalendarMonth";
 import SubJobTable from "./components/SubJobTable";
-import { getStatusTranslated } from "../../hooks/translateAttributes";
 import TaskTableForDay from "./components/TaskTableForDay";
 import { ENDPOINTS } from "../../constants/endpoints";
 import { showToast } from "../../components/toastStyle/ToastStyle";
@@ -18,8 +17,6 @@ const Calendar = () => {
   const [subJobsForDay, setSubJobsForDay] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [tasksByDay, setTasksByDay] = useState({});
-  const [hasTaskForDay, setHasTaskForDay] = useState(false);
-  const [hasPendingForDay, setHasPendingForDay] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(dayjs().month() + 1);
   const [currentYear, setCurrentYear] = useState(dayjs().year());
   const navigate = useNavigate();
@@ -39,6 +36,9 @@ const Calendar = () => {
           if (!grouped[item.date]) grouped[item.date] = [];
           grouped[item.date].push(item);
         });
+        
+        setSubJobsForDay(grouped);
+
         const arr = Object.entries(grouped).map(([date, subjobs]) => ({
           date,
           subjobs,
@@ -53,6 +53,7 @@ const Calendar = () => {
           if (!tasksGrouped[task.limitDate]) tasksGrouped[task.limitDate] = [];
           tasksGrouped[task.limitDate].push(task);
         });
+
         setTasksByDay(tasksGrouped);
       } catch (err) {
         showToast.error("Houve um erro ao buscar os compromissos do mês.");
@@ -68,31 +69,17 @@ const Calendar = () => {
   // Ao clicar em um dia, mostra todos os subjobs daquele dia (com e sem uso de sala)
   const handleDayClick = (dateStr) => {
     setSelectedDate(dateStr);
-    const found = calendarData.find((d) => d.date === dateStr);
-    setSubJobsForDay(found?.subjobs || []);
-  };
-
-  // Ao clicar em um subjob, redireciona para o serviço (job) proprietário
-  const handleSubJobClick = (subjob) => {
-    if (subjob?.fkService) {
-      navigate(ROUTERS.getJobDetail(subjob.fkService));
-    }
   };
 
   // Cabeçalho da tabela de subjobs do dia (sem "Valor")
   const tableHeader = [
     { label: "Título", key: "title" },
-    { label: "Descrição", key: "description" },
+    { label: "Data", key: "date" },
     { label: "Horário Início", key: "startTime" },
     { label: "Horário Fim", key: "expectedEndTime" },
     { label: "Status", key: "status" },
     { label: "Ação", key: "action" },
   ];
-
-  // Verifica se há subserviços pendentes para o dia selecionado
-  const hasPendingSubJob = subJobsForDay.some(
-    (sj) => sj.status === "PENDING" || sj.status === "Pendente"
-  );
 
   // Ícone de pendência
   const pendingIcon = (
@@ -101,7 +88,24 @@ const Calendar = () => {
     </span>
   );
 
-  // Calcula pendências por dia (subserviços ou tarefas)
+  // Calcula compromissos por dia (subserviços ou tarefas)
+  const appointmentByDay = {};
+  calendarData.forEach(({ date, subjobs }) => {
+    if (
+      Array.isArray(subjobs)
+    ) {
+      appointmentByDay[date] = true;
+    }
+  });
+  Object.entries(tasksByDay).forEach(([date, tasks]) => {
+    if (
+      Array.isArray(tasks)
+    ) {
+      appointmentByDay[date] = true;
+    }
+  });
+
+  // Calcula pendencias por dia (subserviços ou tarefas)
   const pendingByDay = {};
   calendarData.forEach(({ date, subjobs }) => {
     if (
@@ -117,6 +121,25 @@ const Calendar = () => {
       tasks.some((t) => t.status === "PENDING" || t.status === "Pendente")
     ) {
       pendingByDay[date] = true;
+    }
+  });
+
+  // Calcula em Progresso por dia (subserviços ou tarefas)
+  const inProgressByDay = {};
+  calendarData.forEach(({ date, subjobs }) => {
+    if (
+      Array.isArray(subjobs) &&
+      subjobs.some((sj) => sj.status === "WORKING" || sj.status === "Em progresso")
+    ) {
+      inProgressByDay[date] = true;
+    }
+  });
+  Object.entries(tasksByDay).forEach(([date, tasks]) => {
+    if (
+      Array.isArray(tasks) &&
+      tasks.some((t) => t.status === "WORKING" || t.status === "Em progresso")
+    ) {
+      inProgressByDay[date] = true;
     }
   });
 
@@ -145,33 +168,43 @@ const Calendar = () => {
                 setSelectedDate(null);
                 setSubJobsForDay([]);
               }}
+              appointmentByDay={appointmentByDay}
               pendingByDay={pendingByDay}
+              inProgressByDay={inProgressByDay}
             />
             <div className="flex-1 min-w-[350px]">
               {selectedDate ? (
                 <>
                   <div className="w-full">
-                    <h2 className="text-xl font-semibold mb-2 flex items-center">
-                      Subserviços e Tarefas em{" "}
+                    <p className="text-1xl text-gray-400 font-medium">
                       {dayjs(selectedDate).format("DD/MM/YYYY")}
-                      {(hasPendingSubJob || hasPendingForDay) && pendingIcon}
+                    </p>
+                    <h2 className="text-xl font-semibold mb-2 flex items-center">
+                      Subserviços do dia
+                      {
+                        ( 
+                          subJobsForDay[selectedDate]
+                          && subJobsForDay[selectedDate].some(s => s.status === "PENDING") 
+                        )
+                        && pendingIcon}
                     </h2>
                     <SubJobTable
                       headers={tableHeader}
-                      data={subJobsForDay.map((sj) => ({
-                        ...sj,
-                        startTime: sj.startTime ? sj.startTime.slice(0, 5) : "",
-                        expectedEndTime: sj.expectedEndTime
-                          ? sj.expectedEndTime.slice(0, 5)
-                          : "",
-                        status: getStatusTranslated(sj.status),
-                        action: (
-                          <PrimaryButton
-                            onClick={() => handleSubJobClick(sj)}
-                            text="Acessar Serviço"
-                          />
-                        ),
-                      }))}
+                      // data={subJobsForDay.map((sj) => ({
+                      //   ...sj,
+                      //   startTime: sj.startTime ? sj.startTime.slice(0, 5) : "",
+                      //   expectedEndTime: sj.expectedEndTime
+                      //     ? sj.expectedEndTime.slice(0, 5)
+                      //     : "",
+                      //   status: getStatusTranslated(sj.status),
+                      //   action: (
+                      //     <PrimaryButton
+                      //       onClick={() => handleSubJobClick(sj)}
+                      //       text="Acessar Serviço"
+                      //     />
+                      //   ),
+                      // }))}
+                      data={subJobsForDay[selectedDate] || []}
                       messageNotFound="Nenhum subserviço neste dia"
                     />
                   </div>
@@ -179,7 +212,12 @@ const Calendar = () => {
                     <div className="flex items-center justify-between">
                       <h2 className="text-xl font-semibold mb-2 flex items-center">
                         Tarefas do dia
-                        {hasPendingForDay && pendingIcon}
+                        {
+                          (
+                            tasksByDay[selectedDate]
+                            && tasksByDay[selectedDate].some(t => t.status === "PENDING")
+                          )
+                          && pendingIcon}
                       </h2>
                       <PrimaryButton
                         text="Ver todas as tarefas"
@@ -187,14 +225,9 @@ const Calendar = () => {
                       />
                     </div>
                     <TaskTableForDay
-                      selectedDate={selectedDate}
-                      onTasksInfo={({ hasTasks, hasPending }) => {
-                        setHasTaskForDay(hasTasks);
-                        setHasPendingForDay(hasPending);
-                      }}
+                      taskData={tasksByDay[selectedDate] || []}
                     />
                     </div>
-                    <p>{hasTaskForDay}</p>
                 </>
               ) : (
                 <div className="text-gray-400 mt-8">

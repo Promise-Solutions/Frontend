@@ -12,7 +12,9 @@ const CalendarMonth = ({
   setMonth,
   setYear,
   resetSelection,
-  pendingByDay = {}, // novo prop
+  appointmentByDay = {},
+  pendingByDay = {},
+  inProgressByDay = {}
 }) => {
   dayjs.locale("pt-br");
   const today = dayjs(`${year}-${String(month).padStart(2, "0")}-01`);
@@ -150,7 +152,9 @@ const CalendarMonth = ({
                   const dateStr = day
                     ? today.date(day).format("YYYY-MM-DD")
                     : null;
+                  const isAppointmentDay = appointmentByDay[dateStr];
                   const isPendingDay = pendingByDay[dateStr];
+                  const isInProgressDay = inProgressByDay[dateStr];
                   const isToday =
                     day &&
                     now.date() === day &&
@@ -171,24 +175,26 @@ const CalendarMonth = ({
                                 ? "ring-2 ring-yellow-zero"
                                 : ""
                             }
-                            ${isPendingDay ? "border-2 border-pink-zero" : ""}
+                            ${isAppointmentDay ? "border-2 border-pink-zero" : ""}
                             cursor-pointer hover:bg-pink-zero/10 hover:text-pink-zero
                           `}
                           onClick={() => onDayClick(dateStr)}
                         >
-                          {/* Bolinha cyan-zero acima do número do dia */}
-                          {isPendingDay && (
+                          {/* Bolinha acima do número do dia */}
+
+                          {isAppointmentDay && (
                             <span
                               className="absolute left-1/2 -top-1.5 -translate-x-1/2"
                               style={{
                                 width: 10,
                                 height: 10,
                                 borderRadius: "50%",
-                                background: "var(--color-yellow-zero)",
+                                background: isPendingDay ? "var(--color-yellow-zero)" : isInProgressDay ? "var(--color-pink-zero)" : "var(--color-cyan-zero)",
                                 display: "block",
                               }}
                             ></span>
                           )}
+
                           <span className="relative z-10">{day}</span>
                         </button>
                       ) : (
