@@ -12,10 +12,12 @@ const CalendarMonth = ({
   setMonth,
   setYear,
   resetSelection,
-  pendingByDay = {}, // novo prop
+  appointmentByDay = {},
+  pendingByDay = {},
+  inProgressByDay = {}
 }) => {
   dayjs.locale("pt-br");
-  const today = dayjs(`${year}-${String(month + 1).padStart(2, "0")}-01`);
+  const today = dayjs(`${year}-${String(month).padStart(2, "0")}-01`);
   const now = dayjs();
   const startOfMonth = today.startOf("month");
   const endOfMonth = today.endOf("month");
@@ -40,29 +42,6 @@ const CalendarMonth = ({
     while (week.length < 7) week.push(null);
     weeks.push(week);
   }
-
-  // // Função para saber se o dia tem subjob que usa sala e não está fechado
-  // const hasRoomSubJob = (dateStr) => {
-  //   return calendarData.some(
-  //     (d) =>
-  //       d.date === dateStr &&
-  //       Array.isArray(d.subjobs) &&
-  //       d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
-  //   );
-  // };
-
-  // // Função para saber se o mês tem subjob que usa sala e não está fechado
-  // const hasRoomSubJobInMonth = (monthToCheck, yearToCheck) => {
-  //   const monthStr = String(monthToCheck + 1).padStart(2, "0");
-  //   const yearMonth = `${yearToCheck}-${monthStr}`;
-  //   return calendarData.some(
-  //     (d) =>
-  //       d.date &&
-  //       d.date.startsWith(yearMonth) &&
-  //       Array.isArray(d.subjobs) &&
-  //       d.subjobs.some((sj) => sj.needsRoom && sj.status !== "CLOSED")
-  //   );
-  // };
 
   // Animação ao carregar novos dados
   useEffect(() => {
@@ -91,8 +70,8 @@ const CalendarMonth = ({
               void calendarRef.current.offsetWidth;
               calendarRef.current.classList.add("animate-slide-in-right");
             }
-            if (month === 0) {
-              setMonth(11);
+            if (month === 1) {
+              setMonth(12);
               setYear((y) => y - 1);
             } else {
               setMonth((m) => m - 1);
@@ -118,8 +97,8 @@ const CalendarMonth = ({
               void calendarRef.current.offsetWidth;
               calendarRef.current.classList.add("animate-slide-in-left");
             }
-            if (month === 11) {
-              setMonth(0);
+            if (month === 12) {
+              setMonth(1);
               setYear((y) => y + 1);
             } else {
               setMonth((m) => m + 1);
@@ -142,7 +121,7 @@ const CalendarMonth = ({
               void calendarRef.current.offsetWidth;
               calendarRef.current.classList.add("animate-fade-in");
             }
-            setMonth(now.month());
+            setMonth(now.month() + 1);
             setYear(now.year());
             resetSelection && resetSelection();
           }}
@@ -173,11 +152,13 @@ const CalendarMonth = ({
                   const dateStr = day
                     ? today.date(day).format("YYYY-MM-DD")
                     : null;
+                  const isAppointmentDay = appointmentByDay[dateStr];
                   const isPendingDay = pendingByDay[dateStr];
+                  const isInProgressDay = inProgressByDay[dateStr];
                   const isToday =
                     day &&
                     now.date() === day &&
-                    now.month() === month &&
+                    now.month() + 1 === month &&
                     now.year() === year;
                   return (
                     <td key={j} className="p-1">
@@ -194,24 +175,26 @@ const CalendarMonth = ({
                                 ? "ring-2 ring-yellow-zero"
                                 : ""
                             }
-                            ${isPendingDay ? "border-2 border-pink-zero" : ""}
+                            ${isAppointmentDay ? "border-2 border-pink-zero" : ""}
                             cursor-pointer hover:bg-pink-zero/10 hover:text-pink-zero
                           `}
                           onClick={() => onDayClick(dateStr)}
                         >
-                          {/* Bolinha cyan-zero acima do número do dia */}
-                          {isPendingDay && (
+                          {/* Bolinha acima do número do dia */}
+
+                          {isAppointmentDay && (
                             <span
                               className="absolute left-1/2 -top-1.5 -translate-x-1/2"
                               style={{
                                 width: 10,
                                 height: 10,
                                 borderRadius: "50%",
-                                background: "var(--color-cyan-zero)",
+                                background: isPendingDay ? "var(--color-yellow-zero)" : isInProgressDay ? "var(--color-pink-zero)" : "var(--color-cyan-zero)",
                                 display: "block",
                               }}
                             ></span>
                           )}
+
                           <span className="relative z-10">{day}</span>
                         </button>
                       ) : (

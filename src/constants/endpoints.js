@@ -74,4 +74,7 @@ export const ENDPOINTS = {
   getTaskById: (id) => `/tasks/${id}`,
   updateTask: (id) => `/tasks/${id}`,
   deleteTask: (id) => `/tasks/${id}`,
+
+  // Appointments endpoint
+  getAppointmentsByMonth: (year, month) => `/appointments?year=${year}&month=${month}`
 };
