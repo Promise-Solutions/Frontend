@@ -65,7 +65,6 @@ const Reports = () => {
           link.click();
           link.remove();
         } catch (err) {
-                console.log(err);
                 showToast.error("Erro ao buscar relatórios.");
         }
       })(),
@@ -94,8 +93,7 @@ const Reports = () => {
       showToast.success("Relatório deletado com sucesso!");
       fetchReports();
     } catch (err) {
-            console.log(err);
-            showToast.error("Erro ao buscar relatórios.");
+      showToast.error("Erro ao buscar relatórios.");
       setIsDeleteModalOpen(false);
       setDeleteIndex(null);
     }

@@ -55,7 +55,6 @@ function Expenses() {
         return response.data || [];
       })
       .catch((error) => {
-        console.log("Erro ao buscar despesas", error);
         return [];
       });
   }
