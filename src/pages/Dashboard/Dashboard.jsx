@@ -9,7 +9,7 @@ import { axiosProvider } from "../../provider/apiProvider";
 import { SyncLoader } from "react-spinners";
 import { extractDateOnly } from "../../hooks/formatUtils";
 import { IoMdRefresh } from "react-icons/io";
-import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
+import { showToast } from "../../components/toastStyle/ToastStyle";
 
 const Dashboard = () => {
   const [lastDateUpdate, setLastDateUpdate] = useState();
