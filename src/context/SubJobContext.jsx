@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { axiosProvider } from "../provider/apiProvider";
-import { showToast } from "../components/toastStyle/ToastStyle.jsx";
+import { showToast } from "../components/toastStyle/ToastStyle";
 import { ENDPOINTS } from "../constants/endpoints";
 
 const SubJobContext = createContext({});
