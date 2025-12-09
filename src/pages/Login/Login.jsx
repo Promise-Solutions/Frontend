@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Input from "../../components/form/Input";
 import SubmitButton from "../../components/form/SubmitButton";
-import { showToast } from "../../components/toastStyle/ToastStyle";
+import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { useNavigate } from "react-router-dom";
 import { axiosProvider } from "../../provider/apiProvider";
 import { ROUTERS } from "../../constants/routers";
