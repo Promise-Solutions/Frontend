@@ -2,7 +2,7 @@ import SecondaryButton from "../../components/buttons/SecondaryButton";
 import Input from "../../components/form/Input";
 import { useState, useEffect } from "react";
 import { getParams } from "../../hooks/getParams";
-import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
+import { showToast } from "../../components/toastStyle/ToastStyle";
 import { useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../constants/routers";
 import { axiosProvider } from "../../provider/apiProvider";

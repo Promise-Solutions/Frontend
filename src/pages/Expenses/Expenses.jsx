@@ -25,7 +25,7 @@ import {
   getPaymentTypeTranslated,
 } from "../../hooks/translateAttributes";
 import ModalAddExpense from "../../components/modals/add/ModalAddExpense";
-import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
+import { showToast } from "../../components/toastStyle/ToastStyle";
 
 function Expenses() {
   const [isLoading, setIsLoading] = useState(true);

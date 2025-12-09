@@ -9,7 +9,7 @@ import CalendarMonth from "./components/CalendarMonth";
 import SubJobTable from "./components/SubJobTable";
 import TaskTableForDay from "./components/TaskTableForDay";
 import { ENDPOINTS } from "../../constants/endpoints";
-import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
+import { showToast } from "../../components/toastStyle/ToastStyle";
 
 const Calendar = () => {
   const [calendarData, setCalendarData] = useState([]); // [{date: '2024-06-01', subjobs: [...]}, ...]

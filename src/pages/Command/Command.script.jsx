@@ -9,7 +9,7 @@ import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete.jsx";
 import ModalEditCommandProduct from "../../components/modals/edit/ModalEditCommandProduct.jsx";
 import ModalAddDiscount from "../../components/modals/add/ModalAddDiscount.jsx"; // Importa o novo modal
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
-import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
+import { showToast } from "../../components/toastStyle/ToastStyle";
 import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { ROUTERS } from "../../constants/routers.js";

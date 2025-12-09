@@ -8,7 +8,7 @@ import PrimaryButton from "../../components/buttons/PrimaryButton";
 import { axiosProvider } from "../../provider/apiProvider";
 import { SyncLoader } from "react-spinners";
 import { ENDPOINTS } from "../../constants/endpoints";
-import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
+import { showToast } from "../../components/toastStyle/ToastStyle";
 
 const statuses = ["Pendente", "Fazendo", "Concluído"];
 

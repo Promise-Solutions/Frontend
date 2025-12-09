@@ -4,7 +4,7 @@ import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete.jsx";
 import StockTable from "../../components/tables/stockTable";
 import ModalAddProduct from "../../components/modals/add/ModalAddProduct.jsx";
 import ModalEditProduct from "../../components/modals/edit/ModalEditProduct.jsx";
-import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
+import { showToast } from "../../components/toastStyle/ToastStyle";
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { SyncLoader } from "react-spinners";
 import { ENDPOINTS } from "../../constants/endpoints.js";
