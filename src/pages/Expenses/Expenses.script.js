@@ -1,4 +1,4 @@
-import { showToast } from "../../components/toastStyle/ToastStyle";
+import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { ENDPOINTS } from "../../constants/endpoints";
 import { axiosProvider } from "../../provider/apiProvider";
 

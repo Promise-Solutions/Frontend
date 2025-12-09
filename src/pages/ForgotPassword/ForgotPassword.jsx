@@ -2,7 +2,7 @@ import { useState } from "react";
 import Input from "../../components/form/Input";
 import { ENDPOINTS } from "../../constants/endpoints";
 import { axiosProvider } from "../../provider/apiProvider";
-import { showToast } from "../../components/toastStyle/ToastStyle";
+import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import ReturnButton from "../../components/buttons/action/ReturnButton";
 import SecondaryButton from "../../components/buttons/SecondaryButton";
 

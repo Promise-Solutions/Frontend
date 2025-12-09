@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { axiosProvider } from "../../provider/apiProvider";
 import { ENDPOINTS } from "../../constants/endpoints";
 import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete";
-import { showToast } from "../../components/toastStyle/ToastStyle";
+import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { SyncLoader } from "react-spinners";
 
 const Reports = () => {
