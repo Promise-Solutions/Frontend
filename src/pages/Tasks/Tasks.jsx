@@ -8,7 +8,7 @@ import PrimaryButton from "../../components/buttons/PrimaryButton";
 import { axiosProvider } from "../../provider/apiProvider";
 import { SyncLoader } from "react-spinners";
 import { ENDPOINTS } from "../../constants/endpoints";
-import { showToast } from "../../components/toastStyle/ToastStyle";
+import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 
 const statuses = ["Pendente", "Fazendo", "Concluído"];
 
@@ -106,7 +106,7 @@ const Tasks = () => {
         };
         setTasks([...tasks, taskWithNames]);
         setIsAddModalOpen(false);
-        showToast.success("Tarefa cadastrada com sucesso.")
+        showToast.success("Tarefa cadastrada com sucesso.");
       })
       .catch((err) => console.error(err));
   };
@@ -140,7 +140,7 @@ const Tasks = () => {
         setTasks((prev) =>
           prev.map((t) => (t.id === id ? updatedTaskWithNames : t))
         );
-        showToast.success("Tarefa atualizada com sucesso!")
+        showToast.success("Tarefa atualizada com sucesso!");
         setIsEditModalOpen(false);
       })
       .catch((err) => console.error(err));
@@ -258,11 +258,10 @@ const Tasks = () => {
           onDelete={(id) => {
             axiosProvider
               .delete(`tasks/${id}`)
-              .then(() => 
-                {
-                  setTasks((prev) => prev.filter((t) => t.id !== id))
-                  showToast.success("Tarefa excluída com sucesso")
-                })
+              .then(() => {
+                setTasks((prev) => prev.filter((t) => t.id !== id));
+                showToast.success("Tarefa excluída com sucesso");
+              })
               .catch((err) => console.error(err));
           }}
           employees={employees}

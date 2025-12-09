@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Input from "../../components/form/Input";
 import SubmitButton from "../../components/form/SubmitButton";
-import { showToast, ToastStyle } from "../../components/toastStyle/ToastStyle";
+import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
 import { useNavigate } from "react-router-dom";
 import { axiosProvider } from "../../provider/apiProvider";
 import { ROUTERS } from "../../constants/routers";
@@ -31,38 +31,35 @@ const Login = () => {
 
     const tokenExists = localStorage.getItem("token") !== null;
 
-    if(tokenExists) {
+    if (tokenExists) {
       localStorage.removeItem("token");
     }
 
     try {
       showToast.loading("Autenticando...");
 
-      const response = await axiosProvider.post(
-          ENDPOINTS.EMPLOYEES_LOGIN,
-          { 
-            email: formData.email, 
-            password: formData.password
-          }
-      );
+      const response = await axiosProvider.post(ENDPOINTS.EMPLOYEES_LOGIN, {
+        email: formData.email,
+        password: formData.password,
+      });
 
-      const { token, id } =  response?.data || {};
+      const { token, id } = response?.data || {};
 
-       if (token) {
-          localStorage.setItem("token", token);
-          localStorage.setItem("userLogged", id);
-          showToast.dismiss()
-          showToast.success("Usuário autenticado com sucesso!")
-          navigate(ROUTERS.HOME_ALIAS); 
-        } else {
-          throw new Error("Token não recebido.");
-        }
-
+      if (token) {
+        localStorage.setItem("token", token);
+        localStorage.setItem("userLogged", id);
+        showToast.dismiss();
+        showToast.success("Usuário autenticado com sucesso!");
+        navigate(ROUTERS.HOME_ALIAS);
+      } else {
+        throw new Error("Token não recebido.");
+      }
     } catch (error) {
+      console.error("Erro ao autenticar usuário:", error);
       showToast.dismiss();
-      showToast.error("Erro ao autenticar. Verifique suas credenciais.")
+      showToast.error("Erro ao autenticar. Verifique suas credenciais.");
     }
-  }
+  };
 
   return (
     <div className="container text-white min-w-screen min-h-screen flex items-center justify-center">
@@ -95,7 +92,10 @@ const Login = () => {
             value={formData.password}
           />
           <SubmitButton text="Confirmar" />
-          <p className="text-center text-gray-400 cursor-pointer hover:underline" onClick={() => navigate(ROUTERS.FORGOT)}>
+          <p
+            className="text-center text-gray-400 cursor-pointer hover:underline"
+            onClick={() => navigate(ROUTERS.FORGOT)}
+          >
             Esqueceu sua senha?
           </p>
         </form>

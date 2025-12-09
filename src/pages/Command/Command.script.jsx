@@ -9,7 +9,7 @@ import ModalConfirmDelete from "../../components/modals/ModalConfirmDelete.jsx";
 import ModalEditCommandProduct from "../../components/modals/edit/ModalEditCommandProduct.jsx";
 import ModalAddDiscount from "../../components/modals/add/ModalAddDiscount.jsx"; // Importa o novo modal
 import { useCommandContext } from "../../context/CommandContext"; // Importa o BarContext
-import { showToast } from "../../components/toastStyle/ToastStyle.jsx";
+import { showToast } from "../../components/toastStyle/ToastStyle";
 import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { axiosProvider } from "../../provider/apiProvider.js";
 import { ROUTERS } from "../../constants/routers.js";
@@ -90,7 +90,7 @@ export const RenderCommandDetails = () => {
           return;
         }
 
-        const endpoint = ENDPOINTS.getCommandById(commandId); 
+        const endpoint = ENDPOINTS.getCommandById(commandId);
         const response = await axiosProvider.get(endpoint);
         const commandData = response.data;
 
@@ -122,7 +122,7 @@ export const RenderCommandDetails = () => {
   const fetchCommandDetails = async () => {
     try {
       // Fetch employee details
-      const employeeResponse = await axiosProvider.get(ENDPOINTS.EMPLOYEES); 
+      const employeeResponse = await axiosProvider.get(ENDPOINTS.EMPLOYEES);
       const employee = employeeResponse.data.find(
         (emp) => emp.id === command.fkEmployee
       );
@@ -163,7 +163,9 @@ export const RenderCommandDetails = () => {
       setProducts(enrichedProducts);
 
       // Fetch updated command details
-      const updatedCommand = await axiosProvider.get(ENDPOINTS.getCommandById(command.id)); 
+      const updatedCommand = await axiosProvider.get(
+        ENDPOINTS.getCommandById(command.id)
+      );
       setCommand(updatedCommand.data);
     } catch (error) {
       console.error("Erro ao buscar detalhes da comanda:", error);
@@ -175,7 +177,7 @@ export const RenderCommandDetails = () => {
     let { name, value } = e.target;
 
     if (name === "productQuantity") {
-      value = value.replace(/[^0-9]/g, "")
+      value = value.replace(/[^0-9]/g, "");
     }
 
     setNewProduct((prev) => ({ ...prev, [name]: value }));
@@ -190,7 +192,9 @@ export const RenderCommandDetails = () => {
       setNewProduct({
         name: selectedProduct.name,
         productQuantity: 0,
-        unitValue: command.internal ? selectedProduct.internalValue : selectedProduct.clientValue,
+        unitValue: command.internal
+          ? selectedProduct.internalValue
+          : selectedProduct.clientValue,
         stockQuantity: selectedProduct.quantity, // Set stock quantity
         idProduto: selectedProduct.id,
       });
@@ -200,7 +204,7 @@ export const RenderCommandDetails = () => {
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
-    if (!newProduct.idProduto || newProduct.productQuantity <= 0 ) {
+    if (!newProduct.idProduto || newProduct.productQuantity <= 0) {
       showToast.error(
         "Por favor, selecione um produto e insira uma quantidade válida."
       );
@@ -217,11 +221,11 @@ export const RenderCommandDetails = () => {
         fkProduct: newProduct.idProduto,
         fkCommand: Number(commandId),
         productQuantity: Number(newProduct.productQuantity),
-        unitValue: newProduct.unitValue
+        unitValue: newProduct.unitValue,
       };
 
       await axiosProvider.post(ENDPOINTS.COMMAND_PRODUCTS, productToAdd);
-      
+
       setIsLoading(true);
       // Refetch command details and all products
       await fetchCommandDetails();
@@ -262,8 +266,10 @@ export const RenderCommandDetails = () => {
 
   const confirmDelete = async () => {
     try {
-      await axiosProvider.delete(ENDPOINTS.getCommandProductsByProduct(productToDelete.id));
-      
+      await axiosProvider.delete(
+        ENDPOINTS.getCommandProductsByProduct(productToDelete.id)
+      );
+
       setIsLoading(true);
       // Refetch command details and all products
       await fetchCommandDetails();
@@ -285,7 +291,7 @@ export const RenderCommandDetails = () => {
         fkCommand: command.id,
         fkProduct: updatedProduct.idProduto,
         productQuantity: parseInt(updatedProduct.qtdProduto),
-        unitValue: getNumericValue(updatedProduct.valorUnitario)
+        unitValue: getNumericValue(updatedProduct.valorUnitario),
       };
 
       await axiosProvider.patch(
@@ -317,12 +323,12 @@ export const RenderCommandDetails = () => {
           status: "OPEN",
           commandNumber: command.commandNumber,
           closingDateTime: null,
-          discount: 0.00,
+          discount: 0.0,
           openingDateTime: command.openingDateTime,
           fkClient: command.fkClient,
           totalValue: command.totalValue,
           fkEmployee: command.fkEmployee,
-          isInternal: command.isInternal
+          isInternal: command.isInternal,
         });
 
         // Refetch command details
@@ -355,7 +361,7 @@ export const RenderCommandDetails = () => {
         fkEmployee: command.fkEmployee,
         discount: discount.toFixed(2),
         fkClient: command.fkClient, // Keep the client associated
-        isInternal: command.isInternal
+        isInternal: command.isInternal,
       });
 
       setIsLoading(true);
@@ -374,13 +380,15 @@ export const RenderCommandDetails = () => {
     try {
       // Fetch all items associated with the command
       const commandProductsResponse = await axiosProvider.get(
-        ENDPOINTS.getCommandProductsByCommand(command.id) 
+        ENDPOINTS.getCommandProductsByCommand(command.id)
       );
       const commandProducts = commandProductsResponse.data;
 
       // Delete each item in commandProduct associated with the command
       for (const product of commandProducts) {
-        await axiosProvider.delete(ENDPOINTS.getCommandProductsByProduct(product.id));
+        await axiosProvider.delete(
+          ENDPOINTS.getCommandProductsByProduct(product.id)
+        );
       }
 
       // Delete the command itself

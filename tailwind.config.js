@@ -27,7 +27,7 @@ export default {
       },
     },
   },
-  plugins: [require("tailwind-scrollbar")], // Plugin para estilizar scrollbars
+  plugins: [import("tailwind-scrollbar")], // Plugin para estilizar scrollbars
   variants: {
     extend: {
       after: ["hover", "focus"], // Habilita pseudo-elementos como `after` para hover e focus

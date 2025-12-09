@@ -17,17 +17,17 @@ const ResetPassword = () => {
   const handlePasswordChange = (e) => {
     const { value } = e.target;
     setPassword(value);
-  }
+  };
 
   const handleConfirmPasswordChange = (e) => {
     const { value } = e.target;
     setConfirmPassword(value);
-  }
+  };
 
   useEffect(() => {
     const params = getParams();
     setToken(params.token);
-  }, [])
+  }, []);
 
   function reset() {
     if (password != confirmPassword) {
@@ -37,29 +37,29 @@ const ResetPassword = () => {
     } else if (password == "" || confirmPassword == "") {
       showToast.error("Preencha todos os campos");
     } else {
-      axiosProvider.post(ENDPOINTS.RESET_PASSWORD,
-        {
+      axiosProvider
+        .post(ENDPOINTS.RESET_PASSWORD, {
           token: tokenValue,
           newPassword: password,
-        } )
+        })
         .then((res) => {
           if (res.status === 200) {
             showToast.success("Senha alterada com sucesso! Redirecionando...");
             setTimeout(() => {
               navigate(ROUTERS.LOGIN);
-              }, 1500)
-            }
-          })
-          .catch((error) => {
-            if (error.response.data.type == "BAD_REQUEST") {
-              showToast.error("Erro Interno: Informações errôneas.");
-            } else {
-              showToast.error("Token inválido!");
-            }
-          });
+            }, 1500);
+          }
+        })
+        .catch((error) => {
+          if (error.response.data.type == "BAD_REQUEST") {
+            showToast.error("Erro Interno: Informações errôneas.");
+          } else {
+            showToast.error("Token inválido!");
+          }
+        });
     }
   }
-  
+
   return (
     <div className="flex justify-center items-center h-screen w-screen flex-col">
       <h1 className="text-2xl font-light mb-2 text-white">

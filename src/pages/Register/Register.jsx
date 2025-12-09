@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosProvider } from "../../provider/apiProvider.js";
-import {
-  showToast,
-  ToastStyle,
-} from "../../components/toastStyle/ToastStyle.jsx";
+import { showToast, ToastStyle } from "../../components/toastStyle/ToastStyle";
 import { ROUTERS } from "../../constants/routers.js";
 import Input from "../../components/form/Input.jsx";
 import SubmitButton from "../../components/form/SubmitButton.jsx";
@@ -139,7 +136,7 @@ function Register() {
         birthDay: formData.dataNascimento,
         createdDate: new Date().toISOString(),
       };
-      endpoint = ENDPOINTS.CLIENTS
+      endpoint = ENDPOINTS.CLIENTS;
     } else if (selectedType === "FUNCIONARIO") {
       novoUsuario = {
         name: formData.nome.toUpperCase(),
@@ -149,7 +146,7 @@ function Register() {
         password: formData.senha,
         active: true,
       };
-      endpoint = ENDPOINTS.EMPLOYEES
+      endpoint = ENDPOINTS.EMPLOYEES;
     }
 
     try {
@@ -172,7 +169,7 @@ function Register() {
     } catch (error) {
       const responseCode = error.status;
 
-      if(responseCode === 409) {
+      if (responseCode === 409) {
         showToast.error(error.response.data.message);
       } else {
         showToast.error("Erro ao cadastrar usuário.");

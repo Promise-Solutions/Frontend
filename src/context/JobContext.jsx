@@ -1,6 +1,6 @@
 import { createContext, useState, useContext } from "react";
 import { axiosProvider } from "../provider/apiProvider";
-import { showToast, ToastStyle } from "../components/toastStyle/ToastStyle";
+import { showToast, ToastStyle } from "../components/toastStyle/ToastStyle.jsx";
 import { ENDPOINTS } from "../constants/endpoints";
 
 const JobContext = createContext({});

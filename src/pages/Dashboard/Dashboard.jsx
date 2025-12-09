@@ -41,7 +41,6 @@ const Dashboard = () => {
     handleRefresh();
   }, []);
 
-
   return (
     <div className="slide-in-ltr flex flex-col min-h-screen py-2 md:pt-2 px-6 bg-gradient-to-br from-zinc-950 to-zinc-900 text-white">
       <h1 className="text-2xl font-thin">Visualize as análises</h1>
@@ -54,8 +53,9 @@ const Dashboard = () => {
           <span
             onClick={() => handleRefreshAndCleanTrancing()}
             title="Atualizar"
-            className="text-pink-zero mr-1 cursor-pointer hover:text-cyan-zero transition-all duration-300 hover:scale-110 hover:rotate-360">
-            <IoMdRefresh size={"24px"}/>
+            className="text-pink-zero mr-1 cursor-pointer hover:text-cyan-zero transition-all duration-300 hover:scale-110 hover:rotate-360"
+          >
+            <IoMdRefresh size={"24px"} />
           </span>
           {`Última atualização: ${
             lastDateUpdate ? lastDateUpdate : "Carregando..."

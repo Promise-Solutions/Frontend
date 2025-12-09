@@ -27,7 +27,7 @@ const CardUser = ({
     let birthMonth, birthDate;
     if (typeof birthDay === "string" && birthDay.length >= 10) {
       // Suporta formato "YYYY-MM-DD"
-      const [year, month, day] = birthDay.split("-");
+      const [month, day] = birthDay.split("-");
       birthMonth = parseInt(month, 10);
       birthDate = parseInt(day, 10);
     } else {

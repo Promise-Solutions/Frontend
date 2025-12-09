@@ -6,8 +6,8 @@ import ModalGeneric from "../ModalGeneric";
 import { getNumericValue } from "../../../hooks/formatUtils";
 
 const ModalAddDiscount = ({ isOpen, onClose, onConfirm }) => {
-  if (!isOpen) return null;
   const [discount, setDiscount] = useState(0);
+  if (!isOpen) return null;
 
    const handleInputChange = (e) => {
     let value = e.target.value;
