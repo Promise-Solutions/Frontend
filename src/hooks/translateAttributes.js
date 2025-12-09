@@ -14,7 +14,7 @@ export function getCategoryTranslated(category) {
 export function getStatusTranslated(status) {
     switch (status) {
         case "PENDING": return "Pendente"
-        case "CLOSED": return "Concluído"
+        case "CLOSED": case "COMPLETED": return "Concluído"
         case "CANCELED": return "Cancelado"
         case "WORKING": return  "Em progresso"
         default: return status

@@ -4,7 +4,7 @@ const Table = ({ headers, data, messageNotFound }) => {
   return (
     <div
       className="overflow-y-auto max-h-[500px] h-auto 2xl:max-h-[670px] mt-4"
-      style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
+      style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
     >
       {data?.length > 0 ? (
         <table className="w-full text-left border-collapse border border-gray-700">
@@ -35,14 +35,23 @@ const Table = ({ headers, data, messageNotFound }) => {
                             "text-pink-zero font-semibold" 
                             : ""
                       :
+                      row[header.key] === "" ?
+                      "text-gray-400"
+                      :
                       ""                              
                      }
                     `}
                 >
-                  {typeof row[header.key] === "string" ||
+                  {
+                    row[header.key] === ""
+                  ? "N/A"
+                  : 
+                  typeof row[header.key] === "string" ||
                   typeof row[header.key] === "number"
                     ? row[header.key]
-                    : row[header.key]}
+                    : row[header.key]
+                  }
+                  
                 </td>
               ))}
             </tr>

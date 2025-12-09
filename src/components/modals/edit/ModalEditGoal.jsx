@@ -38,7 +38,6 @@ const ModalEditGoal = ({ isOpen, onClose, onSave, currentGoal=0, onGoalSaved }) 
     const response = await onSave(goalToSave);
 
     if(response) {
-      console.log(response)
       onGoalSaved(response.goal);
     }
   }

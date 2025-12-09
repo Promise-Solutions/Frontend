@@ -75,7 +75,6 @@ const JobManagement = () => {
         const data = response.data || {};
         setSubJobsData(data.content || []);
         setSubJobsTotalPages(data.totalPages || 1);
-        console.log("[fetchSubJobs] resposta:", data);
       } catch (err) {
         setSubJobsData([]);
         setSubJobsTotalPages(1);
@@ -87,7 +86,6 @@ const JobManagement = () => {
   }, [jobId, subJobsPage]);
 
   const handleChangeSubJobStatus = (response) => {
-    console.log("handleChangeSubJobStatus", response);
 
     setSubJobsData((prev) =>
       prev.map((subJob) =>
@@ -242,6 +240,7 @@ const JobManagement = () => {
             id="button_edit"
             text="Editar Serviço"
             onClick={() => setIsEditing(true)}
+            className="h-14"
           />
         </section>
       ) : (
@@ -346,7 +345,7 @@ const JobManagement = () => {
             subJobsData.map((subJob) => (
               <CardSubJob
                 key={subJob.id}
-                data={{ ...subJob, jobId: jobData.id }}
+                data={{ ...subJob, jobId: jobId }}
                 onEdit={() => setEditingSubJob(subJob)}
                 onUpdateStatus={handleChangeSubJobStatus}
               />

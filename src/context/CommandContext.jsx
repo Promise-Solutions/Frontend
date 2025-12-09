@@ -67,7 +67,6 @@ export const CommandProvider = ({ children }) => {
           totalValue: `R$ ${parseFloat(command.totalValue).toFixed(2)}`,
         }));
       } else {
-        console.log("Erro: response.data não é um array.", response.data);
         return [];
       }
     } catch (error) {

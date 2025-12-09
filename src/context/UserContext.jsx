@@ -19,7 +19,6 @@ export function UserProvider({ children }) {
   useEffect(() => {
     const fetchUserData = async () => {
       if (!userId) {
-        console.log("Nenhum userId encontrado no contexto.");
         return;
       }
 
@@ -60,23 +59,14 @@ export function UserProvider({ children }) {
 
       // Verifique se response.data é um array antes de usar .map()
       if (Array.isArray(response.data)) {
-        console.log("Resposta da API:", response.data);
         return response.data.map((user) => ({
           ...user,
           clientType: user.clientType === "SINGLE" ? "AVULSO" : "MENSAL", // Map values for display
         }));
       } else if (response.data && typeof response.data === "object") {
-        console.log(
-          "Resposta da API não é um array, mas um objeto:",
-          response.data
-        );
         // Aqui você pode retornar um array com os dados do objeto
         return [response.data];
       } else {
-        console.log(
-          "Resposta da API não é um array nem um objeto:",
-          response.data
-        );
         return [];
       }
     } catch (error) {

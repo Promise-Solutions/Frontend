@@ -31,7 +31,6 @@ export const validateSession = () => {
           }
         })
         .catch((err) => {
-          console.log(err);
           showToast.error("Sessão expirada, entre novamente!");
           localStorage.removeItem("token");
           localStorage.removeItem("userLogged");

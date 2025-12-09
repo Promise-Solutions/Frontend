@@ -63,7 +63,6 @@ const ModalEditTask = ({ task, onClose, onEdit, onDelete, employees }) => {
         limitDate: formData.limitDate || null,
         status: mapStatusToBackend[formData.status] || formData.status,
       };
-      console.log("Payload for editing task:", updatedTask);
       const response = await axiosProvider.patch(
         ENDPOINTS.getTaskById(task.id),
         updatedTask

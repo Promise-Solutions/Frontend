@@ -30,7 +30,6 @@ const Reports = () => {
     } catch (err) {
       setAllReports([]);
       setReports([]);
-      console.log(err)
       showToast.error("Erro ao buscar relatórios.");
     }
     setIsLoading(false);
@@ -66,7 +65,6 @@ const Reports = () => {
           link.click();
           link.remove();
         } catch (err) {
-                console.log(err);
                 showToast.error("Erro ao buscar relatórios.");
         }
       })(),
@@ -95,8 +93,7 @@ const Reports = () => {
       showToast.success("Relatório deletado com sucesso!");
       fetchReports();
     } catch (err) {
-            console.log(err);
-            showToast.error("Erro ao buscar relatórios.");
+      showToast.error("Erro ao buscar relatórios.");
       setIsDeleteModalOpen(false);
       setDeleteIndex(null);
     }
@@ -218,8 +215,7 @@ const Reports = () => {
           }
         } catch (error) {
           throw new Error(
-            "Erro ao gerar relatório: " +
-              (error?.message || "Erro desconhecido")
+            "Erro ao gerar relatório"
           );
         }
       })(),
@@ -281,6 +277,7 @@ const Reports = () => {
             id="filter_report_button_id"
             text="Filtrar"
             onClick={handleFilter}
+            className="h-14"
           />
         </div>
         <div className="max-h-[450px] overflow-y-auto">

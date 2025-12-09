@@ -25,30 +25,124 @@ import Calendar from "./pages/Calendar/Calendar.jsx";
 import ResetPassword from "./pages/ResetPassword/ResetPassword.jsx";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
+import { ProtectedRoute } from "./components/protected-route/ProtectedRoute.jsx";
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route path={ROUTERS.HOME} element={<Home />} />
-      <Route path={ROUTERS.HOME_ALIAS} element={<Home />} />
+      <Route path={ROUTERS.HOME} element={
+        <ProtectedRoute>
+          <Home />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.HOME_ALIAS} element={
+        <ProtectedRoute>
+          <Home />
+        </ProtectedRoute>
+        } />
+
       <Route path={ROUTERS.LOGIN} element={<Login />} />
-      <Route path={ROUTERS.USERS} element={<Users />} />
-      <Route path={ROUTERS.USER_DETAIL} element={<User />} />
-      <Route path={ROUTERS.JOB_DETAIL} element={<JobManagement />} />
-      <Route path={ROUTERS.JOB_REGISTER} element={<JobRegister />} />
-      <Route path={ROUTERS.USER_JOB_REGISTER} element={<JobRegister />} />
-      <Route path={ROUTERS.SUBJOB_REGISTER} element={<SubJobRegister />} />
-      <Route path={ROUTERS.REGISTER} element={<Register />} />
-      <Route path={ROUTERS.BAR} element={<Bar />} />
-      <Route path={ROUTERS.BAR_STOCK} element={<Stock />} />
-      <Route path={ROUTERS.COMMAND} element={<Command />} />
-      <Route path={ROUTERS.DASHBOARD} element={<Dashboard />} />
-      <Route path={ROUTERS.REPORTS} element={<Reports />} />
-      <Route path={ROUTERS.JOBS} element={<Jobs />} />
-      <Route path={ROUTERS.TASKS} element={<Tasks />} />
-      <Route path={ROUTERS.EXPENSES} element={<Expenses />} />
-      <Route path={ROUTERS.CALENDAR} element={<Calendar />} />
+
+      <Route path={ROUTERS.USERS} element={
+        <ProtectedRoute>
+          <Users />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.USER_DETAIL} element={
+        <ProtectedRoute>
+          <User />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.JOB_DETAIL} element={
+        <ProtectedRoute>
+          <JobManagement />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.JOB_REGISTER} element={
+        <ProtectedRoute>
+          <JobRegister />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.USER_JOB_REGISTER} element={
+        <ProtectedRoute>
+          <JobRegister />
+        </ProtectedRoute>
+        } />
+
+
+      <Route path={ROUTERS.SUBJOB_REGISTER} element={
+        <ProtectedRoute>
+          <SubJobRegister />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.REGISTER} element={
+        <ProtectedRoute>
+          <Register />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.BAR} element={
+        <ProtectedRoute>
+          <Bar />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.BAR_STOCK} element={
+        <ProtectedRoute>
+          <Stock />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.COMMAND} element={
+        <ProtectedRoute>
+          <Command />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.DASHBOARD} element={
+        <ProtectedRoute>
+          <Dashboard />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.REPORTS} element={
+        <ProtectedRoute>
+          <Reports />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.JOBS} element={
+        <ProtectedRoute>
+          <Jobs />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.TASKS} element={
+        <ProtectedRoute>
+          <Tasks />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.EXPENSES} element={
+        <ProtectedRoute>
+          <Expenses />
+        </ProtectedRoute>
+        } />
+
+      <Route path={ROUTERS.CALENDAR} element={
+        <ProtectedRoute>
+          <Calendar />
+        </ProtectedRoute>
+        } />
+
       <Route path={ROUTERS.RESET} element={<ResetPassword />} />
+
       <Route path={ROUTERS.FORGOT} element={<ForgotPassword />} />
 
       <Route path="*" element={<NotFound />} />

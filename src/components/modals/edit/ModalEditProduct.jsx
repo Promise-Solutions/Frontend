@@ -40,11 +40,11 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
       showToast.error("Por favor, insira o nome do produto.");
       return;
     }
-    if (!formData.clientValue || parseFloat(formData.clientValue) <= 0) {
+    if (parseFloat(formData.clientValue) < 0.0) {
       showToast.error("Por favor, insira um valor unitário válido.");
       return;
     }
-    if (!formData.internalValue || parseFloat(formData.internalValue) < 0) {
+    if (parseFloat(formData.internalValue) < 0.0) {
       showToast.error("Por favor, insira um valor unitário válido.");
       return;
     }
@@ -54,8 +54,6 @@ const ModalEditProduct = ({ isOpen, onClose, onSave, initialData }) => {
       clientValue: getNumericValue(formData.clientValue),
       internalValue: getNumericValue(formData.internalValue)
     }
-
-    console.log("formDataToSave", formDataToSave)
 
     onSave(formDataToSave);
   };

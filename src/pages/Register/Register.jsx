@@ -152,10 +152,7 @@ function Register() {
       endpoint = ENDPOINTS.EMPLOYEES
     }
 
-    console.log(novoUsuario)
-
     try {
-      console.log("Novo usuário:", novoUsuario);
       const res = await axiosProvider.post(endpoint, novoUsuario);
       if (res.status === 201) {
         showToast.success("Cadastro realizado com sucesso!");

@@ -5,12 +5,10 @@ import { ROUTERS } from "../../constants/routers.js";
 import { ENDPOINTS } from "../../constants/endpoints.js";
 
 export const registerRedirect = (navigate) => {
-  console.log("Navigating to /register");
   navigate(ROUTERS.REGISTER); // Use navigate passed as an argument
 };
 
 export const stockRedirect = (navigate) => {
-  console.log("Navigating to /bar/stock");
   navigate(ROUTERS.BAR_STOCK); // Use navigate passed as an argument
 };
 
@@ -22,7 +20,6 @@ export const renderCommands = async (
 ) => {
   try {
     const commands = await findCommands(filterType); // Busca comandas já filtradas
-    console.log("Comandas filtradas:", commands);
 
     const clientsResponse = await axiosProvider.get(ENDPOINTS.CLIENTS);
     const clients = clientsResponse.data;
@@ -67,7 +64,6 @@ export const renderCommands = async (
         discount: `${command.discount}`,
         employeeName: employee ? employee.name : "Funcionário não encontrado",
         onClick: () => {
-          console.log(`Navigating to /command/${command.id}`);
           setCommandId(command.id);
           navigate(ROUTERS.getCommand(command.id));
         },

@@ -28,7 +28,7 @@ function Input({
       </div>
       <input
         required={required}
-        autoComplete="off"
+        autoComplete="on"
         type={type}
         step={step || ""} // Default to "any" if not provided
         name={name}

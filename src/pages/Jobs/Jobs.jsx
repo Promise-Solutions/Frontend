@@ -31,7 +31,8 @@ const Jobs = () => {
 
   const fetchAndRender = async (page = 1) => {
     setIsLoading(true);
-    const response = await findJobs(page - 1);
+    const size = 6;
+    const response = await findJobs(size, page - 1);
     // Monta os campos client e action para cada job
     const jobsWithClient = await Promise.all(
       (response.content || []).map(async (job) => {

@@ -91,7 +91,6 @@ const Tasks = () => {
       limitDate: limitDate || null, // Send null if no limit date is selected
       status: "PENDING", // Always send status as PENDING
     };
-    console.log("Payload for adding task:", payload); // Log the payload
     axiosProvider
       .post(ENDPOINTS.TASKS, payload)
       .then((res) => {
@@ -107,6 +106,7 @@ const Tasks = () => {
         };
         setTasks([...tasks, taskWithNames]);
         setIsAddModalOpen(false);
+        showToast.success("Tarefa cadastrada com sucesso.")
       })
       .catch((err) => console.error(err));
   };
@@ -258,7 +258,11 @@ const Tasks = () => {
           onDelete={(id) => {
             axiosProvider
               .delete(`tasks/${id}`)
-              .then(() => setTasks((prev) => prev.filter((t) => t.id !== id)))
+              .then(() => 
+                {
+                  setTasks((prev) => prev.filter((t) => t.id !== id))
+                  showToast.success("Tarefa excluída com sucesso")
+                })
               .catch((err) => console.error(err));
           }}
           employees={employees}

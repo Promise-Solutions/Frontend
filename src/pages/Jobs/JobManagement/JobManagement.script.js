@@ -26,7 +26,6 @@ export const deleteJob = async (deleteJobById, id, navigate, setIsDeleteModalOpe
     if (response == 200) {
       navigate(ROUTERS.JOBS);
     } else if(response == 409) {
-      console.log("Erro! Não é possível excluir um serviço com subserviços associados");
       showToast.error("Não é possível excluir um serviço com subserviços associados");
     }
 }

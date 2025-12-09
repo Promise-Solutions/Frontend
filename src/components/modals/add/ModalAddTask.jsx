@@ -44,7 +44,6 @@ const ModalAddTask = ({ isOpen, onClose, onAddTask, employees }) => {
       fkAssigned: formData.fkAssigned || null,
       status: "PENDING",
     };
-    console.log("Payload for new task:", newTask);
     onAddTask(newTask);
     setFormData({
       title: "",

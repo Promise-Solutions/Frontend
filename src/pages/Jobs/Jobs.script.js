@@ -16,10 +16,6 @@ export const renderJobs = async (
   if (jobs != []) {
     const jobsReturned =  await Promise.all(
       jobs.map( async (job) => {
-      console.log("Buscando serviços:", {
-        title: job.title,
-        category: job.category
-      });
   
         const client = await findClientById(job.fkClient);
   

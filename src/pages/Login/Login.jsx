@@ -59,7 +59,6 @@ const Login = () => {
         }
 
     } catch (error) {
-      console.log(error);
       showToast.dismiss();
       showToast.error("Erro ao autenticar. Verifique suas credenciais.")
     }

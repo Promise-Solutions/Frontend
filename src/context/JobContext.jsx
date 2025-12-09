@@ -56,10 +56,9 @@ export function JobProvider({ children }) {
     }
   };
 
-  const findJobs = async (page = 0) => {
+  const findJobs = async (size = 6, page = 0) => {
     try {
-      // ENDPOINTS.JOBS já tem ?size=7, então só adiciona &page=N
-      const url = `${ENDPOINTS.JOBS}&page=${page}`;
+      const url = ENDPOINTS.getJobsPagination(size, page);
       const response = await axiosProvider.get(url);
       const jobs = response.data;
       return jobs;
@@ -99,7 +98,6 @@ export function JobProvider({ children }) {
       });
 
       if (response.status === 200) {
-        console.log("Serviço atualizado com sucesso!");
         showToast.success("Serviço atualizado com sucesso!");
         return response.data;
       }
@@ -119,9 +117,6 @@ export function JobProvider({ children }) {
       return request.status;
     } catch (error) {
       if (error.response && error.response.status == 409) {
-        console.log(
-          "Erro! Não é possível excluir um serviço com subserviços associados"
-        );
         showToast.error(
           "Não é possível excluir um serviço com subserviços associados!"
         );

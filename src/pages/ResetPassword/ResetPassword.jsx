@@ -51,7 +51,6 @@ const ResetPassword = () => {
             }
           })
           .catch((error) => {
-            console.log(error);
             if (error.response.data.type == "BAD_REQUEST") {
               showToast.error("Erro Interno: Informações errôneas.");
             } else {

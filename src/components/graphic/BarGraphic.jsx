@@ -29,7 +29,6 @@ const BarGraphic = ({ title }) => {
           },
         ];
         setData(formattedData);
-        console.log("Bar data fetched:", formattedData);
       })
       .catch((error) => {
         console.error("Error fetching bar data:", error);

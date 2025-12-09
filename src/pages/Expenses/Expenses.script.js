@@ -8,7 +8,6 @@ export const registrarDespesa = async (formData) => {
         return response.data;
     }catch(error) {
         showToast.error("Erro ao cadastrar despesa!");
-        console.log("Erro ao cadastrar despesa", error)
         return null;
     }
 }
@@ -20,7 +19,6 @@ export const deleteExpense = async (id) => {
         return response.status;
     }).catch((error) => {
         showToast.error("Não foi possível deletar a despesa")
-        console.log("Não foi possível deletar a despesa", error)
         return null
     })
 }
@@ -35,7 +33,6 @@ export const saveExpenseChanges = async (expenseDataUpdate, idExpense) => {
         }
         )
         .catch((error) => {
-            console.log("Erro ao atualizar despesa", error)
             showToast.error("Erro ao atualizar despesa!")
             return null;
         })
