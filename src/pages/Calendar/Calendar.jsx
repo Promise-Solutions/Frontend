@@ -26,7 +26,9 @@ const Calendar = () => {
     const fetchCalendarData = async () => {
       setIsLoading(true);
       try {
-        const response = await axiosProvider.get(ENDPOINTS.getAppointmentsByMonth(currentYear, currentMonth));
+        const response = await axiosProvider.get(
+          ENDPOINTS.getAppointmentsByMonth(currentYear, currentMonth)
+        );
 
         const subJobsFound = response.data.subJobs;
 
@@ -36,7 +38,7 @@ const Calendar = () => {
           if (!grouped[item.date]) grouped[item.date] = [];
           grouped[item.date].push(item);
         });
-        
+
         setSubJobsForDay(grouped);
 
         const arr = Object.entries(grouped).map(([date, subjobs]) => ({
@@ -56,6 +58,7 @@ const Calendar = () => {
 
         setTasksByDay(tasksGrouped);
       } catch (err) {
+        console.error("Erro ao buscar compromissos do mês:", err);
         showToast.error("Houve um erro ao buscar os compromissos do mês.");
         setCalendarData([]);
         setTasksByDay({});
@@ -90,16 +93,12 @@ const Calendar = () => {
   // Calcula compromissos por dia (subserviços ou tarefas)
   const appointmentByDay = {};
   calendarData.forEach(({ date, subjobs }) => {
-    if (
-      Array.isArray(subjobs)
-    ) {
+    if (Array.isArray(subjobs)) {
       appointmentByDay[date] = true;
     }
   });
   Object.entries(tasksByDay).forEach(([date, tasks]) => {
-    if (
-      Array.isArray(tasks)
-    ) {
+    if (Array.isArray(tasks)) {
       appointmentByDay[date] = true;
     }
   });
@@ -128,7 +127,9 @@ const Calendar = () => {
   calendarData.forEach(({ date, subjobs }) => {
     if (
       Array.isArray(subjobs) &&
-      subjobs.some((sj) => sj.status === "WORKING" || sj.status === "Em progresso")
+      subjobs.some(
+        (sj) => sj.status === "WORKING" || sj.status === "Em progresso"
+      )
     ) {
       inProgressByDay[date] = true;
     }
@@ -180,12 +181,11 @@ const Calendar = () => {
                     </p>
                     <h2 className="text-xl font-semibold mb-2 flex items-center">
                       Subserviços do dia
-                      {
-                        ( 
-                          subJobsForDay[selectedDate]
-                          && subJobsForDay[selectedDate].some(s => s.status === "PENDING") 
-                        )
-                        && pendingIcon}
+                      {subJobsForDay[selectedDate] &&
+                        subJobsForDay[selectedDate].some(
+                          (s) => s.status === "PENDING"
+                        ) &&
+                        pendingIcon}
                     </h2>
                     <SubJobTable
                       headers={tableHeader}
@@ -197,12 +197,11 @@ const Calendar = () => {
                     <div className="flex items-center justify-between">
                       <h2 className="text-xl font-semibold mb-2 flex items-center">
                         Tarefas do dia
-                        {
-                          (
-                            tasksByDay[selectedDate]
-                            && tasksByDay[selectedDate].some(t => t.status === "PENDING")
-                          )
-                          && pendingIcon}
+                        {tasksByDay[selectedDate] &&
+                          tasksByDay[selectedDate].some(
+                            (t) => t.status === "PENDING"
+                          ) &&
+                          pendingIcon}
                       </h2>
                       <PrimaryButton
                         text="Ver todas as tarefas"
@@ -212,7 +211,7 @@ const Calendar = () => {
                     <TaskTableForDay
                       taskData={tasksByDay[selectedDate] || []}
                     />
-                    </div>
+                  </div>
                 </>
               ) : (
                 <div className="text-gray-400 mt-8">

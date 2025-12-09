@@ -25,13 +25,13 @@ const PATH_LABELS = {
   "/command/:command": "Comanda",
 };
 
-function getLabel(path) {
-  // Remove params
-  const clean = path.replace(/\/\d+|\/:[^/]+/g, (match) =>
-    match.startsWith("/:") ? match : ""
-  );
-  return PATH_LABELS[clean] || clean.replace("/", "");
-}
+// function getLabel(path) {
+//   // Remove params
+//   const clean = path.replace(/\/\d+|\/:[^/]+/g, (match) =>
+//     match.startsWith("/:") ? match : ""
+//   );
+//   return PATH_LABELS[clean] || clean.replace("/", "");
+// }
 
 const Breadcrumbs = ({ className }) => {
   const location = useLocation();
@@ -63,7 +63,7 @@ const Breadcrumbs = ({ className }) => {
             .catch(() => setUserName(null));
         });
     }
-  }, [params.userParam, state, userName]);
+  }, [params.userParam, state, userName, pathname]);
 
   // Busca nome do serviço se estiver na rota de serviço
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../buttons/PrimaryButton";
 
-function CardHomePage({ title, text, icon, idButton, iconClassName }) {
+function CardHomePage({ title, text, icon, idButton}) {
   const navigate = useNavigate();
 
   const handleButtonClick = (route) => {

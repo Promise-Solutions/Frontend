@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ImageDone from "../../assets/icone-concluido.png";
 import { useSubJobContext } from "../../context/SubJobContext";
-import { showToast } from "../toastStyle/ToastStyle";
 import EditButton from "../buttons/action/EditButton";
-import { formatDateWithoutTime, formatDateWithTime, formatTimeWithoutSeconds, getBRCurrency } from "../../hooks/formatUtils";
+import {
+  formatDateWithoutTime,
+  formatTimeWithoutSeconds,
+  getBRCurrency,
+} from "../../hooks/formatUtils";
 
 const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
   const { updateSubJobStatus } = useSubJobContext();
@@ -11,12 +14,9 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
   const handleChangeStatus = async () => {
     const dataToSend = {
       status: data.status === "CLOSED" ? "PENDING" : "CLOSED",
-      jobId: data.jobId
-    }
-    const response = await updateSubJobStatus(
-      data.id,
-      dataToSend
-    );
+      jobId: data.jobId,
+    };
+    const response = await updateSubJobStatus(data.id, dataToSend);
     if (response != null) {
       onUpdateStatus(response);
     }
@@ -61,9 +61,8 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
           <li>
             <b>Valor: </b>
             <span className="breakable-text overflow-y-auto max-h-[3rem]">
-              
               {typeof data?.value === "number"
-                ? getBRCurrency( data.value)
+                ? getBRCurrency(data.value)
                 : "Erro ao buscar valor"}
             </span>
           </li>
@@ -74,7 +73,7 @@ const CardSubJob = React.memo(({ data, onEdit, onUpdateStatus }) => {
                 data.status === "CLOSED" ? "text-cyan-zero" : "text-yellow-zero"
               }`}
             >
-              {data?.status === "CLOSED" ? "Concluído" : "Pendente" || ""}
+              {data?.status === "CLOSED" ? "Concluído" : "Pendente"}
             </b>
           </li>
           <li>

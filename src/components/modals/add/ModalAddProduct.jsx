@@ -5,7 +5,6 @@ import ConfirmButton from "../../buttons/action/ConfirmButton";
 import ModalGeneric from "../ModalGeneric";
 
 const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
-  if (!isOpen) return null;
   const [formData, setFormData] = useState({
     name: "",
     clientValue: "",
@@ -13,24 +12,26 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
     internalValue: "",
   });
 
+  if (!isOpen) return null;
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-    const handleValorChange = (e) => {
+  const handleValorChange = (e) => {
     let { name, value } = e.target;
 
     value = value.replace(/[^0-9.,]/g, "");
 
-    let newValue = value.replace(".", ",")
+    let newValue = value.replace(".", ",");
 
     const partes = newValue.split(",");
     if (partes.length > 2) {
       newValue = partes[0] + "," + partes.slice(1).join("");
     }
-    
+
     setFormData((prevData) => ({ ...prevData, [name]: newValue }));
   };
 
@@ -66,16 +67,21 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
       placeholder="Digite o valor para funcionários"
       value={formData.internalValue}
       handleOnChange={handleValorChange}
-    />
-  ]
+    />,
+  ];
 
   const buttons = [
     <CancelButton text="Cancelar" type="button" onClick={onClose} />,
-    <ConfirmButton type="submit" text="Adicionar" onClick={handleSubmit} />
-  ]
+    <ConfirmButton type="submit" text="Adicionar" onClick={handleSubmit} />,
+  ];
 
   return (
-    <ModalGeneric title="Adicionar Produto" inputs={inputs} buttons={buttons} borderVariant="add"/>
+    <ModalGeneric
+      title="Adicionar Produto"
+      inputs={inputs}
+      buttons={buttons}
+      borderVariant="add"
+    />
   );
 };
 

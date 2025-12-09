@@ -21,13 +21,14 @@ const Reports = () => {
   // Busca relatórios do backend
   const fetchReports = async () => {
     setIsLoading(true);
-    setIsDownloading(true)
+    setIsDownloading(true);
     try {
       const response = await axiosProvider.get(ENDPOINTS.driveList());
       const files = Array.isArray(response.data) ? response.data : [];
       setAllReports(files);
       setReports(files);
     } catch (err) {
+      console.error(err);
       setAllReports([]);
       setReports([]);
       showToast.error("Erro ao buscar relatórios.");
@@ -65,7 +66,8 @@ const Reports = () => {
           link.click();
           link.remove();
         } catch (err) {
-                showToast.error("Erro ao buscar relatórios.");
+          console.error(err);
+          showToast.error("Erro ao buscar relatórios.");
         }
       })(),
       {
@@ -93,6 +95,7 @@ const Reports = () => {
       showToast.success("Relatório deletado com sucesso!");
       fetchReports();
     } catch (err) {
+      console.error(err);
       showToast.error("Erro ao buscar relatórios.");
       setIsDeleteModalOpen(false);
       setDeleteIndex(null);
@@ -214,9 +217,8 @@ const Reports = () => {
             );
           }
         } catch (error) {
-          throw new Error(
-            "Erro ao gerar relatório"
-          );
+          console.error(error);
+          throw new Error("Erro ao gerar relatório");
         }
       })(),
       {

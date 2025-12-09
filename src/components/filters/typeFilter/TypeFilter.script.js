@@ -1,5 +1,5 @@
 // Importa o hook useState do React para gerenciar estados locais
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // Importa o React para usar a função createElement
 import React from "react";
 

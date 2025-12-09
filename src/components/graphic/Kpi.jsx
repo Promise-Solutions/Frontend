@@ -1,4 +1,4 @@
-const Kpi = ({ title, value, width, height }) => {
+const Kpi = ({ title, value, width}) => {
   let description = "";
   if (title === "Frequência Total") {
     description =

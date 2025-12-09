@@ -4,12 +4,10 @@ import ArrowDown from "../arrows/ArrowDown";
 
 const Dropdown = ({ title, content }) => {
   const [isOpen, setIsOpen] = useState(false);
-    const [url, setUrl] = useState(ArrowDown);
 
-    const toggleDropdown = () => {
-      setIsOpen(!isOpen);
-      setUrl(isOpen ? ArrowUp : ArrowDown);
-    };
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <div className="mt-12 h-full w-full my-12">
@@ -40,9 +38,7 @@ const Dropdown = ({ title, content }) => {
           isOpen ? "flex" : "hidden"
         }`}
       >
-        <div className="mx-16 p-4 ">
-          {content}
-        </div>
+        <div className="mx-16 p-4 ">{content}</div>
       </div>
     </div>
   );

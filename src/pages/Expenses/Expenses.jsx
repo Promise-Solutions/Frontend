@@ -48,32 +48,29 @@ function Expenses() {
     { label: "Ações", key: "actions" },
   ];
 
-  
   function formatDataToTable() {
     return expenseElements.map((expense) => ({
-        ...expense,
-        amountSpend: getBRCurrency(expense.amountSpend),
-        date: formatDateWithoutTime(expense.date),
-        expenseCategory: getExpenseCategoryTranslated(
-          expense.expenseCategory
+      ...expense,
+      amountSpend: getBRCurrency(expense.amountSpend),
+      date: formatDateWithoutTime(expense.date),
+      expenseCategory: getExpenseCategoryTranslated(expense.expenseCategory),
+      paymentType: getPaymentTypeTranslated(expense.paymentType),
+      quantity:
+        expense.quantity != null ? (
+          expense.quantity
+        ) : (
+          <span className="text-gray-400">N/A</span>
         ),
-        paymentType: getPaymentTypeTranslated(expense.paymentType),
-        quantity:
-          expense.quantity != null ? (
-            expense.quantity
-          ) : (
-            <span className="text-gray-400">N/A</span>
-          ),
-        actions: [
-          <div className="flex gap-2">
-            <DeleteButton
-              id="id_delete"
-              text="Deletar"
-              onClick={() => handleDelete(expense.id)}
-            />
-          </div>,
-        ],
-      }))
+      actions: [
+        <div className="flex gap-2">
+          <DeleteButton
+            id="id_delete"
+            text="Deletar"
+            onClick={() => handleDelete(expense.id)}
+          />
+        </div>,
+      ],
+    }));
   }
 
   // Removido useEffect antigo duplicado
@@ -89,6 +86,7 @@ function Expenses() {
         setExpenseElements(data.content || []);
         setExpenseTotalPages(data.totalPages || 1);
       } catch (error) {
+        console.error(error);
         setExpenseElements([]);
         setExpenseTotalPages(1);
       }
@@ -102,6 +100,7 @@ function Expenses() {
         })
         .catch((error) => {
           if (error.status == 404) {
+            console.error(error);
           } else {
             console.error("Erro ao buscar meta atual", error);
           }
@@ -178,7 +177,7 @@ function Expenses() {
           })
           .then((response) => {
             showToast.success("Meta atualizada com sucesso!");
-            setCurrentGoal(response.data.value)
+            setCurrentGoal(response.data.value);
             setIsGoalModalOpen(false);
             return response.data;
           })
@@ -194,7 +193,7 @@ function Expenses() {
           })
           .then((response) => {
             showToast.success("Meta atualizada com sucesso!");
-            setCurrentGoal(response.data.value)
+            setCurrentGoal(response.data.value);
             setIsGoalModalOpen(false);
             return response.data;
           })
@@ -208,7 +207,7 @@ function Expenses() {
   };
 
   const filteredExpenseElements = formatDataToTable().filter((element) => {
-    console.log(element)
+    console.log(element);
     const visibleFields = [
       element.description,
       element.amountSpend,
