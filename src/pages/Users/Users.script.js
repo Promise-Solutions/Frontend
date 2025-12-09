@@ -36,6 +36,7 @@ export const renderUsers = async (
         birthDay: user.birthDay,
         isBirthdayMonth, // Passa prop para o CardUser
         onClick: () => {
+          console.log(user.id);
           setUserId(user.id);
           const isClient = filterType === "CLIENTES";
           setIsClient(isClient);
