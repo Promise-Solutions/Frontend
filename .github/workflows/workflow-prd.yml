@@ -68,8 +68,9 @@ ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
 EOF
             chmod 600 /tmp/deploy_key
 
+echo "Deploy concluído!"
             # ssh na privada
-            ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.DEPLOY_PRIVATE_USER }}@${{ secrets.DEPLOY_PRIVATE_HOST }} <<'REMOTE'
+            ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.DEPLOY_PRIVATE_USER }}@${{ secrets.DEPLOY_PRIVATE_HOST }} -T << EOF2
 set -e
 echo "Gerando env.js..."
 
@@ -81,6 +82,6 @@ docker-compose down -v || true
 docker-compose up -d
 
 echo "Deploy concluído!"
-REMOTE
+EOF2
 
             shred -u /tmp/deploy_key || rm -f /tmp/deploy_key || true
