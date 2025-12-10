@@ -1,15 +1,15 @@
 FROM node:latest AS build
 WORKDIR /app
+
 COPY package*.json ./
 RUN npm ci
 
-# Copia o restante do código e o .env gerado pelo workflow
 COPY . .
-COPY .env .env
 
-# Passa a variável do build
+# --- PASSO IMPORTANTE ---
 ARG VITE_URL_API
 ENV VITE_URL_API=$VITE_URL_API
+RUN echo "VITE_URL_API=$VITE_URL_API" > .env
 
 RUN npm run build
 
