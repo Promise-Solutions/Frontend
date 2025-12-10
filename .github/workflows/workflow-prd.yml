@@ -59,32 +59,32 @@ jobs:
           port: ${{ secrets.DEPLOY_SSH_PORT }}
           script: |
             set -e
-
             ENV_API="${{ secrets.VITE_URL_API }}"
 
-            cat > /tmp/deploy_key <<'SSH_KEY'
-            ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
-            SSH_KEY
+            # grava a chave privada corretamente
+            cat > /tmp/deploy_key <<SSH_KEY
+${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+SSH_KEY
+
             chmod 600 /tmp/deploy_key
 
             ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.DEPLOY_PRIVATE_USER }}@${{ secrets.DEPLOY_PRIVATE_HOST }} <<REMOTE_CMDS
               set -e
 
-              echo "🔧 Gerando novo env.js..."
+              echo "Gerando novo env.js..."
               cat > /home/ubuntu/app/studiozero/env.js <<EOF
 window.APP_CONFIG = {
-  VITE_URL_API: "$ENV_API"
+  VITE_URL_API: "${ENV_API}"
 };
 EOF
 
-              echo "♻️ Reiniciando container..."
-
+              echo "Reiniciando container..."
               cd /home/ubuntu/app/studiozero || exit 1
               docker-compose pull || true
               docker-compose down -v || true
               docker-compose up -d
 
-              echo '🚀 Deploy concluído com sucesso!'
+              echo "Deploy concluído!"
 REMOTE_CMDS
 
             shred -u /tmp/deploy_key || rm -f /tmp/deploy_key || true
