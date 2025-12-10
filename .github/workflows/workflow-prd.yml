@@ -69,18 +69,18 @@ EOF
             chmod 600 /tmp/deploy_key
 
             # ssh na privada
-            ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.DEPLOY_PRIVATE_USER }}@${{ secrets.DEPLOY_PRIVATE_HOST }} <<REMOTE
-              set -e
-              echo "Gerando env.js..."
+            ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.DEPLOY_PRIVATE_USER }}@${{ secrets.DEPLOY_PRIVATE_HOST }} <<'REMOTE'
+set -e
+echo "Gerando env.js..."
 
-              echo "window.APP_CONFIG={VITE_URL_API:\"$ENV_API\"};" > /home/ubuntu/app/studiozero/env.js
+echo "window.APP_CONFIG={VITE_URL_API:\"$ENV_API\"};" > /home/ubuntu/app/studiozero/env.js
 
-              cd /home/ubuntu/app/studiozero || exit 1
-              docker-compose pull || true
-              docker-compose down -v || true
-              docker-compose up -d
+cd /home/ubuntu/app/studiozero || exit 1
+docker-compose pull || true
+docker-compose down -v || true
+docker-compose up -d
 
-              echo "Deploy concluído!"
+echo "Deploy concluído!"
 REMOTE
 
             shred -u /tmp/deploy_key || rm -f /tmp/deploy_key || true
