@@ -26,9 +26,6 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Build Vite React app
-        run: npm run build
-
       - name: Run tests (if any)
         run: |
           if [ -f package.json ] && jq -e '.scripts.test' package.json > /dev/null; then npm test; else echo "No test script"; fi
@@ -43,7 +40,9 @@ jobs:
         run: |
           IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/studiozero-frontend"
           echo "Build → $IMAGE:latest"
-          docker build -t $IMAGE:latest .
+          docker build \
+            --build-arg VITE_URL_API=${{ secrets.VITE_URL_API }} \
+            -t $IMAGE:latest .
 
       - name: Push da imagem
         run: |
