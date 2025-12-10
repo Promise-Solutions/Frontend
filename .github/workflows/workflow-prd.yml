@@ -40,6 +40,7 @@ jobs:
         run: |
           IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/studiozero-frontend"
           echo "Build → $IMAGE:latest"
+          # Se o Dockerfile estiver numa pasta 'frontend', coloque './frontend' no final
           docker build \
             --build-arg VITE_URL_API=${{ secrets.VITE_URL_API }} \
             -t $IMAGE:latest .
