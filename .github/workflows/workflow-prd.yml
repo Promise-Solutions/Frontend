@@ -10,7 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
-
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -19,7 +18,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -40,6 +39,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Gera .env para build
+        run: |
+          echo "VITE_URL_API=${{ secrets.VITE_URL_API }}" > .env
+
       - name: Build da imagem Docker
         run: |
           IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/studiozero-frontend"
@@ -51,7 +54,7 @@ jobs:
           IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/studiozero-frontend"
           docker push $IMAGE:latest
 
-      - name: Deploy to AWS (public → private)
+      - name: Deploy to AWS (public -> private)
         uses: appleboy/ssh-action@v0.1.9
         with:
           host: ${{ secrets.DEPLOY_PUBLIC_HOST }}
@@ -60,28 +63,19 @@ jobs:
           port: ${{ secrets.DEPLOY_SSH_PORT }}
           script: |
             set -e
-            ENV_API="${{ secrets.VITE_URL_API }}"
-
-            # cria chave temporária
-            cat <<EOF > /tmp/deploy_key
-${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
-EOF
+            cat > /tmp/deploy_key <<'SSH_KEY'
+            ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+            SSH_KEY
             chmod 600 /tmp/deploy_key
 
-echo "Deploy concluído!"
-            # ssh na privada
-            ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.DEPLOY_PRIVATE_USER }}@${{ secrets.DEPLOY_PRIVATE_HOST }} -T << EOF2
-set -e
-echo "Gerando env.js..."
-
-echo "window.APP_CONFIG={VITE_URL_API:\"$ENV_API\"};" > /home/ubuntu/app/studiozero/env.js
-
-cd /home/ubuntu/app/studiozero || exit 1
-docker-compose pull || true
-docker-compose down -v || true
-docker-compose up -d
-
-echo "Deploy concluído!"
-EOF2
+            ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.DEPLOY_PRIVATE_USER }}@${{ secrets.DEPLOY_PRIVATE_HOST }} <<'REMOTE_CMDS'
+              set -e
+              docker rm -f frontend-1 frontend-2 || true
+              cd /home/ubuntu/app/studiozero || exit 1
+              docker-compose pull || true
+              docker-compose down -v || true
+              docker-compose up -d
+              echo 'Deploy concluído na instância privada'
+            REMOTE_CMDS
 
             shred -u /tmp/deploy_key || rm -f /tmp/deploy_key || true
