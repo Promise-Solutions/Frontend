@@ -73,7 +73,7 @@ EOF
               set -e
               echo "Gerando env.js..."
 
-              echo 'window.APP_CONFIG={VITE_URL_API:"'"$ENV_API"'"};' > /home/ubuntu/app/studiozero/env.js
+              echo "window.APP_CONFIG={VITE_URL_API:\"$ENV_API\"};" > /home/ubuntu/app/studiozero/env.js
 
               cd /home/ubuntu/app/studiozero || exit 1
               docker-compose pull || true
