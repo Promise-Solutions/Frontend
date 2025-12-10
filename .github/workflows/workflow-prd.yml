@@ -73,7 +73,7 @@ jobs:
               docker rm -f frontend-1 frontend-2 || true
               cd /home/ubuntu/app/studiozero || exit 1
               docker-compose pull || true
-              docker-compose down -v || true
+              docker-compose down || true
               docker-compose up -d
               echo 'Deploy concluído na instância privada'
             REMOTE_CMDS
