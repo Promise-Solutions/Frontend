@@ -3,8 +3,12 @@ import Input from "../../form/Input";
 import CancelButton from "../../buttons/action/CancelButton";
 import ConfirmButton from "../../buttons/action/ConfirmButton";
 import ModalGeneric from "../ModalGeneric";
+import { useNavigate } from "react-router-dom";
+import { ROUTERS } from "../../../constants/routers";
 
 const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
+  const navigate = useNavigate();
+  const subTitleForModal = <span>* A quantidade do produto é definida ao adicionar nas <a className="cursor-pointer underline" onClick={() => navigate(ROUTERS.EXPENSES)}>despesas</a></span> ;
   const [formData, setFormData] = useState({
     name: "",
     clientValue: "",
@@ -78,6 +82,7 @@ const ModalAddProduct = ({ isOpen, onClose, onAdd }) => {
   return (
     <ModalGeneric
       title="Adicionar Produto"
+      subTitle={subTitleForModal}
       inputs={inputs}
       buttons={buttons}
       borderVariant="add"
